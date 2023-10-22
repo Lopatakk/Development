@@ -40,8 +40,8 @@ while True:     # main loop
     triangle_group.draw(screen)
     triangle_group.update()
         # start text
-    text_render = font.render("NOVÝ START", True, (255, 255, 255))
-    screen.blit(text_render, (screen_width/2, screen_height/2))
+    text_render = font.render("NEW GAME", True, (255, 255, 255))
+    screen.blit(text_render, (screen_width/2.7, screen_height/4))
         # screen update
     pygame.display.flip()
 

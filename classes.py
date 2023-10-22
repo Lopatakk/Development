@@ -14,7 +14,7 @@ class Triangle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [screen_width/2, screen_height/2]
         self.pos = np.array([screen_width/2, screen_height/2])
-        self.triangle_width = self.rect.heights
+        self.triangle_width = self.rect.height
         self.velocity = np.array([0, 0])
         self.max_velocity = np.array([100, 100])
         self.speed_coefficient = 0.1
