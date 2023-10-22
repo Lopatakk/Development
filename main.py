@@ -10,7 +10,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # screen setup
-fps = 59
+fps = 60
 screen_width = 640
 screen_height = 640
 screen = pygame.display.set_mode((screen_width, screen_height))
