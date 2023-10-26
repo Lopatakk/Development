@@ -1,8 +1,10 @@
 import pygame
 import numpy as np
+from screen_setup import Screen_setup
+
 
 class Projectile(pygame.sprite.Sprite):
-    def __init__(self, picturepath, triangle, screen):
+    def __init__(self, picturepath, triangle):
         super().__init__()
         self.image = pygame.image.load(picturepath)
         self.rect = self.image.get_rect()
@@ -16,5 +18,5 @@ class Projectile(pygame.sprite.Sprite):
         self.posy -= np.cos(np.deg2rad(self.angle)) * 5
         self.rect.center = [self.posx, self.posy]
         #  kill behind borders
-        if self.posx > screen.screen_width or self.posx < 0 or self.posy > screen.screen_height or self.posy < 0:
+        if self.posx > Screen_setup.width or self.posx < 0 or self.posy > Screen_setup.height or self.posy < 0:
             self.kill()
