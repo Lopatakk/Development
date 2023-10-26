@@ -4,14 +4,14 @@ from screen_setup import Screen_setup
 
 
 class Projectile(pygame.sprite.Sprite):
-    def __init__(self, picturepath, triangle):
+    def __init__(self, picture_path, ship):
         super().__init__()
-        self.image = pygame.image.load(picturepath)
+        self.image = pygame.image.load(picture_path)
         self.rect = self.image.get_rect()
-        self.rect.center = triangle.rect.center
-        self.angle = triangle.angle
-        self.posx = self.rect.centerx - 1/2 * triangle.triangle_width * 0.95 * np.sin(np.deg2rad(triangle.angle))
-        self.posy = self.rect.centery - 1/2 * triangle.triangle_width * 0.95 * np.cos(np.deg2rad(triangle.angle))
+        self.rect.center = ship.rect.center
+        self.angle = ship.angle
+        self.posx = self.rect.centerx - 1 / 2 * ship.triangle_width * 0.95 * np.sin(np.deg2rad(ship.angle))
+        self.posy = self.rect.centery - 1 / 2 * ship.triangle_width * 0.95 * np.cos(np.deg2rad(ship.angle))
 
     def update(self):
         self.posx -= np.sin(np.deg2rad(self.angle)) * 5
