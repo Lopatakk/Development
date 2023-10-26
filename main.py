@@ -1,19 +1,17 @@
-import random
 import pygame
 import sys
-import numpy as np
 import time
-from classes import Triangle, Projectile
+from ship import Ship
+from projectile import Projectile
+from screen import Screen
+
 
 # general setup
 pygame.init()
 clock = pygame.time.Clock()
 
 # screen setup
-fps = 60
-screen_width = 640
-screen_height = 640
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = Screen
 
 # text
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -26,7 +24,7 @@ while True:     # main loop
     projectile_group = pygame.sprite.Group()
 
     # triangle
-    triangle = Triangle("vlod.png")
+    triangle = Ship("vlod.png")
     triangle_group = pygame.sprite.Group()
     triangle_group.add(triangle)
 
@@ -41,7 +39,7 @@ while True:     # main loop
     triangle_group.update()
         # start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
-    screen.blit(text_render, (screen_width/2.7, screen_height/4))
+    screen.blit(text_render, (screen.width/2.7, screen.height/4))
         # screen update
     pygame.display.flip()
 
@@ -91,11 +89,11 @@ while True:     # main loop
         print(triangle.velocity)
 
         # FPS
-        clock.tick(fps)
+        clock.tick(Screen.fps)
 
     # start text
     text_render = font.render("SMRT", True, (255, 255, 255))
-    screen.blit(text_render, (screen_width / 2, screen_height / 2))
+    screen.blit(text_render, (screen.width/2, screen.height/2))
     # screen update
     pygame.display.flip()
 
