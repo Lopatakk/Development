@@ -60,7 +60,7 @@ class Ship(pygame.sprite.Sprite):
         elif dist_y < 0:
             return 180 + np.rad2deg(np.arctan(dist_x/dist_y))
         else:
-            if dist_x == 0:
+            if dist_x > 0:
                 return 90
             else:
                 return -90
