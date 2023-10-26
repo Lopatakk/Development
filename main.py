@@ -3,14 +3,14 @@ import sys
 import time
 from ship import Ship
 from projectile import Projectile
-from screen_setup import Screen_setup
+from screensetup import ScreenSetup
 
 # general setup
 pygame.init()
 clock = pygame.time.Clock()
 
 # screen setup
-screen = pygame.display.set_mode((Screen_setup.width, Screen_setup.height))
+screen = ScreenSetup.start_setup()
 
 # text
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -38,7 +38,7 @@ while True:     # main loop
     triangle_group.update()
         # start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
-    screen.blit(text_render, (Screen_setup.width/2.7, Screen_setup.height/4))
+    screen.blit(text_render, (ScreenSetup.width / 2.7, ScreenSetup.height / 4))
         # screen update
     pygame.display.flip()
 
@@ -88,11 +88,11 @@ while True:     # main loop
         print(triangle.velocity)
 
         # FPS
-        clock.tick(Screen_setup.fps)
+        clock.tick(ScreenSetup.fps)
 
     # start text
     text_render = font.render("SMRT", True, (255, 255, 255))
-    screen.blit(text_render, (Screen_setup.width/2, Screen_setup.height/2))
+    screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
     # screen update
     pygame.display.flip()
 

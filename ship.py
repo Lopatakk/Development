@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-from screen_setup import Screen_setup
+from screensetup import ScreenSetup
 
 
 class Ship(pygame.sprite.Sprite):
@@ -27,7 +27,7 @@ class Ship(pygame.sprite.Sprite):
         self.velocity_coefficient = 0.1
 
         # spawn point
-        self.rect.center = [Screen_setup.width/2, Screen_setup.height/2]
+        self.rect.center = [ScreenSetup.width / 2, ScreenSetup.height / 2]
 
     def update(self):
         # rotation

@@ -1,12 +1,12 @@
 import pygame
 import numpy as np
-from screen_setup import Screen_setup
+from screensetup import ScreenSetup
 from ship import Ship
 
 
 class PlayerShip(Ship):
     def __init__(self):
-        super().__init__("vlod.png", Screen_setup.width/2, Screen_setup.height/2)
+        super().__init__("vlod.png", ScreenSetup.width / 2, ScreenSetup.height / 2)
 
     def update(self):
         # angle calculation

@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-from screen_setup import Screen_setup
+from screensetup import ScreenSetup
 
 
 class Projectile(pygame.sprite.Sprite):
@@ -18,5 +18,5 @@ class Projectile(pygame.sprite.Sprite):
         self.posy -= np.cos(np.deg2rad(self.angle)) * 5
         self.rect.center = [self.posx, self.posy]
         #  kill behind borders
-        if self.posx > Screen_setup.width or self.posx < 0 or self.posy > Screen_setup.height or self.posy < 0:
+        if self.posx > ScreenSetup.width or self.posx < 0 or self.posy > ScreenSetup.height or self.posy < 0:
             self.kill()
