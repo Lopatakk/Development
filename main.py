@@ -3,7 +3,7 @@ import sys
 import time
 from ship import Ship
 from projectile import Projectile
-from screen import Screen
+from screen_setup import Screen_setup
 
 
 # general setup
@@ -11,7 +11,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # screen setup
-screen = Screen
+screen_setup = Screen_setup
 
 # text
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -89,7 +89,7 @@ while True:     # main loop
         print(triangle.velocity)
 
         # FPS
-        clock.tick(Screen.fps)
+        clock.tick(Screen_setup.fps)
 
     # start text
     text_render = font.render("SMRT", True, (255, 255, 255))

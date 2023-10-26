@@ -1,7 +1,7 @@
 import pygame
 
 
-class Screen:
+class Screen_setup:
     fps = 60
     width = 640
     height = 640
