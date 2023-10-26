@@ -10,8 +10,8 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = ship.rect.center
         self.angle = ship.angle
-        self.posx = self.rect.centerx - 1 / 2 * ship.triangle_width * 0.95 * np.sin(np.deg2rad(ship.angle))
-        self.posy = self.rect.centery - 1 / 2 * ship.triangle_width * 0.95 * np.cos(np.deg2rad(ship.angle))
+        self.posx = self.rect.centerx - 1 / 2 * ship.ship_width * 0.95 * np.sin(np.deg2rad(ship.angle))
+        self.posy = self.rect.centery - 1 / 2 * ship.ship_width * 0.95 * np.cos(np.deg2rad(ship.angle))
 
     def update(self):
         self.posx -= np.sin(np.deg2rad(self.angle)) * 5
