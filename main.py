@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 screen = ScreenSetup.start_setup()
 
 # text
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', 30)
 
 while True:     # main loop
     background = pygame.image.load("space.png")
