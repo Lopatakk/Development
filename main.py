@@ -2,8 +2,9 @@ import pygame
 import sys
 import time
 from player_ship import PlayerShip
-from projectile import Projectile
 from screensetup import ScreenSetup
+from crosshair import Crosshair
+
 
 # general setup
 pygame.init()
@@ -17,7 +18,7 @@ font = pygame.font.Font('freesansbold.ttf', 30)
 
 while True:     # main loop
     background = pygame.image.load("space.png")
-    pygame.mouse.set_visible(True)
+    pygame.mouse.set_visible(False)
 
     # projectiles
     projectile_group = pygame.sprite.Group()
@@ -26,6 +27,10 @@ while True:     # main loop
     player = PlayerShip()
     player_group = pygame.sprite.Group()
     player_group.add(player)
+        # crosshair
+    crosshair = Crosshair("crosshair.png")
+    crosshair_group = pygame.sprite.Group()
+    crosshair_group.add(crosshair)
 
     # rendering
         # background
@@ -81,6 +86,9 @@ while True:     # main loop
             # player
         player_group.draw(screen)
         player_group.update()
+            # crosshair
+        crosshair_group.draw(screen)
+        crosshair_group.update()
             # screen update
         pygame.display.flip()
 
