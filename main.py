@@ -5,7 +5,7 @@ from player_ship import PlayerShip
 from screensetup import ScreenSetup
 from crosshair import Crosshair
 from projectile import Projectile
-
+from renderupdate import *
 
 # general setup
 pygame.init()
@@ -18,13 +18,12 @@ screen = ScreenSetup.start_setup()
 font = pygame.font.Font('freesansbold.ttf', 30)
 
 while True:     # main loop
-    background = pygame.image.load("space.png")
     pygame.mouse.set_visible(False)
 
-    # projectiles
+    # creating sprites/groups
+        # projectiles
     projectile_group = pygame.sprite.Group()
-
-    # player
+        # player
     player = PlayerShip()
     player_group = pygame.sprite.Group()
     player_group.add(player)
@@ -35,17 +34,14 @@ while True:     # main loop
 
     # rendering
         # background
-    screen.blit(background, (0, 0))
-        # projectiles
-    projectile_group.draw(screen)
-    projectile_group.update()
-        # player
-    player_group.draw(screen)
-    player_group.update()
+    render_background(screen)
+        # groups
+    update_groups([player_group], screen)
         # start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
     screen.blit(text_render, (ScreenSetup.width / 2.7, ScreenSetup.height / 4))
-        # screen update
+
+    # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
 
     # wait
@@ -58,7 +54,7 @@ while True:     # main loop
                 pygame.quit()
                 sys.exit()
 
-        # death
+        # player death
         if player.hp <= 0:
             break
 
@@ -80,23 +76,16 @@ while True:     # main loop
 
         # rendering/update
             # background
-        screen.blit(background, (0, 0))
-            # projectiles
-        projectile_group.draw(screen)
-        projectile_group.update()
-            # player
-        player_group.draw(screen)
-        player_group.update()
-            # crosshair
-        crosshair_group.draw(screen)
-        crosshair_group.update()
-            # collisions
+        render_background(screen)
+            # groups
+        update_groups([projectile_group, player_group, crosshair_group], screen)
+
+        # collisions
         hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
         player.hp -= len(hits) * Projectile.damage
-        # screen update
-        pygame.display.flip()
 
-        print(player.velocity)
+        # screen update (must be at the end of the loop before waiting functions!)
+        pygame.display.flip()
 
         # FPS
         clock.tick(ScreenSetup.fps)
