@@ -15,6 +15,7 @@ class Ship(pygame.sprite.Sprite):
         self.image = pygame.image.load(picture_path)
         self.rect = self.image.get_rect()
         self.ship_width = self.rect.height
+        self.mask = pygame.mask.from_surface(self.image)
 
         # position
         self.pos = np.array([start_pos_x, start_pos_y])
@@ -38,6 +39,7 @@ class Ship(pygame.sprite.Sprite):
         # angle must be calculated before calling the super().update() function!
         self.image = pygame.transform.rotate(self.image_non_rot, self.angle)
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
         # max speed limitations
         if self.velocity[0] > self.max_velocity[0]:

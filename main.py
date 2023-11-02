@@ -4,6 +4,7 @@ import time
 from player_ship import PlayerShip
 from screensetup import ScreenSetup
 from crosshair import Crosshair
+from projectile import Projectile
 
 
 # general setup
@@ -77,7 +78,7 @@ while True:     # main loop
         if mouse[0]:
             projectile_group.add(player.shoot())
 
-        # rendering
+        # rendering/update
             # background
         screen.blit(background, (0, 0))
             # projectiles
@@ -89,7 +90,10 @@ while True:     # main loop
             # crosshair
         crosshair_group.draw(screen)
         crosshair_group.update()
-            # screen update
+            # collisions
+        hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
+        player.hp -= len(hits) * Projectile.damage
+        # screen update
         pygame.display.flip()
 
         print(player.velocity)
