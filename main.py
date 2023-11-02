@@ -68,8 +68,6 @@ while True:     # main loop
             player.velocity[0] += -1
         if key[pygame.K_d]:
             player.velocity[0] += +1
-        if key[pygame.K_SPACE]:
-            player.hp += -20
         mouse = pygame.mouse.get_pressed(num_buttons=3)
         if mouse[0]:
             projectile_group.add(player.shoot())
