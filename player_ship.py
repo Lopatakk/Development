@@ -6,7 +6,7 @@ from ship import Ship
 
 class PlayerShip(Ship):
     def __init__(self):
-        super().__init__("vlod.png", ScreenSetup.width / 2, ScreenSetup.height / 2)
+        super().__init__("vlod.png", ScreenSetup.width/2, ScreenSetup.height/2)
 
     def update(self):
         # angle calculation

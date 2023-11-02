@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from screensetup import ScreenSetup
+from projectile import Projectile
 
 
 class Ship(pygame.sprite.Sprite):
@@ -28,6 +29,9 @@ class Ship(pygame.sprite.Sprite):
 
         # spawn point
         self.rect.center = [ScreenSetup.width / 2, ScreenSetup.height / 2]
+
+        # projectiles
+        self.damage = 20
 
     def update(self):
         # rotation
@@ -64,3 +68,8 @@ class Ship(pygame.sprite.Sprite):
                 return 90
             else:
                 return -90
+
+    # shooting
+    def shoot(self):
+        projectile = Projectile("projectile.png", self)
+        return projectile

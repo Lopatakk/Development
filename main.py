@@ -70,8 +70,7 @@ while True:     # main loop
             player.hp += -20
         mouse = pygame.mouse.get_pressed(num_buttons=3)
         if mouse[0]:
-            projectile = Projectile("projectile.png", player)
-            projectile_group.add(projectile)
+            projectile_group.add(player.shoot())
 
         # rendering
             # background

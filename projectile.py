@@ -12,6 +12,7 @@ class Projectile(pygame.sprite.Sprite):
         self.angle = ship.angle
         self.posx = self.rect.centerx - 1 / 2 * ship.ship_width * 0.95 * np.sin(np.deg2rad(ship.angle))
         self.posy = self.rect.centery - 1 / 2 * ship.ship_width * 0.95 * np.cos(np.deg2rad(ship.angle))
+        self.damage = ship.damage
 
     def update(self):
         self.posx -= np.sin(np.deg2rad(self.angle)) * 5
