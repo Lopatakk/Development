@@ -60,7 +60,7 @@ while True:     # main loop
             break
 
         # key/mouse pressing
-            # buttons
+            # WSAD
         player.velocity += check_wsad()
             # mouse
         mouse = pygame.mouse.get_pressed(num_buttons=5)
