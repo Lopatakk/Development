@@ -6,6 +6,7 @@ from screensetup import ScreenSetup
 from crosshair import Crosshair
 from projectile import Projectile
 from renderupdate import *
+from checkbuttons import *
 
 # general setup
 pygame.init()
@@ -59,16 +60,10 @@ while True:     # main loop
             break
 
         # key/mouse pressing
-        key = pygame.key.get_pressed()
-        if key[pygame.K_w]:
-            player.velocity[1] += -1
-        if key[pygame.K_s]:
-            player.velocity[1] += +1
-        if key[pygame.K_a]:
-            player.velocity[0] += -1
-        if key[pygame.K_d]:
-            player.velocity[0] += +1
-        mouse = pygame.mouse.get_pressed(num_buttons=3)
+            # buttons
+        player.velocity += check_wsad()
+            # mouse
+        mouse = pygame.mouse.get_pressed(num_buttons=5)
         if mouse[0]:
             projectile_group.add(player.shoot())
 
