@@ -6,7 +6,7 @@ from screensetup import ScreenSetup
 from crosshair import Crosshair
 from projectile import Projectile
 from renderupdate import *
-
+from zarovka import Zarovka
 # general setup
 pygame.init()
 clock = pygame.time.Clock()
@@ -27,16 +27,21 @@ while True:     # main loop
     player = PlayerShip()
     player_group = pygame.sprite.Group()
     player_group.add(player)
+        # enemy
+    zarovka = Zarovka()
+    enemy_group = pygame.sprite.Group()
+    enemy_group.add(zarovka)
         # crosshair
     crosshair = Crosshair("crosshair.png")
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
-
+    # pozice hrace
+    zarovka.player_position = (player.pos)
     # rendering
         # background
     render_background(screen)
         # groups
-    update_groups([player_group], screen)
+    update_groups([player_group, enemy_group], screen)
         # start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
     screen.blit(text_render, (ScreenSetup.width / 2.7, ScreenSetup.height / 4))
@@ -45,7 +50,7 @@ while True:     # main loop
     pygame.display.flip()
 
     # wait
-    time.sleep(5)
+    time.sleep(0.5)
 
     while True:     # game loop
         for event in pygame.event.get():
@@ -76,8 +81,7 @@ while True:     # main loop
             # background
         render_background(screen)
             # groups
-        update_groups([projectile_group, player_group, crosshair_group], screen)
-
+        update_groups([projectile_group, player_group, crosshair_group, enemy_group], screen)
         # collisions
         hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
         player.hp -= len(hits) * Projectile.damage
