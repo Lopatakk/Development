@@ -15,8 +15,10 @@ class Ship(pygame.sprite.Sprite):
     # automatically based on the velocity.
     # Rotation is made semi-automatically. Just change the variable angle before calling the super().update() function
     # to make the ship rotate.
+
     def __init__(self, picture_path, start_pos_x, start_pos_y):
-        # Constructor creates the ship itself with all the needed properties
+        # Constructor creates the ship itself with all the needed properties.
+
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()
 
@@ -129,5 +131,5 @@ class Ship(pygame.sprite.Sprite):
     # This function creates (spawns) a projectile and returns it, so it can be added to a sprite group using
     # sprite_group.add(ship.shoot()).
     def shoot(self):
-        projectile = Projectile("projectile.png", self)
+        projectile = Projectile(self)
         return projectile
