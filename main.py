@@ -86,7 +86,8 @@ while True:     # main loop
         # FPS
         clock.tick(ScreenSetup.fps)
 
-    # start text
+    # death text
+    crosshair.disable()
     text_render = font.render("SMRT", True, (255, 255, 255))
     screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
     # screen update
