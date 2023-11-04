@@ -9,10 +9,10 @@ class Crosshair(pygame.sprite.Sprite):
     # other sprites.
     # The disable() function makes the mouse visible again and destroys the sprite, so it does not have to make updates
     # when not needed. If you want to switch back to crosshair, you have to create a new one by calling the constructor.
-    def __init__(self, picture_path):
+    def __init__(self):
         super().__init__()
         pygame.mouse.set_visible(False)
-        self.image = pygame.image.load(picture_path)
+        self.image = pygame.image.load("crosshair.png")
         self.rect = self.image.get_rect()
 
     def update(self):

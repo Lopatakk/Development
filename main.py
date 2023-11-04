@@ -33,7 +33,7 @@ while True:     # main loop
     enemy_group.add(zarovka)
     zarovka.player_position = (player.pos)
         # crosshair
-    crosshair = Crosshair("crosshair.png")
+    crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
 
