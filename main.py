@@ -76,6 +76,7 @@ while True:     # main loop
         render_background(screen)
             # groups
         update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
+
         # collisions
         hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
         player.hp -= len(hits) * Projectile.damage

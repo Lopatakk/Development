@@ -13,12 +13,13 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.center = [self.posx, self.posy]
         self.angle = ship.angle
         self.mask = pygame.mask.from_surface(self.image)
+        self.velocity = 5
 
     damage = 20
 
     def update(self):
-        self.posx -= np.sin(np.deg2rad(self.angle)) * 5
-        self.posy -= np.cos(np.deg2rad(self.angle)) * 5
+        self.posx -= np.sin(np.deg2rad(self.angle)) * self.velocity
+        self.posy -= np.cos(np.deg2rad(self.angle)) * self.velocity
         self.rect.center = [self.posx, self.posy]
         #  kill behind borders
         if self.posx > ScreenSetup.width or self.posx < 0 or self.posy > ScreenSetup.height or self.posy < 0:

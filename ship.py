@@ -70,11 +70,6 @@ class Ship(pygame.sprite.Sprite):
         # This sets the ship center at values defined when calling the constructor
         self.rect.center = [start_pos_x, start_pos_y]
 
-        # projectiles
-
-        # damage - defines the damage of fired projectiles
-        self.damage = 20
-
     def update(self):
         # The update() function updates the ships position and angle based on the ships velocity and angle variables. It
         # also limits the ships velocity to its maximum value.
