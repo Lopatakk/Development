@@ -20,8 +20,6 @@ screen = ScreenSetup.start_setup()
 font = pygame.font.Font('freesansbold.ttf', 30)
 
 while True:     # main loop
-    pygame.mouse.set_visible(False)
-
     # creating sprites/groups
         # projectiles
     projectile_group = pygame.sprite.Group()
@@ -77,7 +75,7 @@ while True:     # main loop
             # background
         render_background(screen)
             # groups
-        update_groups([projectile_group, player_group, crosshair_group, enemy_group], screen)
+        update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
         # collisions
         hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
         player.hp -= len(hits) * Projectile.damage
