@@ -27,10 +27,12 @@ class Projectile(pygame.sprite.Sprite):
 
         # image
 
-        # This section loads the image and creates a rect and a mask out of it. Mask is created, because we use mask
-        # collision system. If we did not create mask here, the code would have to make mask everytime it checks for
-        # some collisions, which can lead to a decrease of performance.
+        # This section loads the image and creates a rect and a mask out of it. It also uses the convert function to
+        # improve performance. Mask is created, because we use mask collision system. If we did not create mask here,
+        # the code would have to make mask everytime it checks for some collisions, which can lead to a decrease of
+        # performance.
         self.image = pygame.image.load("projectile.png")
+        self.image = pygame.Surface.convert(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
 

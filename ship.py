@@ -33,8 +33,10 @@ class Ship(pygame.sprite.Sprite):
         #   original image as the image to be rotated, because when using an already rotated image, the resulting image
         #   is distorted)
         self.image_non_rot = pygame.image.load(picture_path)
-        # image - realtime image of the ship, here it just gets uploaded
+        # image - realtime image of the ship, here it just gets uploaded and converted (the convert_alpha() (and
+        #   convert()) function improves performance by faster blitting the images (I don't know anything about it))
         self.image = pygame.image.load(picture_path)
+        self.image = pygame.Surface.convert_alpha(self.image)
         # rect - Sprites work with rectangles, it is one of the necessary things, here it gets created from the image
         self.rect = self.image.get_rect()
         # ship_width - variable used for calculating spawning point of projectiles, here it is equal to height of the

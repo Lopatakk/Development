@@ -3,8 +3,10 @@ import pygame
 
 # This file is used to store functions for rendering and updating.
 def render_background(screen):
-    # This function renders the background image.
-    screen.blit(pygame.image.load("space.png"), (0, 0))
+    # This function renders the background image. It also uses the convert function to improve performance.
+    background = pygame.image.load("space.png")
+    background = pygame.Surface.convert(background)
+    screen.blit(background, (0, 0))
 
 
 def update_groups(groups, screen):
