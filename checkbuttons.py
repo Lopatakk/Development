@@ -16,6 +16,7 @@ def check_wsad():
 
     array = np.array([0, 0])
     key = pygame.key.get_pressed()
+
     if key[pygame.K_a] and key[pygame.K_d]:
         array[0] = 0
     elif key[pygame.K_a]:
