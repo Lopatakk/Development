@@ -5,8 +5,8 @@ class ScreenSetup:
     # This class is used to store screen parameters and functions
 
     # Screen parameters:
-    width = 640
-    height = 640
+    width = 1500
+    height = 1000
     fps = 60
 
     def __init__(self):

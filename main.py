@@ -28,10 +28,12 @@ while True:     # main loop
     player_group = pygame.sprite.Group()
     player_group.add(player)
         # enemy
-    zarovka = Zarovka()
+    zarovka = Zarovka(10,10)
     enemy_group = pygame.sprite.Group()
     enemy_group.add(zarovka)
     zarovka.player_position = (player.pos)
+
+
         # crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
