@@ -16,7 +16,7 @@ class Ship(pygame.sprite.Sprite):
     # Rotation is made semi-automatically. Just change the variable angle before calling the super().update() function
     # to make the ship rotate.
 
-    def __init__(self, picture_path, start_pos_x, start_pos_y):
+    def __init__(self, picture_path, start_pos_x, start_pos_y, max_velocity, hp, velocity_coefficient):
         # Constructor creates the ship itself with all the needed properties.
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
@@ -25,7 +25,7 @@ class Ship(pygame.sprite.Sprite):
         # health
 
         # hp - health points of the ship, if it goes <= 0, the ship is killed
-        self.hp = 100
+        self.hp = hp
 
         # image
 
@@ -63,11 +63,11 @@ class Ship(pygame.sprite.Sprite):
         # velocity - array carrying the values of the ship speed in both axes [x, y], this is the one thing to change
         self.velocity = np.array([0, 0])
         # max_velocity - array with maximum speed of the ship, it is automatically checked, if it is exceeded or not
-        self.max_velocity = np.array([100, 100])
+        self.max_velocity = np.array([max_velocity, max_velocity])
         # velocity_coefficient - it is used for calculating the position, changes the ship's acceleration,
         #   it creates the smoother flow of controlling player's ship as well as allowing better (more detailed)
         #   range of speed of the ship
-        self.velocity_coefficient = 0.1
+        self.velocity_coefficient = velocity_coefficient
 
         # spawn point
 
