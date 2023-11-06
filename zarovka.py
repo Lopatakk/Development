@@ -4,7 +4,7 @@ from screensetup import ScreenSetup
 import numpy as np
 class Zarovka(Ship):
     def __init__(self):
-        super().__init__("vlod.png", ScreenSetup.width / 20, ScreenSetup.height / 20)
+        super().__init__("vlod.png", ScreenSetup.width / 20, ScreenSetup.height / 20,30,10,1)
         self.vel = 0.09  # Nastavte rychlost "Zarovky" dle potřeby
         self.player_position = [0,0]
         self.velocity_coefficient = 0.052
