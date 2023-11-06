@@ -5,7 +5,7 @@ class ScreenSetup:
     # This class is used to store screen parameters and functions
 
     # Screen parameters:
-    width = 1500
+    width = 1080
     height = 1000
     fps = 60
 

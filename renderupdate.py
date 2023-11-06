@@ -4,7 +4,7 @@ from screensetup import ScreenSetup
 # This file is used to store functions for rendering and updating.
 def render_background(screen):
     # This function renders the background image. It also uses the convert function to improve performance.
-    background = pygame.image.load("space2.png")
+    background = pygame.image.load("space.png")
     background = pygame.transform.scale(background, (ScreenSetup.width,ScreenSetup.height))
     background = pygame.Surface.convert(background)
     screen.blit(background, (0, 0))

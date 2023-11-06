@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+import random
 from player_ship import PlayerShip
 from screensetup import ScreenSetup
 from crosshair import Crosshair
@@ -28,7 +29,7 @@ while True:     # main loop
     player_group = pygame.sprite.Group()
     player_group.add(player)
         # enemy
-    zarovka = Zarovka(10,10)
+    zarovka = Zarovka(0, 0)
     enemy_group = pygame.sprite.Group()
     enemy_group.add(zarovka)
     zarovka.player_position = (player.pos)
@@ -76,12 +77,27 @@ while True:     # main loop
         # rendering/update
             # background
         render_background(screen)
+
             # groups
         update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
 
         # collisions
         hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
         player.hp -= len(hits) * Projectile.damage
+
+        projectile_hits_to_zarovka = pygame.sprite.spritecollide(zarovka, projectile_group, True, collided=pygame.sprite.collide_mask)
+        zarovka.hp -= len(projectile_hits_to_zarovka) * Projectile.damage
+
+        zarovka_hits_to_player = pygame.sprite.spritecollide(zarovka, player_group, True, collided=pygame.sprite.collide_mask)
+        player.hp -= len(zarovka_hits_to_player) * zarovka.dmg
+
+
+        # Detekce kolizí mezi enemy_group a projectile_group
+        #collisions = pygame.sprite.groupcollide(enemy_group, projectile_group, True, True,collided=pygame.sprite.collide_mask)
+
+        #for zarovka, projectiles in collisions.items():
+            #for projectile in projectiles:
+                #zarovka.hp -= -len(projectiles) * Projectile.damage
 
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
@@ -97,4 +113,4 @@ while True:     # main loop
     pygame.display.flip()
 
     # wait
-    time.sleep(5)
+    time.sleep(3)
