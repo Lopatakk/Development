@@ -60,7 +60,7 @@ while True:     # main loop
                 sys.exit()
 
         # player death
-        if player.hp <= 0:
+        if not player_group:
             break
 
         # key/mouse pressing

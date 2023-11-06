@@ -76,8 +76,16 @@ class Ship(pygame.sprite.Sprite):
 
     def update(self):
         # The update() function updates the ships position and angle based on the ships velocity and angle variables. It
-        # also limits the ships velocity to its maximum value.
+        # also checks if the ship's health is low and potentially kills it. It also limits the ships velocity to its
+        # maximum value.
         # It is not recommended to change the position variable directly.
+
+        # check death
+
+        # This section checks if the ship's health is 0 or lower. If true, then it kills the ship resulting in emptying
+        # the player_group in main, which breaks the game loop.
+        if self.hp <= 0:
+            self.kill()
 
         # rotation
         # Variable angle must be calculated before calling the super().update() function!
