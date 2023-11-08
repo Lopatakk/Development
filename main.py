@@ -10,6 +10,7 @@ from renderupdate import *
 from zarovka import Zarovka
 from checkbuttons import *
 from collisions import handle_collisions
+from enemy_spawn import EnemySpawner
 
 # general setup
 pygame.init()
@@ -21,6 +22,8 @@ screen = ScreenSetup.start_setup()
 # text
 font = pygame.font.Font('freesansbold.ttf', 30)
 
+
+
 while True:     # main loop
     # creating sprites/groups
         # projectiles
@@ -30,11 +33,10 @@ while True:     # main loop
     player_group = pygame.sprite.Group()
     player_group.add(player)
         # enemy
-    zarovka = Zarovka(0, 0)
     enemy_group = pygame.sprite.Group()
-    enemy_group.add(zarovka)
-    zarovka.player_position = (player.pos)
 
+    # enemy spawn
+    enemy_spawner = EnemySpawner(enemy_group, 5)  # Interval spawnování v sekundách
 
         # crosshair
     crosshair = Crosshair()
@@ -82,11 +84,15 @@ while True:     # main loop
             # groups
         update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
 
+            #enemy spawn updates
+        enemy_spawner.update(player.pos)
+
         # collisions
         handle_collisions(enemy_group, player_group)
         handle_collisions(projectile_group, enemy_group)
         #handle_collisions(projectile_group, player_group)
 
+        # enemy spawning
 
 
         # screen update (must be at the end of the loop before waiting functions!)
