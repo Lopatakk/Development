@@ -80,12 +80,7 @@ class Ship(pygame.sprite.Sprite):
         # maximum value.
         # It is not recommended to change the position variable directly.
 
-        # check death
 
-        # This section checks if the ship's health is 0 or lower. If true, then it kills the ship resulting in emptying
-        # the player_group in main, which breaks the game loop.
-        if self.hp <= 0:
-            self.kill()
 
         # rotation
         # Variable angle must be calculated before calling the super().update() function!
@@ -95,6 +90,16 @@ class Ship(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image_non_rot, self.angle)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+
+        # check death
+
+        # This section checks if the ship's health is 0 or lower. If true, then it kills the ship resulting in emptying
+        # the player_group in main, which breaks the game loop.
+        if self.hp <= 0:
+            self.image = pygame.Surface((0, 0))
+            self.mask = self.mask = pygame.mask.from_surface(self.image)
+            self.kill()
+
 
         # max speed limitations
 
@@ -115,10 +120,13 @@ class Ship(pygame.sprite.Sprite):
         self.pos[0] += self.velocity[0] * self.velocity_coefficient
         self.pos[1] += self.velocity[1] * self.velocity_coefficient
 
+
         # position update
 
         # This section has to be the last one, because it sets the ship on the new coordinates, that were calculated.
         self.rect.center = self.pos
+
+
 
     # rotation computing
     # This function calculates the angle based on the distances in the x and y axes. It is not limited to an object, it
