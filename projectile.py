@@ -16,7 +16,7 @@ class Projectile(pygame.sprite.Sprite):
     # collisions and secondly because there are no projectiles in main, where we check for collisions, because they are
     # created inside ship's function shoot(). These are the reasons why is damage a static variable instead of being it
     # associated with the object (which would be logical).
-    damage = 20
+    dmg = 20
 
     def __init__(self, ship):
         # Constructor creates a projectile itself with all the needed properties. It needs some properties from the ship
@@ -55,7 +55,7 @@ class Projectile(pygame.sprite.Sprite):
 
         # velocity - the speed which the projectile travels through space, it does not change, it is used to calculate
         #   updated position of a projectile
-        self.velocity = 5
+        self.velocity = 7
 
     def update(self):
         # The update() function only updates the projectile's position from its angle and velocity, then sets its center

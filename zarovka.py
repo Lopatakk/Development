@@ -22,9 +22,9 @@ class Zarovka(Ship):
             self.velocity[1]+=2.2
         if direction[1] < 0:
             self.velocity[1]+=-2.2
-        if self.hp <= 0:
-            self.mask = None
-            self.kill()
+        #if self.hp <= 0:
+            #self.mask = None
+            #self.kill()
         # Otaceni zarovky k lodi
         self.angle = self.rot_compute(self.rect.center[0] - self.player_position[0],
                                       self.rect.center[1] - self.player_position[1])

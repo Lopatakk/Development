@@ -95,11 +95,10 @@ class Ship(pygame.sprite.Sprite):
 
         # This section checks if the ship's health is 0 or lower. If true, then it kills the ship resulting in emptying
         # the player_group in main, which breaks the game loop.
-        if self.hp <= 0:
-            self.image = pygame.Surface((0, 0))
-            self.mask = self.mask = pygame.mask.from_surface(self.image)
-            self.kill()
-
+        #if self.hp <= 0:
+            #self.image = pygame.Surface((0, 0))
+            #self.mask = self.mask = pygame.mask.from_surface(self.image)
+            #self.kill()
 
         # max speed limitations
 

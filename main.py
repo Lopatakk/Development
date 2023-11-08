@@ -9,6 +9,7 @@ from projectile import Projectile
 from renderupdate import *
 from zarovka import Zarovka
 from checkbuttons import *
+from collisions import handle_collisions
 
 # general setup
 pygame.init()
@@ -82,24 +83,10 @@ while True:     # main loop
         update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
 
         # collisions
-        hits = pygame.sprite.spritecollide(player, projectile_group, True, collided = pygame.sprite.collide_mask)
-        player.hp -= len(hits) * Projectile.damage
+        handle_collisions(enemy_group, player_group)
+        handle_collisions(projectile_group, enemy_group)
+        #handle_collisions(projectile_group, player_group)
 
-        zarovka_hits_to_player = pygame.sprite.spritecollide(zarovka, player_group, True, collided=pygame.sprite.collide_mask)
-        player.hp -= len(zarovka_hits_to_player) * zarovka.dmg
-
-        projectile_hits_to_zarovka = pygame.sprite.spritecollide(zarovka, projectile_group, True, collided=pygame.sprite.collide_mask)
-        zarovka.hp -= len(projectile_hits_to_zarovka)*Projectile.damage
-
-
-
-
-        # Detekce kolizí mezi enemy_group a projectile_group
-        collisions = pygame.sprite.groupcollide(enemy_group, projectile_group, True, True,collided=pygame.sprite.collide_mask)
-
-        """for zarovka, projectiles in collisions.items():
-            for projectile in projectiles:
-                zarovka.hp -= len(projectiles) * Projectile.damage"""
 
 
         # screen update (must be at the end of the loop before waiting functions!)
@@ -116,4 +103,4 @@ while True:     # main loop
     pygame.display.flip()
 
     # wait
-    time.sleep(3)
+    time.sleep(2)
