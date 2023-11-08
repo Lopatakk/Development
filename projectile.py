@@ -55,7 +55,7 @@ class Projectile(pygame.sprite.Sprite):
 
         # velocity - the speed which the projectile travels through space, it does not change, it is used to calculate
         #   updated position of a projectile
-        self.velocity = 7
+        self.velocity = 15
 
     def update(self):
         # The update() function only updates the projectile's position from its angle and velocity, then sets its center
