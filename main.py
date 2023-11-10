@@ -50,61 +50,81 @@ while True:     # main loop
     update_groups([player_group, enemy_group], screen)
         # start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
-    screen.blit(text_render, (ScreenSetup.width / 2.7, ScreenSetup.height / 4))
+    screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
 
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
 
+
     # wait
-    time.sleep(0.5)
+    time.sleep(1)
 
     while True:     # game loop
-        for event in pygame.event.get():
-            # closing window
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
 
-        # player death
-        if not player_group:
-            break
+        # Získání rozměrů obrazovky
+        pygame.init()
+        width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
-        # key/mouse pressing
-            # WSAD
-        player.velocity += check_wsad()
+        # Nastavení režimu full screen
+        screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+        pygame.display.set_caption('Space shooter')
+
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
+
+            for event in pygame.event.get():
+                # closing window
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                # player death
+            if not player_group:
+                break
+
+                # key/mouse pressing
+                # WSAD
+            player.velocity += check_wsad()
             # mouse
-        mouse = pygame.mouse.get_pressed(num_buttons=5)
-        if mouse[0]:
-            projectile_group.add(player.shoot())
+            mouse = pygame.mouse.get_pressed(num_buttons=5)
+            if mouse[0]:
+                projectile_group.add(player.shoot())
 
-        # rendering/update
+            # rendering/update
             # background
-        render_background(screen)
+            render_background(screen)
 
             # groups
-        update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
+            update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
 
-            #enemy spawn updates
-        zarovka_spawner.update(player.pos)
-        tank_spawner.update(player.pos)
-        # collisions
-        handle_collisions(enemy_group, player_group)
-        handle_collisions(projectile_group, enemy_group)
-        #handle_collisions(projectile_group, player_group)
+            # enemy spawn updates
+            zarovka_spawner.update(player.pos)
+            tank_spawner.update(player.pos)
+            # collisions
+            handle_collisions(enemy_group, player_group)
+            handle_collisions(projectile_group, enemy_group)
+            # handle_collisions(projectile_group, player_group)
+
+            # screen update (must be at the end of the loop before waiting functions!)
+            pygame.display.flip()
+
+            # FPS
+            clock.tick(ScreenSetup.fps)
 
 
-        # screen update (must be at the end of the loop before waiting functions!)
+        # death text
+        crosshair.disable()
+        # EXIT text
+        font = pygame.font.Font(None, 36)
+        exit_text = font.render("SMRT", True, (255, 255, 255))
+        screen.blit(exit_text, (width/2, height/2))
         pygame.display.flip()
-
-        # FPS
-        clock.tick(ScreenSetup.fps)
-
-    # death text
-    crosshair.disable()
-    text_render = font.render("SMRT", True, (255, 255, 255))
-    screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
-    # screen update
-    pygame.display.flip()
-
-    # wait
-    time.sleep(2)
+        time.sleep(2)
