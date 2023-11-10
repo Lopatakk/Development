@@ -7,7 +7,7 @@ from screensetup import ScreenSetup
 from crosshair import Crosshair
 from projectile import Projectile
 from renderupdate import *
-from zarovka import Zarovka
+from enemy import Enemy
 from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
@@ -36,7 +36,7 @@ while True:     # main loop
         # enemy
     enemy_group = pygame.sprite.Group()
     # enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5)  # Interval spawnování v sekundách
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5, 5, 35, 0.1, 1000, 100)  # Interval spawnování v sekundách
 
         # crosshair
     crosshair = Crosshair()

@@ -1,18 +1,23 @@
 
 import pygame
-from zarovka import Zarovka
+from enemy import Enemy
 import random
 from screensetup import ScreenSetup
 import time
 class EnemySpawner():
-    def __init__(self, enemy_group, enemy_type, spawn_interval):
-        self.enemy_group = enemy_group
+    def __init__(self, group, enemy_type, history_length, spawn_interval, max_velocity, velocity_coefficient, hp, dmg):
+        self.enemy_group = group
         self.spawn_interval = spawn_interval  # Interval spawnování v sekundách
         self.screen_width = ScreenSetup.width
         self.screen_height = ScreenSetup.height
         self.time_since_last_spawn = 0
-        self.image_path = f"{enemy_type}.png"  # Přidáváme příponu .png k názvu obrázku
+        self.enemy_type = f"{enemy_type}"  # Přidáváme příponu .png k názvu obrázku
         self.last_spawn_time = time.time()
+        self.max_velocity = max_velocity
+        self.vel_coef = velocity_coefficient
+        self.hp = hp
+        self.dmg = dmg
+        self.history_length = history_length
 
     def spawn_outside_screen(self):
         side = random.choice(["top", "bottom", "left", "right"])
@@ -32,7 +37,7 @@ class EnemySpawner():
         if elapsed_time >= self.spawn_interval:
             # Spawnování nové nepřátelské lodě mimo obrazovku
             start_x, start_y = self.spawn_outside_screen()
-            enemy = Zarovka(start_x, start_y)
+            enemy = Enemy(start_x, start_y, self.history_length, self.enemy_type, self.max_velocity, self.vel_coef, self.hp, self.dmg)
             self.enemy_group.add(enemy)
             enemy.add_player_position_to_history(player_pos)
 
