@@ -12,6 +12,7 @@ from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
 
+
 # general setup
 pygame.init()
 clock = pygame.time.Clock()
@@ -91,8 +92,6 @@ while True:     # main loop
         handle_collisions(enemy_group, player_group)
         handle_collisions(projectile_group, enemy_group)
         #handle_collisions(projectile_group, player_group)
-
-        # enemy spawning
 
 
         # screen update (must be at the end of the loop before waiting functions!)

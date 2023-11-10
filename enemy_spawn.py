@@ -3,6 +3,7 @@ import random
 import time
 from screensetup import ScreenSetup
 from zarovka import Zarovka
+
 class EnemySpawner():
     def __init__(self, enemy_group, spawn_interval):
         self.enemy_group = enemy_group
@@ -22,6 +23,6 @@ class EnemySpawner():
         start_y = random.choice([-50, ScreenSetup.height + 50])
         zarovka = Zarovka(start_x, start_y)
         self.enemy_group.add(zarovka)
-        zarovka.player_position = player_pos
+        zarovka.add_player_position_to_history(player_pos)
 
 
