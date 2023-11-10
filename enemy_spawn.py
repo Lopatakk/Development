@@ -11,7 +11,7 @@ class EnemySpawner():
         self.screen_width = ScreenSetup.width
         self.screen_height = ScreenSetup.height
         self.time_since_last_spawn = 0
-        self.enemy_type = f"{enemy_type}"  # Přidáváme příponu .png k názvu obrázku
+        self.enemy_type = f"{enemy_type}"
         self.last_spawn_time = time.time()
         self.max_velocity = max_velocity
         self.vel_coef = velocity_coefficient
