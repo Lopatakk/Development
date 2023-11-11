@@ -27,18 +27,17 @@ while True:     # main loop
     # creating sprites/groups
         # projectiles
     projectile_group = pygame.sprite.Group()
+    enemy_projectile_group = pygame.sprite.Group()
         # player
     player = PlayerShip()
     player_group = pygame.sprite.Group()
     player_group.add(player)
         # enemy
     enemy_group = pygame.sprite.Group()
-        #enemy type
 
-    #tank = Enemy(start_x, start_y, 5, "tank", 25, 0.1, 4500, 100)
         # enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5)  # Interval spawnování v sekundách
-    tank_spawner = EnemySpawner(enemy_group, "tank", 30)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5, None)  # Interval spawnování v sekundách
+    tank_spawner = EnemySpawner(enemy_group, "tank", 20, enemy_projectile_group)
         # crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()

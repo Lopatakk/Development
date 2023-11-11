@@ -7,7 +7,7 @@ import time
 from zarovka import Zarovka
 from tank import Tank
 class EnemySpawner():
-    def __init__(self, group, enemy_type, spawn_interval):
+    def __init__(self, group, enemy_type, spawn_interval, shot_group):
         self.enemy_group = group
         self.spawn_interval = spawn_interval  # Interval spawnování v sekundách
         self.screen_width = ScreenSetup.width
@@ -15,6 +15,7 @@ class EnemySpawner():
         self.time_since_last_spawn = 0
         self.enemy_type = enemy_type
         self.last_spawn_time = time.time()
+        self.shot_group = shot_group
 
 
     def spawn_outside_screen(self):
@@ -45,7 +46,7 @@ class EnemySpawner():
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start_x, start_y = self.spawn_outside_screen()
-                enemy = Tank(start_x, start_y)
+                enemy = Tank(start_x, start_y, self.shot_group)
                 self.enemy_group.add(enemy)
                 enemy.add_player_position_to_history(player_pos)
                 # Aktualizovat čas od posledního spawnu
