@@ -59,72 +59,70 @@ while True:     # main loop
     # wait
     time.sleep(1)
 
-    while True:     # game loop
+    # Získání rozměrů obrazovky
+    pygame.init()
+    width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
-        # Získání rozměrů obrazovky
-        pygame.init()
-        width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    # Nastavení režimu full screen
+    screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+    pygame.display.set_caption('Space shooter')
 
-        # Nastavení režimu full screen
-        screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
-        pygame.display.set_caption('Space shooter')
-
-
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        sys.exit()
-
-            for event in pygame.event.get():
-                # closing window
-                if event.type == pygame.QUIT:
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
 
-                # player death
-            if not player_group:
-                break
+        for event in pygame.event.get():
+            # closing window
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-                # key/mouse pressing
-                # WSAD
-            player.velocity += check_wsad()
-            # mouse
-            mouse = pygame.mouse.get_pressed(num_buttons=5)
-            if mouse[0]:
-                projectile_group.add(player.shoot())
+        # player death
+        if not player_group:
+            break
 
-            # rendering/update
-            # background
-            render_background(screen)
+        # key/mouse pressing
+        # WSAD
+        player.velocity += check_wsad()
 
-            # groups
-            update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
+        # mouse
+        mouse = pygame.mouse.get_pressed(num_buttons=5)
+        if mouse[0]:
+            projectile_group.add(player.shoot())
 
-            # enemy spawn updates
-            zarovka_spawner.update(player.pos)
-            tank_spawner.update(player.pos)
-            # collisions
-            handle_collisions(enemy_group, player_group)
-            handle_collisions(projectile_group, enemy_group)
-            # handle_collisions(projectile_group, player_group)
+        # rendering/update
+        # background
+        render_background(screen)
 
-            # screen update (must be at the end of the loop before waiting functions!)
-            pygame.display.flip()
+        # groups
+        update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
 
-            # FPS
-            clock.tick(ScreenSetup.fps)
+        # enemy spawn updates
+        zarovka_spawner.update(player.pos)
+        tank_spawner.update(player.pos)
 
+        # collisions
+        handle_collisions(enemy_group, player_group)
+        handle_collisions(projectile_group, enemy_group)
+        # handle_collisions(projectile_group, player_group)
+
+        # screen update (must be at the end of the loop before waiting functions!)
+        pygame.display.flip()
+
+        # FPS
+        clock.tick(ScreenSetup.fps)
 
         # death text
         crosshair.disable()
-        # EXIT text
-        font = pygame.font.Font(None, 36)
-        exit_text = font.render("SMRT", True, (255, 255, 255))
-        screen.blit(exit_text, (width/2, height/2))
-        pygame.display.flip()
-        time.sleep(2)
+    # EXIT text
+    font = pygame.font.Font(None, 36)
+    exit_text = font.render("SMRT", True, (255, 255, 255))
+    screen.blit(exit_text, (width/2, height/2))
+    pygame.display.flip()
+    time.sleep(2)
