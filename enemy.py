@@ -3,10 +3,11 @@ from ship import Ship
 from screensetup import ScreenSetup
 import numpy as np
 import random
+from projectile import Projectile
 
 class Enemy(Ship):
-    def __init__(self, start_x, start_y, history_length, enemy_type, max_velocity, velocity_coefficient, hp, dmg):
-        super().__init__(f"{enemy_type}.png", start_x, start_y, max_velocity, velocity_coefficient, hp)
+    def __init__(self, start_x, start_y, history_length, enemy_model, max_velocity, velocity_coefficient, hp, dmg):
+        super().__init__(f"{enemy_model}.png", start_x, start_y, max_velocity, velocity_coefficient, hp)
         self.player_position_history = []  # Historie pozic hráče
         self.dmg = dmg
         self.history_length = history_length
@@ -16,6 +17,10 @@ class Enemy(Ship):
         # Udržet historii na maximální délce
         if len(self.player_position_history) > self.history_length:
             self.player_position_history = self.player_position_history[-self.history_length:]
+
+    def shoot(self):
+        projectile = Projectile(self)
+        return projectile
 
     def update(self):
         # Získat nejnovější historickou pozici hráče
@@ -37,5 +42,4 @@ class Enemy(Ship):
                                           self.rect.center[1] - latest_player_pos[1])
 
         super().update()
-
 

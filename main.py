@@ -7,11 +7,9 @@ from screensetup import ScreenSetup
 from crosshair import Crosshair
 from projectile import Projectile
 from renderupdate import *
-from enemy import Enemy
 from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
-
 
 # general setup
 pygame.init()
@@ -35,9 +33,12 @@ while True:     # main loop
     player_group.add(player)
         # enemy
     enemy_group = pygame.sprite.Group()
+        #enemy type
+
+    #tank = Enemy(start_x, start_y, 5, "tank", 25, 0.1, 4500, 100)
         # enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5, 5, 35, 0.1, 1000, 100)  # Interval spawnování v sekundách
-    tank_spawner = EnemySpawner(enemy_group, "tank", 5, 30, 20, 0.1, 4500, 100)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5)  # Interval spawnování v sekundách
+    tank_spawner = EnemySpawner(enemy_group, "tank", 30)
         # crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()

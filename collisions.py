@@ -9,4 +9,3 @@ def handle_collisions(attacker_group, target_group):
             if target.hp <= 0:
                 target.kill()  # Odstranění cílového sprite, pokud má životy menší nebo rovno nule
                 target.mask = None
-
