@@ -6,10 +6,11 @@ import time
 from zarovka import Zarovka
 from tank import Tank
 import numpy as np
+from pygame.sprite import Group
 
 
 class EnemySpawner:
-    def __init__(self, group, enemy_type, spawn_interval, shot_group):
+    def __init__(self, group: Group, enemy_type: str, spawn_interval, shot_group: Group):
         self.enemy_group = group
         self.spawn_interval = spawn_interval  # Interval spawnování v sekundách
         self.screen_width = ScreenSetup.width

@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Tank(Enemy):
-    def __init__(self, start, shot_group):
+    def __init__(self, start: np.ndarray, shot_group):
         super().__init__(start, 8, "tank", 30, 0.1, 4500, 100)
 
         self.last_function_call = pygame.time.get_ticks()  # Uložení času posledního volání funkce v milisekundách
