@@ -118,8 +118,8 @@ while True:     # main loop
         # FPS
         clock.tick(ScreenSetup.fps)
 
-        # death text
-        crosshair.disable()
+    # death text
+    crosshair.disable()
     # EXIT text
     font = pygame.font.Font(None, 36)
     exit_text = font.render("SMRT", True, (255, 255, 255))
