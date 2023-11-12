@@ -76,7 +76,9 @@ while True:
         # mouse pressing
         mouse = pygame.mouse.get_pressed(num_buttons=5)
         if mouse[0]:
-            projectile_group.add(player.shoot())
+            player_projectile = player.shoot()
+            if player_projectile is not None:
+                projectile_group.add(player_projectile)
 
         # rendering/update
         #   background
