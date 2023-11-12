@@ -73,10 +73,7 @@ while True:
         if not player_group:
             break
 
-        # key/mouse pressing
-        #   WSAD
-        player.velocity += check_wsad()
-        #   mouse
+        # mouse pressing
         mouse = pygame.mouse.get_pressed(num_buttons=5)
         if mouse[0]:
             projectile_group.add(player.shoot())

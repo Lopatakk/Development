@@ -2,6 +2,7 @@ import pygame
 from screensetup import ScreenSetup
 from ship import Ship
 import numpy as np
+from checkbuttons import *
 
 
 class PlayerShip(Ship):
@@ -16,4 +17,8 @@ class PlayerShip(Ship):
         # angle calculation
         self.angle = self.rot_compute(self.rect.center[0] - pygame.mouse.get_pos()[0],
                                       self.rect.center[1] - pygame.mouse.get_pos()[1])
+
+        # key pressing
+        self.velocity += check_wsad()
+
         super().update()
