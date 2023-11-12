@@ -5,9 +5,10 @@ import numpy as np
 import random
 from projectile import Projectile
 
+
 class Enemy(Ship):
-    def __init__(self, start_x, start_y, history_length, enemy_model, max_velocity, velocity_coefficient, hp, dmg):
-        super().__init__(f"{enemy_model}.png", start_x, start_y, max_velocity, velocity_coefficient, hp)
+    def __init__(self, start, history_length, enemy_model, max_velocity, velocity_coefficient, hp, dmg):
+        super().__init__(f"{enemy_model}.png", start, max_velocity, velocity_coefficient, hp)
         self.player_position_history = []  # Historie pozic hráče
         self.dmg = dmg
         self.history_length = history_length
@@ -42,4 +43,3 @@ class Enemy(Ship):
                                           self.rect.center[1] - latest_player_pos[1])
 
         super().update()
-
