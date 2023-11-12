@@ -13,5 +13,6 @@ class PlayerShip(Ship):
 
     def update(self):
         # angle calculation
-        self.angle = self.rot_compute(self.rect.center[0] - pygame.mouse.get_pos()[0], self.rect.center[1] - pygame.mouse.get_pos()[1])
+        self.angle = self.rot_compute(self.rect.center[0] - pygame.mouse.get_pos()[0],
+                                      self.rect.center[1] - pygame.mouse.get_pos()[1])
         super().update()
