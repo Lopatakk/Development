@@ -21,14 +21,19 @@ class PlayerShip(Ship):
         # key pressing
         self.velocity += check_wsad()
 
+        # update declared in class Ship
         super().update()
 
+        # position limitations (borders)
+        # makes sure the ship does not reach out borders of the screen, also resets the velocity in given axis
+        # X
         if self.pos[0] < 0:
             self.pos[0] = 0
             self.velocity[0] = 0
         elif self.pos[0] > ScreenSetup.width:
             self.pos[0] = ScreenSetup.width
             self.velocity[0] = 0
+        # Y
         if self.pos[1] < 0:
             self.pos[1] = 0
             self.velocity[1] = 0

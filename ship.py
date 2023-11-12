@@ -102,10 +102,12 @@ class Ship(pygame.sprite.Sprite):
 
         # This section is making sure the maximum defined velocity of the ship is not exceeded in both axes and both
         # directions. If it is exceeded, then it sets the velocity to its maximum value.
+        # X
         if self.velocity[0] > self.max_velocity:
             self.velocity[0] = self.max_velocity
         elif self.velocity[0] < -self.max_velocity:
             self.velocity[0] = -self.max_velocity
+        # Y
         if self.velocity[1] > self.max_velocity:
             self.velocity[1] = self.max_velocity
         elif self.velocity[1] < -self.max_velocity:
