@@ -62,8 +62,8 @@ class Ship(pygame.sprite.Sprite):
 
         # velocity - array carrying the values of the ship speed in both axes [x, y], this is the one thing to change
         self.velocity = np.array([0, 0])
-        # max_velocity - array with maximum speed of the ship, it is automatically checked, if it is exceeded or not
-        self.max_velocity = np.array([max_velocity, max_velocity])
+        # max_velocity - maximum speed of the ship, it is automatically checked, if it is exceeded or not
+        self.max_velocity = max_velocity
         # velocity_coefficient - it is used for calculating the position, changes the ship's acceleration,
         #   it creates the smoother flow of controlling player's ship as well as allowing better (more detailed)
         #   range of speed of the ship
@@ -92,14 +92,14 @@ class Ship(pygame.sprite.Sprite):
 
         # This section is making sure the maximum defined velocity of the ship is not exceeded in both axes and both
         # directions. If it is exceeded, then it sets the velocity to its maximum value.
-        if self.velocity[0] > self.max_velocity[0]:
-            self.velocity[0] = self.max_velocity[0]
-        elif self.velocity[0] < -self.max_velocity[0]:
-            self.velocity[0] = -self.max_velocity[0]
-        if self.velocity[1] > self.max_velocity[1]:
-            self.velocity[1] = self.max_velocity[1]
-        elif self.velocity[1] < -self.max_velocity[1]:
-            self.velocity[1] = -self.max_velocity[1]
+        if self.velocity[0] > self.max_velocity:
+            self.velocity[0] = self.max_velocity
+        elif self.velocity[0] < -self.max_velocity:
+            self.velocity[0] = -self.max_velocity
+        if self.velocity[1] > self.max_velocity:
+            self.velocity[1] = self.max_velocity
+        elif self.velocity[1] < -self.max_velocity:
+            self.velocity[1] = -self.max_velocity
 
         # movement
 
