@@ -8,9 +8,8 @@ from projectile import Projectile
 
 class Enemy(Ship):
     def __init__(self, start: np.ndarray, history_length: int, enemy_model: str, max_velocity: int, velocity_coefficient: float, hp: int, dmg):
-        super().__init__(f"{enemy_model}.png", start, max_velocity, velocity_coefficient, hp)
+        super().__init__(f"{enemy_model}.png", start, max_velocity, velocity_coefficient, hp, dmg)
         self.player_position_history = []  # Historie pozic hráče
-        self.dmg = dmg
         self.history_length = history_length
 
     def add_player_position_to_history(self, position):

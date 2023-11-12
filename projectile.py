@@ -9,15 +9,6 @@ class Projectile(pygame.sprite.Sprite):
     # reaches screen borders, where they are destroyed. They deal damage when they collide with ships (which is taken
     # care of in main).
 
-    # damage
-
-    # damage - how much hp are taken from a ship if the ship collides with a projectile. Unfortunately we are not able
-    # to track every single projectile's damage. Firstly because we are using whole projectile_group to check for
-    # collisions and secondly because there are no projectiles in main, where we check for collisions, because they are
-    # created inside ship's function shoot(). These are the reasons why is damage a static variable instead of being it
-    # associated with the object (which would be logical).
-    dmg = 20
-
     def __init__(self, ship):
         # Constructor creates a projectile itself with all the needed properties. It needs some properties from the ship
         # that fired it, so it takes the ship as an input.
@@ -56,6 +47,11 @@ class Projectile(pygame.sprite.Sprite):
         # velocity - the speed which the projectile travels through space, it does not change, it is used to calculate
         #   updated position of a projectile
         self.velocity = 15
+
+        # damage
+
+        # dmg - how much hp are taken from a ship if the ship collides with the projectile.
+        self.dmg = ship.dmg
 
     def update(self):
         # The update() function only updates the projectile's position from its angle and velocity, then sets its center

@@ -16,7 +16,7 @@ class Ship(pygame.sprite.Sprite):
     # Rotation is made semi-automatically. Just change the variable angle before calling the super().update() function
     # to make the ship rotate.
 
-    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int):
+    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int):
         # Constructor creates the ship itself with all the needed properties.
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
@@ -73,6 +73,11 @@ class Ship(pygame.sprite.Sprite):
 
         # This sets the ship center at values defined when calling the constructor
         self.rect.center = self.pos
+
+        # damage
+
+        # dmg - variable containing ship's projectile damage
+        self.dmg = dmg
 
     def update(self):
         # The update() function updates the ships position and angle based on the ships velocity and angle variables. It
