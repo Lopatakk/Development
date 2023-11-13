@@ -26,10 +26,10 @@ font = pygame.font.Font('freesansbold.ttf', 30)
 while True:
     # creating sprites/groups
     #   projectiles
-    projectile_group = pygame.sprite.Group()
+    player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerShip()
+    player = PlayerShip(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
@@ -73,24 +73,17 @@ while True:
         if not player_group:
             break
 
-        # mouse pressing
-        mouse = pygame.mouse.get_pressed(num_buttons=5)
-        if mouse[0]:
-            player_projectile = player.shoot()
-            if player_projectile is not None:
-                projectile_group.add(player_projectile)
-
         # rendering/update
         #   background
         render_background(screen)
         #   groups
-        update_groups([projectile_group, player_group, enemy_group, crosshair_group], screen)
+        update_groups([player_projectile_group, player_group, enemy_group, crosshair_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
         handle_collisions(enemy_group, player_group)
-        handle_collisions(projectile_group, enemy_group)
+        handle_collisions(player_projectile_group, enemy_group)
         # handle_collisions(projectile_group, player_group)
 
         # screen update (must be at the end of the loop before waiting functions!)

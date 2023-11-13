@@ -1,11 +1,12 @@
 from enemy import Enemy
 import pygame
 import numpy as np
+from pygame.sprite import Group
 
 
 class Tank(Enemy):
-    def __init__(self, start: np.ndarray, shot_group):
-        super().__init__(start, 8, "tank", 30, 0.1, 4500, 100, 0.5)
+    def __init__(self, start: np.ndarray, shot_group: Group):
+        super().__init__(start, 8, "tank", 30, 0.1, 4500, 100, 0.5, shot_group)
 
         self.last_function_call = pygame.time.get_ticks()  # Uložení času posledního volání funkce v milisekundách
         self.function_interval = 2000  # Interval v milisekundách

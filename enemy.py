@@ -4,11 +4,12 @@ from screensetup import ScreenSetup
 import numpy as np
 import random
 from projectile import Projectile
+from pygame.sprite import Group
 
 
 class Enemy(Ship):
-    def __init__(self, start: np.ndarray, history_length: int, enemy_model: str, max_velocity: int, velocity_coefficient: float, hp: int, dmg, fire_rate):
-        super().__init__(f"{enemy_model}.png", start, max_velocity, velocity_coefficient, hp, dmg, fire_rate)
+    def __init__(self, start: np.ndarray, history_length: int, enemy_model: str, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, projectile_group: Group):
+        super().__init__(f"{enemy_model}.png", start, max_velocity, velocity_coefficient, hp, dmg, fire_rate, projectile_group)
         self.player_position_history = []  # Historie pozic hráče
         self.history_length = history_length
 
