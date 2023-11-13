@@ -19,10 +19,6 @@ class Enemy(Ship):
         if len(self.player_position_history) > self.history_length:
             self.player_position_history = self.player_position_history[-self.history_length:]
 
-    def shoot(self):
-        projectile = Projectile(self)
-        return projectile
-
     def update(self):
         # Získat nejnovější historickou pozici hráče
         if self.player_position_history:

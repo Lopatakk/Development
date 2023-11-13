@@ -35,8 +35,8 @@ while True:
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5, None)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 20, enemy_projectile_group)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 20, None)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 5, enemy_projectile_group)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
@@ -77,13 +77,14 @@ while True:
         #   background
         render_background(screen)
         #   groups
-        update_groups([player_projectile_group, player_group, enemy_group, crosshair_group], screen)
+        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
         handle_collisions(enemy_group, player_group)
         handle_collisions(player_projectile_group, enemy_group)
+        handle_collisions(enemy_projectile_group, player_group)
         # handle_collisions(projectile_group, player_group)
 
         # screen update (must be at the end of the loop before waiting functions!)

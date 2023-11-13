@@ -11,7 +11,7 @@ class PlayerShip(Ship):
     # The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     # update (see Ship's update() function).
     def __init__(self, projectile_group):
-        super().__init__("vlod.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 100, 80, 0.1, projectile_group)
+        super().__init__("vlod.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 500, 80, 0.1, projectile_group)
 
     def update(self):
         # angle calculation
