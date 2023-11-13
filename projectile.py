@@ -51,7 +51,7 @@ class Projectile(pygame.sprite.Sprite):
         # damage
 
         # dmg - how much hp are taken from a ship if the ship collides with the projectile.
-        self.dmg = ship.dmg
+        self.dmg = ship.proj_dmg
 
     def update(self):
         # The update() function only updates the projectile's position from its angle and velocity, then sets its center
