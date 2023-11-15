@@ -35,8 +35,8 @@ while True:
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5, None)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 22, enemy_projectile_group)
+    zarovka_spawner = EnemySpawner(enemy_group, "assets/images/zarovka.png", 5, None)
+    tank_spawner = EnemySpawner(enemy_group, "assets/images/tank.png", 22, enemy_projectile_group)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()

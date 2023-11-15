@@ -34,7 +34,7 @@ class EnemySpawner:
     def update(self, player_pos):
         current_time = time.time()
         elapsed_time = current_time - self.last_spawn_time
-        if self.enemy_type == "zarovka":
+        if self.enemy_type == "assets/images/zarovka.png":
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
@@ -44,7 +44,7 @@ class EnemySpawner:
                 # Aktualizovat čas od posledního spawnu
                 self.last_spawn_time = time.time()
 
-        if self.enemy_type == "tank":
+        if self.enemy_type == "assets/images/tank.png":
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
