@@ -157,6 +157,6 @@ class Ship(pygame.sprite.Sprite):
     def shoot(self):
         elapsed_time = time.time() - self.last_shot_time
         if elapsed_time >= self.fire_rate_time:
-            projectile = Projectile(self)
+            projectile = Projectile(self, self.proj_dmg)
             self.last_shot_time = time.time()
             self.projectile_group.add(projectile)
