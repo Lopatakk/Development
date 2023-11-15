@@ -13,7 +13,7 @@ class Crosshair(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         pygame.mouse.set_visible(False)
-        self.image = pygame.image.load("crosshair.png")
+        self.image = pygame.image.load("assets/images/crosshair.png")
         self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
 
