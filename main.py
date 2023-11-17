@@ -65,7 +65,7 @@ while True:
         for event in pygame.event.get():
             # opening pause menu
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_ESCAPE:
                     game_paused = True
 
             # closing window
@@ -74,9 +74,9 @@ while True:
                 pygame.quit()
                 sys.exit()
             # esc
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
+            # if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            #     pygame.quit()
+            #     sys.exit()
 
         # pause detection
         if game_paused:     # game_pause is False from start and can be changed to True
