@@ -80,7 +80,7 @@ while True:
 
         # pause detection
         if game_paused:     # game_pause is False from start and can be changed to True
-                            # by pressing "p". After that the game will stop and pause menu appears
+                            # by pressing "p". After that the game will stop and pause menu  appears
             Pause_menu(screen, clock)
             game_paused = False
         else:

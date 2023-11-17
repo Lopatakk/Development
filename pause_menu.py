@@ -11,7 +11,7 @@ def Pause_menu(screen, clock):
         surface.fill((0, 0, 0, 150))
         screen.blit(surface, (0, 0))
 
-        # closing pause menu
+        # closing pause  menu
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 return
