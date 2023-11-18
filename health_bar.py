@@ -1,12 +1,11 @@
 import pygame
+from screensetup import ScreenSetup
 
-x = 250
-y = 1000
-height = 30
-width = 200
+height = ScreenSetup.height  # finds height of screen
+width = ScreenSetup.width  # finds width of screen
 
 def HealthBar(screen, max_hp, player_hp):
     # calculate health ratio
     ratio = player_hp / max_hp
-    pygame.draw.rect(screen, "red", (x, y, width, height))
-    pygame.draw.rect(screen, "green", (x, y, width * ratio, height))
+    pygame.draw.rect(screen, "red", (35*width/40, 39*height/40, 47*width/400, height/70))
+    pygame.draw.rect(screen, "green", (35*width/40, 39*height/40, (47*width/400)*ratio, height/70))
