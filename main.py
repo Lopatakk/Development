@@ -20,10 +20,10 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
-# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 #   text font
-font = pygame.font.Font('freesansbold.ttf', 30)
+font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 # variables for menu
 game_paused = False
 
@@ -71,6 +71,7 @@ while True:
                 if event.key == pygame.K_ESCAPE:
                     game_paused = True
 
+
             # closing window
             # top right corner cross
             if event.type == pygame.QUIT:
@@ -78,15 +79,23 @@ while True:
                 sys.exit()
 
         # pause detection
-        if game_paused:     # game_pause is False from start and can be changed to True
-                            # by pressing "p". After that the game will stop and pause menu  appears
+        if game_paused:     # game_pause is False from start and can be changed to True by pressing "p"
+            # destroying crosshair, because I do not want to see him in background in pause menu
+            crosshair.destroy()
+            render_background(screen)
+            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group],screen)
+            # opening pause menu
+            crosshair.disable()
             Pause_menu(screen, clock)
             game_paused = False
+            # re-creation of crosshair
+            crosshair = Crosshair()
+            crosshair_group = pygame.sprite.Group()
+            crosshair_group.add(crosshair)
         else:
             # player death
             if not player_group:
                 break
-
             # rendering/update
             #   background
             render_background(screen)

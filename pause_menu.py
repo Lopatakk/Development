@@ -6,8 +6,14 @@ width = ScreenSetup.width  # finds width of screen
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
 score = 123
 
+new_cursor = pygame.image.load("assets/images/crosshair.png")
+new_cursor_rect = new_cursor.get_rect()
+
+
+
 def Pause_menu(screen, clock):
     game_paused = True
+    pygame.mouse.set_visible(False)
     surface = pygame.Surface(screen.get_size())
     surface = surface.convert_alpha()
 
@@ -38,7 +44,11 @@ def Pause_menu(screen, clock):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:          # to quit game
                 quit()
+            if event.type == pygame.QUIT:
+                quit()
 
+        new_cursor_rect.center = pygame.mouse.get_pos()
+        screen.blit(new_cursor, new_cursor_rect)
 
         pygame.display.flip()
 

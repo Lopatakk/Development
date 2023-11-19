@@ -23,3 +23,7 @@ class Crosshair(pygame.sprite.Sprite):
     def disable(self):
         pygame.mouse.set_visible(True)
         self.kill()
+
+    def destroy(self):
+        self.kill()
+
