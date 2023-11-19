@@ -10,6 +10,8 @@ from renderupdate import *
 from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
+from pause_menu import Pause_menu
+from health_bar import HealthBar
 
 # general setup
 #   pygame
@@ -18,9 +20,12 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
+# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+
 #   text font
 font = pygame.font.Font('freesansbold.ttf', 30)
-
+# variables for menu
+game_paused = False
 
 # main loop
 while True:
@@ -32,6 +37,7 @@ while True:
     player = PlayerShip(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
+    max_hp = player.hp      # players max hp at the beginning
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
@@ -58,41 +64,51 @@ while True:
 
     # game loop
     while True:
-        # closing window
+        # KEYs function
         for event in pygame.event.get():
+            # opening pause menu
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    game_paused = True
+
+            # closing window
             # top right corner cross
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            # esc
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
 
-        # player death
-        if not player_group:
-            break
+        # pause detection
+        if game_paused:     # game_pause is False from start and can be changed to True
+                            # by pressing "p". After that the game will stop and pause menu  appears
+            Pause_menu(screen, clock)
+            game_paused = False
+        else:
+            # player death
+            if not player_group:
+                break
 
-        # rendering/update
-        #   background
-        render_background(screen)
-        #   groups
-        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
-        #   enemy spawn
-        zarovka_spawner.update(player.pos)
-        tank_spawner.update(player.pos)
-        #   collisions
-        handle_collisions(enemy_group, player_group)
-        handle_collisions(player_projectile_group, enemy_group)
-        handle_collisions(enemy_projectile_group, player_group)
-        # handle_collisions(projectile_group, player_group)
+            # rendering/update
+            #   background
+            render_background(screen)
+            #   groups
+            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
+            #   enemy spawn
+            zarovka_spawner.update(player.pos)
+            tank_spawner.update(player.pos)
+            #   collisions
+            handle_collisions(enemy_group, player_group)
+            handle_collisions(player_projectile_group, enemy_group)
+            handle_collisions(enemy_projectile_group, player_group)
+            # handle_collisions(projectile_group, player_group)
 
+            # health bar display
+            HealthBar(screen, max_hp, player.hp)
 
-        # screen update (must be at the end of the loop before waiting functions!)
-        pygame.display.flip()
+            # screen update (must be at the end of the loop before waiting functions!)
+            pygame.display.flip()
 
-        # FPS lock
-        clock.tick(ScreenSetup.fps)
+            # FPS lock
+            clock.tick(ScreenSetup.fps)
 
     # death text
     crosshair.disable()

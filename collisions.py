@@ -1,6 +1,5 @@
 import pygame
 
-
 def handle_collisions(attacker_group, target_group):
     hits = pygame.sprite.groupcollide(attacker_group, target_group, dokilla=True, dokillb=False, collided=pygame.sprite.collide_mask)
 
