@@ -3,9 +3,8 @@ from screensetup import ScreenSetup
 
 height = ScreenSetup.height  # finds height of screen
 width = ScreenSetup.width  # finds width of screen
-font = pygame.font.Font('freesansbold.ttf', 40)
+font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
 score = 123
-
 
 def Pause_menu(screen, clock):
     game_paused = True
