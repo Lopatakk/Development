@@ -87,6 +87,7 @@ while True:
         handle_collisions(enemy_projectile_group, player_group)
         # handle_collisions(projectile_group, player_group)
 
+
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
 
