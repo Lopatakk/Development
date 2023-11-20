@@ -44,4 +44,8 @@ def render_overheat_bar(screen, max_overheat, overheat):
 def render_score(screen, score):
     height = ScreenSetup.height  # finds height of screen
     width = ScreenSetup.width  # finds width of screen
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    text = font.render(str(score), True, (128, 128, 128))
+    x = (width - text.get_width()) / 2 # score in the middle of the screen
+    screen.blit(text, (x, height / 200))
 
