@@ -1,4 +1,9 @@
 import pygame
+
+
+
+# # # # #  Půjde pryč, zatím z toho jenom něco beru
+
 from screensetup import ScreenSetup
 
 height = ScreenSetup.height  # finds height of screen
