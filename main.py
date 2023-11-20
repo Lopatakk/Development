@@ -85,6 +85,8 @@ while True:
             # destroying crosshair, because I do not want to see him in background in pause menu
             crosshair.destroy()
             render_background(screen)
+            render_health_bar(screen, player.max_hp, player.hp)
+            render_score(screen, score)
             update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group],screen)
             # opening pause menu
             pause_menu(screen, clock, score)
