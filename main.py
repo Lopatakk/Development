@@ -25,7 +25,7 @@ ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
 game_paused = False
-score = 0
+
 # main loop
 while True:
     # creating sprites/groups
@@ -45,8 +45,11 @@ while True:
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
-
+    #   explosions
     explosion_group = pygame.sprite.Group()
+
+    # reset score
+    score = 0
 
     # rendering before gameplay
     #   background
@@ -104,11 +107,12 @@ while True:
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
-        handle_collisions(enemy_group, player_group, False, explosion_group)
-        score_rozdil = handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
+        score_diff = 0
+        score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
+        score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
         handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
-        score += score_rozdil
-        # handle_collisions(projectile_group, player_group)
+        # handle_collisions(player_projectile_group, player_group, True, explosion_group)
+        score += score_diff
         #   health bar
         render_health_bar(screen, player.max_hp, player.hp)
         #   score bar
@@ -121,7 +125,7 @@ while True:
 
     # death text
     crosshair.disable()
-    exit_text = font.render("SMRT", True, (255, 255, 255))
+    exit_text = font.render(f"SMRT, SCORE: {score}", True, (255, 255, 255))
     screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()
     time.sleep(2)
