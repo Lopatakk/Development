@@ -3,22 +3,31 @@ import numpy as np
 from projectile import Projectile
 import time
 from pygame.sprite import Group
+from screensetup import ScreenSetup
 
 
 class Ship(pygame.sprite.Sprite):
-    # Parent class for creating ships (either player or enemy)
-    # Has basic properties (variables and functions)
-    #
-    # To use the properties from here in your child class, use super().__init__() function in constructor
-    # and super().update() in update() function. Note: Fill in the arguments in super().__init__() function
-    # (in the __init__() brackets). These are kinda intuitive.
-    #
-    # To move the ship change its velocity before calling the super().update() function. Position is then calculated
-    # automatically based on the velocity.
-    # Rotation is made semi-automatically. Just change the variable angle before calling the super().update() function
-    # to make the ship rotate.
+    """
+    Parent class for creating ships (either player or enemy)
+    Has basic properties (variables and functions)
 
-    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, projectile_group: Group):
+    To use the properties from here in your child class, use super().__init__() function in constructor
+    and super().update() in update() function. Note: Fill in the arguments in super().__init__() function
+    (in the __init__() brackets). These are kinda intuitive.
+
+    Arguments notes:
+    dmg = The ship's ramming damage.
+    fire_rate = How many projectiles can the ship fire in one second.
+    proj_dmg = Damage of ship's fired projectile.
+    cooling = How much of heat the gun looses every second.
+
+    To move the ship change its velocity before calling the super().update() function. Position is then calculated
+    automatically based on the velocity.
+    Rotation is made semi-automatically. Just change the variable angle before calling the super().update() function
+    to make the ship rotate.
+    """
+
+    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, overheat: int, cooling: float, projectile_group: Group):
         # Constructor creates the ship itself with all the needed properties.
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
@@ -85,11 +94,21 @@ class Ship(pygame.sprite.Sprite):
         # proj_dmg - variable containing ship's projectile damage
         self.proj_dmg = proj_dmg
         # fire_rate_time - minimal time between firing two projectiles
-        self.fire_rate_time = fire_rate
+        self.fire_rate_time = 1/fire_rate
         # last_shot_time - the time when the last shot was fired, used to decide if new projectile could be fired or not
         self.last_shot_time = time.time()
         # projectile_group - sprite group for storing projectiles
         self.projectile_group = projectile_group
+
+        # gun overheating
+
+        # heat - variable containing how much is the ship's gun heated
+        self.heat = 0
+        # overheat - maximum value of heat, if the heat reaches overheat, then the ship cannot fire
+        self.overheat = overheat
+        # cooling - how quickly the gun cools down, self.cooling = how much heat the gun looses every frame,
+        #   cooling (the constructor's argument) = how much heat the gun looses every second
+        self.cooling = cooling/60
 
     def update(self):
         # The update() function updates the ships position and angle based on the ships velocity and angle variables. It
@@ -131,6 +150,14 @@ class Ship(pygame.sprite.Sprite):
         # This section has to be the last one, because it sets the ship on the new coordinates, that were calculated.
         self.rect.center = self.pos
 
+        # gun cooling (overheat regeneration)
+
+        # This section cools down the gun (if it's hot or warm)
+        if self.heat > 0:
+            self.heat -= self.cooling
+        else:
+            self.heat = 0
+
     # rotation computing
     # This function calculates the angle based on the distances in the x and y axes. It is not limited to an object, it
     # can be used anywhere. The input is the x-axis and y-axis distance. Non-absolute values must be used for the
@@ -149,11 +176,12 @@ class Ship(pygame.sprite.Sprite):
                 return -90
 
     # shooting
-    # If the time after last shot is greater than fire_rate_time, this function creates (spawns) a projectile and adds
-    # it to the projectile group.
+    # If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
+    # (spawns) a projectile and adds it to the projectile group.
     def shoot(self):
         elapsed_time = time.time() - self.last_shot_time
-        if elapsed_time >= self.fire_rate_time:
+        if elapsed_time >= self.fire_rate_time and self.heat < self.overheat:
             projectile = Projectile(self)
             self.last_shot_time = time.time()
             self.projectile_group.add(projectile)
+            self.heat += 1
