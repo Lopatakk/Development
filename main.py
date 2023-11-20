@@ -84,9 +84,12 @@ while True:
             render_background(screen)
             update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group],screen)
             # opening pause menu
-            crosshair.disable()
             pause_menu(screen, clock)
             game_paused = False
+            # re-creating cursor
+            crosshair = Crosshair()
+            crosshair_group = pygame.sprite.Group()
+            crosshair_group.add(crosshair)
 
         # player death
         if not player_group:
