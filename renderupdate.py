@@ -1,6 +1,7 @@
 import pygame
 from screensetup import ScreenSetup
 
+
 # This file is used to store functions for rendering and updating.
 def render_background(screen):
     # This function renders the background image. It also uses the convert function to improve performance.

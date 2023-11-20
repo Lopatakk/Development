@@ -6,6 +6,8 @@ width = ScreenSetup.width  # finds width of screen
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
 score = 123
 
+
+def pause_menu(screen, clock):
 new_cursor = pygame.image.load("assets/images/crosshair.png")
 new_cursor_rect = new_cursor.get_rect()
 
@@ -20,7 +22,7 @@ def Pause_menu(screen, clock):
     while game_paused:
         background_copy = screen.copy()
 
-        surface.fill((100, 100, 100, 150)) # fill the whole screen with black transparent color
+        surface.fill((100, 100, 100, 150))  # fill the whole screen with black transparent color
         screen.blit(surface, (0, 0))
 
         # creating rectangles for options
