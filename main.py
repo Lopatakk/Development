@@ -26,7 +26,7 @@ ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
 game_paused = False
-score = 5
+score = 0
 # main loop
 while True:
     # creating sprites/groups
@@ -104,9 +104,9 @@ while True:
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
-        score_rozdil = handle_collisions(enemy_group, player_group)
-        score_rozdil += handle_collisions(player_projectile_group, enemy_group)
-        score_rozdil += handle_collisions(enemy_projectile_group, player_group)
+        handle_collisions(enemy_group, player_group)
+        score_rozdil = handle_collisions(player_projectile_group, enemy_group)
+        handle_collisions(enemy_projectile_group, player_group)
         score += score_rozdil
         # handle_collisions(projectile_group, player_group)
         #   health bar
