@@ -20,11 +20,11 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
+ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
-
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
-# variables for menu
+#   variables for menu
 game_paused = False
 
 # main loop
@@ -59,6 +59,7 @@ while True:
 
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
+
     # wait
     time.sleep(1)
 
