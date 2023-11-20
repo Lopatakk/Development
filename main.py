@@ -11,7 +11,6 @@ from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
-from health_bar import render_health_bar
 
 # general setup
 #   pygame
