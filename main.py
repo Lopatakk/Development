@@ -21,12 +21,12 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
 game_paused = False
-
+score = 5
 # main loop
 while True:
     # creating sprites/groups
@@ -84,7 +84,7 @@ while True:
             render_background(screen)
             update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group],screen)
             # opening pause menu
-            pause_menu(screen, clock)
+            pause_menu(screen, clock, score)
             game_paused = False
             # re-creating cursor
             crosshair = Crosshair()
@@ -104,9 +104,10 @@ while True:
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
-        handle_collisions(enemy_group, player_group)
-        handle_collisions(player_projectile_group, enemy_group)
-        handle_collisions(enemy_projectile_group, player_group)
+        score_rozdil = handle_collisions(enemy_group, player_group)
+        score_rozdil += handle_collisions(player_projectile_group, enemy_group)
+        score_rozdil += handle_collisions(enemy_projectile_group, player_group)
+        score += score_rozdil
         # handle_collisions(projectile_group, player_group)
         #   health bar
         render_health_bar(screen, max_hp, player.hp)

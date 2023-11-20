@@ -4,11 +4,10 @@ from screensetup import ScreenSetup
 height = ScreenSetup.height  # finds height of screen
 width = ScreenSetup.width  # finds width of screen
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
-score = 123
 
 
 
-def pause_menu(screen, clock):
+def pause_menu(screen, clock, score):
     game_paused = True
     pygame.mouse.set_visible(False)
     new_cursor = pygame.image.load("assets/images/crosshair.png")
