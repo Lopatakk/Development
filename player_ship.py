@@ -13,6 +13,9 @@ class PlayerShip(Ship):
     update (see Ship's update() function).
     """
     def __init__(self, projectile_group):
+        """
+        :param projectile_group: sprite group for fired projectiles
+        """
         super().__init__("assets/images/vlod.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 700, 600, 10, 100, 30, 2.5, projectile_group)
 
     def update(self):

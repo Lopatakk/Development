@@ -23,13 +23,19 @@ class Ship(pygame.sprite.Sprite):
 
     def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, overheat: int, cooling: float, projectile_group: Group):
         """
-        Constructor creates the ship itself with all the needed properties.
-        Arguments notes:
-        dmg = The ship's ramming damage.
-        fire_rate = How many projectiles can the ship fire in one second.
-        proj_dmg = Damage of ship's fired projectile.
-        cooling = How much of heat the gun looses every second.
+        :param picture_path: directory path to the picture
+        :param start_pos: starting position
+        :param max_velocity: maximum speed the ship can travel
+        :param velocity_coefficient: slows down the movement
+        :param hp: maximum amount of health points
+        :param dmg: damage when ramming
+        :param fire_rate: how many projectiles can be fired in one second
+        :param proj_dmg: damage of fired projectile
+        :param overheat: maximum amount of heat the gun can stand
+        :param cooling: how much of the heat the gun looses every second
+        :param projectile_group: sprite group for fired projectiles
         """
+        # Creates the ship itself with all the needed properties:
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()

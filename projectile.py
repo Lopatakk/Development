@@ -12,8 +12,10 @@ class Projectile(pygame.sprite.Sprite):
     """
 
     def __init__(self, ship):
-        # Constructor creates a projectile itself with all the needed properties. It needs some properties from the ship
-        # that fired it, so it takes the ship as an input.
+        """
+        Creates a projectile itself with all the needed properties.
+        :param ship: the ship that fired the projectile
+        """
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()
