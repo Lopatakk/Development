@@ -10,8 +10,8 @@ from renderupdate import *
 from checkbuttons import *
 from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
-from pause_menu import Pause_menu
-from health_bar import HealthBar
+from pause_menu import pause_menu
+from health_bar import render_health_bar
 
 # general setup
 #   pygame
@@ -81,7 +81,7 @@ while True:
         if game_paused:
             # game_paused is False from start and can be changed to True by pressing "p". After that the game will stop
             # and pause menu appears.
-            Pause_menu(screen, clock)
+            pause_menu(screen, clock)
             game_paused = False
 
         # player death
@@ -101,9 +101,8 @@ while True:
         handle_collisions(player_projectile_group, enemy_group)
         handle_collisions(enemy_projectile_group, player_group)
         # handle_collisions(projectile_group, player_group)
-
-        # health bar display
-        HealthBar(screen, max_hp, player.hp)
+        #   health bar
+        render_health_bar(screen, max_hp, player.hp)
 
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()

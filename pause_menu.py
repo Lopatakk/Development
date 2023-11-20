@@ -6,7 +6,8 @@ width = ScreenSetup.width  # finds width of screen
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
 score = 123
 
-def Pause_menu(screen, clock):
+
+def pause_menu(screen, clock):
     game_paused = True
     surface = pygame.Surface(screen.get_size())
     surface = surface.convert_alpha()
@@ -14,7 +15,7 @@ def Pause_menu(screen, clock):
     while game_paused:
         background_copy = screen.copy()
 
-        surface.fill((100, 100, 100, 150)) # fill the whole screen with black transparent color
+        surface.fill((100, 100, 100, 150))  # fill the whole screen with black transparent color
         screen.blit(surface, (0, 0))
 
         # creating rectangles for options
@@ -38,7 +39,6 @@ def Pause_menu(screen, clock):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:          # to quit game
                 quit()
-
 
         pygame.display.flip()
 
