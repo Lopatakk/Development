@@ -4,10 +4,12 @@ from screensetup import ScreenSetup
 
 
 class Projectile(pygame.sprite.Sprite):
-    # This class takes care of basic projectiles. Projectiles are fired from ships, so the constructor takes the ship as
-    # an input. Projectiles does not change its direction during its flight, it travels under the same angle until it
-    # reaches screen borders, where they are destroyed. They deal damage when they collide with ships (which is taken
-    # care of in collisions.py).
+    """
+    This class takes care of basic projectiles. Projectiles are fired from ships, so the constructor takes the ship as
+    an input. Projectiles does not change its direction during its flight, it travels under the same angle until it
+    reaches screen borders, where they are destroyed. They deal damage when they collide with ships (which is taken
+    care of in collisions.py).
+    """
 
     def __init__(self, ship):
         # Constructor creates a projectile itself with all the needed properties. It needs some properties from the ship
@@ -54,8 +56,10 @@ class Projectile(pygame.sprite.Sprite):
         self.dmg = ship.proj_dmg
 
     def update(self):
-        # The update() function only updates the projectile's position from its angle and velocity, then sets its center
-        # to the new calculated position and if the projectile gets behind borders of the screen, the function kills it.
+        """
+        The update() function only updates the projectile's position from its angle and velocity, then sets its center
+        to the new calculated position and if the projectile gets behind borders of the screen, the function kills it.
+        """
         self.posx -= np.sin(np.deg2rad(self.angle)) * self.velocity
         self.posy -= np.cos(np.deg2rad(self.angle)) * self.velocity
         self.rect.center = [self.posx, self.posy]

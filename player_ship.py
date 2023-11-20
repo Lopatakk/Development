@@ -7,7 +7,7 @@ from checkbuttons import *
 
 class PlayerShip(Ship):
     """
-    Class for the player's ship.
+    The player's ship class.
     Constructor creates the ship based on parent class Ship and spawns it in the middle of the screen.
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).

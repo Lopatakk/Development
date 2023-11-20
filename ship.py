@@ -13,13 +13,7 @@ class Ship(pygame.sprite.Sprite):
 
     To use the properties from here in your child class, use super().__init__() function in constructor
     and super().update() in update() function. Note: Fill in the arguments in super().__init__() function
-    (in the __init__() brackets). These are kinda intuitive.
-
-    Arguments notes:
-    dmg = The ship's ramming damage.
-    fire_rate = How many projectiles can the ship fire in one second.
-    proj_dmg = Damage of ship's fired projectile.
-    cooling = How much of heat the gun looses every second.
+    (in the __init__() brackets). These are kinda intuitive (the confusing ones are explained in arguments notes).
 
     To move the ship change its velocity before calling the super().update() function. Position is then calculated
     automatically based on the velocity.
@@ -28,7 +22,14 @@ class Ship(pygame.sprite.Sprite):
     """
 
     def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, overheat: int, cooling: float, projectile_group: Group):
-        # Constructor creates the ship itself with all the needed properties.
+        """
+        Constructor creates the ship itself with all the needed properties.
+        Arguments notes:
+        dmg = The ship's ramming damage.
+        fire_rate = How many projectiles can the ship fire in one second.
+        proj_dmg = Damage of ship's fired projectile.
+        cooling = How much of heat the gun looses every second.
+        """
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()
@@ -111,9 +112,11 @@ class Ship(pygame.sprite.Sprite):
         self.cooling = cooling/60
 
     def update(self):
-        # The update() function updates the ships position and angle based on the ships velocity and angle variables. It
-        # also limits the ships velocity to its maximum value.
-        # It is not recommended to change the position variable directly.
+        """
+        The update() function updates the ships position and angle based on the ships velocity and angle variables. It
+        also limits the ships velocity to its maximum value.
+        It is not recommended to change the position variable directly.
+        """
 
         # rotation
         # Variable angle must be calculated before calling the super().update() function!
@@ -158,13 +161,14 @@ class Ship(pygame.sprite.Sprite):
         else:
             self.heat = 0
 
-    # rotation computing
-    # This function calculates the angle based on the distances in the x and y axes. It is not limited to an object, it
-    # can be used anywhere. The input is the x-axis and y-axis distance. Non-absolute values must be used for the
-    # calculation, otherwise the angle cannot be calculated correctly. The output of the function is an integer in the
-    # interval <-90; 270). The function gives 0, when dist_y > 0 and dist_x == 0.
     @classmethod
-    def rot_compute(cls, dist_x, dist_y):
+    def rot_compute(cls, dist_x: int, dist_y: int):
+        """
+        This function calculates the angle based on the distances in the x and y axes. It is not limited to an object,
+        it can be used anywhere. The input is the x-axis and y-axis distance. Non-absolute values must be used for the
+        calculation, otherwise the angle cannot be calculated correctly. The output of the function is an integer in the
+        interval <-90; 270). The function gives 0, when dist_y > 0 and dist_x == 0.
+        """
         if dist_y > 0:
             return np.rad2deg(np.arctan(dist_x/dist_y))
         elif dist_y < 0:
@@ -175,10 +179,11 @@ class Ship(pygame.sprite.Sprite):
             else:
                 return -90
 
-    # shooting
-    # If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
-    # (spawns) a projectile and adds it to the projectile group.
     def shoot(self):
+        """
+        If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
+        (spawns) a projectile and adds it to the projectile group.
+        """
         elapsed_time = time.time() - self.last_shot_time
         if elapsed_time >= self.fire_rate_time and self.heat < self.overheat:
             projectile = Projectile(self)

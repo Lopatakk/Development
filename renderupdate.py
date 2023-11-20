@@ -15,7 +15,7 @@ def render_background(screen):
 
 def update_groups(groups, screen):
     """
-    This function updates all the sprite groups in "groups" list. The order does matter, because the latter the group
+    This function updates all the sprite groups in the input list. The order does matter, because the latter the group
     is in the list, the upper it will apper.
     """
     for group in groups:
