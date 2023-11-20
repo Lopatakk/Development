@@ -112,7 +112,8 @@ while True:
         # handle_collisions(projectile_group, player_group)
         #   health bar
         render_health_bar(screen, max_hp, player.hp)
-
+        #   score bar
+        render_score(screen, score)
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
 

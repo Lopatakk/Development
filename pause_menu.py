@@ -18,7 +18,7 @@ def pause_menu(screen, clock, score):
     while game_paused:
         background_copy = screen.copy()
 
-        surface.fill((100, 100, 100, 150))  # fill the whole screen with black transparent color
+        surface.fill((0, 0, 0, 150))  # fill the whole screen with black transparent color
         screen.blit(surface, (0, 0))
 
         # creating rectangles for options
