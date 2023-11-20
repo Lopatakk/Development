@@ -23,7 +23,7 @@ screen = ScreenSetup.start_setup()
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 #   text font
-font = pygame.font.Font('freesansbold.ttf', 30)
+font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 # variables for menu
 game_paused = False
 
@@ -72,47 +72,46 @@ while True:
                     game_paused = True
 
             # closing window
-            # top right corner cross
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
         # pause detection
-        if game_paused:     # game_pause is False from start and can be changed to True
-                            # by pressing "p". After that the game will stop and pause menu  appears
+        if game_paused:
+            # game_paused is False from start and can be changed to True by pressing "p". After that the game will stop
+            # and pause menu appears.
             Pause_menu(screen, clock)
             game_paused = False
-        else:
-            # player death
-            if not player_group:
-                break
 
-            # rendering/update
-            #   background
-            render_background(screen)
-            #   groups
-            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
-            #   enemy spawn
-            zarovka_spawner.update(player.pos)
-            tank_spawner.update(player.pos)
-            #   collisions
-            handle_collisions(enemy_group, player_group)
-            handle_collisions(player_projectile_group, enemy_group)
-            handle_collisions(enemy_projectile_group, player_group)
-            # handle_collisions(projectile_group, player_group)
+        # player death
+        if not player_group:
+            break
 
-            # health bar display
-            HealthBar(screen, max_hp, player.hp)
+        # rendering/update
+        #   background
+        render_background(screen)
+        #   groups
+        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
+        #   enemy spawn
+        zarovka_spawner.update(player.pos)
+        tank_spawner.update(player.pos)
+        #   collisions
+        handle_collisions(enemy_group, player_group)
+        handle_collisions(player_projectile_group, enemy_group)
+        handle_collisions(enemy_projectile_group, player_group)
+        # handle_collisions(projectile_group, player_group)
 
-            # screen update (must be at the end of the loop before waiting functions!)
-            pygame.display.flip()
+        # health bar display
+        HealthBar(screen, max_hp, player.hp)
 
-            # FPS lock
-            clock.tick(ScreenSetup.fps)
+        # screen update (must be at the end of the loop before waiting functions!)
+        pygame.display.flip()
+
+        # FPS lock
+        clock.tick(ScreenSetup.fps)
 
     # death text
     crosshair.disable()
-    font = pygame.font.Font(None, 36)
     exit_text = font.render("SMRT", True, (255, 255, 255))
     screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()
