@@ -7,12 +7,15 @@ from checkbuttons import *
 
 class PlayerShip(Ship):
     """
-    Class for the player's ship.
+    The player's ship class.
     Constructor creates the ship based on parent class Ship and spawns it in the middle of the screen.
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).
     """
     def __init__(self, projectile_group):
+        """
+        :param projectile_group: sprite group for fired projectiles
+        """
         super().__init__("assets/images/vlod.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 700, 600, 10, 100, 30, 2.5, projectile_group)
 
     def update(self):
