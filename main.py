@@ -48,6 +48,8 @@ while True:
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
 
+    explosion_group = pygame.sprite.Group()
+
     # rendering before gameplay
     #   background
     render_background(screen)
@@ -82,7 +84,7 @@ while True:
             # destroying crosshair, because I do not want to see him in background in pause menu
             crosshair.destroy()
             render_background(screen)
-            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group],screen)
+            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group],screen)
             # opening pause menu
             pause_menu(screen, clock, score)
             game_paused = False
@@ -99,14 +101,14 @@ while True:
         #   background
         render_background(screen)
         #   groups
-        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group], screen)
+        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
-        handle_collisions(enemy_group, player_group)
-        score_rozdil = handle_collisions(player_projectile_group, enemy_group)
-        handle_collisions(enemy_projectile_group, player_group)
+        handle_collisions(enemy_group, player_group, explosion_group)
+        score_rozdil = handle_collisions(player_projectile_group, enemy_group,explosion_group)
+        handle_collisions(enemy_projectile_group, player_group,explosion_group)
         score += score_rozdil
         # handle_collisions(projectile_group, player_group)
         #   health bar
