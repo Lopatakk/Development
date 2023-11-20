@@ -85,7 +85,7 @@ while True:
             update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, crosshair_group],screen)
             # opening pause menu
             crosshair.disable()
-            Pause_menu(screen, clock)
+            pause_menu(screen, clock)
             game_paused = False
 
         # player death

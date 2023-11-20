@@ -7,15 +7,12 @@ font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
 score = 123
 
 
+
 def pause_menu(screen, clock):
-new_cursor = pygame.image.load("assets/images/crosshair.png")
-new_cursor_rect = new_cursor.get_rect()
-
-
-
-def Pause_menu(screen, clock):
     game_paused = True
     pygame.mouse.set_visible(False)
+    new_cursor = pygame.image.load("assets/images/crosshair.png")
+    new_cursor_rect = new_cursor.get_rect()
     surface = pygame.Surface(screen.get_size())
     surface = surface.convert_alpha()
 
