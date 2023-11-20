@@ -28,6 +28,8 @@ class Ship(pygame.sprite.Sprite):
 
         # hp - health points of the ship, if it goes <= 0, the ship is killed
         self.hp = hp
+        # max_hp
+        self.max_hp = hp
 
         # image
 
