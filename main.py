@@ -36,7 +36,6 @@ while True:
     player = PlayerShip(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
-    max_hp = player.hp      # players max hp at the beginning
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
@@ -93,7 +92,7 @@ while True:
             crosshair_group.add(crosshair)
 
         # player death
-        if not player_group:
+        if not player_group and not explosion_group:
             break
 
         # rendering/update
@@ -105,13 +104,13 @@ while True:
         zarovka_spawner.update(player.pos)
         tank_spawner.update(player.pos)
         #   collisions
-        handle_collisions(enemy_group, player_group, explosion_group)
-        score_rozdil = handle_collisions(player_projectile_group, enemy_group,explosion_group)
-        handle_collisions(enemy_projectile_group, player_group,explosion_group)
+        handle_collisions(enemy_group, player_group, False, explosion_group)
+        score_rozdil = handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
+        handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
         score += score_rozdil
         # handle_collisions(projectile_group, player_group)
         #   health bar
-        render_health_bar(screen, max_hp, player.hp)
+        render_health_bar(screen, player.max_hp, player.hp)
         #   score bar
         render_score(screen, score)
         # screen update (must be at the end of the loop before waiting functions!)
