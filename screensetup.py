@@ -1,5 +1,6 @@
 import pygame
 
+
 class ScreenSetup:
     # This class is used to store screen parameters and functions
     pygame.init()

@@ -147,16 +147,11 @@ class Ship(pygame.sprite.Sprite):
                 return -90
 
     # shooting
-    # If the time after last shot is greater than fire_rate_time, this function creates (spawns) a projectile and
-    # returns it, so it can be added to a sprite group.
-    # Note: When adding to a sprite group, you must be sure, that shoot() will return the projectile. If it does not and
-    # you try to add nothing, it will lead to an error. You can use something like this to prevent it:
-    # projectile = ship.shoot()
-    # if projectile is not None:
-    #   sprite_group.add(projectile)
+    # If the time after last shot is greater than fire_rate_time, this function creates (spawns) a projectile and adds
+    # it to the projectile group.
     def shoot(self):
         elapsed_time = time.time() - self.last_shot_time
         if elapsed_time >= self.fire_rate_time:
-            projectile = Projectile(self, self.proj_dmg)
+            projectile = Projectile(self)
             self.last_shot_time = time.time()
             self.projectile_group.add(projectile)
