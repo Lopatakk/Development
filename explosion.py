@@ -4,8 +4,8 @@ class Explosion(pygame.sprite.Sprite):
     def __init__(self, pos, size):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        for num in range(1, 6):
-            img = pygame.image.load(f"assets/animations/explosion1/explosin{num}.png")
+        for num in range(1, 9):
+            img = pygame.image.load(f"assets/animations/explosion1/exp{num}.png")
             if size == 1:
                 img = pygame.transform.scale(img, (150, 150))
             if size == 2:
@@ -22,7 +22,7 @@ class Explosion(pygame.sprite.Sprite):
 
 
     def update(self):
-        explosion_speed = 6
+        explosion_speed = 5
         # update explosion animation
         self.counter += 1
 

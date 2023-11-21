@@ -18,7 +18,7 @@ def handle_collisions(attacker_group, target_group, kill_attacker, explosion_gro
 
             if target.hp <= 0:
                 score_diff = target.max_hp
-                explosion = Explosion(target.pos, 1)
+                explosion = Explosion(target.pos, 2)
                 explosion_group.add(explosion)
                 target.kill()  # Odstranění cílového sprite, pokud má životy menší nebo rovno nule
                 target.mask = None
