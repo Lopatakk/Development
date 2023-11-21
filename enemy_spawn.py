@@ -7,6 +7,7 @@ from zarovka import Zarovka
 from tank import Tank
 import numpy as np
 from pygame.sprite import Group
+from sniper import Sniper
 
 
 class EnemySpawner:
@@ -41,6 +42,7 @@ class EnemySpawner:
                 enemy = Zarovka(start)
                 self.enemy_group.add(enemy)
                 enemy.add_player_position_to_history(player_pos)
+                enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 self.last_spawn_time = time.time()
 
@@ -51,5 +53,17 @@ class EnemySpawner:
                 enemy = Tank(start, self.shot_group)
                 self.enemy_group.add(enemy)
                 enemy.add_player_position_to_history(player_pos)
+                enemy.follow_movement(player_pos)
+                # Aktualizovat čas od posledního spawnu
+                self.last_spawn_time = time.time()
+
+        if self.enemy_type == "sniper":
+            if elapsed_time >= self.spawn_interval:
+                # Spawnování nové nepřátelské lodě mimo obrazovku
+                start = self.spawn_outside_screen()
+                enemy = Sniper(start, self.shot_group)
+                self.enemy_group.add(enemy)
+                enemy.add_player_position_to_history(player_pos)
+                enemy.random_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 self.last_spawn_time = time.time()
