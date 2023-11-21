@@ -7,7 +7,7 @@ height = ScreenSetup.height  # finds height of screen
 width = ScreenSetup.width  # finds width of screen
 font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
 font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
-new_cursor = pygame.image.load("assets/images/crosshair.png")
+new_cursor = pygame.image.load("assets/images/cursor.png")
 
 
 
@@ -23,7 +23,7 @@ def pause_menu(screen, clock, score):
     button_01_img = pygame.image.load('assets/images/button_01.png').convert_alpha()
 
     # create button instances
-    resume_button = button.Button(4.2 * width / 20, 7 * height / 20, button_01_img, 1, 0.5)
+    resume_button = button.Button(4.2 * width / 20, 7 * height / 20, button_01_img, 10, 10)
     main_menu_button = button.Button(4.2 * width / 20, 9 * height / 20, button_01_img, 1, 0.5)
     quit_button = button.Button(4.2 * width / 20, 11 * height / 20, button_01_img, 1, 0.5)
 
