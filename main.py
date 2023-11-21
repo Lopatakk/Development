@@ -86,7 +86,7 @@ while True:
             crosshair.destroy()
             render_background(screen)
             render_health_bar(screen, player.max_hp, player.hp)
-            render_score(screen, score)
+            # render_score(screen, score)
             render_overheat_bar(screen, player.overheat, player.heat)
             update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group],screen)
             # opening pause menu
@@ -119,7 +119,7 @@ while True:
         #   health bar
         render_health_bar(screen, player.max_hp, player.hp)
         #   score bar
-        render_score(screen, score)
+        render_score(screen, score, 128, 128, 128)
         #   overheat bar
         render_overheat_bar(screen, player.overheat, player.heat)
         # screen update (must be at the end of the loop before waiting functions!)
