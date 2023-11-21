@@ -43,6 +43,7 @@ class EnemySpawner:
                 enemy = Zarovka(start)
                 self.enemy_group.add(enemy)
                 enemy.add_player_position_to_history(player_pos)
+                enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()*1000 # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
@@ -56,7 +57,8 @@ class EnemySpawner:
                 enemy.add_player_position_to_history(player_pos)
                 enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
-                self.last_spawn_time = time.time()
+                end_time = time.time() * 1000  # to miliseconds
+                self.last_spawn_time = current_time - (end_time - start_time)
 
         if self.enemy_type == "sniper":
             if elapsed_time >= self.spawn_interval:
@@ -69,6 +71,3 @@ class EnemySpawner:
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()*1000 # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
-
-
-                self.last_spawn_time = time.time()
