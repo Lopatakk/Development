@@ -16,7 +16,7 @@ class PlayerShip(Ship):
         """
         :param projectile_group: sprite group for fired projectiles
         """
-        super().__init__("assets/images/vlod.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 700, 600, 10, 100, 30, 4, projectile_group)
+        super().__init__("assets/images/vlod5.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 700, 600, 10, 100, 30, 4, projectile_group)
 
     def update(self):
         # angle calculation

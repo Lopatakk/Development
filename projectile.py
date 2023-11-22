@@ -26,7 +26,7 @@ class Projectile(pygame.sprite.Sprite):
         # improve performance. Mask is created, because we use mask collision system. If we did not create mask here,
         # the code would have to make mask everytime it checks for some collisions, which can lead to a decrease of
         # performance.
-        self.image = pygame.image.load("assets/images/projectile.png")
+        self.image = pygame.image.load("assets/images/projectile1.png")
         self.image = pygame.Surface.convert(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -36,8 +36,8 @@ class Projectile(pygame.sprite.Sprite):
         # This section calculates the spawn position (the end of the ship) and sets its position here. It takes the
         # ship's coordinates as a base and then (because of pygame coordinates) subtracts half of the ship's width
         # multiplied by sin/cos of the ship's angle.
-        self.posx = ship.rect.centerx - 1/2 * ship.ship_width * np.sin(np.deg2rad(ship.angle))
-        self.posy = ship.rect.centery - 1/2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))
+        self.posx = ship.rect.centerx - 1/2.2 * ship.ship_width * np.sin(np.deg2rad(ship.angle))
+        self.posy = ship.rect.centery - 1/2.2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))
         self.rect.center = [self.posx, self.posy]
 
         # angle
