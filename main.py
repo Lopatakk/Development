@@ -52,6 +52,7 @@ while True:
     crosshair_group.add(crosshair)
     #   explosions
     explosion_group = pygame.sprite.Group()
+    projectile_collision_group = pygame.sprite.Group()
 
     # rendering before gameplay
     #   background
@@ -90,7 +91,7 @@ while True:
             render_health_bar(screen, player.max_hp, player.hp)
             # render_score(screen, score)
             render_overheat_bar(screen, player.overheat, player.heat)
-            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group],screen)
+            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group, projectile_collision_group, explosion_group, crosshair_group],screen)
             # opening pause menu
             pause_menu(screen, clock, score)
             game_paused = False
@@ -114,9 +115,9 @@ while True:
         """sniper_spawner.update(player.pos, time_in_game)"""
         #   collisions
         score_diff = 0
-        score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
-        score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
-        handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
+        score_diff += handle_collisions(player_group, enemy_group, projectile_collision_group, False, explosion_group)
+        score_diff += handle_collisions(player_projectile_group, enemy_group,projectile_collision_group, True, explosion_group)
+        handle_collisions(enemy_projectile_group, player_group,projectile_collision_group, True, explosion_group)
         # handle_collisions(player_projectile_group, player_group, True, explosion_group)
         score += score_diff
         #   health bar
