@@ -3,6 +3,7 @@ from screensetup import ScreenSetup
 from ship import Ship
 import numpy as np
 from checkbuttons import *
+from pygame.sprite import Group
 
 
 class PlayerShip(Ship):
@@ -12,11 +13,13 @@ class PlayerShip(Ship):
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).
     """
-    def __init__(self, projectile_group):
+    def __init__(self, projectile_group: Group):
         """
         :param projectile_group: sprite group for fired projectiles
         """
-        super().__init__("assets/images/vlod5.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]), 100, 0.1, 700, 600, 10, 100, 30, 4, projectile_group)
+        super().__init__("assets/images/vlod5.png", np.array([ScreenSetup.width/2, ScreenSetup.height/2]),
+                         100, 0.1, 700, 600, 10, 100, projectile_group,
+                         30, 4, 2)
 
     def update(self):
         # angle calculation

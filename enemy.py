@@ -9,11 +9,11 @@ from pygame.sprite import Group
 
 class Enemy(Ship):
     def __init__(self, start: np.ndarray, history_length: int, picture_path: str, max_velocity: int,
-                 velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, overheat: int,
-                 cooling: float, projectile_group: Group):
+                 velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int,
+                 projectile_group: Group, overheat: int, cooling: float, explosion_size: int):
 
         super().__init__(picture_path, start, max_velocity, velocity_coefficient, hp, dmg, fire_rate, proj_dmg,
-                         overheat, cooling, projectile_group)
+                         projectile_group, overheat, cooling, explosion_size)
         self.player_position_history = []  # Historie pozic hráče
         self.history_length = history_length
 

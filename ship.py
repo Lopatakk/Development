@@ -21,7 +21,9 @@ class Ship(pygame.sprite.Sprite):
     to make the ship rotate.
     """
 
-    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int, overheat: int, cooling: float, projectile_group: Group):
+    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float,
+                 hp: int, dmg: int, fire_rate: float, proj_dmg: int, projectile_group: Group, overheat: int, cooling: float,
+                 explosion_size: int):
         """
         :param picture_path: directory path to the picture
         :param start_pos: starting position
@@ -116,6 +118,11 @@ class Ship(pygame.sprite.Sprite):
         # cooling - how quickly the gun cools down, self.cooling = how much heat the gun looses every frame,
         #   cooling (the constructor's argument) = how much heat the gun looses every second
         self.cooling = cooling/60
+
+        # explosion
+
+        # explosion_size - size of an explosion after the ship is destroyed
+        self.explosion_size = explosion_size
 
     def update(self):
         """
