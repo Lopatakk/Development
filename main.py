@@ -45,7 +45,7 @@ while True:
     #   enemy spawn
     zarovka_spawner = EnemySpawner(enemy_group,"zarovka", 5000, None)
     tank_spawner = EnemySpawner(enemy_group, "tank", 23000, enemy_projectile_group)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 28000, enemy_projectile_group)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 1000, enemy_projectile_group)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
@@ -111,7 +111,7 @@ while True:
         #   enemy spawn
         zarovka_spawner.update(player.pos, time_in_game)
         tank_spawner.update(player.pos, time_in_game)
-        sniper_spawner.update(player.pos, time_in_game)
+        """sniper_spawner.update(player.pos, time_in_game)"""
         #   collisions
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
