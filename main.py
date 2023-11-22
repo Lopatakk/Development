@@ -20,7 +20,7 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
@@ -28,6 +28,10 @@ game_paused = False
 
 # main loop
 while True:
+    #   variables for time in game + score
+    time_in_game = 0
+    score = 0
+
     # creating sprites/groups
     #   projectiles
     player_projectile_group = pygame.sprite.Group()
@@ -39,17 +43,15 @@ while True:
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group,"zarovka", 5, None)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 22, enemy_projectile_group)
+    zarovka_spawner = EnemySpawner(enemy_group,"zarovka", 5000, None)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 23000, enemy_projectile_group)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 1000, enemy_projectile_group)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
     #   explosions
     explosion_group = pygame.sprite.Group()
-
-    # reset score
-    score = 0
 
     # rendering before gameplay
     #   background
@@ -100,15 +102,16 @@ while True:
         # player death
         if not player_group and not explosion_group:
             break
-
+        # current_time = time.time()
         # rendering/update
         #   background
         render_background(screen)
         #   groups
         update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group], screen)
         #   enemy spawn
-        zarovka_spawner.update(player.pos)
-        tank_spawner.update(player.pos)
+        zarovka_spawner.update(player.pos, time_in_game)
+        tank_spawner.update(player.pos, time_in_game)
+        """sniper_spawner.update(player.pos, time_in_game)"""
         #   collisions
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
@@ -124,9 +127,10 @@ while True:
         render_overheat_bar(screen, player.overheat, player.heat)
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
-
-        # FPS lock
-        clock.tick(ScreenSetup.fps)
+        # FPS lock + time from last call of this function
+        last_frame = clock.tick(ScreenSetup.fps)
+        time_in_game += last_frame
+        # print(time_in_game)
 
     # death text
     crosshair.disable()

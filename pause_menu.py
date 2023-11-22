@@ -74,6 +74,6 @@ def pause_menu(screen, clock, score):
         screen.blit(new_cursor, new_cursor_rect)
 
 
+        clock.tick(ScreenSetup.fps)
         pygame.display.flip()
-
         screen.blit(background_copy, (0, 0))
