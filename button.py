@@ -4,12 +4,11 @@ class Button():
 	def __init__(self, x_button, y_button, image_path, scale_w, scale_h, text_size, text, screen_in_button):
 		width_screen = screen_in_button.get_width()
 		#	BUTTON
-		image = pygame.image.load(image_path).convert_alpha()	# loading image
+		image = pygame.image.load(image_path).convert_alpha()	# load button images with transparency
 		self.image = pygame.transform.scale(image, (int(width_screen * scale_w), int(width_screen * scale_h)))	# transforming image
 		self.rect = self.image.get_rect()	# creates a rectangular frame around the object's image
 		self.rect.topleft = (x_button, y_button)	# placing topleft corner of image to wanted position
 		self.clicked = False	# button is not clicked at the beginning
-
 		#	TEXT
 		font_size = text_size * width_screen
 		image_height = self.image.get_height()
@@ -31,9 +30,8 @@ class Button():
 		if pygame.mouse.get_pressed()[0] == 0:
 			self.clicked = False
 		surface.blit(self.image, (self.rect.x, self.rect.y))	# draw button on screen
-
 		#	TEXT
-		surface.blit(self.font.render(self.text_to_write, True, (50, 50, 50)), (self.x_text, self.y_text))
+		surface.blit(self.font.render(self.text_to_write, True, (40, 40, 40)), (self.x_text, self.y_text))
 
 		return action
 
