@@ -11,6 +11,7 @@ from sniper import Sniper
 
 time_at_the_beginning = time.time()
 
+
 class EnemySpawner:
     def __init__(self, group: Group, enemy_type: str, spawn_interval, shot_group: Group):
         self.enemy_group = group
@@ -34,7 +35,7 @@ class EnemySpawner:
             return np.array([self.screen_width + 50, random.randint(0, self.screen_height)])
 
     def update(self, player_pos, current_time):
-        start_time = time.time()*1000 # to miliseconds
+        start_time = time.time() * 1000  # to miliseconds
         elapsed_time = current_time - self.last_spawn_time
         if self.enemy_type == "zarovka":
             if elapsed_time >= self.spawn_interval:
@@ -45,7 +46,7 @@ class EnemySpawner:
                 enemy.add_player_position_to_history(player_pos)
                 enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
-                end_time = time.time()*1000 # to miliseconds
+                end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
 
         if self.enemy_type == "tank":
@@ -67,7 +68,7 @@ class EnemySpawner:
                 enemy = Sniper(start, self.shot_group)
                 self.enemy_group.add(enemy)
                 enemy.add_player_position_to_history(player_pos)
-                enemy.random_movement(player_pos)
+                enemy.move_towards_player_with_offset(player_pos, 100)
                 # Aktualizovat čas od posledního spawnu
-                end_time = time.time()*1000 # to miliseconds
+                end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)

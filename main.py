@@ -43,7 +43,7 @@ while True:
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group,"zarovka", 5000, None)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 5000, None)
     tank_spawner = EnemySpawner(enemy_group, "tank", 23000, enemy_projectile_group)
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 1000, enemy_projectile_group)
     #   crosshair
@@ -90,7 +90,9 @@ while True:
             render_health_bar(screen, player.max_hp, player.hp)
             # render_score(screen, score)
             render_overheat_bar(screen, player.overheat, player.heat)
-            update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group],screen)
+            update_groups([player_projectile_group, enemy_projectile_group, player_group, explosion_group, crosshair_group], screen)
+            enemy_group.update(player.pos)
+            enemy_group.draw(screen)
             # opening pause menu
             pause_menu(screen, clock, score)
             game_paused = False
@@ -107,7 +109,9 @@ while True:
         #   background
         render_background(screen)
         #   groups
-        update_groups([player_projectile_group, enemy_projectile_group, player_group, enemy_group,explosion_group, crosshair_group], screen)
+        enemy_group.update(player.pos)
+        enemy_group.draw(screen)
+        update_groups([player_projectile_group, enemy_projectile_group, player_group, crosshair_group, explosion_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos, time_in_game)
         tank_spawner.update(player.pos, time_in_game)

@@ -24,27 +24,6 @@ class Enemy(Ship):
 
     def follow_movement(self, position):
         self.player_position_history.append(position)
-    def random_movement(self, position):
-        if self.rect.center[0] > position[0]:
-            self.rect.center[0] -= self.velocity
-        if self.rect.center[0] < position[0]:
-            self.rect.center[0] += self.velocity
-        if self.rect.center[1] > position[1]:
-            self.rect.center[1] -= self.velocity
-        if self.rect.center[1] < position[1]:
-            self.rect.center[1] += self.velocity
-
-        if self.rect.center[0] == position[0] + 20:
-            self.velocity[0] = 0
-        if self.rect.center[0] == position[0] - 20:
-            self.velocity[0] = 0
-        if self.rect.center[1] == position[1] + 20:
-            self.velocity[1] = 0
-        if self.rect.center[1] == position[1] - 20:
-            self.velocity[1] = 0
-
-
-    def update(self):
         # Získat nejnovější historickou pozici hráče
         if self.player_position_history:
             latest_player_pos = self.player_position_history[-1]
@@ -60,10 +39,9 @@ class Enemy(Ship):
             self.velocity[0] += norm_direction[0] * 2.2
             self.velocity[1] += norm_direction[1] * 2.2
 
-
-
             # Otáčení enemy k lodi
             self.angle = self.rot_compute(self.rect.center[0] - latest_player_pos[0],
                                           self.rect.center[1] - latest_player_pos[1])
 
+    def update(self):
         super().update()
