@@ -43,7 +43,6 @@ class EnemySpawner:
                 start = self.spawn_outside_screen()
                 enemy = Zarovka(start)
                 self.enemy_group.add(enemy)
-                enemy.add_player_position_to_history(player_pos)
                 enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
@@ -55,7 +54,6 @@ class EnemySpawner:
                 start = self.spawn_outside_screen()
                 enemy = Tank(start, self.shot_group)
                 self.enemy_group.add(enemy)
-                enemy.add_player_position_to_history(player_pos)
                 enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
@@ -67,8 +65,7 @@ class EnemySpawner:
                 start = self.spawn_outside_screen()
                 enemy = Sniper(start, self.shot_group)
                 self.enemy_group.add(enemy)
-                enemy.add_player_position_to_history(player_pos)
-                enemy.move_towards_player_with_offset(player_pos, 100)
+                enemy.follow_movement_with_offset(player_pos, 0, 0)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
