@@ -1,7 +1,6 @@
 import pygame
 import numpy as np
 from projectile import Projectile
-import time
 from pygame.sprite import Group
 from screensetup import ScreenSetup
 
@@ -21,11 +20,12 @@ class Ship(pygame.sprite.Sprite):
     to make the ship rotate.
     """
 
-    def __init__(self, picture_path: str, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float,
+    def __init__(self, picture_path: str, clock, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float,
                  hp: int, dmg: int, fire_rate: float, proj_dmg: int, projectile_group: Group, overheat: int, cooling: float,
                  explosion_size: int):
         """
         :param picture_path: directory path to the picture
+        :param clock: Clock object used in game
         :param start_pos: starting position
         :param max_velocity: maximum speed the ship can travel
         :param velocity_coefficient: slows down the movement
@@ -48,6 +48,12 @@ class Ship(pygame.sprite.Sprite):
         self.hp = hp
         # max_hp
         self.max_hp = hp
+
+        # time
+        # clock - Clock object from main to calculate firing rate and time the ship is alive
+        self.clock = clock
+        # time_alive - in-game time the ship is alive (in seconds), used to calculate fire rate
+        self.time_alive = 0
 
         # image
 
@@ -105,7 +111,7 @@ class Ship(pygame.sprite.Sprite):
         # fire_rate_time - minimal time between firing two projectiles
         self.fire_rate_time = 1/fire_rate
         # last_shot_time - the time when the last shot was fired, used to decide if new projectile could be fired or not
-        self.last_shot_time = time.time()
+        self.last_shot_time = self.time_alive
         # projectile_group - sprite group for storing projectiles
         self.projectile_group = projectile_group
 
@@ -160,9 +166,6 @@ class Ship(pygame.sprite.Sprite):
         # This section changes position of the ship based on its current velocity and velocity coefficient.
         self.pos[0] += self.velocity[0] * self.velocity_coefficient
         self.pos[1] += self.velocity[1] * self.velocity_coefficient
-
-        # position update
-
         # This section has to be the last one, because it sets the ship on the new coordinates, that were calculated.
         self.rect.center = self.pos
 
@@ -173,6 +176,9 @@ class Ship(pygame.sprite.Sprite):
             self.heat -= self.cooling
         else:
             self.heat = 0
+
+        # time
+        self.time_alive += self.clock.get_time()/1000
 
     @classmethod
     def rot_compute(cls, dist_x: int, dist_y: int):
@@ -197,9 +203,9 @@ class Ship(pygame.sprite.Sprite):
         If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
         (spawns) a projectile and adds it to the projectile group.
         """
-        elapsed_time = time.time() - self.last_shot_time
+        elapsed_time = self.time_alive - self.last_shot_time
         if elapsed_time >= self.fire_rate_time and self.heat < self.overheat:
             projectile = Projectile(self)
-            self.last_shot_time = time.time()
+            self.last_shot_time = self.time_alive
             self.projectile_group.add(projectile)
             self.heat += 1

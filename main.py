@@ -42,15 +42,15 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerShip(player_projectile_group)
+    player = PlayerShip(clock, player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawners
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7000, None, player)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 25000, enemy_projectile_group, player)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10000, enemy_projectile_group, player)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7000, clock, None, player)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 25000, clock, enemy_projectile_group, player)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10000, clock, enemy_projectile_group, player)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -115,9 +115,9 @@ while True:
         update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group, explosion_group,
                        cursor_group], screen)
         #   enemy spawn
-        zarovka_spawner.update(player.pos, time_in_game)
-        tank_spawner.update(player.pos, time_in_game)
-        sniper_spawner.update(player.pos, time_in_game)
+        zarovka_spawner.update()
+        tank_spawner.update()
+        sniper_spawner.update()
         #   collisions and score
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
@@ -134,9 +134,8 @@ while True:
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
 
-        # FPS lock + time from last call of this function
-        last_frame = clock.tick(ScreenSetup.fps)
-        time_in_game += last_frame
+        # FPS lock and adding time from last call of this function
+        time_in_game += clock.tick(ScreenSetup.fps)
 
     # death text
     cursor.set_cursor()
