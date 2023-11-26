@@ -28,7 +28,7 @@ game_paused = False
 
 # main loop
 while True:
-    #   variables for time in game + score
+    # variables for time in game + score
     time_in_game = 0
     score = 0
 
@@ -42,23 +42,22 @@ while True:
     player_group.add(player)
     #   enemy
     enemy_group = pygame.sprite.Group()
-    #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 6000, None, player)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 22000, enemy_projectile_group, player)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 8000, enemy_projectile_group, player)
+    #   enemy spawners
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7000, None, player)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 25000, enemy_projectile_group, player)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10000, enemy_projectile_group, player)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
     crosshair_group.add(crosshair)
     #   explosions
     explosion_group = pygame.sprite.Group()
-    projectile_collision_group = pygame.sprite.Group()
 
     # rendering before gameplay
     #   background
     render_background(screen)
     #   groups
-    update_groups([player_group, enemy_group], screen)
+    update_groups([player_group], screen)
     #   start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
     screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
@@ -69,22 +68,24 @@ while True:
     # wait
     time.sleep(1)
 
-    # game loop
+    # gameplay loop
     while True:
-        # KEYs function
+        # KEYs and window cross functions
         for event in pygame.event.get():
-            # opening pause menu
+            # opening pause menu - esc
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     game_paused = True
 
-            # closing window
+            # closing window - window cross
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-        # pause detection
-        if game_paused:     # game_pause is False from start and can be changed to True by pressing "p"
+        # pause menu
+        if game_paused:
+            # game_pause is False from start and can be changed to True by pressing "esc"
+
             # destroying crosshair, because I do not want to see him in background in pause menu
             crosshair.destroy()
             render_background(screen)
@@ -120,7 +121,6 @@ while True:
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
         score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
         handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
-        # handle_collisions(player_projectile_group, player_group, True, explosion_group)
         score += score_diff
         #   health bar
         render_health_bar(screen, player.max_hp, player.hp)
@@ -128,12 +128,13 @@ while True:
         render_score(screen, score, 128, 128, 128)
         #   overheat bar
         render_overheat_bar(screen, player.overheat, player.heat)
+
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
+
         # FPS lock + time from last call of this function
         last_frame = clock.tick(ScreenSetup.fps)
         time_in_game += last_frame
-        # print(time_in_game)
 
     # death text
     crosshair.disable()
