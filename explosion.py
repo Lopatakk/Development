@@ -5,7 +5,7 @@ class Explosion(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
         self.sound = pygame.mixer.Sound("assets/sounds/pixel_art_explosion.mp3")  # Load sound file
-        self.sound.set_volume(0.2)
+        self.sound.set_volume(0.8)
         self.sound.play()
         for num in range(1, 9):
             img = pygame.image.load(f"assets/animations/explosion1/exp{num}.png")
