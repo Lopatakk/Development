@@ -37,8 +37,8 @@ class EnemySpawner:
             return np.array([self.screen_width + 50, random.randint(0, self.screen_height)])
 
     def update(self):
-        self.time_working += self.clock.get_time()
-        start_time = time.time() * 1000  # to miliseconds
+        self.time_working += self.clock.get_time()/1000
+        start_time = time.time()
         elapsed_time = self.time_working - self.last_spawn_time
         if self.enemy_type == "zarovka":
             if elapsed_time >= self.spawn_interval:
@@ -47,7 +47,7 @@ class EnemySpawner:
                 enemy = Zarovka(start, self.clock, self.player)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
-                end_time = time.time() * 1000  # to miliseconds
+                end_time = time.time()
                 self.last_spawn_time = self.time_working - (end_time - start_time)
 
         elif self.enemy_type == "tank":
@@ -57,7 +57,7 @@ class EnemySpawner:
                 enemy = Tank(start, self.clock, self.shot_group, self.player)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
-                end_time = time.time() * 1000  # to miliseconds
+                end_time = time.time()
                 self.last_spawn_time = self.time_working - (end_time - start_time)
 
         elif self.enemy_type == "sniper":
@@ -67,5 +67,5 @@ class EnemySpawner:
                 enemy = Sniper(start, self.clock, self.shot_group, self.player)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
-                end_time = time.time() * 1000  # to miliseconds
+                end_time = time.time()
                 self.last_spawn_time = self.time_working - (end_time - start_time)
