@@ -36,9 +36,9 @@ class Projectile(pygame.sprite.Sprite):
         # This section calculates the spawn position (the end of the ship) and sets its position here. It takes the
         # ship's coordinates as a base and then (because of pygame coordinates) subtracts half of the ship's width
         # multiplied by sin/cos of the ship's angle.
-        self.posx = ship.rect.centerx - 1/2.2 * ship.ship_width * np.sin(np.deg2rad(ship.angle))
-        self.posy = ship.rect.centery - 1/2.2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))
-        self.rect.center = [self.posx, self.posy]
+        self.pos = np.array([ship.rect.centerx - 1/2.2 * ship.ship_width * np.sin(np.deg2rad(ship.angle)),
+                             ship.rect.centery - 1/2.2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))])
+        self.rect.center = self.pos
 
         # angle
 
@@ -62,10 +62,10 @@ class Projectile(pygame.sprite.Sprite):
         The update() function only updates the projectile's position from its angle and velocity, then sets its center
         to the new calculated position and if the projectile gets behind borders of the screen, the function kills it.
         """
-        self.posx -= np.sin(np.deg2rad(self.angle)) * self.velocity
-        self.posy -= np.cos(np.deg2rad(self.angle)) * self.velocity
-        self.rect.center = [self.posx, self.posy]
+        self.pos -= np.array([np.sin(np.deg2rad(self.angle)) * self.velocity,
+                              np.cos(np.deg2rad(self.angle)) * self.velocity])
+        self.rect.center = self.pos
 
         #  kill behind borders
-        if self.posx > ScreenSetup.width or self.posx < 0 or self.posy > ScreenSetup.height or self.posy < 0:
+        if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
             self.kill()

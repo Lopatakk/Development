@@ -1,22 +1,29 @@
 import pygame
 from explosion import Explosion
 from projectile_collision import Projectile_collision
+from pygame.sprite import Group
 
-def handle_collisions(attacker_group, target_group, projectile_colission_group, kill_attacker, explosion_group):
-    hits = pygame.sprite.groupcollide(attacker_group, target_group, dokilla=kill_attacker, dokillb=False, collided=pygame.sprite.collide_mask)
+
+def handle_collisions(attacker_group: Group, target_group: Group, is_projectile: bool, explosion_group: Group):
+    hits = pygame.sprite.groupcollide(attacker_group, target_group, dokilla=False, dokillb=False, collided=pygame.sprite.collide_mask)
     score_diff = 0
     for attacker, targets_hit in hits.items():
         for target in targets_hit:
-            target.hp -= attacker.dmg  # Odebrání životů podle poškození útočníka
-            if not kill_attacker:
-                projectile_collision = Projectile_collision(attacker.pos,1)
-                projectile_colission_group.add(projectile_collision)
+            # Odebrání životů podle poškození útočníka
+            target.hp -= attacker.dmg
+            # ship to ship collision
+            if not is_projectile:
                 attacker.hp -= target.dmg
                 if attacker.hp <= 0:
                     explosion = Explosion(attacker.pos, attacker.explosion_size)
                     explosion_group.add(explosion)
                     attacker.kill()
                     attacker.mask = None
+            # projectile to ship collision
+            else:
+                proj_explosion = Projectile_collision(attacker.pos, 1)
+                explosion_group.add(proj_explosion)
+                attacker.kill()
 
             if target.hp <= 0:
                 score_diff = target.max_hp
