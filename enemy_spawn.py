@@ -13,8 +13,8 @@ time_at_the_beginning = time.time()
 
 
 class EnemySpawner:
-    def __init__(self, group: Group, enemy_type: str, spawn_interval, shot_group: Group):
-        self.enemy_group = group
+    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, shot_group: Group, player):
+        self.enemy_group = enemy_group
         self.spawn_interval = spawn_interval
         self.screen_width = ScreenSetup.width
         self.screen_height = ScreenSetup.height
@@ -22,6 +22,7 @@ class EnemySpawner:
         self.enemy_type = enemy_type
         self.last_spawn_time = -3000
         self.shot_group = shot_group
+        self.player = player
 
     def spawn_outside_screen(self):
         side = random.choice(["top", "bottom", "left", "right"])
@@ -41,9 +42,8 @@ class EnemySpawner:
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
-                enemy = Zarovka(start)
+                enemy = Zarovka(start, self.player)
                 self.enemy_group.add(enemy)
-                enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
@@ -52,9 +52,8 @@ class EnemySpawner:
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
-                enemy = Tank(start, self.shot_group)
+                enemy = Tank(start, self.shot_group, self.player)
                 self.enemy_group.add(enemy)
-                enemy.follow_movement(player_pos)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)
@@ -63,9 +62,8 @@ class EnemySpawner:
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
-                enemy = Sniper(start, self.shot_group)
+                enemy = Sniper(start, self.shot_group, self.player)
                 self.enemy_group.add(enemy)
-                enemy.follow_movement_with_offset(player_pos, 0, 0)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time() * 1000  # to miliseconds
                 self.last_spawn_time = current_time - (end_time - start_time)

@@ -43,9 +43,9 @@ while True:
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawn
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 6000, None)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 22000, enemy_projectile_group)
-    #sniper_spawner = EnemySpawner(enemy_group, "sniper", 1000, enemy_projectile_group)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 6000, None, player)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 22000, enemy_projectile_group, player)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 8000, enemy_projectile_group, player)
     #   crosshair
     crosshair = Crosshair()
     crosshair_group = pygame.sprite.Group()
@@ -91,9 +91,8 @@ while True:
             render_health_bar(screen, player.max_hp, player.hp)
             # render_score(screen, score)
             render_overheat_bar(screen, player.overheat, player.heat)
-            update_groups([player_projectile_group, enemy_projectile_group, player_group, explosion_group, projectile_collision_group, crosshair_group], screen)
-            enemy_group.update(player.pos)
-            enemy_group.draw(screen)
+            update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
+                           explosion_group, crosshair_group], screen)
             # opening pause menu
             pause_menu(screen, clock, score)
             game_paused = False
@@ -105,19 +104,18 @@ while True:
         # player death
         if not player_group and not explosion_group:
             break
-        # current_time = time.time()
+
         # rendering/update
         #   background
         render_background(screen)
         #   groups
-        enemy_group.update(player.pos)
-        enemy_group.draw(screen)
-        update_groups([player_projectile_group, enemy_projectile_group, player_group, crosshair_group, explosion_group], screen)
+        update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group, explosion_group,
+                       crosshair_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos, time_in_game)
         tank_spawner.update(player.pos, time_in_game)
-        #sniper_spawner.update(player.pos, time_in_game)
-        #   collisions
+        sniper_spawner.update(player.pos, time_in_game)
+        #   collisions and score
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
         score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)

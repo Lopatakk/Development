@@ -10,18 +10,19 @@ from pygame.sprite import Group
 class Enemy(Ship):
     def __init__(self, start: np.ndarray, history_length: int, picture_path: str, max_velocity: int,
                  velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int,
-                 projectile_group: Group, overheat: int, cooling: float, explosion_size: int):
+                 projectile_group: Group, overheat: int, cooling: float, explosion_size: int, player):
 
         super().__init__(picture_path, start, max_velocity, velocity_coefficient, hp, dmg, fire_rate, proj_dmg,
                          projectile_group, overheat, cooling, explosion_size)
+        self.player = player
         self.tolerance = None
         self.player_position_history = []  # Historie pozic hráče
         self.history_length = history_length    # Sets length of player_position_history
                                                 # aka how many position of player we save
 
-    def follow_movement(self, player_pos):
+    def follow_movement(self):
         # Udržet historii na maximální délce
-        self.player_position_history.append(player_pos)
+        self.player_position_history.append(self.player.pos)
         if len(self.player_position_history) > self.history_length:
             self.player_position_history.pop(0)
 
@@ -43,7 +44,7 @@ class Enemy(Ship):
             self.angle = self.rot_compute(self.rect.center[0] - oldest_player_pos[0],
                                           self.rect.center[1] - oldest_player_pos[1])
 
-    def follow_movement_with_offset(self, player_pos, offset, tolerance):
+    def follow_movement_with_offset(self, offset, tolerance):
         self.offset = offset
         self.tolerance = tolerance
         # Náhodný pohyb na ose X
@@ -58,7 +59,7 @@ class Enemy(Ship):
             self.velocity = self.velocity / norm_velocity * self.max_velocity
 
         # Vypočítat směr k hráči
-        direction = np.array([player_pos[0] - self.pos[0], player_pos[1] - self.pos[1]])
+        direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
 
         # Normalizovat směr, aby měl délku 1
         norm_direction = direction / np.linalg.norm(direction)
@@ -88,8 +89,8 @@ class Enemy(Ship):
         self.pos[1] = np.clip(self.pos[1], 0, ScreenSetup.height)
 
         # Otáčení enemy k lodi
-        self.angle = self.rot_compute(self.rect.center[0] - player_pos[0],
-                                      self.rect.center[1] - player_pos[1])
+        self.angle = self.rot_compute(self.rect.center[0] - self.player.pos[0],
+                                      self.rect.center[1] - self.player.pos[1])
 
     def update(self):
         super().update()
