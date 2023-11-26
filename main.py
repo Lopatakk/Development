@@ -4,7 +4,7 @@ import time
 import random
 from player_ship import PlayerShip
 from screensetup import ScreenSetup
-from crosshair import Crosshair
+from cursor import Cursor
 from projectile import Projectile
 from renderupdate import *
 from checkbuttons import *
@@ -25,6 +25,11 @@ ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
 game_paused = False
+#   cursor
+cursor = Cursor()
+cursor_group = pygame.sprite.Group()
+cursor_group.add(cursor)
+cursor_group.update()
 
 # main loop
 while True:
@@ -46,10 +51,6 @@ while True:
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7000, None, player)
     tank_spawner = EnemySpawner(enemy_group, "tank", 25000, enemy_projectile_group, player)
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 10000, enemy_projectile_group, player)
-    #   crosshair
-    crosshair = Crosshair()
-    crosshair_group = pygame.sprite.Group()
-    crosshair_group.add(crosshair)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -57,10 +58,13 @@ while True:
     #   background
     render_background(screen)
     #   groups
-    update_groups([player_group], screen)
+    update_groups([player_group, cursor_group], screen)
     #   start text
     text_render = font.render("NEW GAME", True, (255, 255, 255))
     screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
+
+    # setting cursor to crosshair
+    cursor.set_crosshair()
 
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
@@ -87,20 +91,18 @@ while True:
             # game_pause is False from start and can be changed to True by pressing "esc"
 
             # destroying crosshair, because I do not want to see him in background in pause menu
-            crosshair.destroy()
+            cursor.set_cursor()
             render_background(screen)
             render_health_bar(screen, player.max_hp, player.hp)
             # render_score(screen, score)
             render_overheat_bar(screen, player.overheat, player.heat)
             update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
-                           explosion_group, crosshair_group], screen)
+                           explosion_group], screen)
             # opening pause menu
-            pause_menu(screen, clock, score)
+            pause_menu(screen, clock, score, cursor_group)
             game_paused = False
-            # re-creating cursor
-            crosshair = Crosshair()
-            crosshair_group = pygame.sprite.Group()
-            crosshair_group.add(crosshair)
+            # setting cursor to crosshair
+            cursor.set_crosshair()
 
         # player death
         if not player_group and not explosion_group:
@@ -111,7 +113,7 @@ while True:
         render_background(screen)
         #   groups
         update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group, explosion_group,
-                       crosshair_group], screen)
+                       cursor_group], screen)
         #   enemy spawn
         zarovka_spawner.update(player.pos, time_in_game)
         tank_spawner.update(player.pos, time_in_game)
@@ -137,7 +139,7 @@ while True:
         time_in_game += last_frame
 
     # death text
-    crosshair.disable()
+    cursor.set_cursor()
     exit_text = font.render(f"SMRT, SCORE: {score}", True, (255, 255, 255))
     screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()

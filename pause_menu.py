@@ -1,14 +1,11 @@
 import button
 from renderupdate import *
 
-def pause_menu(screen, clock, score):
+
+def pause_menu(screen, clock, score, cursor_group):
     game_paused = True
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
-    #   cursor
-    new_cursor = pygame.image.load("assets/images/cursor.png")
-    new_cursor = pygame.transform.scale(new_cursor,(0.015 * width, 0.015 * width))
-    pygame.mouse.set_visible(False)
     #   surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()   # making surface transparent
@@ -39,8 +36,7 @@ def pause_menu(screen, clock, score):
                 quit()
         #   score and cursor
         render_score(screen, score, 230, 230, 230)
-        screen.blit(new_cursor, pygame.mouse.get_pos())
-
+        update_groups([cursor_group], screen)
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
         screen.blit(background_copy, (0, 0))

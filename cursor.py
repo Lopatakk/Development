@@ -1,7 +1,8 @@
 import pygame
+from screensetup import ScreenSetup
 
 
-class Crosshair(pygame.sprite.Sprite):
+class Cursor(pygame.sprite.Sprite):
     """
     This is class for crosshair.
     By calling the constructor it makes mouse invisible and creates crosshair on its position. It also uses the
@@ -14,18 +15,27 @@ class Crosshair(pygame.sprite.Sprite):
     """
     def __init__(self):
         super().__init__()
+        # cursor
+        self.cursor_image = pygame.image.load("assets/images/cursor.png")
+        self.cursor_image = pygame.transform.scale(self.cursor_image, (0.015 * ScreenSetup.width, 0.015 * ScreenSetup.width))
+        self.cursor_image = pygame.Surface.convert_alpha(self.cursor_image)
+        # crosshair
+        self.crosshair_image = pygame.image.load("assets/images/crosshair.png")
+        self.crosshair_image = pygame.Surface.convert_alpha(self.crosshair_image)
+        # setting up
         pygame.mouse.set_visible(False)
-        self.image = pygame.image.load("assets/images/crosshair.png")
-        self.image = pygame.Surface.convert_alpha(self.image)
+        self.image = self.cursor_image
         self.rect = self.image.get_rect()
 
     def update(self):
         self.rect.center = pygame.mouse.get_pos()
 
-    def disable(self):
-        pygame.mouse.set_visible(True)
-        self.kill()
+    def set_cursor(self):
+        self.image = self.cursor_image
+
+    def set_crosshair(self):
+        self.image = self.crosshair_image
 
     def destroy(self):
+        pygame.mouse.set_visible(True)
         self.kill()
-
