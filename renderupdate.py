@@ -50,9 +50,14 @@ def render_overheat_bar(screen, overheat: int, heat: float):
     # calculating how much of the bar gets filled
     ratio = heat / overheat
     # drawing red background of the bar
-    pygame.draw.rect(screen, "red", (35/40*width, 38/40*height, 47/400*width, 1/70*height))
+    pygame.draw.rect(screen, "gray", (35/40*width, 38/40*height, 47/400*width, 1/70*height))
     # drawing the green portion
-    pygame.draw.rect(screen, "green", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+    if ratio < 0.5:
+        pygame.draw.rect(screen, "green", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+    elif ratio < 0.8:
+        pygame.draw.rect(screen, "yellow", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+    else:
+        pygame.draw.rect(screen, "orange", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
 
 
 def render_score(screen, score, R, G, B):
