@@ -124,8 +124,12 @@ class Ship(pygame.sprite.Sprite):
         # cooling - how quickly the gun cools down, self.cooling = how much heat the gun looses every frame,
         #   cooling (the constructor's argument) = how much heat the gun looses every second
         self.cooling = cooling/60
-        # is_overheated
+        # is_overheated - bool, sets True when the gun overheats, then when it cools down to 75% it sets back to False,
+        #   when true, the gun cannot fire
         self.is_overheated = False
+        # overheat_sound - sound which plays when the gun overheats
+        self.overheat_sound = pygame.mixer.Sound("assets/sounds/overheat.mp3")
+        self.overheat_sound.set_volume(0.35)
 
         # explosion
 
@@ -179,8 +183,9 @@ class Ship(pygame.sprite.Sprite):
         else:
             self.heat = 0
         # This section checks, if the gun is overheated or not (when it is cool enough)
-        if self.heat >= self.overheat:
+        if self.heat >= self.overheat and not self.is_overheated:
             self.is_overheated = True
+            self.overheat_sound.play()
         elif self.is_overheated and self.heat < 0.75 * self.overheat:
             self.is_overheated = False
 
