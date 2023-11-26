@@ -124,6 +124,8 @@ class Ship(pygame.sprite.Sprite):
         # cooling - how quickly the gun cools down, self.cooling = how much heat the gun looses every frame,
         #   cooling (the constructor's argument) = how much heat the gun looses every second
         self.cooling = cooling/60
+        # is_overheated
+        self.is_overheated = False
 
         # explosion
 
@@ -169,15 +171,21 @@ class Ship(pygame.sprite.Sprite):
         # This section has to be the last one, because it sets the ship on the new coordinates, that were calculated.
         self.rect.center = self.pos
 
-        # gun cooling (overheat regeneration)
+        # heat
 
         # This section cools down the gun (if it's hot or warm)
         if self.heat > 0:
             self.heat -= self.cooling
         else:
             self.heat = 0
+        # This section checks, if the gun is overheated or not (when it is cool enough)
+        if self.heat >= self.overheat:
+            self.is_overheated = True
+        elif self.is_overheated and self.heat < 0.75 * self.overheat:
+            self.is_overheated = False
 
         # time
+
         self.time_alive += self.clock.get_time()/1000
 
     @classmethod
@@ -204,7 +212,7 @@ class Ship(pygame.sprite.Sprite):
         (spawns) a projectile and adds it to the projectile group.
         """
         elapsed_time = self.time_alive - self.last_shot_time
-        if elapsed_time >= self.fire_rate_time and self.heat < self.overheat:
+        if elapsed_time >= self.fire_rate_time and not self.is_overheated:
             projectile = Projectile(self)
             self.last_shot_time = self.time_alive
             self.projectile_group.add(projectile)

@@ -35,10 +35,11 @@ def render_health_bar(screen, max_hp, player_hp):
     pygame.draw.rect(screen, "green", (35*width/40, 39*height/40, (47*width/400)*ratio, height/70))
 
 
-def render_overheat_bar(screen, overheat: int, heat: float):
+def render_overheat_bar(screen, overheat: int, heat: float, is_overheated: bool):
     """
     Renders overheat bar for ship in the lower left corner of the screen (above the hp bar). Green portion of the bar
     indicates how much heated ship's gun is and the red portion indicates how hotter it can get.
+    :param is_overheated: bool of the heat state of the gun
     :param screen: the surface the bar gets rendered on
     :param overheat: the max heat the gun can handle
     :param heat: current amount of heat the gun has
@@ -49,15 +50,19 @@ def render_overheat_bar(screen, overheat: int, heat: float):
     height = screen.get_height()
     # calculating how much of the bar gets filled
     ratio = heat / overheat
-    # drawing red background of the bar
+    if ratio > 1:
+        ratio = 1
+    # drawing grey background of the bar
     pygame.draw.rect(screen, "gray", (35/40*width, 38/40*height, 47/400*width, 1/70*height))
-    # drawing the green portion
-    if ratio < 0.5:
-        pygame.draw.rect(screen, "green", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
-    elif ratio < 0.8:
+    # drawing the colour portion
+    if is_overheated:
+        pygame.draw.rect(screen, "red", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+    elif ratio > 0.8:
+        pygame.draw.rect(screen, "orange", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+    elif ratio > 0.5:
         pygame.draw.rect(screen, "yellow", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
     else:
-        pygame.draw.rect(screen, "orange", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
+        pygame.draw.rect(screen, "green", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
 
 
 def render_score(screen, score, R, G, B):

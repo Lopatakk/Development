@@ -95,7 +95,7 @@ while True:
             render_background(screen)
             render_health_bar(screen, player.max_hp, player.hp)
             # render_score(screen, score)
-            render_overheat_bar(screen, player.overheat, player.heat)
+            render_overheat_bar(screen, player.overheat, player.heat, player.is_overheated)
             update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
                            explosion_group], screen)
             # opening pause menu
@@ -129,7 +129,7 @@ while True:
         #   score bar
         render_score(screen, score, 128, 128, 128)
         #   overheat bar
-        render_overheat_bar(screen, player.overheat, player.heat)
+        render_overheat_bar(screen, player.overheat, player.heat, player.is_overheated)
 
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
