@@ -30,6 +30,9 @@ class Projectile(pygame.sprite.Sprite):
         self.image = pygame.Surface.convert(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
+        self.sound.set_volume(0.1)
+        self.sound.play()
 
         # start position
 
@@ -39,6 +42,7 @@ class Projectile(pygame.sprite.Sprite):
         self.pos = np.array([ship.rect.centerx - 1/2.2 * ship.ship_width * np.sin(np.deg2rad(ship.angle)),
                              ship.rect.centery - 1/2.2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))])
         self.rect.center = self.pos
+
 
         # angle
 
@@ -65,6 +69,7 @@ class Projectile(pygame.sprite.Sprite):
         self.pos -= np.array([np.sin(np.deg2rad(self.angle)) * self.velocity,
                               np.cos(np.deg2rad(self.angle)) * self.velocity])
         self.rect.center = self.pos
+
 
         #  kill behind borders
         if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
