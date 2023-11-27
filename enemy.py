@@ -44,45 +44,22 @@ class Enemy(Ship):
             self.angle = self.rot_compute(self.rect.center[0] - oldest_player_pos[0],
                                           self.rect.center[1] - oldest_player_pos[1])
 
-    def follow_movement_with_offset(self, offset, tolerance):
-        self.offset = offset
-        self.tolerance = tolerance
-        # Náhodný pohyb na ose X
-        self.velocity[0] += np.random.uniform(-0.1, 0.1)
-
-        # Náhodný pohyb na ose Y
-        self.velocity[1] += np.random.uniform(-0.1, 0.1)
-
-        # Normalizovat rychlost, aby nedošlo k nekontrolovanému pohybu
-        norm_velocity = np.linalg.norm(self.velocity)
-        if norm_velocity > self.max_velocity:
-            self.velocity = self.velocity / norm_velocity * self.max_velocity
-
+    def follow_movement_with_offset(self, offset):
         # Vypočítat směr k hráči
         direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
-
         # Normalizovat směr, aby měl délku 1
         norm_direction = direction / np.linalg.norm(direction)
+        # vypocet vzdalenosti
+        player_distance = (direction[0]**2 + direction[1]**2) ** (1/2)
 
-        # Nastavit délku směru na pevnou vzdálenost (offset)
-        target_distance = self.offset
-        scaled_direction = norm_direction * target_distance
-
-        # Vypočítat novou pozici cíle
-        target_position = np.array([self.pos[0] + scaled_direction[0], self.pos[1] + scaled_direction[1]])
-
-        # Vypočítat směr k novému cíli
-        new_direction = np.array([target_position[0] - self.pos[0], target_position[1] - self.pos[1]])
-
-        # Zastavit lod, pokud je vzdálenost od cíle menší než offset
-        distance = np.linalg.norm(direction)
-        if distance - self.tolerance <= self.offset:
-            self.velocity[0] = -self.max_velocity
-            self.velocity[1] = -self.max_velocity
+        # kdyz je bliz nez ma
+        if player_distance <= offset:
+            self.velocity[0] += -norm_direction[0] * 2.2
+            self.velocity[1] += -norm_direction[1] * 2.2
         else:
-            # Přidat normalizovaný směr k rychlosti Enemy, pokud není vzdálenost menší než offset
-            self.velocity[0] += new_direction[0] * 2.2
-            self.velocity[1] += new_direction[1] * 2.2
+            # kdyz je dal nez muze
+            self.velocity[0] += norm_direction[0] * 2.2
+            self.velocity[1] += norm_direction[1] * 2.2
 
         # Ošetřit okraje obrazovky
         self.pos[0] = np.clip(self.pos[0], 0, ScreenSetup.width)
