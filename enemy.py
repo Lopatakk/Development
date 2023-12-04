@@ -19,6 +19,9 @@ class Enemy(Ship):
         self.player_position_history = []  # Historie pozic hráče
         self.history_length = history_length    # Sets length of player_position_history
                                                 # aka how many position of player we save
+        self.rot_freq = 0.3
+        self.omega = 2 * np.pi * self.rot_freq
+        self.offset = 0
 
     def follow_movement(self):
         # Udržet historii na maximální délce
@@ -45,6 +48,7 @@ class Enemy(Ship):
                                           self.rect.center[1] - oldest_player_pos[1])
 
     def follow_movement_with_offset(self, offset):
+        self.offset = offset
         # Vypočítat směr k hráči
         direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
         # Normalizovat směr, aby měl délku 1
@@ -53,7 +57,7 @@ class Enemy(Ship):
         player_distance = (direction[0]**2 + direction[1]**2) ** (1/2)
 
         # kdyz je bliz nez ma
-        if player_distance <= offset:
+        if player_distance <= self.offset:
             self.velocity[0] += -norm_direction[0] * 2.2
             self.velocity[1] += -norm_direction[1] * 2.2
         else:
@@ -68,6 +72,15 @@ class Enemy(Ship):
         # Otáčení enemy k lodi
         self.angle = self.rot_compute(self.rect.center[0] - self.player.pos[0],
                                       self.rect.center[1] - self.player.pos[1])
+
+    def angle_speed(self, rot_direction):
+        direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
+        tang_vector = np.array([direction[1]*rot_direction, direction[0]*rot_direction*(-1)])
+        hypotenuse = (tang_vector[0]**2 + tang_vector[1]**2)**(1/2)
+        norm_vector = tang_vector / hypotenuse
+        rot_vector = norm_vector * 5
+        rot_vector = np.array([int(rot_vector[0]), int(rot_vector[1])])
+        self.velocity += rot_vector
 
     def update(self):
         super().update()

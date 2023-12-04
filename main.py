@@ -115,8 +115,8 @@ while True:
         update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group, explosion_group,
                        cursor_group], screen)
         #   enemy spawn
-        zarovka_spawner.update()
-        tank_spawner.update()
+        #zarovka_spawner.update()
+        #tank_spawner.update()
         sniper_spawner.update()
         #   collisions and score
         score_diff = 0
