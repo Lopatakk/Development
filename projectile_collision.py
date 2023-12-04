@@ -6,7 +6,7 @@ class Projectile_collision(pygame.sprite.Sprite):
         self.images = []
         self.sound = pygame.mixer.Sound("assets/sounds/video_game_hit_sound.mp3")  # Load sound file
         self.sound.set_volume(0.05)
-        self.sound.play()
+        pygame.mixer.find_channel(True).play(self.sound)
         for num in range(1, 8):
             img = pygame.image.load(f"assets/animations/projectile_collision1/proj_col{num}.png")
             if size == 1:

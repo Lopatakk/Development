@@ -30,9 +30,6 @@ class Projectile(pygame.sprite.Sprite):
         self.image = pygame.Surface.convert(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
-        self.sound.set_volume(0.1)
-        self.sound.play()
 
         # start position
 
@@ -60,6 +57,12 @@ class Projectile(pygame.sprite.Sprite):
 
         # dmg - how much hp are taken from a ship if the ship collides with a projectile.
         self.dmg = ship.proj_dmg
+
+        # sound of firing
+
+        self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
+        self.sound.set_volume(0.1)
+        pygame.mixer.find_channel(True).play(self.sound)
 
     def update(self):
         """
