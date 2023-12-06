@@ -67,9 +67,10 @@ class Ship(pygame.sprite.Sprite):
         self.image = pygame.Surface.convert_alpha(self.image)
         # rect - Sprites work with rectangles, it is one of the necessary things, here it gets created from the image
         self.rect = self.image.get_rect()
-        # ship_width - variable used for calculating spawning point of projectiles, here it is equal to height of the
-        #   ship, because the ship image is facing upwards
-        self.ship_width = self.rect.height
+        # height - variable used for calculating spawning point of projectiles and position of enemy health bar
+        self.height = self.rect.height
+        # width - variable used for calculating position of enemy health bar
+        self.width = self.rect.width
         # mask - creates mask from partially transparent ship image, used for calculating precise collisions, the mask
         #   is then automatically updated in update()
         self.mask = pygame.mask.from_surface(self.image)

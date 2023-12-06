@@ -1,5 +1,7 @@
 import pygame
 from screensetup import ScreenSetup
+from pygame.sprite import Group
+from pygame.surface import SurfaceType
 
 
 # This file is used to store functions for rendering and updating.
@@ -73,3 +75,14 @@ def render_score(screen, score, R, G, B):
     x = (width - text.get_width()) / 2 # score in the middle of the screen
     screen.blit(text, (x, height / 200))
 
+
+def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group):
+    bar_width = 1/33*ScreenSetup.width
+    bar_height = 1/180*ScreenSetup.height
+    for ship in enemy_group:
+        if ship.hp != ship.max_hp:
+            ratio = ship.hp / ship.max_hp
+            pygame.draw.rect(screen, "red", (ship.pos[0] - 1/2*bar_width, ship.pos[1] + 5/6*ship.height,
+                                             bar_width, bar_height))
+            pygame.draw.rect(screen, "green", (ship.pos[0] - 1/2*bar_width, ship.pos[1] + 5/6*ship.height,
+                                               bar_width * ratio, bar_height))

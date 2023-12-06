@@ -36,10 +36,9 @@ class Projectile(pygame.sprite.Sprite):
         # This section calculates the spawn position (the end of the ship) and sets its position here. It takes the
         # ship's coordinates as a base and then (because of pygame coordinates) subtracts half of the ship's width
         # multiplied by sin/cos of the ship's angle.
-        self.pos = np.array([ship.rect.centerx - 1/2.2 * ship.ship_width * np.sin(np.deg2rad(ship.angle)),
-                             ship.rect.centery - 1/2.2 * ship.ship_width * np.cos(np.deg2rad(ship.angle))])
+        self.pos = np.array([ship.rect.centerx - 1 / 1.9 * ship.height * np.sin(np.deg2rad(ship.angle)),
+                             ship.rect.centery - 1 / 1.9 * ship.height * np.cos(np.deg2rad(ship.angle))])
         self.rect.center = self.pos
-
 
         # angle
 
