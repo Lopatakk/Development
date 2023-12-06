@@ -8,7 +8,7 @@ from pygame.sprite import Group
 
 
 class Enemy(Ship):
-    def __init__(self, start: np.ndarray, history_length: int, picture_path: str, clock, max_velocity: int,
+    def __init__(self, start: np.ndarray, picture_path: str, clock, max_velocity: int,
                  velocity_coefficient: float, hp: int, dmg: int, fire_rate: float, proj_dmg: int,
                  projectile_group: Group, overheat: int, cooling: float, explosion_size: int, player):
 
@@ -17,13 +17,14 @@ class Enemy(Ship):
         self.player = player
         self.tolerance = None
         self.player_position_history = []  # Historie pozic hráče
-        self.history_length = history_length    # Sets length of player_position_history
-                                                # aka how many position of player we save
+
         self.rot_freq = 0.3
         self.omega = 2 * np.pi * self.rot_freq
         self.offset = 0
 
-    def follow_movement(self):
+    def follow_movement(self, history_length):
+        self.history_length = history_length    # Sets length of player_position_history
+                                                # aka how many position of player we save
         # Udržet historii na maximální délce
         self.player_position_history.append(self.player.pos)
         if len(self.player_position_history) > self.history_length:
@@ -73,12 +74,18 @@ class Enemy(Ship):
         self.angle = self.rot_compute(self.rect.center[0] - self.player.pos[0],
                                       self.rect.center[1] - self.player.pos[1])
 
-    def angle_speed(self, rot_direction):
+    def angle_speed(self, rot_direction, omega):
+        self.omega = omega
+        # delta x a delta y hrace a enemy
         direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
-        tang_vector = np.array([direction[1]*rot_direction, direction[0]*rot_direction*(-1)])
-        hypotenuse = (tang_vector[0]**2 + tang_vector[1]**2)**(1/2)
-        norm_vector = tang_vector / hypotenuse
-        rot_vector = norm_vector * 5
+        # nromála vektoru direction(tečna kružnice pohybu)
+        normal_vector = np.array([direction[1]*rot_direction, direction[0]*rot_direction*(-1)])
+        # přepona delty x a y
+        hypotenuse = (normal_vector[0]**2 + normal_vector[1]**2)**(1/2)
+        # normalovy vektor (vždy velikost rovna 1 => rika smer kterym se ma lod pohybovat)
+        norm_vector = normal_vector / hypotenuse
+
+        rot_vector = norm_vector * self.omega
         rot_vector = np.array([int(rot_vector[0]), int(rot_vector[1])])
         self.velocity += rot_vector
 

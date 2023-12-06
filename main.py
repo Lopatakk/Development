@@ -12,6 +12,7 @@ from collisions import handle_collisions
 from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
 
+
 # general setup
 #   pygame
 pygame.init()
@@ -121,6 +122,7 @@ while True:
         zarovka_spawner.update()
         tank_spawner.update()
         sniper_spawner.update()
+
         #   collisions and score
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
