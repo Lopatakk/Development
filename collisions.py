@@ -1,6 +1,6 @@
 import pygame
 from explosion import Explosion
-from projectile_collision import Projectile_collision
+from projectileexplosion import ProjectileExplosion
 from pygame.sprite import Group
 
 
@@ -13,7 +13,7 @@ def handle_collisions(attacker_group: Group, target_group: Group, is_projectile:
             target.hp -= attacker.dmg
             # projectile to ship collision
             if is_projectile:
-                proj_explosion = Projectile_collision(attacker.pos, 1)
+                proj_explosion = ProjectileExplosion(attacker.pos, 1)
                 explosion_group.add(proj_explosion)
                 attacker.kill()
                 attacker.mask = None

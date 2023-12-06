@@ -1,6 +1,7 @@
 import pygame.sprite
 
-class Projectile_collision(pygame.sprite.Sprite):
+
+class ProjectileExplosion(pygame.sprite.Sprite):
     def __init__(self, pos, size):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
@@ -22,7 +23,6 @@ class Projectile_collision(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
         self.counter = 0
-
 
     def update(self):
         explosion_speed = 2
