@@ -1,13 +1,11 @@
-import pygame
-from enemy import Enemy
 import random
 from screensetup import ScreenSetup
 import time
-from zarovka import Zarovka
-from tank import Tank
+from enemies.zarovka import Zarovka
+from enemies.tank import Tank
 import numpy as np
 from pygame.sprite import Group
-from sniper import Sniper
+from enemies.sniper import Sniper
 from pygame.sprite import Sprite
 
 time_at_the_beginning = time.time()
