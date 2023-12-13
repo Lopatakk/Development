@@ -1,7 +1,6 @@
 [
   {
     "type": "light",
-    "picture_path": "assets/images/vlod5L.png",
     "hp": 700,
     "dmg": 600,
     "explosion_size": 2,
@@ -14,7 +13,6 @@
   },
   {
     "type": "mid",
-    "picture_path": "assets/images/vlod5.png",
     "hp": 700,
     "dmg": 600,
     "explosion_size": 2,
@@ -27,7 +25,6 @@
   },
   {
     "type": "tank",
-    "picture_path": "assets/images/vlod5T.png",
     "hp": 700,
     "dmg": 600,
     "explosion_size": 2,
