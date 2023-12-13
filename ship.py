@@ -20,9 +20,9 @@ class Ship(pygame.sprite.Sprite):
     to make the ship rotate.
     """
 
-    def __init__(self, picture_path: str, clock, start_pos: np.ndarray, max_velocity: int, velocity_coefficient: float,
-                 hp: int, dmg: int, fire_rate: float, proj_dmg: int, projectile_group: Group, overheat: int, cooling: float,
-                 explosion_size: int):
+    def __init__(self, start_pos: np.ndarray, picture_path: str, hp: int, dmg: int, explosion_size: int,
+                 max_velocity: int, velocity_coefficient: float, proj_dmg: int, fire_rate: float, cooling: float,
+                 overheat: int, projectile_group: Group, clock):
         """
         :param picture_path: directory path to the picture
         :param clock: Clock object used in game

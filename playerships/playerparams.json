@@ -1,0 +1,28 @@
+[
+  {
+    "type": "light",
+    "picture_path": "assets/images/vlod5.png",
+    "hp": 700,
+    "dmg": 600,
+    "explosion_size": 2,
+    "max_velocity": 100,
+    "velocity_coefficient": 0.1,
+    "proj_dmg": 100,
+    "fire_rate": 10,
+    "cooling": 4,
+    "overheat": 30
+  },
+  {
+    "type": "mid",
+    "picture_path": "assets/images/vlod5.png",
+    "hp": 700,
+    "dmg": 600,
+    "explosion_size": 2,
+    "max_velocity": 100,
+    "velocity_coefficient": 0.1,
+    "proj_dmg": 100,
+    "fire_rate": 10,
+    "cooling": 4,
+    "overheat": 30
+  }
+]

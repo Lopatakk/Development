@@ -6,8 +6,9 @@ from playership import PlayerShip
 
 
 class Sniper(Enemy):
-    def __init__(self, start: np.ndarray, clock, projectile_group, player):
-        super().__init__(start, "assets/images/zarovka.png", clock, 45, 0.1, 200, 150, 0.5, 150, projectile_group, 1, 1, 2, player)
+    def __init__(self, start, projectile_group, clock, player):
+        super().__init__(start, "assets/images/zarovka.png", 200, 150, 2, 45,
+                         0.1, 150, 0.5, 1, 1, projectile_group, clock, player)
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (60, 100))
         self.rot_direction = random.choice([1, -1])
 

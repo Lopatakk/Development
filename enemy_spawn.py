@@ -8,12 +8,13 @@ from tank import Tank
 import numpy as np
 from pygame.sprite import Group
 from sniper import Sniper
+from pygame.sprite import Sprite
 
 time_at_the_beginning = time.time()
 
 
 class EnemySpawner:
-    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, clock, shot_group: Group, player):
+    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, shot_group: Group, clock, player: Sprite):
         self.enemy_group = enemy_group
         self.spawn_interval = spawn_interval
         self.screen_width = ScreenSetup.width
@@ -54,7 +55,7 @@ class EnemySpawner:
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
-                enemy = Tank(start, self.clock, self.shot_group, self.player)
+                enemy = Tank(start, self.shot_group, self.clock, self.player)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()
@@ -64,7 +65,7 @@ class EnemySpawner:
             if elapsed_time >= self.spawn_interval:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
-                enemy = Sniper(start, self.clock, self.shot_group, self.player)
+                enemy = Sniper(start, self.shot_group, self.clock, self.player)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()

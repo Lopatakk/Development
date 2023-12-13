@@ -14,18 +14,18 @@ class PlayerShip(Ship):
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).
     """
-    def __init__(self, clock, projectile_group: Group):
+    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, velocity_coefficient, proj_dmg, fire_rate,
+                 cooling, overheat, projectile_group, clock):
         """
         :param clock: Clock object used in game
         :param projectile_group: sprite group for fired projectiles
         """
-        with open("parameterization.json", "r") as param_file:
+        with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
 
-        super().__init__(player_param["picture_path"], clock, np.array([ScreenSetup.width/2, ScreenSetup.height/2]),
-                         player_param["max_velocity"], player_param["velocity_coefficient"], player_param["hp"],
-                         player_param["dmg"], player_param["fire_rate"], player_param["projectile_dmg"], projectile_group,
-                         player_param["max_heat_level"], player_param["cooling"], player_param["explosion_size"])
+        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, hp, dmg, explosion_size,
+                         max_velocity, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, projectile_group,
+                         clock)
 
     def update(self):
         # angle calculation

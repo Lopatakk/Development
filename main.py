@@ -3,6 +3,7 @@ import sys
 import time
 import random
 from playership import PlayerShip
+from playerships.playerlight import PlayerLight
 from screensetup import ScreenSetup
 from cursor import Cursor
 from projectile import Projectile
@@ -45,15 +46,15 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerShip(clock, player_projectile_group)
+    player = PlayerLight(clock, player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawners
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, clock, None, player)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 25, clock, enemy_projectile_group, player)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, clock, enemy_projectile_group, player)
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, clock, player)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, clock, player)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, clock, player)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
