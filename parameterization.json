@@ -1,0 +1,12 @@
+{
+  "picture_path": "assets/images/vlod5.png",
+  "max_velocity": 100,
+  "velocity_coefficient": 0.1,
+  "hp": 700,
+  "dmg": 600,
+  "fire_rate": 10,
+  "projectile_dmg": 100,
+  "max_heat_level": 30,
+  "cooling": 4,
+  "explosion_size": 2
+}

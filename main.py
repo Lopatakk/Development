@@ -2,7 +2,7 @@ import pygame
 import sys
 import time
 import random
-from player_ship import PlayerShip
+from playership import PlayerShip
 from screensetup import ScreenSetup
 from cursor import Cursor
 from projectile import Projectile

@@ -2,7 +2,7 @@ from enemy import Enemy
 import numpy as np
 import pygame
 import random
-from player_ship import PlayerShip
+from playership import PlayerShip
 
 
 class Sniper(Enemy):
