@@ -7,6 +7,7 @@ import json
 
 class Tank(Enemy):
     def __init__(self, start, projectile_group, clock, player):
+        # reading parameters file and picking Tank data from it
         with open("enemies/enemyparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
         param = enemy_param[1]

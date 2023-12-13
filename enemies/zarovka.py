@@ -6,6 +6,7 @@ import json
 
 class Zarovka(Enemy):
     def __init__(self, start, clock, player):
+        # reading parameters file and picking Zarovka data from it
         with open("enemies/enemyparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
         param = enemy_param[0]

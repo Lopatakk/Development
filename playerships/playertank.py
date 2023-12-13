@@ -5,6 +5,7 @@ import json
 
 class PlayerTank(PlayerShip):
     def __init__(self, clock, projectile_group: Group):
+        # reading parameters file and picking PlayerTank data from it
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param[2]
