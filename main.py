@@ -4,6 +4,8 @@ import time
 import random
 from playership import PlayerShip
 from playerships.playerlight import PlayerLight
+from playerships.playermid import PlayerMid
+from playerships.playertank import PlayerTank
 from screensetup import ScreenSetup
 from cursor import Cursor
 from projectile import Projectile
@@ -46,7 +48,7 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerLight(clock, player_projectile_group)
+    player = PlayerMid(clock, player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
