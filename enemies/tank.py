@@ -2,12 +2,19 @@ from enemy import Enemy
 import pygame
 import numpy as np
 from pygame.sprite import Group
+import json
 
 
 class Tank(Enemy):
     def __init__(self, start, projectile_group, clock, player):
-        super().__init__(start, "../assets/images/tank.png", 4000, 600, 2, 24,
-                         0.1, 30, 1, 3, 100, projectile_group, clock, player)
+        with open("enemies/enemyparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        param = enemy_param[1]
+
+        super().__init__(start, "assets/images/tank.png", param["hp"], param["dmg"], param["explosion_size"],
+                         param["max_velocity"], param["velocity_coefficient"], param["proj_dmg"], param["fire_rate"],
+                         param["cooling"], param["overheat"], projectile_group, clock, player)
+
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (150, 150))
 
     def update(self):

@@ -1,7 +1,6 @@
 [
   {
     "type": "zarovka",
-    "picture_path": "../assets/images/zarovka_new.png",
     "hp": 500,
     "dmg": 600,
     "explosion_size": 2,
@@ -14,7 +13,6 @@
   },
   {
     "type": "tank",
-    "picture_path": "../assets/images/tank.png",
     "hp": 4000,
     "dmg": 600,
     "explosion_size": 2,
@@ -27,7 +25,6 @@
   },
   {
     "type": "sniper",
-    "picture_path": "../assets/images/zarovka.png",
     "hp": 200,
     "dmg": 150,
     "explosion_size": 2,
