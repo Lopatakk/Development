@@ -16,7 +16,7 @@ def check_wsad(acceleration):
     Used for changing velocity of player's ship.
     """
 
-    array = np.array([0, 0])
+    array = np.array([0.0, 0.0])
     key = pygame.key.get_pressed()
 
     # X axis

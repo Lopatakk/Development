@@ -1,10 +1,10 @@
 [
   {
     "type": "light",
-    "hp": 700,
+    "hp": 400,
     "dmg": 600,
     "explosion_size": 2,
-    "max_velocity": 100,
+    "max_velocity": 130,
     "acceleration": 3,
     "velocity_coefficient": 0.1,
     "proj_dmg": 100,
@@ -27,10 +27,10 @@
   },
   {
     "type": "tank",
-    "hp": 700,
+    "hp": 1300,
     "dmg": 600,
     "explosion_size": 2,
-    "max_velocity": 100,
+    "max_velocity": 50,
     "acceleration": 0.3,
     "velocity_coefficient": 0.1,
     "proj_dmg": 100,

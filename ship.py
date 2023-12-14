@@ -21,8 +21,8 @@ class Ship(pygame.sprite.Sprite):
     """
 
     def __init__(self, start_pos: np.ndarray, picture_path: str, hp: int, dmg: int, explosion_size: int,
-                 max_velocity: int, acceleration: float, velocity_coefficient: float, proj_dmg: int, fire_rate: float, cooling: float,
-                 overheat: int, projectile_group: Group, clock):
+                 max_velocity: int, acceleration: float, velocity_coefficient: float, proj_dmg: int, fire_rate: float,
+                 cooling: float, overheat: int, projectile_group: Group, clock):
         """
         :param picture_path: directory path to the picture
         :param clock: Clock object used in game
@@ -90,7 +90,7 @@ class Ship(pygame.sprite.Sprite):
         # velocity
 
         # velocity - array carrying the values of the ship speed in both axes [x, y], this is the one thing to change
-        self.velocity = np.array([0, 0])
+        self.velocity = np.array([0.0, 0.0])
         # max_velocity - maximum speed of the ship, it is automatically checked, if it is exceeded or not
         self.max_velocity = max_velocity
         # acceleration - acceleration of the ship
