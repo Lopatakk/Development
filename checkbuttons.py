@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 
 
-def check_wsad():
+def check_wsad(acceleration):
     """
     Returns numpy array [x, y], where x and y have integer values which changes depending on pressing WSAD keys
 
@@ -19,18 +19,20 @@ def check_wsad():
     array = np.array([0, 0])
     key = pygame.key.get_pressed()
 
+    # X axis
     if key[pygame.K_a] and key[pygame.K_d]:
         array[0] = 0
     elif key[pygame.K_a]:
-        array[0] = -1
+        array[0] = -acceleration
     elif key[pygame.K_d]:
-        array[0] = +1
+        array[0] = +acceleration
 
+    # Y axis
     if key[pygame.K_w] and key[pygame.K_s]:
         array[0] = 0
     elif key[pygame.K_w]:
-        array[1] = -1
+        array[1] = -acceleration
     elif key[pygame.K_s]:
-        array[1] = +1
+        array[1] = +acceleration
 
     return array

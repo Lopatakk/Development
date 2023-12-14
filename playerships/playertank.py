@@ -11,8 +11,8 @@ class PlayerTank(PlayerShip):
         param = player_param[2]
 
         super().__init__("assets/images/vlod5T.png", param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["velocity_coefficient"], param["proj_dmg"], param["fire_rate"],
-                         param["cooling"], param["overheat"], projectile_group, clock)
+                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
+                         param["fire_rate"], param["cooling"], param["overheat"], projectile_group, clock)
 
     def update(self):
         super().update()

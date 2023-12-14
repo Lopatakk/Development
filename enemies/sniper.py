@@ -14,15 +14,16 @@ class Sniper(Enemy):
         param = enemy_param[2]
 
         super().__init__(start, "assets/images/zarovka.png", param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["velocity_coefficient"], param["proj_dmg"], param["fire_rate"],
-                         param["cooling"], param["overheat"], projectile_group, clock, player)
+                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
+                         param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
+                         param["overheat"], param["offset"], projectile_group, clock, player)
 
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (60, 100))
 
         self.rot_direction = random.choice([1, -1])
 
     def update(self):
-        self.angle_speed(self.rot_direction, 3)
-        self.follow_movement_with_offset(500)
+        self.angle_speed(self.rot_direction)
+        self.follow_movement_with_offset()
         self.shoot()
         super().update()

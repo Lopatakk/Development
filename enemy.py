@@ -8,18 +8,18 @@ from pygame.sprite import Sprite
 
 
 class Enemy(Ship):
-    def __init__(self, start: np.ndarray, picture_path, hp, dmg, explosion_size, max_velocity, velocity_coefficient,
-                 proj_dmg, fire_rate, cooling, overheat, projectile_group, clock, player: Sprite):
+    def __init__(self, start: np.ndarray, picture_path, hp, dmg, explosion_size, max_velocity, acceleration,
+                 velocity_coefficient, rot_velocity, proj_dmg, fire_rate, cooling, overheat, offset, projectile_group,
+                 clock, player: Sprite):
 
-        super().__init__(start, picture_path, hp, dmg, explosion_size, max_velocity, velocity_coefficient, proj_dmg,
-                         fire_rate, cooling, overheat, projectile_group, clock)
-        self.player = player
+        super().__init__(start, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
+                         proj_dmg, fire_rate, cooling, overheat, projectile_group, clock)
         self.tolerance = None
         self.player_position_history = []  # Historie pozic hráče
 
-        self.rot_freq = 0.3
-        self.omega = 2 * np.pi * self.rot_freq
-        self.offset = 0
+        self.player = player
+        self.rot_velocity = rot_velocity
+        self.offset = offset
 
     def follow_movement(self, history_length):
         self.history_length = history_length    # Sets length of player_position_history
@@ -40,15 +40,14 @@ class Enemy(Ship):
             norm_direction = direction / np.linalg.norm(direction)
 
             # Přidat normalizovaný směr k rychlosti Enemy
-            self.velocity[0] += norm_direction[0] * 2.2
-            self.velocity[1] += norm_direction[1] * 2.2
+            self.velocity[0] += norm_direction[0] * self.acceleration
+            self.velocity[1] += norm_direction[1] * self.acceleration
 
             # Otáčení enemy k lodi
             self.angle = self.rot_compute(self.rect.center[0] - oldest_player_pos[0],
                                           self.rect.center[1] - oldest_player_pos[1])
 
-    def follow_movement_with_offset(self, offset):
-        self.offset = offset
+    def follow_movement_with_offset(self):
         # Vypočítat směr k hráči
         direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
         # Normalizovat směr, aby měl délku 1
@@ -58,12 +57,12 @@ class Enemy(Ship):
 
         # kdyz je bliz nez ma
         if player_distance <= self.offset:
-            self.velocity[0] += -norm_direction[0] * 2.2
-            self.velocity[1] += -norm_direction[1] * 2.2
+            self.velocity[0] -= norm_direction[0] * self.acceleration
+            self.velocity[1] -= norm_direction[1] * self.acceleration
         else:
             # kdyz je dal nez muze
-            self.velocity[0] += norm_direction[0] * 2.2
-            self.velocity[1] += norm_direction[1] * 2.2
+            self.velocity[0] += norm_direction[0] * self.acceleration
+            self.velocity[1] += norm_direction[1] * self.acceleration
 
         # Ošetřit okraje obrazovky
         self.pos[0] = np.clip(self.pos[0], 0, ScreenSetup.width)
@@ -73,8 +72,7 @@ class Enemy(Ship):
         self.angle = self.rot_compute(self.rect.center[0] - self.player.pos[0],
                                       self.rect.center[1] - self.player.pos[1])
 
-    def angle_speed(self, rot_direction, omega):
-        self.omega = omega
+    def angle_speed(self, rot_direction):
         # delta x a delta y hrace a enemy
         direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
         # nromála vektoru direction(tečna kružnice pohybu)
@@ -84,7 +82,7 @@ class Enemy(Ship):
         # normalovy vektor (vždy velikost rovna 1 => rika smer kterym se ma lod pohybovat)
         norm_vector = normal_vector / hypotenuse
 
-        rot_vector = norm_vector * self.omega
+        rot_vector = norm_vector * self.rot_velocity
         rot_vector = np.array([int(rot_vector[0]), int(rot_vector[1])])
         self.velocity += rot_vector
 

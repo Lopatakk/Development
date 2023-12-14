@@ -14,7 +14,7 @@ class PlayerShip(Ship):
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).
     """
-    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, velocity_coefficient, proj_dmg, fire_rate,
+    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate,
                  cooling, overheat, projectile_group, clock):
         """
         :param clock: Clock object used in game
@@ -24,7 +24,7 @@ class PlayerShip(Ship):
             player_param = json.load(param_file)
 
         super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, hp, dmg, explosion_size,
-                         max_velocity, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, projectile_group,
+                         max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, projectile_group,
                          clock)
 
     def update(self):
@@ -34,7 +34,7 @@ class PlayerShip(Ship):
 
         # key/mouse pressing
         #   wsad
-        self.velocity += check_wsad()
+        self.velocity += check_wsad(self.acceleration)
         #   mouse
         mouse = pygame.mouse.get_pressed(num_buttons=5)
         if mouse[0]:

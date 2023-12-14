@@ -13,8 +13,9 @@ class Tank(Enemy):
         param = enemy_param[1]
 
         super().__init__(start, "assets/images/tank.png", param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["velocity_coefficient"], param["proj_dmg"], param["fire_rate"],
-                         param["cooling"], param["overheat"], projectile_group, clock, player)
+                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
+                         param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
+                         param["overheat"], param["offset"], projectile_group, clock, player)
 
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (150, 150))
 

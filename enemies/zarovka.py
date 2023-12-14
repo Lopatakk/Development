@@ -12,8 +12,9 @@ class Zarovka(Enemy):
         param = enemy_param[0]
 
         super().__init__(start, "assets/images/zarovka_new.png", param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["velocity_coefficient"], param["proj_dmg"], param["fire_rate"],
-                         param["cooling"], param["overheat"], None, clock, player)
+                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
+                         param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
+                         param["overheat"], param["offset"], None, clock, player)
 
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (120, 120))
 
