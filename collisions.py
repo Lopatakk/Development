@@ -34,3 +34,16 @@ def handle_collisions(attacker_group: Group, target_group: Group, is_projectile:
                 target.mask = None
 
     return score_diff
+
+
+def handle_item_collisions(item_group: Group, ship_group: Group):
+    hits = pygame.sprite.groupcollide(item_group, ship_group, dokilla=False, dokillb=False, collided=pygame.sprite.collide_mask)
+    for item, ships_hit in hits.items():
+        for ship in ships_hit:
+            if item.type == "medkit":
+                ship.hp += item.heal
+                if ship.hp > ship.max_hp:
+                    ship.hp = ship.max_hp
+                pygame.mixer.find_channel(True).play(item.sound)
+                item.kill()
+                item.mask = None

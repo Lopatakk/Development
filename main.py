@@ -1,19 +1,16 @@
 import pygame
 import sys
 import time
-import random
-from playership import PlayerShip
 from playerships.playerlight import PlayerLight
 from playerships.playermid import PlayerMid
 from playerships.playertank import PlayerTank
 from screensetup import ScreenSetup
 from cursor import Cursor
-from projectile import Projectile
 from renderupdate import *
-from checkbuttons import *
-from collisions import handle_collisions
+from collisions import *
 from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
+from itemspawn import ItemSpawner
 
 
 # general setup
@@ -57,6 +54,9 @@ while True:
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, clock, player)
     tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, clock, player)
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, clock, player)
+    #   items and item spawners
+    item_group = pygame.sprite.Group()
+    medkit_spawner = ItemSpawner(item_group, 57, "medkit", clock, player)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -119,19 +119,21 @@ while True:
         #   background
         render_background(screen)
         #   groups
-        update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group, explosion_group,
-                       cursor_group], screen)
+        update_groups([player_projectile_group, enemy_projectile_group, item_group, enemy_group, player_group,
+                       explosion_group, cursor_group], screen)
         #   enemy spawn
         zarovka_spawner.update()
         tank_spawner.update()
         sniper_spawner.update()
-
-        #   collisions and score
+        #   item spawn
+        medkit_spawner.update()
+        #   score and collisions
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
         score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
         handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
         score += score_diff
+        handle_item_collisions(item_group, player_group)
         #   health bar
         render_health_bar(screen, player.max_hp, player.hp)
         #   score bar
