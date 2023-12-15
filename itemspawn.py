@@ -8,8 +8,7 @@ from pygame.sprite import Sprite
 
 
 class ItemSpawner:
-    def __init__(self, item_group: Group, spawn_interval: int, item: str, clock, player: Sprite):
-        super().__init__()
+    def __init__(self, item_group: Group, item: str, spawn_interval: int, clock, player: Sprite):
         self.item_group = item_group
         self.spawn_interval = spawn_interval
         self.item = item
@@ -25,7 +24,7 @@ class ItemSpawner:
         match self.item:
             case "medkit":
                 if elapsed_time >= self.spawn_interval:
-                    medkit = Medkit(self.spawn_pos())
+                    medkit = Medkit(self.spawn_pos(), self.clock)
                     self.item_group.add(medkit)
                     self.last_spawn_time = self.time_working
 
