@@ -24,6 +24,10 @@ class PlayerShip(Ship):
                          max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
                          projectile_group, clock)
         self.buttons_state = [False, False, False, False, False, False, False]
+        self.last_q_use = 0
+        self.q_cooldown = 10
+        self.last_e_use = 0
+        self.e_cooldown = 20
 
     def update(self):
         # angle calculation
@@ -32,7 +36,21 @@ class PlayerShip(Ship):
 
         # key/mouse pressing
         self.buttons_state = check_buttons()
+        #   w s a d
         self.accelerate()
+        #   q
+        if self.buttons_state[4]:
+            elapsed_time = self.time_alive - self.last_q_use
+            if elapsed_time >= self.q_cooldown:
+                self.q_action()
+                self.last_q_use = self.time_alive
+        #   e
+        if self.buttons_state[5]:
+            elapsed_time = self.time_alive - self.last_e_use
+            if elapsed_time >= self.e_cooldown:
+                self.e_action()
+                self.last_e_use = self.time_alive
+        #   mouse
         if self.buttons_state[6]:
             self.shoot()
 
@@ -72,3 +90,9 @@ class PlayerShip(Ship):
             self.velocity[1] -= self.acceleration
         elif self.buttons_state[1]:
             self.velocity[1] += self.acceleration
+
+    def q_action(self):
+        print("\"Q\" action not defined")
+
+    def e_action(self):
+        print("\"A\" action not defined")

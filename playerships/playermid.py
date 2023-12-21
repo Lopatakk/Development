@@ -16,3 +16,9 @@ class PlayerMid(PlayerShip):
 
     def update(self):
         super().update()
+
+    def q_action(self):
+        print("status quo")
+
+    def e_action(self):
+        print("reeeeeeeeeeeee")
