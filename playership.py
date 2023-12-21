@@ -14,18 +14,16 @@ class PlayerShip(Ship):
     The update() function calculates the angle between the ship and mouse positions and then calls the parent's class
     update (see Ship's update() function).
     """
-    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate,
-                 cooling, overheat, projectile_group, clock):
+    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg,
+                 fire_rate, cooling, overheat, projectile_group, clock):
         """
         :param clock: Clock object used in game
         :param projectile_group: sprite group for fired projectiles
         """
-        with open("playerships/playerparams.json", "r") as param_file:
-            player_param = json.load(param_file)
-
         super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, hp, dmg, explosion_size,
-                         max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, projectile_group,
-                         clock)
+                         max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
+                         projectile_group, clock)
+        self.buttons_state = [False, False, False, False, False, False, False]
 
     def update(self):
         # angle calculation
@@ -33,11 +31,9 @@ class PlayerShip(Ship):
                                       self.rect.center[1] - pygame.mouse.get_pos()[1])
 
         # key/mouse pressing
-        #   wsad
-        self.velocity += check_wsad(self.acceleration)
-        #   mouse
-        mouse = pygame.mouse.get_pressed(num_buttons=5)
-        if mouse[0]:
+        self.buttons_state = check_buttons()
+        self.accelerate()
+        if self.buttons_state[6]:
             self.shoot()
 
         # update declared in class Ship
@@ -59,3 +55,20 @@ class PlayerShip(Ship):
         elif self.pos[1] > ScreenSetup.height:
             self.pos[1] = ScreenSetup.height
             self.velocity[1] = 0
+
+    def accelerate(self):
+        # X axis
+        if self.buttons_state[2] and self.buttons_state[3]:
+            self.velocity[0] += 0
+        elif self.buttons_state[2]:
+            self.velocity[0] -= self.acceleration
+        elif self.buttons_state[3]:
+            self.velocity[0] += self.acceleration
+
+        # Y axis
+        if self.buttons_state[0] and self.buttons_state[1]:
+            self.velocity[0] += 0
+        elif self.buttons_state[0]:
+            self.velocity[1] -= self.acceleration
+        elif self.buttons_state[1]:
+            self.velocity[1] += self.acceleration
