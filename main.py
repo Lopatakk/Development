@@ -56,7 +56,7 @@ while True:
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, clock, player)
     #   items and item spawners
     item_group = pygame.sprite.Group()
-    medkit_spawner = ItemSpawner(item_group, "medkit", 45, clock, player)
+    medkit_spawner = ItemSpawner(item_group, "medkit", 53, clock, player)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -99,9 +99,10 @@ while True:
             # destroying crosshair, because I do not want to see him in background in pause menu
             cursor.set_cursor()
             render_background(screen)
-            render_health_bar(screen, player.max_hp, player.hp)
-            # render_score(screen, score)
-            render_overheat_bar(screen, player.overheat, player.heat, player.is_overheated)
+            render_health_bar(screen, player.hp / player.max_hp)
+            render_overheat_bar(screen, player.heat / player.overheat, player.is_overheated)
+            render_q_e_bars(screen, (player.time_alive - player.last_q_use) / player.q_cooldown, player.is_q_action_on,
+                            (player.time_alive - player.last_e_use) / player.e_cooldown, player.is_e_action_on)
             render_enemy_health_bar(screen, enemy_group)
             update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
                            explosion_group], screen)
@@ -135,11 +136,11 @@ while True:
         score += score_diff
         handle_item_collisions(item_group, player_group)
         #   health bar
-        render_health_bar(screen, player.max_hp, player.hp)
+        render_health_bar(screen, player.hp / player.max_hp)
         #   score bar
         render_score(screen, score, 128, 128, 128)
         #   overheat bar
-        render_overheat_bar(screen, player.overheat, player.heat, player.is_overheated)
+        render_overheat_bar(screen, player.heat / player.overheat, player.is_overheated)
         #   q and e bars
         render_q_e_bars(screen, (player.time_alive - player.last_q_use) / player.q_cooldown, player.is_q_action_on,
                         (player.time_alive - player.last_e_use) / player.e_cooldown, player.is_e_action_on)
