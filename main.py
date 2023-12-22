@@ -32,7 +32,7 @@ cursor_group = pygame.sprite.Group()
 cursor_group.add(cursor)
 cursor_group.update()
 #   sound
-pygame.mixer.set_num_channels(12)
+pygame.mixer.set_num_channels(24)
 
 # main loop
 while True:
