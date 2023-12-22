@@ -15,7 +15,8 @@ class PlayerShip(Ship):
     update (see Ship's update() function).
     """
     def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg,
-                 fire_rate, cooling, overheat, projectile_group, clock):
+                 fire_rate, cooling, overheat, q_cooldown, q_ongoing_time, e_cooldown, e_ongoing_time, projectile_group,
+                 clock):
         """
         :param clock: Clock object used in game
         :param projectile_group: sprite group for fired projectiles
@@ -26,14 +27,14 @@ class PlayerShip(Ship):
         self.buttons_state = [False, False, False, False, False, False, False]
 
         self.last_q_use = 0
-        self.q_cooldown = 10
+        self.q_cooldown = q_cooldown
         self.is_q_action_on = False
-        self.q_ongoing_time = 5
+        self.q_ongoing_time = q_ongoing_time
 
         self.last_e_use = 0
-        self.e_cooldown = 20
+        self.e_cooldown = e_cooldown
         self.is_e_action_on = False
-        self.e_ongoing_time = 5
+        self.e_ongoing_time = e_ongoing_time
 
     def update(self):
         # angle calculation

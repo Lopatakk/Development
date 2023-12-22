@@ -12,7 +12,20 @@ class PlayerLight(PlayerShip):
 
         super().__init__("assets/images/vlod5L.png", param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
-                         param["fire_rate"], param["cooling"], param["overheat"], projectile_group, clock)
+                         param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
+                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
 
     def update(self):
         super().update()
+
+    def q_action(self):
+        print("status quo")
+
+    def q_turn_off(self):
+        print("q turning off, over")
+
+    def e_action(self):
+        print("reeeeeeeeeeeee")
+
+    def e_turn_off(self):
+        print("e turning off, over")
