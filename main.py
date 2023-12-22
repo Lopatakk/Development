@@ -140,6 +140,9 @@ while True:
         render_score(screen, score, 128, 128, 128)
         #   overheat bar
         render_overheat_bar(screen, player.overheat, player.heat, player.is_overheated)
+        #   q and e bars
+        render_q_e_bars(screen, (player.time_alive - player.last_q_use) / player.q_cooldown, player.is_q_action_on,
+                        (player.time_alive - player.last_e_use) / player.e_cooldown, player.is_e_action_on)
         #   enemy health bar
         render_enemy_health_bar(screen, enemy_group)
 

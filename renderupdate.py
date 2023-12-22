@@ -16,7 +16,7 @@ def render_background(screen):
     screen.blit(background, (0, 0))
 
 
-def update_groups(groups, screen):
+def update_groups(groups, screen: SurfaceType):
     """
     This function updates all the sprite groups in the input list. The order does matter, because the latter the group
     is in the list, the upper it will apper.
@@ -28,7 +28,7 @@ def update_groups(groups, screen):
         group.update()
 
 
-def render_health_bar(screen, max_hp, player_hp):
+def render_health_bar(screen: SurfaceType, max_hp, player_hp):
     height = ScreenSetup.height  # finds height of screen
     width = ScreenSetup.width  # finds width of screen
     # calculate health ratio
@@ -37,7 +37,7 @@ def render_health_bar(screen, max_hp, player_hp):
     pygame.draw.rect(screen, "green", (35*width/40, 39*height/40, (47*width/400)*ratio, height/70))
 
 
-def render_overheat_bar(screen, overheat: int, heat: float, is_overheated: bool):
+def render_overheat_bar(screen: SurfaceType, overheat: int, heat: float, is_overheated: bool):
     """
     Renders overheat bar for ship in the lower left corner of the screen (above the hp bar). Green portion of the bar
     indicates how much heated ship's gun is and the red portion indicates how hotter it can get.
@@ -67,18 +67,18 @@ def render_overheat_bar(screen, overheat: int, heat: float, is_overheated: bool)
         pygame.draw.rect(screen, "green", (35/40*width, 38/40*height, (47/400*width)*ratio, 1/70*height))
 
 
-def render_score(screen, score, R, G, B):
+def render_score(screen: SurfaceType, score, R, G, B):
     height = ScreenSetup.height  # finds height of screen
     width = ScreenSetup.width  # finds width of screen
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (R, G, B))
-    x = (width - text.get_width()) / 2 # score in the middle of the screen
+    x = (width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, height / 200))
 
 
 def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group):
-    bar_width = 1/33*ScreenSetup.width
-    bar_height = 1/180*ScreenSetup.height
+    bar_width = 1/33 * ScreenSetup.width
+    bar_height = 1/180 * ScreenSetup.height
     for ship in enemy_group:
         if ship.hp != ship.max_hp:
             ratio = ship.hp / ship.max_hp
@@ -86,3 +86,41 @@ def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group):
                                              bar_width, bar_height))
             pygame.draw.rect(screen, "green", (ship.pos[0] - 1/2*bar_width, ship.pos[1] + 5/6*ship.height,
                                                bar_width * ratio, bar_height))
+
+
+def render_q_e_bars(screen: SurfaceType, q_ratio, is_q_action_on, e_ratio, is_e_action_on):
+    # bars proportions
+    bars_x_pos = 3/400 * ScreenSetup.width
+    q_bar_y_pos = 38/40 * ScreenSetup.height
+    e_bar_y_pos = 39/40 * ScreenSetup.height
+    bars_width = 47/400 * ScreenSetup.width
+    bars_height = 1/70 * ScreenSetup.height
+    # ratios limitations
+    if q_ratio > 1:
+        q_ratio = 1
+    if e_ratio > 1:
+        e_ratio = 1
+    # render gray back rects
+    #   q
+    pygame.draw.rect(screen, "gray", (bars_x_pos, q_bar_y_pos, bars_width, bars_height))
+    #   e
+    pygame.draw.rect(screen, "gray", (bars_x_pos, e_bar_y_pos, bars_width, bars_height))
+    # render the colour part
+    #   q
+    if is_q_action_on:
+        pygame.draw.rect(screen, "red", (bars_x_pos, q_bar_y_pos, bars_width, bars_height))
+    elif q_ratio == 1:
+        pygame.draw.rect(screen, "green", (bars_x_pos, q_bar_y_pos, bars_width, bars_height))
+    elif q_ratio > 0.5:
+        pygame.draw.rect(screen, "orange", (bars_x_pos, q_bar_y_pos, bars_width * q_ratio, bars_height))
+    else:
+        pygame.draw.rect(screen, "yellow", (bars_x_pos, q_bar_y_pos, bars_width * q_ratio, bars_height))
+    #   e
+    if is_e_action_on:
+        pygame.draw.rect(screen, "red", (bars_x_pos, e_bar_y_pos, bars_width, bars_height))
+    elif e_ratio == 1:
+        pygame.draw.rect(screen, "green", (bars_x_pos, e_bar_y_pos, bars_width, bars_height))
+    elif e_ratio > 0.5:
+        pygame.draw.rect(screen, "orange", (bars_x_pos, e_bar_y_pos, bars_width * e_ratio, bars_height))
+    else:
+        pygame.draw.rect(screen, "yellow", (bars_x_pos, e_bar_y_pos, bars_width*e_ratio, bars_height))

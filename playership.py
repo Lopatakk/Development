@@ -57,6 +57,7 @@ class PlayerShip(Ship):
         if self.is_q_action_on and self.time_alive >= self.last_q_use + self.q_ongoing_time:
             self.q_turn_off()
             self.is_q_action_on = False
+            self.last_q_use = self.time_alive
         #   e
         #       turn on
         if self.buttons_state[5]:
@@ -69,6 +70,7 @@ class PlayerShip(Ship):
         if self.is_e_action_on and self.time_alive >= self.last_e_use + self.e_ongoing_time:
             self.e_turn_off()
             self.is_e_action_on = False
+            self.last_e_use = self.time_alive
         #   mouse
         if self.buttons_state[6]:
             self.shoot()
