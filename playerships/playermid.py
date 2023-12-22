@@ -20,5 +20,11 @@ class PlayerMid(PlayerShip):
     def q_action(self):
         print("status quo")
 
+    def q_turn_off(self):
+        print("q turning off, over")
+
     def e_action(self):
         print("reeeeeeeeeeeee")
+
+    def e_turn_off(self):
+        print("e turning off, over")

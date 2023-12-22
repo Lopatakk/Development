@@ -24,10 +24,16 @@ class PlayerShip(Ship):
                          max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
                          projectile_group, clock)
         self.buttons_state = [False, False, False, False, False, False, False]
+
         self.last_q_use = 0
         self.q_cooldown = 10
+        self.is_q_action_on = False
+        self.q_ongoing_time = 5
+
         self.last_e_use = 0
         self.e_cooldown = 20
+        self.is_e_action_on = False
+        self.e_ongoing_time = 5
 
     def update(self):
         # angle calculation
@@ -39,17 +45,29 @@ class PlayerShip(Ship):
         #   w s a d
         self.accelerate()
         #   q
+        #       turn on
         if self.buttons_state[4]:
             elapsed_time = self.time_alive - self.last_q_use
             if elapsed_time >= self.q_cooldown:
                 self.q_action()
+                self.is_q_action_on = True
                 self.last_q_use = self.time_alive
+        #       turn off
+        if self.is_q_action_on and self.time_alive >= self.last_q_use + self.q_ongoing_time:
+            self.q_turn_off()
+            self.is_q_action_on = False
         #   e
+        #       turn on
         if self.buttons_state[5]:
             elapsed_time = self.time_alive - self.last_e_use
             if elapsed_time >= self.e_cooldown:
                 self.e_action()
+                self.is_e_action_on = True
                 self.last_e_use = self.time_alive
+        #       turn off
+        if self.is_e_action_on and self.time_alive >= self.last_e_use + self.e_ongoing_time:
+            self.e_turn_off()
+            self.is_e_action_on = False
         #   mouse
         if self.buttons_state[6]:
             self.shoot()
@@ -94,5 +112,11 @@ class PlayerShip(Ship):
     def q_action(self):
         print("\"Q\" action not defined")
 
+    def q_turn_off(self):
+        print("\"Q\" turn off action not defined (which is probably problem)")
+
     def e_action(self):
-        print("\"A\" action not defined")
+        print("\"E\" action not defined")
+
+    def e_turn_off(self):
+        print("\"E\" turn off action not defined (which is probably problem)")
