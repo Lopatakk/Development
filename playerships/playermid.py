@@ -1,3 +1,5 @@
+import pygame.mixer
+
 from playership import PlayerShip
 from pygame.sprite import Group
 import json
@@ -15,14 +17,20 @@ class PlayerMid(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
 
+        self.gun_upgrade_sound = pygame.mixer.Sound("assets/sounds/gun_upgrade.mp3")
+        self.gun_upgrade_sound.set_volume(0.6)
+
     def update(self):
         super().update()
 
     def q_action(self):
-        print("status quo")
+        self.fire_rate_time = self.fire_rate_time / 2
+        self.cooling = self.cooling * 2.5
+        pygame.mixer.find_channel(True).play(self.gun_upgrade_sound)
 
     def q_turn_off(self):
-        print("q turning off, over")
+        self.fire_rate_time = self.fire_rate_time * 2
+        self.cooling = self.cooling / 2.5
 
     def e_action(self):
         print("reeeeeeeeeeeee")

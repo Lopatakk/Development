@@ -28,7 +28,7 @@
     "fire_rate": 10,
     "cooling": 4,
     "overheat": 30,
-    "q_cooldown": 10,
+    "q_cooldown": 20,
     "q_ongoing_time": 5,
     "e_cooldown": 20,
     "e_ongoing_time": 8
