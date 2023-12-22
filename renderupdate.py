@@ -57,7 +57,7 @@ def render_overheat_bar(screen: SurfaceType, ratio, is_overheated: bool):
     # drawing the colour portion
     if is_overheated:
         pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0] * ratio, bar_size[1]))
-    elif ratio > 0.8:
+    elif ratio > 0.75:
         pygame.draw.rect(screen, "orange", (bar_pos[0], bar_pos[1], bar_size[0] * ratio, bar_size[1]))
     elif ratio > 0.5:
         pygame.draw.rect(screen, "yellow", (bar_pos[0], bar_pos[1], bar_size[0] * ratio, bar_size[1]))
