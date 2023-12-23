@@ -116,10 +116,10 @@ class PlayerShip(Ship):
         print("\"Q\" action not defined")
 
     def q_turn_off(self):
-        print("\"Q\" turn off action not defined (which is probably problem)")
+        print("\"Q\" turn off action not defined")
 
     def e_action(self):
         print("\"E\" action not defined")
 
     def e_turn_off(self):
-        print("\"E\" turn off action not defined (which is probably problem)")
+        print("\"E\" turn off action not defined")

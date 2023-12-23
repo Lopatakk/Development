@@ -1,8 +1,9 @@
 import pygame.mixer
-
+from playerships.blast import Blast
 from playership import PlayerShip
 from pygame.sprite import Group
 import json
+import numpy as np
 
 
 class PlayerMid(PlayerShip):
@@ -33,7 +34,5 @@ class PlayerMid(PlayerShip):
         self.cooling = self.cooling / 2.5
 
     def e_action(self):
-        print("reeeeeeeeeeeee")
-
-    def e_turn_off(self):
-        print("e turning off, over")
+        blast = Blast(self)
+        self.projectile_group.add(blast)
