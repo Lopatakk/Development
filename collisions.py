@@ -16,7 +16,6 @@ def handle_collisions(attacker_group: Group, target_group: Group, is_projectile:
                 proj_explosion = ProjectileExplosion(attacker.pos, 1)
                 explosion_group.add(proj_explosion)
                 attacker.kill()
-                attacker.mask = None
             # ship to ship collision
             else:
                 attacker.hp -= target.dmg

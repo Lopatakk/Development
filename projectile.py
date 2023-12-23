@@ -75,3 +75,7 @@ class Projectile(pygame.sprite.Sprite):
         #  kill behind borders
         if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
             self.kill()
+
+    def kill(self):
+        super().kill()
+        self.mask = None

@@ -36,3 +36,6 @@ class PlayerMid(PlayerShip):
     def e_action(self):
         blast = Blast(self)
         self.projectile_group.add(blast)
+
+    def e_turn_off(self):
+        pass
