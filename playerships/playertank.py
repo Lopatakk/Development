@@ -1,6 +1,7 @@
 from playership import PlayerShip
 from pygame.sprite import Group
 import json
+import pygame
 
 
 class PlayerTank(PlayerShip):
@@ -15,14 +16,23 @@ class PlayerTank(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
 
+        self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")
+        self.speed_boost_sound.set_volume(0.4)
+        self.speed_boost_off_sound = pygame.mixer.Sound("assets/sounds/speed_boost_off.mp3")
+        self.speed_boost_off_sound.set_volume(0.3)
+
     def update(self):
         super().update()
 
     def q_action(self):
-        print("status quo")
+        self.acceleration = 3 * self.acceleration
+        self.max_velocity = 2 * self.max_velocity
+        pygame.mixer.find_channel(True).play(self.speed_boost_sound)
 
     def q_turn_off(self):
-        print("q turning off, over")
+        self.acceleration = 1/3 * self.acceleration
+        self.max_velocity = 1/2 * self.max_velocity
+        pygame.mixer.find_channel(True).play(self.speed_boost_off_sound)
 
     def e_action(self):
         print("reeeeeeeeeeeee")
