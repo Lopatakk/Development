@@ -2,10 +2,11 @@ from playership import PlayerShip
 from pygame.sprite import Group
 import json
 import pygame
+from playerships.eventhorizonpulse import EventHorizonPulse
 
 
 class PlayerTank(PlayerShip):
-    def __init__(self, clock, projectile_group: Group):
+    def __init__(self, clock, projectile_group: Group, screen):
         # reading parameters file and picking PlayerTank data from it
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
@@ -21,6 +22,9 @@ class PlayerTank(PlayerShip):
         self.speed_boost_off_sound = pygame.mixer.Sound("assets/sounds/speed_boost_off.mp3")
         self.speed_boost_off_sound.set_volume(0.3)
 
+        self.event_horizon_pulse = None
+        self.screen = screen
+
     def update(self):
         super().update()
 
@@ -35,7 +39,8 @@ class PlayerTank(PlayerShip):
         pygame.mixer.find_channel(True).play(self.speed_boost_off_sound)
 
     def e_action(self):
-        print("reeeeeeeeeeeee")
+        self.event_horizon_pulse = EventHorizonPulse(self)
+        self.projectile_group.add(self.event_horizon_pulse)
 
     def e_turn_off(self):
-        print("e turning off, over")
+        self.event_horizon_pulse.destroy()
