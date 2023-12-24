@@ -37,17 +37,17 @@
     "type": "tank",
     "hp": 1300,
     "dmg": 600,
-    "explosion_size": 2,
+    "explosion_size": 3,
     "max_velocity": 50,
-    "acceleration": 0.5,
+    "acceleration": 0.4,
     "velocity_coefficient": 0.1,
-    "proj_dmg": 100,
+    "proj_dmg": 80,
     "fire_rate": 15,
     "cooling": 6,
     "overheat": 30,
-    "q_cooldown": 25,
+    "q_cooldown": 30,
     "q_ongoing_time": 6,
-    "e_cooldown": 40,
+    "e_cooldown": 60,
     "e_ongoing_time": 0.8
   }
 ]
