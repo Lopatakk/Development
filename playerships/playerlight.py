@@ -1,6 +1,7 @@
 from playership import PlayerShip
 from pygame.sprite import Group
 import json
+import pygame
 
 
 class PlayerLight(PlayerShip):
@@ -15,8 +16,14 @@ class PlayerLight(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
 
+        self.hp_before = None
+        self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
+        self.image_non_rot_without_shield = self.image_non_rot
+
     def update(self):
         super().update()
+        if self.is_e_action_on:
+            self.hp = self.hp_before
 
     def q_action(self):
         print("status quo")
@@ -25,7 +32,15 @@ class PlayerLight(PlayerShip):
         print("q turning off, over")
 
     def e_action(self):
-        print("reeeeeeeeeeeee")
+        self.hp_before = self.hp
+        self.image_non_rot = self.image_non_rot_with_shield
+        self.image = self.image_non_rot
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
     def e_turn_off(self):
-        print("e turning off, over")
+        self.hp_before = None
+        self.image_non_rot = self.image_non_rot_without_shield
+        self.image = self.image_non_rot
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
