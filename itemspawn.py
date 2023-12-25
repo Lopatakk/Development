@@ -7,26 +7,28 @@ from pygame.sprite import Group
 from pygame.sprite import Sprite
 
 
-class ItemSpawner:
-    def __init__(self, item_group: Group, item: str, spawn_interval: int, clock, player: Sprite):
+class ItemSpawner(pygame.sprite.Sprite):
+    def __init__(self, item_group: Group, item: str, spawn_interval: int, player: Sprite):
+        super().__init__()
         self.item_group = item_group
         self.spawn_interval = spawn_interval
         self.item = item
-        self.clock = clock
         self.player = player
-        self.time_working = 0
+        self.time_alive = 0
         self.last_spawn_time = 0
-        self.offset = 500
+
+        self.image = pygame.image.load("assets/images/spawner_lol.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = [-70, -70]
 
     def update(self):
-        self.time_working += self.clock.get_time()/1000
-        elapsed_time = self.time_working - self.last_spawn_time
+        elapsed_time = self.time_alive - self.last_spawn_time
         match self.item:
             case "medkit":
                 if elapsed_time >= self.spawn_interval:
                     medkit = Medkit(self.spawn_pos())
                     self.item_group.add(medkit)
-                    self.last_spawn_time = self.time_working
+                    self.last_spawn_time = self.time_alive
 
     @classmethod
     def spawn_pos(cls):

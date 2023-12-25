@@ -27,7 +27,7 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
@@ -51,18 +51,21 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerLight(clock, player_projectile_group)
+    player = PlayerLight(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
     enemy_group = pygame.sprite.Group()
     #   enemy spawners
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, clock, player)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, clock, player)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, clock, player)
+    spawner_group = pygame.sprite.Group()
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, player)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, player)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, player)
+    spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner)
     #   items and item spawners
     item_group = pygame.sprite.Group()
-    medkit_spawner = ItemSpawner(item_group, "medkit", 53, clock, player)
+    medkit_spawner = ItemSpawner(item_group, "medkit", 3, player)
+    spawner_group.add(medkit_spawner)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -127,13 +130,7 @@ while True:
         render_background(screen)
         #   groups
         update_groups([player_projectile_group, enemy_projectile_group, item_group, enemy_group, player_group,
-                       explosion_group, cursor_group], screen)
-        #   enemy spawn
-        zarovka_spawner.update()
-        tank_spawner.update()
-        sniper_spawner.update()
-        #   item spawn
-        medkit_spawner.update()
+                       explosion_group, cursor_group, spawner_group], screen)
         #   score and collisions
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
@@ -159,7 +156,7 @@ while True:
         # FPS lock and adding time
         time_diff = clock.tick(ScreenSetup.fps) / 1000
         time_in_game += time_diff
-        add_time([player_group, enemy_group, item_group], time_diff)
+        add_time([player_group, enemy_group, item_group, spawner_group], time_diff)
 
     # death text
     cursor.set_cursor()
