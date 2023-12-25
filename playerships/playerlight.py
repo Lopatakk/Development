@@ -2,6 +2,8 @@ from playership import PlayerShip
 from pygame.sprite import Group
 import json
 import pygame
+from projectile import Projectile
+import numpy as np
 
 
 class PlayerLight(PlayerShip):
@@ -15,6 +17,10 @@ class PlayerLight(PlayerShip):
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
+
+        self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/4.5 * self.height])
+        self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/4.5 * self.height])
+        self.proj_spawn_offset = self.proj_spawn_offset_1
 
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
@@ -50,3 +56,21 @@ class PlayerLight(PlayerShip):
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         pygame.mixer.find_channel(True).play(self.shield_off_sound)
+
+    def shoot(self):
+        """
+        If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
+        (spawns) a projectile and adds it to the projectile group.
+        """
+        elapsed_time = self.time_alive - self.last_shot_time
+        if elapsed_time >= self.fire_rate_time and not self.is_overheated:
+            projectile = Projectile(self)
+            self.projectile_group.add(projectile)
+            self.proj_spawn_offset = self.proj_spawn_offset_2
+
+            projectile = Projectile(self)
+            self.projectile_group.add(projectile)
+            self.proj_spawn_offset = self.proj_spawn_offset_1
+
+            self.last_shot_time = self.time_alive
+            self.heat += 2
