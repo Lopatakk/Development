@@ -5,7 +5,7 @@ import pygame
 
 
 class PlayerLight(PlayerShip):
-    def __init__(self, clock, projectile_group: Group):
+    def __init__(self, projectile_group: Group):
         # reading parameters file and picking PlayerLight data from it
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
@@ -14,7 +14,7 @@ class PlayerLight(PlayerShip):
         super().__init__("assets/images/vlod5L.png", param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
-                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
+                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
 
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")

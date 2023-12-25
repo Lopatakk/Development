@@ -10,10 +10,10 @@ from pygame.sprite import Sprite
 class Enemy(Ship):
     def __init__(self, start: np.ndarray, picture_path, hp, dmg, explosion_size, max_velocity, acceleration,
                  velocity_coefficient, rot_velocity, proj_dmg, fire_rate, cooling, overheat, offset, projectile_group,
-                 clock, player: Sprite):
+                 player: Sprite):
 
         super().__init__(start, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
-                         proj_dmg, fire_rate, cooling, overheat, projectile_group, clock)
+                         proj_dmg, fire_rate, cooling, overheat, projectile_group)
         self.tolerance = None
         self.player_position_history = []  # Historie pozic hráče
 

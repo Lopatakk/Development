@@ -24,7 +24,7 @@ class ItemSpawner:
         match self.item:
             case "medkit":
                 if elapsed_time >= self.spawn_interval:
-                    medkit = Medkit(self.spawn_pos(), self.clock)
+                    medkit = Medkit(self.spawn_pos())
                     self.item_group.add(medkit)
                     self.last_spawn_time = self.time_working
 

@@ -2,13 +2,12 @@ import pygame
 
 
 class Medkit(pygame.sprite.Sprite):
-    def __init__(self, pos, clock):
+    def __init__(self, pos):
         super().__init__()
         self.type = "medkit"
         self.heal = 300
         self.pos = pos
-        self.clock = clock
-        self.time_on_screen = 0
+        self.time_alive = 0
 
         self.image = pygame.image.load("assets/images/medkit.png")
         self.image = pygame.Surface.convert_alpha(self.image)
@@ -21,4 +20,3 @@ class Medkit(pygame.sprite.Sprite):
 
     def update(self):
         super().update()
-        self.time_on_screen += self.clock.get_time()/1000

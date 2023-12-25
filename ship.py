@@ -22,7 +22,7 @@ class Ship(pygame.sprite.Sprite):
 
     def __init__(self, start_pos: np.ndarray, picture_path: str, hp: int, dmg: int, explosion_size: int,
                  max_velocity: int, acceleration: float, velocity_coefficient: float, proj_dmg: int, fire_rate: float,
-                 cooling: float, overheat: int, projectile_group: Group, clock):
+                 cooling: float, overheat: int, projectile_group: Group):
         """
         :param picture_path: directory path to the picture
         :param clock: Clock object used in game
@@ -50,8 +50,7 @@ class Ship(pygame.sprite.Sprite):
         self.max_hp = hp
 
         # time
-        # clock - Clock object from main to calculate firing rate and time the ship is alive
-        self.clock = clock
+
         # time_alive - in-game time the ship is alive (in seconds), used to calculate fire rate
         self.time_alive = 0
 
@@ -193,10 +192,6 @@ class Ship(pygame.sprite.Sprite):
         elif self.is_overheated and self.heat < 0.75 * self.overheat:
             self.is_overheated = False
             self.cooling = 3/2 * self.cooling
-
-        # time
-
-        self.time_alive += self.clock.get_time()/1000
 
     @classmethod
     def rot_compute(cls, dist_x: int, dist_y: int):

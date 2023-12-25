@@ -15,15 +15,14 @@ class PlayerShip(Ship):
     update (see Ship's update() function).
     """
     def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg,
-                 fire_rate, cooling, overheat, q_cooldown, q_ongoing_time, e_cooldown, e_ongoing_time, projectile_group,
-                 clock):
+                 fire_rate, cooling, overheat, q_cooldown, q_ongoing_time, e_cooldown, e_ongoing_time, projectile_group):
         """
         :param clock: Clock object used in game
         :param projectile_group: sprite group for fired projectiles
         """
         super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, hp, dmg, explosion_size,
                          max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
-                         projectile_group, clock)
+                         projectile_group)
         self.buttons_state = [False, False, False, False, False, False, False]
 
         self.last_q_use = 0

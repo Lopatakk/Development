@@ -13,6 +13,12 @@ from pause_menu import pause_menu
 from itemspawn import ItemSpawner
 
 
+def add_time(groups, time_difference):
+    for group in groups:
+        for thing in group:
+            thing.time_alive += time_difference
+
+
 # general setup
 #   pygame
 pygame.init()
@@ -21,7 +27,7 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menu
@@ -150,8 +156,10 @@ while True:
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
 
-        # FPS lock and adding time from last call of this function
-        time_in_game += clock.tick(ScreenSetup.fps)
+        # FPS lock and adding time
+        time_diff = clock.tick(ScreenSetup.fps) / 1000
+        time_in_game += time_diff
+        add_time([player_group, enemy_group, item_group], time_diff)
 
     # death text
     cursor.set_cursor()

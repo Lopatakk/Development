@@ -6,7 +6,7 @@ from playerships.eventhorizonpulse import EventHorizonPulse
 
 
 class PlayerTank(PlayerShip):
-    def __init__(self, clock, projectile_group: Group, screen):
+    def __init__(self, projectile_group: Group, screen):
         # reading parameters file and picking PlayerTank data from it
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
@@ -15,7 +15,7 @@ class PlayerTank(PlayerShip):
         super().__init__("assets/images/vlod5T.png", param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
-                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group, clock)
+                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
 
         self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")
         self.speed_boost_sound.set_volume(0.4)
