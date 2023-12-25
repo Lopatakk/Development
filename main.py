@@ -45,7 +45,7 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerLight(clock, player_projectile_group)
+    player = PlayerLight(clock, player_projectile_group,)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
