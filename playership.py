@@ -23,6 +23,9 @@ class PlayerShip(Ship):
         super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, hp, dmg, explosion_size,
                          max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
                          projectile_group)
+
+        self.proj_spawn_offset = np.array([0, - 1/2.2 * self.height])
+
         self.buttons_state = [False, False, False, False, False, False, False]
 
         self.last_q_use = 0

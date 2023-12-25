@@ -116,6 +116,9 @@ class Ship(pygame.sprite.Sprite):
         self.last_shot_time = self.time_alive
         # projectile_group - sprite group for storing projectiles
         self.projectile_group = projectile_group
+        # proj_spawn_offset - offset from ships center, when the ship is facing upwards, respects pygame axis direction,
+        #   default is set to the top center point
+        self.proj_spawn_offset = np.array([0, - 1/2 * self.height])
 
         # gun overheating
 
