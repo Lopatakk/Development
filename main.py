@@ -21,6 +21,7 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
+ScreenSetup.screen = screen
 # screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
@@ -45,7 +46,7 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerLight(player_projectile_group)
+    player = PlayerTank(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
@@ -151,7 +152,7 @@ while True:
         # FPS lock and adding time
         time_diff = clock.tick(ScreenSetup.fps) / 1000
         time_in_game += time_diff
-        add_time([player_group, enemy_group, item_group, spawner_group], time_diff)
+        update_time([player_group, enemy_group, item_group, spawner_group], time_diff)
 
     # death text
     cursor.set_cursor()

@@ -5,12 +5,12 @@ class ScreenSetup:
     """
     This class is used to store screen parameters and functions
     """
-
     pygame.init()
 
     # Screen parameters:
     width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
     fps = 60
+    screen = None
 
     def __init__(self):
         # This is just there, so it can be a class :)

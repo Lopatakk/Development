@@ -16,7 +16,7 @@ class Zarovka(Enemy):
                          param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
                          param["overheat"], param["offset"], None, player)
 
-        self.image_non_rot = pygame.transform.scale(self.image_non_rot, (120, 120))
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, 1.9)
 
     def update(self):
         self.follow_movement(5)
