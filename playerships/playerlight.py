@@ -19,6 +19,10 @@ class PlayerLight(PlayerShip):
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
         self.image_non_rot_without_shield = self.image_non_rot
+        self.shield_on_sound = pygame.mixer.Sound("assets/sounds/shield_on.mp3")
+        self.shield_on_sound.set_volume(0.4)
+        self.shield_off_sound = pygame.mixer.Sound("assets/sounds/shield_off.mp3")
+        self.shield_off_sound.set_volume(0.6)
 
     def update(self):
         super().update()
@@ -37,6 +41,7 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        pygame.mixer.find_channel(True).play(self.shield_on_sound)
 
     def e_turn_off(self):
         self.hp_before = None
@@ -44,3 +49,4 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        pygame.mixer.find_channel(True).play(self.shield_off_sound)
