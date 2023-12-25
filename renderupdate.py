@@ -122,3 +122,9 @@ def render_q_e_bars(screen: SurfaceType, q_ratio, is_q_action_on, e_ratio, is_e_
         pygame.draw.rect(screen, "yellow", (bars_pos[0], bars_pos[2], bars_size[0] * e_ratio, bars_size[1]))
     else:
         pygame.draw.rect(screen, "orange", (bars_pos[0], bars_pos[2], bars_size[0] * e_ratio, bars_size[1]))
+
+
+def add_time(groups, time_difference):
+    for group in groups:
+        for thing in group:
+            thing.time_alive += time_difference

@@ -13,12 +13,6 @@ from pause_menu import pause_menu
 from itemspawn import ItemSpawner
 
 
-def add_time(groups, time_difference):
-    for group in groups:
-        for thing in group:
-            thing.time_alive += time_difference
-
-
 # general setup
 #   pygame
 pygame.init()
@@ -64,7 +58,7 @@ while True:
     spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner)
     #   items and item spawners
     item_group = pygame.sprite.Group()
-    medkit_spawner = ItemSpawner(item_group, "medkit", 3, player)
+    medkit_spawner = ItemSpawner(item_group, "medkit", 53, player)
     spawner_group.add(medkit_spawner)
     #   explosions
     explosion_group = pygame.sprite.Group()
