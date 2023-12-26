@@ -23,7 +23,7 @@ class Stealer(Enemy):
                          param["overheat"], param["offset"], None, player)
         self.movement = "movement1"
         self.type = "stealer"
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, 1.2)
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, (150, 150))
 
     def update(self):
 
