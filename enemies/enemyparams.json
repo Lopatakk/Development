@@ -43,5 +43,14 @@
     "cooling": 1,
     "overheat": 1,
     "offset": 500
+  },
+    {
+    "type": "stealer",
+    "hp": 20,
+    "dmg": 0,
+    "explosion_size": 2,
+    "max_velocity": 55,
+    "acceleration": 6,
+    "offset": 0
   }
 ]

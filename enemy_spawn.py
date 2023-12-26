@@ -8,12 +8,13 @@ from pygame.sprite import Group
 from enemies.sniper import Sniper
 from pygame.sprite import Sprite
 import pygame
-
+from enemies.stealer import Stealer
+import math
 time_at_the_beginning = time.time()
 
 
 class EnemySpawner(pygame.sprite.Sprite):
-    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, shot_group: Group, player: Sprite):
+    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, shot_group: Group, player: Sprite, item_group: Group):
         super().__init__()
         self.enemy_group = enemy_group
         self.spawn_interval = spawn_interval
@@ -25,6 +26,7 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.player = player
         self.time_alive = 0
         self.scaling = 0
+        self.item_group = item_group
 
         self.image = pygame.image.load("assets/images/spawner_lol.png")
         self.rect = self.image.get_rect()
@@ -45,6 +47,7 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.scaling = 1 + self.time_alive / 500
         start_time = time.time()
         elapsed_time = self.time_alive - self.last_spawn_time
+
         if self.enemy_type == "zarovka":
             if elapsed_time >= self.spawn_interval/self.scaling:
                 # Spawnování nové nepřátelské lodě mimo obrazovku
@@ -54,7 +57,6 @@ class EnemySpawner(pygame.sprite.Sprite):
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()
                 self.last_spawn_time = self.time_alive - (end_time - start_time)
-                print(self.spawn_interval/self.scaling)
 
         elif self.enemy_type == "tank":
             if elapsed_time >= self.spawn_interval/self.scaling:
@@ -71,6 +73,25 @@ class EnemySpawner(pygame.sprite.Sprite):
                 # Spawnování nové nepřátelské lodě mimo obrazovku
                 start = self.spawn_outside_screen()
                 enemy = Sniper(start, self.shot_group, self.player)
+                self.enemy_group.add(enemy)
+                # Aktualizovat čas od posledního spawnu
+                end_time = time.time()
+                self.last_spawn_time = self.time_alive - (end_time - start_time)
+
+        elif self.enemy_type == "stealer":
+            self.item = None
+            self.spawn_interval = math.inf
+            for sprite in self.item_group.sprites():
+                self.item = sprite
+                if self.item.time_alive > 10:
+                    self.spawn_interval = 5  # zatim neresim
+                else:
+                    self.spawn_interval = math.inf
+
+            if elapsed_time >= self.spawn_interval/self.scaling:
+                # Spawnování nové nepřátelské lodě mimo obrazovku
+                start = self.spawn_outside_screen()
+                enemy = Stealer(start, self.item_group)
                 self.enemy_group.add(enemy)
                 # Aktualizovat čas od posledního spawnu
                 end_time = time.time()

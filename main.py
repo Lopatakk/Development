@@ -51,17 +51,18 @@ while True:
     player_group.add(player)
     #   enemy
     enemy_group = pygame.sprite.Group()
-    #   enemy spawners
-    spawner_group = pygame.sprite.Group()
-    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, player)
-    tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, player)
-    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, player)
-    spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner)
     #   items
     item_group = pygame.sprite.Group()
     #   item spawners
+    spawner_group = pygame.sprite.Group()
     medkit_spawner = ItemSpawner(item_group, "medkit", 53, player)
     spawner_group.add(medkit_spawner)
+    #   enemy spawners
+    zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, player, None)
+    tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, player, None)
+    sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, player, None)
+    stealer_spawner = EnemySpawner(enemy_group, "stealer", 5, None, None, item_group)
+    spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner, stealer_spawner)
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -134,6 +135,7 @@ while True:
         handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
         score += score_diff
         handle_item_collisions(item_group, player_group)
+        handle_item_collisions(item_group, enemy_group)
         #   health bar
         render_health_bar(screen, player.hp / player.max_hp)
         #   score bar

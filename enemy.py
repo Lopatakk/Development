@@ -14,9 +14,7 @@ class Enemy(Ship):
 
         super().__init__(start, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
                          proj_dmg, fire_rate, cooling, overheat, projectile_group)
-        self.tolerance = None
         self.player_position_history = []  # Historie pozic hráče
-
         self.player = player
         self.rot_velocity = rot_velocity
         self.offset = offset
@@ -33,8 +31,8 @@ class Enemy(Ship):
             oldest_player_pos = self.player_position_history[0]
 
             # Vypočítat směr k nejstarší historické pozici hráče
-            direction = np.array([oldest_player_pos[0] - self.rect.center[0],
-                                  oldest_player_pos[1] - self.rect.center[1]])
+            direction = np.array([oldest_player_pos[0] - self.pos[0],
+                                  oldest_player_pos[1] - self.pos[1]])
 
             # Normalizovat směr, aby měl délku 1
             norm_direction = direction / np.linalg.norm(direction)
@@ -44,8 +42,8 @@ class Enemy(Ship):
             self.velocity[1] += norm_direction[1] * self.acceleration
 
             # Otáčení enemy k lodi
-            self.angle = self.rot_compute(self.rect.center[0] - oldest_player_pos[0],
-                                          self.rect.center[1] - oldest_player_pos[1])
+            self.angle = self.rot_compute(self.pos[0] - oldest_player_pos[0],
+                                          self.pos[1] - oldest_player_pos[1])
 
     def follow_movement_with_offset(self):
         # Vypočítat směr k hráči
@@ -85,6 +83,18 @@ class Enemy(Ship):
         rot_vector = norm_vector * self.rot_velocity
         rot_vector = np.array([int(rot_vector[0]), int(rot_vector[1])])
         self.velocity += rot_vector
+
+    def item_follow(self, item_pos):
+        self.item_pos = item_pos
+        # vektor ukazujici k cili
+        direction = np.array([self.item_pos[0] - self.pos[0], self.item_pos[1] - self.pos[1]])
+        # normalovy vektor, ktery zajisti stejnou rychlost lodi ve smeru k cili
+        norm_direction = direction / np.linalg.norm(direction)
+        self.velocity[0] += norm_direction[0] * self.acceleration
+        self.velocity[1] += norm_direction[1] * self.acceleration
+        # otaceni modelu
+        self.angle = self.rot_compute(self.pos[0] - self.item_pos[0],
+                                      self.pos[1] - self.item_pos[1])
 
     def update(self):
         super().update()
