@@ -1,6 +1,6 @@
 [
   {
-    "type": "light",
+    "player_type": "light",
     "hp": 400,
     "dmg": 600,
     "explosion_size": 2,
@@ -17,7 +17,7 @@
     "e_ongoing_time": 8
   },
   {
-    "type": "mid",
+    "player_type": "mid",
     "hp": 700,
     "dmg": 600,
     "explosion_size": 2,
@@ -34,7 +34,7 @@
     "e_ongoing_time": 0.1
   },
   {
-    "type": "tank",
+    "player_type": "tank",
     "hp": 1400,
     "dmg": 600,
     "explosion_size": 3,

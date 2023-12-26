@@ -13,11 +13,10 @@ class Sniper(Enemy):
             enemy_param = json.load(param_file)
         param = enemy_param[2]
 
-        super().__init__(start, "assets/images/sniper.png", param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
-                         param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
-                         param["overheat"], param["offset"], projectile_group, player)
-        self.type = "sniper"
+        super().__init__(start, "assets/images/sniper.png", param["type"], param["hp"], param["dmg"],
+                         param["explosion_size"], param["max_velocity"], param["acceleration"],
+                         param["velocity_coefficient"], param["rot_velocity"], param["proj_dmg"], param["fire_rate"],
+                         param["cooling"], param["overheat"], param["offset"], projectile_group, player)
         self.proj_spawn_offset = np.array([0, - 1/1.95 * self.height])
 
         self.rot_direction = random.choice([1, -1])

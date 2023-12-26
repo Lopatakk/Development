@@ -2,7 +2,6 @@ import pygame
 import numpy as np
 from projectile import Projectile
 from pygame.sprite import Group
-from screensetup import ScreenSetup
 
 
 class Ship(pygame.sprite.Sprite):
@@ -14,13 +13,14 @@ class Ship(pygame.sprite.Sprite):
     calling the super().update() function. Position is then calculated automatically based on the velocity.
     """
 
-    def __init__(self, start_pos: np.ndarray, picture_path: str, hp: int, dmg: int, explosion_size: int,
+    def __init__(self, start_pos: np.ndarray, picture_path: str, ship_type: str, hp: int, dmg: int, explosion_size: int,
                  max_velocity: float, acceleration: float, velocity_coefficient: float, proj_dmg: int, fire_rate: float,
                  cooling: float, overheat: int, projectile_group: Group) -> "Ship":
         """
-        Creates a ship with all the needed properties::param start_pos: spawning position of the ship
-
-        :param picture_path: directory path to the picture
+        Creates a ship with all the needed properties:
+        :param start_pos: spawning position of the ship
+        :param picture_path: directory path to the ship picture
+        :param ship_type: type of the ship
         :param hp: maximum amount of health points
         :param dmg: damage to other ships when ramming
         :param explosion_size: the size of the explosion when the ship is destroyed (see explosion.py for more)
@@ -38,14 +38,18 @@ class Ship(pygame.sprite.Sprite):
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()
 
+        # type
+
+        # type - type of the ship, used for deciding item collisions
+        self.type = ship_type
+
         # health
 
         # hp - health points of the ship
         self.hp = hp
         # max_hp - maximum amount of health points
         self.max_hp = hp
-        # ship type
-        self.type = None
+
         # time
 
         # time_alive - in-game time the ship is alive (in seconds), used to calculate fire rate
@@ -164,7 +168,7 @@ class Ship(pygame.sprite.Sprite):
         Updates the ship rotation based on the ship angle variables, limits the ship velocity to its maximum value,
         updates the ship position based on the ship velocity and takes care of the gun heat level. It is not recommended
         to change the pos variable directly.
-        :return: None, only updates the ships condition
+        :return: None, only updates the ship state
         """
 
         # rotation
