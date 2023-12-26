@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['main.py', 'collisions.py', 'crosshair.py', 'enemy.py', 'enemy_spawn.py', 'checkbu'],
+    ['main.py'],
     pathex=[],
     binaries=[],
     datas=[],
