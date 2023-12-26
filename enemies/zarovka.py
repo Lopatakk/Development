@@ -11,12 +11,12 @@ class Zarovka(Enemy):
             enemy_param = json.load(param_file)
         param = enemy_param[0]
 
-        super().__init__(start, "assets/images/zarovka_new.png", param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__(start, "assets/images/zarovka.png", param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
                          param["overheat"], param["offset"], None, player)
         self.type = "zarovka"
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, 1.9)
+        self.image_non_rot = pygame.transform.scale(self.image_non_rot, (150, 150))
 
     def update(self):
         self.follow_movement(5)

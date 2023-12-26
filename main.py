@@ -55,7 +55,7 @@ while True:
     item_group = pygame.sprite.Group()
     #   item spawners
     spawner_group = pygame.sprite.Group()
-    medkit_spawner = ItemSpawner(item_group, "medkit", 53, player)
+    medkit_spawner = ItemSpawner(item_group, "medkit", 1, player)
     spawner_group.add(medkit_spawner)
     #   enemy spawners
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, player, None)
