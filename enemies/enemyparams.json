@@ -47,10 +47,16 @@
     {
     "type": "stealer",
     "hp": 20,
-    "dmg": 0,
+    "dmg": 10,
     "explosion_size": 2,
     "max_velocity": 55,
-    "acceleration": 6,
+    "acceleration": 9,
+    "velocity_coefficient": 0.1,
+    "rot_velocity": 0,
+    "proj_dmg": 0,
+    "fire_rate": 1,
+    "cooling": 1,
+    "overheat": 1,
     "offset": 0
   }
 ]

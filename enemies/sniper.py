@@ -17,7 +17,7 @@ class Sniper(Enemy):
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["rot_velocity"], param["proj_dmg"], param["fire_rate"], param["cooling"],
                          param["overheat"], param["offset"], projectile_group, player)
-
+        self.type = "sniper"
         self.proj_spawn_offset = np.array([0, - 1/1.95 * self.height])
 
         self.image_non_rot = pygame.transform.scale(self.image_non_rot, (60, 100))

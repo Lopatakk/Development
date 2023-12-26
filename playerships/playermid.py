@@ -17,7 +17,7 @@ class PlayerMid(PlayerShip):
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
-
+        self.type = "player"
         self.gun_upgrade_sound = pygame.mixer.Sound("assets/sounds/gun_upgrade.mp3")
         self.gun_upgrade_sound.set_volume(0.6)
 

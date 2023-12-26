@@ -48,7 +48,8 @@ class Ship(pygame.sprite.Sprite):
         self.hp = hp
         # max_hp
         self.max_hp = hp
-
+        # ship type
+        self.type = None
         # time
 
         # time_alive - in-game time the ship is alive (in seconds), used to calculate fire rate
