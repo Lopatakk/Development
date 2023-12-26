@@ -130,14 +130,14 @@ class Ship(pygame.sprite.Sprite):
         # proj_spawn_offset - offset from ships center, when the ship is facing upwards, respects pygame axis direction,
         #                     default is set to the top center point
         #                     -----> x
-        #                     |
-        #                     |               A     A
-        #                     |       default |    / \
-        #                     V        offset |   /   \         A = top center
-        #                     y               |  /  x  \        x = ship center
-        #                                       /       \
-        #                                      /         \
-        #                                     /___________\     the triangle represents the ship
+        #                     |                  ---.-------> + proj_spawn_offset[0]
+        #                     |                     A
+        #                     |                    /.\
+        #                     V           |       / . \         A = top center
+        #                     y           ......./..x  \        x = ship center
+        #                                 |     /       \
+        #                                 |    /         \
+        #          + proj_spawn_offset[1] V   /___________\     the triangle represents the ship
         #
         self.proj_spawn_offset = np.array([0, - 1/2 * self.height])
 
