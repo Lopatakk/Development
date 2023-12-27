@@ -44,7 +44,7 @@
     "overheat": 1,
     "offset": 500
   },
-    {
+  {
     "type": "stealer",
     "hp": 20,
     "dmg": 10,

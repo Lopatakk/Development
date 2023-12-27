@@ -15,6 +15,8 @@ class Medkit(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.center = self.pos
 
+        self.has_thief = False
+
         self.sound = pygame.mixer.Sound("assets/sounds/heal-up.mp3")
         self.sound.set_volume(0.2)
 

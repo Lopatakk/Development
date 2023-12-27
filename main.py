@@ -61,7 +61,7 @@ while True:
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, None, player, None)
     tank_spawner = EnemySpawner(enemy_group, "tank", 25, enemy_projectile_group, player, None)
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, enemy_projectile_group, player, None)
-    stealer_spawner = EnemySpawner(enemy_group, "stealer", 15, None, player, item_group)
+    stealer_spawner = EnemySpawner(enemy_group, "stealer", 5, None, player, item_group)
     spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner, stealer_spawner)
     #   explosions
     explosion_group = pygame.sprite.Group()

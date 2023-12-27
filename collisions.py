@@ -48,4 +48,4 @@ def handle_item_collisions(item_group: Group, ship_group: Group):
                     item.kill()
                     item.mask = None
             if ship.type == "stealer":
-                ship.movement = "movement2"
+                ship.movement = "to_player"

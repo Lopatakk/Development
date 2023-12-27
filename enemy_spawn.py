@@ -79,22 +79,9 @@ class EnemySpawner(pygame.sprite.Sprite):
                 self.last_spawn_time = self.time_alive - (end_time - start_time)
 
         elif self.enemy_type == "stealer":
-            self.spawn_timer = 20
-            self.item = None
-            for sprite in self.item_group.sprites():
-                self.item = sprite
-                if self.item.time_alive > 10:
-                    self.spawn_interval = self.spawn_timer
-
-            if elapsed_time >= self.spawn_interval / self.scaling:
-                # Spawnování nové nepřátelské lodě mimo obrazovku
-                start = self.spawn_outside_screen()
-                enemy = Stealer(start, self.player, self.item_group)
-                self.enemy_group.add(enemy)
-                # Aktualizovat čas od posledního spawnu
-                end_time = time.time()
-                self.last_spawn_time = self.time_alive - (end_time - start_time)
-
-                if self.spawn_interval == self.spawn_timer:
-                    self.spawn_interval = math.inf
-
+            for thing in self.item_group:
+                if thing.time_alive >= 3 and not thing.has_thief:
+                    start = self.spawn_outside_screen()
+                    enemy = Stealer(start, self.player, thing)
+                    self.enemy_group.add(enemy)
+                    thing.has_thief = True
