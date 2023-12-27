@@ -15,7 +15,9 @@ class Zarovka(Enemy):
                          param["explosion_size"], param["max_velocity"], param["acceleration"],
                          param["velocity_coefficient"], param["rot_velocity"], param["proj_dmg"], param["fire_rate"],
                          param["cooling"], param["overheat"], param["offset"], None, player)
-        self.image_non_rot = pygame.transform.scale(self.image_non_rot, (150, 150))
+        self.image_non_rot = pygame.transform.scale(self.image_non_rot, (52, 84))
+        self.height = self.image_non_rot.get_height()
+        self.width = self.image_non_rot.get_width()
 
     def update(self):
         self.follow_movement(5)
