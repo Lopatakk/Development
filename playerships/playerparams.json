@@ -12,7 +12,7 @@
     "cooling": 6,
     "overheat": 30,
     "q_cooldown": 10,
-    "q_ongoing_time": 5,
+    "q_ongoing_time": 0.1,
     "e_cooldown": 30,
     "e_ongoing_time": 8
   },

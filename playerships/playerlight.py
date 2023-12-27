@@ -18,10 +18,12 @@ class PlayerLight(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
         self.type = "player"
+
+        self.velocity_before = None
+
         self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/4.5 * self.height])
         self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/4.5 * self.height])
         self.proj_spawn_offset = self.proj_spawn_offset_1
-
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
         self.image_non_rot_without_shield = self.image_non_rot
@@ -36,10 +38,14 @@ class PlayerLight(PlayerShip):
             self.hp = self.hp_before
 
     def q_action(self):
-        print("status quo")
+        self.velocity_before = self.velocity
+        self.acceleration = 30 * self.acceleration
+        self.max_velocity = 30 * self.max_velocity
 
     def q_turn_off(self):
-        print("q turning off, over")
+        self.velocity = self.velocity_before
+        self.acceleration = 1/30 * self.acceleration
+        self.max_velocity = 1/30 * self.max_velocity
 
     def e_action(self):
         self.hp_before = self.hp
