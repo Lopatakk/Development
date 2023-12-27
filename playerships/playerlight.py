@@ -32,10 +32,32 @@ class PlayerLight(PlayerShip):
         self.shield_off_sound = pygame.mixer.Sound("assets/sounds/shield_off.mp3")
         self.shield_off_sound.set_volume(0.6)
 
+        # shooting animation
+        self.shooting_images = []
+        for num in range(1, 2):
+            img = pygame.image.load(f"assets/images/vlod5L{num}.png")
+            # add the image to the list
+            self.shooting_images.append(img)
+        self.index = 0
+        self.counter = -1
+        self.animation_speed = 3
+
     def update(self):
         super().update()
         if self.is_e_action_on:
             self.hp = self.hp_before
+
+        # shooting animation
+        if self.counter >= 0:
+            self.counter += 1
+        if self.counter >= self.animation_speed and self.index < len(self.shooting_images) - 1:
+            self.counter = 0
+            self.index += 1
+            self.image_non_rot = self.shooting_images[self.index]
+        if self.index >= len(self.shooting_images) - 1 and self.counter >= self.animation_speed:
+            self.counter = -1
+            self.index = 0
+            self.image_non_rot = self.image_non_rot_without_shield
 
     def q_action(self):
         self.velocity_before = self.velocity
@@ -80,3 +102,6 @@ class PlayerLight(PlayerShip):
 
             self.last_shot_time = self.time_alive
             self.heat += 2
+
+            self.counter = 0
+            self.image_non_rot = self.shooting_images[self.index]
