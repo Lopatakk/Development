@@ -10,7 +10,7 @@ def render_background(screen):
     This function renders the background image. It also uses the convert function to improve performance.
     :param screen: the surface the background gets rendered on
     """
-    background = pygame.image.load("assets/images/space.png")
+    background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (ScreenSetup.width, ScreenSetup.height))
     background = pygame.Surface.convert(background)
     screen.blit(background, (0, 0))
