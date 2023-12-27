@@ -105,10 +105,10 @@ while True:
             # destroying crosshair, because I do not want to see him in background in pause menu
             cursor.set_cursor()
             render_background(screen)
-            render_health_bar(screen, player.hp / player.max_hp)
-            render_overheat_bar(screen, player.heat / player.overheat, player.is_overheated)
-            render_q_e_bars(screen, (player.time_alive - player.last_q_use) / player.q_cooldown, player.is_q_action_on,
-                            (player.time_alive - player.last_e_use) / player.e_cooldown, player.is_e_action_on)
+            render_hud(screen, score, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
+                       player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
+                       player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
+                       player.hp / player.max_hp)
             render_enemy_health_bar(screen, enemy_group)
             update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
                            explosion_group], screen)
@@ -136,15 +136,11 @@ while True:
         score += score_diff
         handle_item_collisions(item_group, player_group)
         handle_item_collisions(item_group, enemy_group)
-        #   health bar
-        render_health_bar(screen, player.hp / player.max_hp)
-        #   score bar
-        render_score(screen, score, 128, 128, 128)
-        #   overheat bar
-        render_overheat_bar(screen, player.heat / player.overheat, player.is_overheated)
-        #   q and e bars
-        render_q_e_bars(screen, (player.time_alive - player.last_q_use) / player.q_cooldown, player.is_q_action_on,
-                        (player.time_alive - player.last_e_use) / player.e_cooldown, player.is_e_action_on)
+        #   HUD
+        render_hud(screen, score, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
+                   player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
+                   player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
+                   player.hp / player.max_hp)
         #   enemy health bar
         render_enemy_health_bar(screen, enemy_group)
 
