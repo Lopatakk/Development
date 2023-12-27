@@ -78,13 +78,13 @@ def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group):
 
     for ship in enemy_group:
         if ship.hp != ship.max_hp:
+            # bar position
+            bar_pos = [ship.pos[0] - 1/2 * bar_size[0], ship.pos[1] + 2/3 * ship.height]
             # ratio computing
             ratio = ship.hp / ship.max_hp
             # drawing
-            pygame.draw.rect(screen, "red", (ship.pos[0] - 1/2*bar_size[0], ship.pos[1] + 5/6*ship.height,
-                                             bar_size[0], bar_size[1]))
-            pygame.draw.rect(screen, "green", (ship.pos[0] - 1/2*bar_size[0], ship.pos[1] + 5/6*ship.height,
-                                               bar_size[0] * ratio, bar_size[1]))
+            pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
+            pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * ratio, bar_size[1]))
 
 
 def render_q_e_bars(screen: SurfaceType, q_ratio, is_q_action_on, e_ratio, is_e_action_on):
