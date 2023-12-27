@@ -9,12 +9,12 @@ from enemies.sniper import Sniper
 from pygame.sprite import Sprite
 import pygame
 from enemies.stealer import Stealer
-import math
 time_at_the_beginning = time.time()
 
 
 class EnemySpawner(pygame.sprite.Sprite):
-    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, shot_group: Group, player: Sprite, item_group: Group):
+    def __init__(self, enemy_group: Group, enemy_type: str, spawn_interval, player: Sprite, shot_group: Group = None,
+                 item_group: Group = None):
         super().__init__()
         self.enemy_group = enemy_group
         self.spawn_interval = spawn_interval
