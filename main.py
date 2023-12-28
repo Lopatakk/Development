@@ -11,6 +11,7 @@ from collisions import *
 from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
 from main_menu import main_menu
+from death_menu import death_menu
 
 from itemspawn import ItemSpawner
 
@@ -24,13 +25,12 @@ clock = pygame.time.Clock()
 screen = ScreenSetup.start_setup()
 ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
 ScreenSetup.screen = screen
-screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
 game_paused = False
 game_main = True
-game_end = False
 #   cursor
 cursor = Cursor()
 cursor_group = pygame.sprite.Group()
@@ -125,6 +125,9 @@ while True:
 
         # player death
         if not player_group and not explosion_group:
+            #   death_menu
+            cursor.set_cursor()
+            death_menu(screen, clock, cursor_group, score)
             break
 
         # rendering/update
@@ -159,9 +162,4 @@ while True:
 
     # death text
     cursor.set_cursor()
-    exit_text = font.render(f"SMRT, SCORE: {score}", True, (255, 255, 255))
-    screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()
-    # time.sleep(2)
-
-    game_main = True
