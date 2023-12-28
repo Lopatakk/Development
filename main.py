@@ -12,6 +12,7 @@ from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
 from main_menu import main_menu
 from death_menu import death_menu
+from ship_menu import ship_menu
 
 from itemspawn import ItemSpawner
 
@@ -23,7 +24,7 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
-# screen, ScreenSetup.screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
@@ -43,7 +44,14 @@ while True:
     if game_main:
         main_menu(screen, clock, cursor_group)
         game_main = False
-
+    # ship_menu
+    selected_number = ship_menu(screen, clock, cursor_group)
+    if selected_number == 1:
+        selected_ship = PlayerLight
+    elif selected_number == 2:
+        selected_ship = PlayerMid
+    elif selected_number == 3:
+        selected_ship = PlayerTank
     # variables for time in game + score
     time_in_game = 0
     score = 0
@@ -53,7 +61,7 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerTank(player_projectile_group)
+    player = selected_ship(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
