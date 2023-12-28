@@ -3,15 +3,18 @@ import pygame
 class Button():
 	def __init__(self, x_button, y_button, image_path, scale_w, scale_h, text_size, text, screen_in_button):
 		width_screen = screen_in_button.get_width()
-		#	BUTTON
-		image = pygame.image.load(image_path).convert_alpha()	# load button images with transparency
-		self.image = pygame.transform.scale(image, (int(width_screen * scale_w), int(width_screen * scale_h)))	# transforming image
-		self.rect = self.image.get_rect()	# creates a rectangular frame around the object's image
-		self.rect.topleft = (x_button, y_button)	# placing topleft corner of image to wanted position
+		#	BUTTON_01
+		image_01 = pygame.image.load(image_path).convert_alpha()	# load button images with transparency
+		self.image_01 = pygame.transform.scale(image_01, (int(width_screen * scale_w), int(width_screen * scale_h)))	# transforming image_01
+		self.rect = self.image_01.get_rect()	# creates a rectangular frame around the object's image_01
+		self.rect.topleft = (x_button, y_button)	# placing topleft corner of image_01 to wanted position
 		self.clicked = False	# button is not clicked at the beginning
+		#	BUTTON_02
+		image_02 = pygame.image.load("assets/images/button_02.png").convert_alpha()  # load button images with transparency
+		self.image_02 = pygame.transform.scale(image_02, (int(width_screen * scale_w), int(width_screen * scale_h)))  # transforming image_01
 		#	TEXT
 		font_size = text_size * width_screen
-		image_height = self.image.get_height()
+		image_height = self.image_01.get_height()
 		self.font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(font_size))	# loading font
 		text_height = self.font.get_height()
 		self.text_to_write = text
@@ -21,8 +24,12 @@ class Button():
 	def draw_button_and_text(self, surface):
 		#	BUTTON
 		action = False
+		text_color = (40, 40, 40)
+		image_button = self.image_01
 		pos = pygame.mouse.get_pos()	# get mouse position
 		if self.rect.collidepoint(pos):
+			text_color = (0, 0, 0)
+			image_button = self.image_02
 			if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
 				self.clicked = True
 			if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
@@ -30,9 +37,10 @@ class Button():
 				action = True
 		if pygame.mouse.get_pressed()[0] == 0:
 			self.clicked = False
-		surface.blit(self.image, (self.rect.x, self.rect.y))	# draw button on screen
-		#	TEXT
-		surface.blit(self.font.render(self.text_to_write, True, (40, 40, 40)), (self.x_text, self.y_text))
+		#	draw button on screen
+		surface.blit(image_button, (self.rect.x, self.rect.y))
+		#	draw text on screen
+		surface.blit(self.font.render(self.text_to_write, True, (text_color)), (self.x_text, self.y_text))
 
 		return action
 
@@ -46,6 +54,6 @@ class Button():
 				action = True
 		if pygame.mouse.get_pressed()[0] == 0:
 			self.clicked = False
-		surface.blit(self.image, (self.rect.x, self.rect.y))	# draw button on screen
+		surface.blit(self.image_01, (self.rect.x, self.rect.y))	# draw button on screen
 
 		return action
