@@ -11,6 +11,7 @@ class ScreenSetup:
     width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
     fps = 60
     screen = None
+    background_image = None
 
     def __init__(self):
         # This is just there, so it can be a class :)
@@ -20,7 +21,14 @@ class ScreenSetup:
     def start_setup(cls):
         """
         This function "sets the screen on". The object does not have to be created, it can be called anytime (but it
-        really has to be called only at the beginning of the code). It also changes the window's name.
+        really has to be called only at the beginning of the code). It also changes the window's name and loads the
+        background image.
         """
         pygame.display.set_caption('Space shooter')
-        return pygame.display.set_mode((cls.width, cls.height), pygame.FULLSCREEN)
+        screen = pygame.display.set_mode((cls.width, cls.height), pygame.FULLSCREEN)
+        cls.width, cls.height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        cls.screen = screen
+        cls.background_image = pygame.image.load("assets/images/Background.png")
+        cls.background_image = pygame.transform.scale(cls.background_image, (cls.width, cls.height))
+        cls.background_image = pygame.Surface.convert(cls.background_image)
+        return screen
