@@ -10,6 +10,8 @@ from renderupdate import *
 from collisions import *
 from enemy_spawn import EnemySpawner
 from pause_menu import pause_menu
+from main_menu import main_menu
+
 from itemspawn import ItemSpawner
 
 
@@ -25,8 +27,10 @@ ScreenSetup.screen = screen
 # screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
-#   variables for menu
+#   variables for menus
 game_paused = False
+game_main = True
+game_end = False
 #   cursor
 cursor = Cursor()
 cursor_group = pygame.sprite.Group()
@@ -37,6 +41,11 @@ pygame.mixer.set_num_channels(24)
 
 # main loop
 while True:
+    #main_menu
+    if game_main:
+        main_menu(screen, clock, cursor_group)
+        game_main = False
+
     # variables for time in game + score
     time_in_game = 0
     score = 0
@@ -46,7 +55,7 @@ while True:
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
     #   player
-    player = PlayerLight(player_projectile_group)
+    player = PlayerTank(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
     #   enemy
@@ -71,9 +80,6 @@ while True:
     render_background(screen)
     #   groups
     update_groups([player_group, cursor_group], screen)
-    #   start text
-    text_render = font.render("NEW GAME", True, (255, 255, 255))
-    screen.blit(text_render, (ScreenSetup.width / 2, ScreenSetup.height / 2))
 
     # setting cursor to crosshair
     cursor.set_crosshair()
@@ -81,8 +87,6 @@ while True:
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
 
-    # wait
-    time.sleep(1)
 
     # gameplay loop
     while True:
@@ -97,7 +101,6 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
         # pause menu
         if game_paused:
             # game_pause is False from start and can be changed to True by pressing "esc"
@@ -113,7 +116,8 @@ while True:
             update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
                            explosion_group], screen)
             # opening pause menu
-            pause_menu(screen, clock, score, cursor_group)
+            if pause_menu(screen, clock, score, cursor_group):
+                break
             game_paused = False
             # setting cursor to crosshair
             cursor.set_crosshair()
@@ -158,3 +162,5 @@ while True:
     screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()
     time.sleep(2)
+
+    game_main = True
