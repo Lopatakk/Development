@@ -29,7 +29,6 @@ font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
 game_paused = False
 game_main = True
-game_end = False
 #   cursor
 cursor = Cursor()
 cursor_group = pygame.sprite.Group()
@@ -115,6 +114,7 @@ while True:
                            explosion_group], screen)
             # opening pause menu
             if pause_menu(screen, clock, score, cursor_group):
+                game_main = True
                 game_paused = False
                 break
             game_paused = False
@@ -125,7 +125,8 @@ while True:
         if not player_group and not explosion_group:
             #   death_menu
             cursor.set_cursor()
-            death_menu(screen, clock, cursor_group, score)
+            if death_menu(screen, clock, cursor_group, score):
+                game_main = True
             break
 
         # rendering/update
