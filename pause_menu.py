@@ -12,9 +12,9 @@ def pause_menu(screen, clock, score, cursor_group):
     background_copy = screen.copy()
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
     #   create button instances
-    resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", 0.3, 0.05, 0.025,'Resume', screen)
-    main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", 0.3, 0.05, 0.025,'Main menu', screen)
-    quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", 0.3, 0.05, 0.025,'Quit', screen)
+    resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Resume', screen)
+    main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen)
+    quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen)
 
     while True:
         screen.blit(background_copy, (0, 0))
@@ -25,7 +25,6 @@ def pause_menu(screen, clock, score, cursor_group):
         if resume_button.draw_button_and_text(screen):
             return False
         if main_menu_button.draw_button_and_text(screen):
-            print('main menu')
             return True
         if quit_button.draw_button_and_text(screen):
             quit()

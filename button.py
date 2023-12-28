@@ -1,16 +1,16 @@
 import pygame
 
 class Button():
-	def __init__(self, x_button, y_button, image_path, scale_w, scale_h, text_size, text, screen_in_button):
+	def __init__(self, x_button, y_button, image_01_path, image_02_path, scale_w, scale_h, text_size, text, screen_in_button):
 		width_screen = screen_in_button.get_width()
 		#	BUTTON_01
-		image_01 = pygame.image.load(image_path).convert_alpha()	# load button images with transparency
+		image_01 = pygame.image.load(image_01_path).convert_alpha()	# load button images with transparency
 		self.image_01 = pygame.transform.scale(image_01, (int(width_screen * scale_w), int(width_screen * scale_h)))	# transforming image_01
 		self.rect = self.image_01.get_rect()	# creates a rectangular frame around the object's image_01
 		self.rect.topleft = (x_button, y_button)	# placing topleft corner of image_01 to wanted position
 		self.clicked = False	# button is not clicked at the beginning
 		#	BUTTON_02
-		image_02 = pygame.image.load("assets/images/button_02.png").convert_alpha()  # load button images with transparency
+		image_02 = pygame.image.load(image_02_path).convert_alpha()  # load button images with transparency
 		self.image_02 = pygame.transform.scale(image_02, (int(width_screen * scale_w), int(width_screen * scale_h)))  # transforming image_01
 		#	TEXT
 		font_size = text_size * width_screen
