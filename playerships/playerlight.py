@@ -34,7 +34,7 @@ class PlayerLight(PlayerShip):
 
         # shooting animation
         self.shooting_images = []
-        for num in range(1, 8):
+        for num in range(1, 9):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
             # add the image to the list
             self.shooting_images.append(img)
@@ -54,6 +54,14 @@ class PlayerLight(PlayerShip):
             self.counter = -1
             self.index = 0
             self.image_non_rot = self.image_non_rot_without_shield
+
+            projectile = Projectile(self)
+            self.projectile_group.add(projectile)
+            self.proj_spawn_offset = self.proj_spawn_offset_2
+
+            projectile = Projectile(self)
+            self.projectile_group.add(projectile)
+            self.proj_spawn_offset = self.proj_spawn_offset_1
 
         super().update()
         if self.is_e_action_on:
@@ -92,14 +100,6 @@ class PlayerLight(PlayerShip):
         """
         elapsed_time = self.time_alive - self.last_shot_time
         if elapsed_time >= self.fire_rate_time and not self.is_overheated:
-            projectile = Projectile(self)
-            self.projectile_group.add(projectile)
-            self.proj_spawn_offset = self.proj_spawn_offset_2
-
-            projectile = Projectile(self)
-            self.projectile_group.add(projectile)
-            self.proj_spawn_offset = self.proj_spawn_offset_1
-
             self.last_shot_time = self.time_alive
             self.heat += 2
 
