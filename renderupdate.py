@@ -5,14 +5,6 @@ from pygame.surface import SurfaceType
 
 
 # This file is used to store functions for rendering and updating.
-def render_background(screen):
-    """
-    This function renders the background image.
-    :param screen: the surface the background image gets rendered on
-    """
-    screen.blit(ScreenSetup.background_image, (0, 0))
-
-
 def update_groups(groups, screen: SurfaceType):
     """
     This function updates all the sprite groups in the input list. The order does matter, because the latter the group

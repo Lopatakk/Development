@@ -11,7 +11,6 @@ class ScreenSetup:
     width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
     fps = 60
     screen = None
-    background_image = None
 
     def __init__(self):
         # This is just there, so it can be a class :)
@@ -28,7 +27,4 @@ class ScreenSetup:
         screen = pygame.display.set_mode((cls.width, cls.height), pygame.FULLSCREEN)
         cls.width, cls.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         cls.screen = screen
-        cls.background_image = pygame.image.load("assets/images/Background.png")
-        cls.background_image = pygame.transform.scale(cls.background_image, (cls.width, cls.height))
-        cls.background_image = pygame.Surface.convert(cls.background_image)
         return screen

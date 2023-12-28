@@ -13,7 +13,7 @@ from pause_menu import pause_menu
 from main_menu import main_menu
 from death_menu import death_menu
 from ship_menu import ship_menu
-
+from background import Background
 from itemspawn import ItemSpawner
 
 
@@ -25,6 +25,9 @@ clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
 # screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+background_image = Background()
+background_group = pygame.sprite.Group()
+background_group.add(background_image)
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
@@ -82,10 +85,8 @@ while True:
     explosion_group = pygame.sprite.Group()
 
     # rendering before gameplay
-    #   background
-    render_background(screen)
     #   groups
-    update_groups([player_group, cursor_group], screen)
+    update_groups([background_group, player_group, cursor_group], screen)
 
     # setting cursor to crosshair
     cursor.set_crosshair()
@@ -112,14 +113,13 @@ while True:
 
             # destroying crosshair, because I do not want to see him in background in pause menu
             cursor.set_cursor()
-            render_background(screen)
+            update_groups([background_group, player_projectile_group, enemy_projectile_group, enemy_group,
+                           player_group, explosion_group], screen)
             render_hud(screen, score, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
                        player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
                        player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
                        player.hp / player.max_hp)
             render_enemy_health_bar(screen, enemy_group)
-            update_groups([player_projectile_group, enemy_projectile_group, enemy_group, player_group,
-                           explosion_group], screen)
             # opening pause menu
             if pause_menu(screen, clock, score, cursor_group):
                 game_main = True
@@ -138,11 +138,9 @@ while True:
             break
 
         # rendering/update
-        #   background
-        render_background(screen)
         #   groups
-        update_groups([player_projectile_group, enemy_projectile_group, item_group, enemy_group, player_group,
-                       explosion_group, cursor_group, spawner_group], screen)
+        update_groups([background_group, player_projectile_group, enemy_projectile_group, item_group, enemy_group,
+                       player_group, explosion_group, cursor_group, spawner_group], screen)
         #   score and collisions
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
