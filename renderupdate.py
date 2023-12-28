@@ -7,13 +7,10 @@ from pygame.surface import SurfaceType
 # This file is used to store functions for rendering and updating.
 def render_background(screen):
     """
-    This function renders the background image. It also uses the convert function to improve performance.
-    :param screen: the surface the background gets rendered on
+    This function renders the background image.
+    :param screen: the surface the background image gets rendered on
     """
-    background = pygame.image.load("assets/images/Background.png")
-    background = pygame.transform.scale(background, (ScreenSetup.width, ScreenSetup.height))
-    background = pygame.Surface.convert(background)
-    screen.blit(background, (0, 0))
+    screen.blit(ScreenSetup.background_image, (0, 0))
 
 
 def update_groups(groups, screen: SurfaceType):

@@ -22,9 +22,7 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
-ScreenSetup.width, ScreenSetup.height = pygame.display.Info().current_w, pygame.display.Info().current_h
-ScreenSetup.screen = screen
-# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen, ScreenSetup.screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
@@ -41,7 +39,7 @@ pygame.mixer.set_num_channels(24)
 
 # main loop
 while True:
-    #main_menu
+    # main_menu
     if game_main:
         main_menu(screen, clock, cursor_group)
         game_main = False
@@ -87,7 +85,6 @@ while True:
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
 
-
     # gameplay loop
     while True:
         # KEYs and window cross functions
@@ -117,6 +114,7 @@ while True:
                            explosion_group], screen)
             # opening pause menu
             if pause_menu(screen, clock, score, cursor_group):
+                game_paused = False
                 break
             game_paused = False
             # setting cursor to crosshair
@@ -161,6 +159,6 @@ while True:
     exit_text = font.render(f"SMRT, SCORE: {score}", True, (255, 255, 255))
     screen.blit(exit_text, (ScreenSetup.width/2, ScreenSetup.height/2))
     pygame.display.flip()
-    time.sleep(2)
+    # time.sleep(2)
 
     game_main = True
