@@ -34,19 +34,15 @@ class PlayerLight(PlayerShip):
 
         # shooting animation
         self.shooting_images = []
-        for num in range(1, 2):
-            img = pygame.image.load(f"assets/images/vlod5L{num}.png")
+        for num in range(1, 8):
+            img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
             # add the image to the list
             self.shooting_images.append(img)
         self.index = 0
         self.counter = -1
-        self.animation_speed = 3
+        self.animation_speed = 1
 
     def update(self):
-        super().update()
-        if self.is_e_action_on:
-            self.hp = self.hp_before
-
         # shooting animation
         if self.counter >= 0:
             self.counter += 1
@@ -58,6 +54,10 @@ class PlayerLight(PlayerShip):
             self.counter = -1
             self.index = 0
             self.image_non_rot = self.image_non_rot_without_shield
+
+        super().update()
+        if self.is_e_action_on:
+            self.hp = self.hp_before
 
     def q_action(self):
         self.velocity_before = self.velocity
