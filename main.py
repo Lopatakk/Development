@@ -147,8 +147,9 @@ while True:
         score_diff = 0
         score_diff += handle_collisions(player_group, enemy_group, False, explosion_group)
         score_diff += handle_collisions(player_projectile_group, enemy_group, True, explosion_group)
-        handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
         score += score_diff
+        handle_collisions(enemy_projectile_group, player_group, True, explosion_group)
+        handle_collisions(player_projectile_group, enemy_projectile_group, True, explosion_group)
         handle_item_collisions(item_group, player_group)
         handle_item_collisions(item_group, enemy_group)
         #   HUD

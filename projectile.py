@@ -65,6 +65,14 @@ class Projectile(pygame.sprite.Sprite):
         self.sound.set_volume(0.15)
         pygame.mixer.find_channel(True).play(self.sound)
 
+        # event horizon pulse needs
+
+        # these are needed for getting destroyed by event horizon pulse
+        # hp - when colliding targets hp gets decreased, so it has to have some
+        self.hp = 20000
+        # type - indicates projectile type, used for sorting normal projectiles and the pulse
+        self.type = "normal"
+
     def update(self):
         """
         The update() function only updates the projectile's position from its angle and velocity, then sets its center

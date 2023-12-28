@@ -7,7 +7,7 @@ class EventHorizonPulse(pygame.sprite.Sprite):
 
         self.speed = 40
         self.dmg = 10000
-        self.thickness = 15
+        self.thickness = 40
 
         self.screen = ship.screen
 
@@ -26,6 +26,8 @@ class EventHorizonPulse(pygame.sprite.Sprite):
 
         self.image = pygame.Surface((1, 1))
         self.pos = [-70, -70]
+
+        self.type = "event_horizon_pulse"
 
         self.sound = pygame.mixer.Sound("assets/sounds/event_horizon_pulse.mp3")
         pygame.mixer.find_channel(True).play(self.sound)
