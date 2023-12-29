@@ -17,7 +17,6 @@ class PlayerLight(PlayerShip):
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
-        self.type = "player"
 
         self.velocity_before = None
 
@@ -86,7 +85,7 @@ class PlayerLight(PlayerShip):
         pygame.mixer.find_channel(True).play(self.shield_on_sound)
 
     def e_turn_off(self):
-        self.hp_before = None
+        self.hp = self.hp_before
         self.image_non_rot = self.image_non_rot_without_shield
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()

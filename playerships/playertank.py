@@ -18,7 +18,7 @@ class PlayerTank(PlayerShip):
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
-        self.type = "player"
+
         self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")
         self.speed_boost_sound.set_volume(0.4)
         self.speed_boost_off_sound = pygame.mixer.Sound("assets/sounds/speed_boost_off.mp3")

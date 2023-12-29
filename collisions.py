@@ -21,13 +21,22 @@ def handle_collisions(attacker_group: Group, target_group: Group, is_projectile:
                     attacker.kill()
             # ship to ship collision
             else:
-                attacker.hp -= target.dmg
-                if attacker.hp <= 0:
-                    explosion = Explosion(attacker.pos, attacker.explosion_size)
-                    explosion_group.add(explosion)
-                    attacker.kill()
-                    attacker.mask = None
+                # turn off light shield
+                if attacker.type == "player_light" and attacker.is_e_action_on:
+                    attacker.e_turn_off()
+                    attacker.is_e_action_on = False
+                    attacker.last_e_use = attacker.time_alive
+                else:
+                    # damaging attacker
+                    attacker.hp -= target.dmg
+                    # killing attacker
+                    if attacker.hp <= 0:
+                        explosion = Explosion(attacker.pos, attacker.explosion_size)
+                        explosion_group.add(explosion)
+                        attacker.kill()
+                        attacker.mask = None
 
+            # killing target
             if target.hp <= 0:
                 score_diff = target.max_hp
                 explosion = Explosion(target.pos, target.explosion_size)
