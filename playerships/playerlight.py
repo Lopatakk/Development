@@ -8,9 +8,9 @@ import numpy as np
 
 class PlayerLight(PlayerShip):
     """
-    Light, fast, agile, but fragile. Armed with 2 quite powerful cannons on the sides with slower fire rate this ship
-    flies over the battlefield like a feather, thanks to its high acceleration and top speed. But be careful and try to
-    avoid any contact with enemies and projectiles because you don't have much hp to lose.
+    Light, fast, agile, but fragile. Armed with two cannons on the sides with slower fire rate, but quite good damage,
+    this ship flies over the battlefield like a feather, thanks to its high acceleration and top speed. But be careful
+    and try to avoid any contact with enemies and projectiles because you don't have much hp to lose.
     Q action: dash - quickly moves in the direction of pressed keys
     E action: shield - creates a shield around the ship, which protects it from enemy projectiles
     """
@@ -40,7 +40,7 @@ class PlayerLight(PlayerShip):
         self.shield_off_sound = pygame.mixer.Sound("assets/sounds/shield_off.mp3")
         self.shield_off_sound.set_volume(0.6)
 
-        # 2 cannon shooting setup
+        # 2-cannon shooting setup
         self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/4.5 * self.height])
         self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/4.5 * self.height])
         self.proj_spawn_offset = self.proj_spawn_offset_1
@@ -73,11 +73,11 @@ class PlayerLight(PlayerShip):
             self.counter = -1
             self.index = 0
             self.image_non_rot = self.image_non_rot_without_shield
-            # firing from left gun
+            # firing from the left gun
             projectile = Projectile(self)
             self.projectile_group.add(projectile)
             self.proj_spawn_offset = self.proj_spawn_offset_2
-            # firing from right gun
+            # firing from the right gun
             projectile = Projectile(self)
             self.projectile_group.add(projectile)
             self.proj_spawn_offset = self.proj_spawn_offset_1
@@ -133,7 +133,7 @@ class PlayerLight(PlayerShip):
     def shoot(self):
         """
         If the time after last shot is larger than self.fire_rate_time and the gun is not overheated, this function
-        heats the guns and starts the shooting animation at which end there are created two projectiles.
+        heats the guns and starts the shooting animation, at which end there are created two projectiles.
         :return: None
         """
         elapsed_time = self.time_alive - self.last_shot_time
