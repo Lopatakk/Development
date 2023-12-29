@@ -7,7 +7,7 @@
     "max_velocity": 130,
     "acceleration": 2.5,
     "velocity_coefficient": 0.1,
-    "proj_dmg": 75,
+    "proj_dmg": 100,
     "fire_rate": 5.5,
     "cooling": 6,
     "overheat": 30,
