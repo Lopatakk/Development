@@ -4,6 +4,7 @@ import json
 import pygame
 from playerships.eventhorizonpulse import EventHorizonPulse
 from screensetup import ScreenSetup
+from projectile import Projectile
 
 
 class PlayerTank(PlayerShip):
@@ -26,7 +27,23 @@ class PlayerTank(PlayerShip):
         self.event_horizon_pulse = None
         self.screen = ScreenSetup.screen
 
+        # shooting animation
+        self.image_non_rot_orig = self.image_non_rot
+        self.shooting_image = pygame.image.load(f"assets/animations/shooting/TANK/TANK1.png")
+        self.index = 0
+        self.counter = -1
+        self.animation_speed = 3
+
     def update(self):
+        if self.counter >= 0:
+            self.counter += 1
+        if self.counter >= self.animation_speed:
+            self.image_non_rot = self.image_non_rot_orig
+            self.counter = -1
+
+            projectile = Projectile(self)
+            self.projectile_group.add(projectile)
+
         super().update()
 
     def q_action(self):
@@ -45,3 +62,16 @@ class PlayerTank(PlayerShip):
 
     def e_turn_off(self):
         self.event_horizon_pulse.destroy()
+
+    def shoot(self):
+        """
+        If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
+        (spawns) a projectile and adds it to the projectile group.
+        """
+        elapsed_time = self.time_alive - self.last_shot_time
+        if elapsed_time >= self.fire_rate_time and not self.is_overheated:
+            self.last_shot_time = self.time_alive
+            self.heat += 1
+
+            self.counter = 0
+            self.image_non_rot = self.shooting_image

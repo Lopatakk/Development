@@ -40,7 +40,7 @@ class PlayerLight(PlayerShip):
             self.shooting_images.append(img)
         self.index = 0
         self.counter = -1
-        self.animation_speed = 1
+        self.animation_speed = 3
 
     def update(self):
         # shooting animation
