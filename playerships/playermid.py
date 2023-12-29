@@ -13,7 +13,7 @@ class PlayerMid(PlayerShip):
             player_param = json.load(param_file)
         param = player_param[1]
 
-        super().__init__("assets/images/vlod5.png", param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__("assets/images/vlod5.png", param["type"], param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)

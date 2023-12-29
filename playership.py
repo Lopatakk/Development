@@ -15,11 +15,12 @@ class PlayerShip(Ship):
     pressed, turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
     class based on this class.
     """
-    def __init__(self, picture_path, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
-                 proj_dmg, fire_rate, cooling, overheat, q_cooldown: float, q_ongoing_time: float, e_cooldown: float,
-                 e_ongoing_time: float, projectile_group) -> "PlayerShip":
+    def __init__(self, picture_path, ship_type, hp, dmg, explosion_size, max_velocity, acceleration,
+                 velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, q_cooldown: float, q_ongoing_time: float,
+                 e_cooldown: float, e_ongoing_time: float, projectile_group) -> "PlayerShip":
         """
         :param picture_path: directory path to the ship picture
+        :param ship_type: type of the ship
         :param hp: maximum amount of health points
         :param dmg: damage to other ships when ramming
         :param explosion_size: the size of the explosion when the ship is destroyed (see explosion.py for more)
@@ -39,7 +40,7 @@ class PlayerShip(Ship):
         """
 
         # super().__init__ - creates a Ship object
-        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, "player", hp, dmg,
+        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, ship_type, hp, dmg,
                          explosion_size, max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling,
                          overheat, projectile_group)
 

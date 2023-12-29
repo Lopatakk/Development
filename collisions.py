@@ -42,7 +42,7 @@ def handle_item_collisions(item_group: Group, ship_group: Group):
     hits = pygame.sprite.groupcollide(item_group, ship_group, dokilla=False, dokillb=False, collided=pygame.sprite.collide_mask)
     for item, ships_hit in hits.items():
         for ship in ships_hit:
-            if ship.type == "stealer" or ship.type == "player":
+            if ship.type == "stealer" or ship.type.startswith("player"):
                 if item.type == "medkit":
                     ship.hp += item.heal
                     if ship.hp > ship.max_hp:
@@ -50,5 +50,5 @@ def handle_item_collisions(item_group: Group, ship_group: Group):
                     pygame.mixer.find_channel(True).play(item.sound)
                     item.kill()
                     item.mask = None
-            if ship.type == "stealer":
-                ship.movement = "to_player"
+                if ship.type == "stealer":
+                    ship.movement = "to_player"
