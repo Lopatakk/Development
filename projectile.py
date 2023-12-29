@@ -6,15 +6,15 @@ from screensetup import ScreenSetup
 class Projectile(pygame.sprite.Sprite):
     """
     This class takes care of basic projectiles. Projectiles are fired from ships, so the constructor takes the ship as
-    an input. Projectiles does not change its direction during its flight, it travels under the same angle until it
-    reaches screen borders, where they are destroyed. They deal damage when they collide with ships (which is taken
-    care of in collisions.py).
+    an input. Projectiles do not change its direction during its flight. They travel at the same angle until they reach
+    screen borders, where they are destroyed. They do damage to ships when they collide with them (which is taken care
+    of in collisions.py).
     """
 
     def __init__(self, ship):
         """
         Creates a projectile itself with all the needed properties.
-        :param ship: the ship that fired the projectile
+        :param ship: The ship that fired the projectile
         """
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
@@ -23,8 +23,8 @@ class Projectile(pygame.sprite.Sprite):
         # image
 
         # This section loads the image and creates a rect and a mask out of it. It also uses the convert function to
-        # improve performance. Mask is created, because we use mask collision system. If we did not create mask here,
-        # the code would have to make mask everytime it checks for some collisions, which can lead to a decrease of
+        # improve performance. Mask is created because we use a mask collision system. If we did not create mask here,
+        # the code would have to make mask every time it checks for some collisions, which can lead to a decrease of
         # performance.
         self.image = pygame.image.load("assets/images/projectile.png")
         self.image = pygame.Surface.convert_alpha(self.image)
@@ -51,12 +51,12 @@ class Projectile(pygame.sprite.Sprite):
         # velocity
 
         # velocity - the speed which the projectile travels through space, it does not change, it is used to calculate
-        #   updated position of a projectile
+        #   the updated position of a projectile
         self.velocity = 15
 
         # damage
 
-        # dmg - how much hp are taken from a ship if the ship collides with a projectile.
+        # dmg - how much hp is taken from a ship if the ship collides with a projectile.
         self.dmg = ship.proj_dmg
 
         # sound of firing
@@ -65,18 +65,17 @@ class Projectile(pygame.sprite.Sprite):
         self.sound.set_volume(0.15)
         pygame.mixer.find_channel(True).play(self.sound)
 
-        # event horizon pulse needs
+        # other
 
-        # these are needed for getting destroyed by event horizon pulse
-        # hp - when colliding targets hp gets decreased, so it has to have some
-        self.hp = 20000
-        # type - indicates projectile type, used for sorting normal projectiles and the pulse
+        # type - indicates a projectile type, used in collisions
         self.type = "normal"
 
     def update(self):
         """
         The update() function only updates the projectile's position from its angle and velocity, then sets its center
-        to the new calculated position and if the projectile gets behind borders of the screen, the function kills it.
+        to the new calculated position, and if the projectile gets behind the borders of the screen, the function
+        destroys it.
+        :return: None
         """
         self.pos -= np.array([np.sin(np.deg2rad(self.angle)) * self.velocity,
                               np.cos(np.deg2rad(self.angle)) * self.velocity])
@@ -87,5 +86,9 @@ class Projectile(pygame.sprite.Sprite):
             self.kill()
 
     def kill(self):
+        """
+        On the top of the original kill() function, it sets the mask to None, to be sure.
+        :return: None
+        """
         super().kill()
         self.mask = None

@@ -11,8 +11,8 @@ class PlayerShip(Ship):
     Constructor creates the ship based on parent class Ship and spawns it in the middle of the screen. The angle of the
     ship is calculated between the ship and mouse positions. Ships based on this class collect import from keyboard (q,
     w, e, a, s and d keys) and can have special actions that can be initialized by pressing q and e keys on keyboard,
-    unlike other ships. These functions are both divided into 2, turn-on and turn-off, turn-on starts when the key is
-    pressed, turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
+    unlike other ships. These functions are both divided into two, turn-on and turn-off, turn-on starts when the key is
+    pressed; turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
     class based on this class.
     """
     def __init__(self, picture_path, ship_type, hp, dmg, explosion_size, max_velocity, acceleration,
@@ -28,7 +28,7 @@ class PlayerShip(Ship):
         :param acceleration: acceleration of the ship, is not used directly in the Ship class, but when defying movement functions in child class
         :param velocity_coefficient: enables greater range of speed, recommended value: 0.1
         :param proj_dmg: fired projectiles damage
-        :param fire_rate: how many projectiles can be fired in one second
+        :param fire_rate: how many projectiles can be fired within one second
         :param cooling: how much of the heat the gun looses every second
         :param overheat: maximum amount of heat the gun can stand
         :param q_cooldown: minimal time in seconds between uses of the q action
@@ -78,9 +78,9 @@ class PlayerShip(Ship):
 
     def update(self) -> None:
         """
-        Uses the update from Ship class + processes player input (including q and e functions (both turn-ons and
-        turn-offs)) and limits the ship position to screen borders.
-        :return: None, only updates the ship state
+        Uses the update from Ship class + processes player input (including q and e functions (both turn-on and
+        turn-off for each)) and limits the ship position to screen borders.
+        :return: None
         """
         # angle calculation
 
@@ -131,7 +131,7 @@ class PlayerShip(Ship):
             self.last_e_use = self.time_alive
 
         #   mouse
-        #   tries to shoot, when left mouse button is pressed
+        #   tries to shoot when the left mouse button is pressed
         if self.buttons_state[6]:
             self.shoot()
 
@@ -160,8 +160,8 @@ class PlayerShip(Ship):
     def accelerate(self) -> None:
         """
         Uses the keyboard input to change ship velocity in axes by the acceleration value. If both keys in the same axis
-        are pressed (for example a and d), the velocity does not change.
-        :return: None, only updates the ship velocity
+        are pressed (for example, a and d), the velocity does not change.
+        :return: None
         """
         # X-axis
         #   both keys pressed
@@ -190,28 +190,28 @@ class PlayerShip(Ship):
     # redefine these in child classes, so it can actually do something :)
     def q_action(self) -> None:
         """
-        Runs the q special turn-on function.
+        Prints the statement "Q action not defined", to warn the user of the ship.
         :return: None
         """
         print("\"Q\" action not defined")
 
     def q_turn_off(self) -> None:
         """
-        Runs the q special turn-off function.
+        Prints the statement "Q turn off action not defined", to warn the user of the ship.
         :return: None
         """
         print("\"Q\" turn off action not defined")
 
     def e_action(self) -> None:
         """
-        Runs the e special turn-on function.
+        Prints the statement "E action not defined", to warn the user of the ship.
         :return: None
         """
         print("\"E\" action not defined")
 
     def e_turn_off(self) -> None:
         """
-        Runs the e special turn-off function.
+        Prints the statement "E turn off action not defined", to warn the user of the ship.
         :return: None
         """
         print("\"E\" turn off action not defined")

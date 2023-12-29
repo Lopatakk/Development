@@ -101,7 +101,8 @@ class PlayerTank(PlayerShip):
     def shoot(self):
         """
         If the time after last shot is larger than self.fire_rate_time and the gun is not overheated, this function
-        heats the gun and starts the shooting animation, at which end there is created a projectile.
+        heats the gun and starts the shooting animation by setting the counter to 0. At the end of the animation is
+        created a projectile.
         :return: None
         """
         elapsed_time = self.time_alive - self.last_shot_time

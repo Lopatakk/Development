@@ -10,7 +10,7 @@ class PlayerLight(PlayerShip):
     """
     Light, fast, agile, but fragile. Armed with two cannons on the sides with slower fire rate, but quite good damage,
     this ship flies over the battlefield like a feather, thanks to its high acceleration and top speed. But be careful
-    and try to avoid any contact with enemies and projectiles because you don't have much hp to lose.
+    and try to avoid any contact with enemies and projectiles because you have only little hp to lose.
     Q action: dash - quickly moves in the direction of pressed keys
     E action: shield - creates a shield around the ship, which protects it from enemy projectiles
     """
@@ -49,7 +49,6 @@ class PlayerLight(PlayerShip):
         self.shooting_images = []
         for num in range(1, 4):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
-            # add the image to the list
             self.shooting_images.append(img)
         self.index = 0
         self.counter = -1
@@ -63,13 +62,13 @@ class PlayerLight(PlayerShip):
         # shooting animation
         if self.counter >= 0:
             self.counter += 1
+        # changing the picture
         if self.counter >= self.animation_speed and self.index < len(self.shooting_images) - 1:
-            # changing the picture
             self.counter = 0
             self.index += 1
             self.image_non_rot = self.shooting_images[self.index]
+        # end of the animation
         if self.index >= len(self.shooting_images) - 1 and self.counter >= self.animation_speed:
-            # end of the animation
             self.counter = -1
             self.index = 0
             self.image_non_rot = self.image_non_rot_without_shield
@@ -133,7 +132,8 @@ class PlayerLight(PlayerShip):
     def shoot(self):
         """
         If the time after last shot is larger than self.fire_rate_time and the gun is not overheated, this function
-        heats the guns and starts the shooting animation, at which end there are created two projectiles.
+        heats the guns and starts the shooting animation by setting the counter to 0. At the end of the animation are
+        created two projectiles.
         :return: None
         """
         elapsed_time = self.time_alive - self.last_shot_time
