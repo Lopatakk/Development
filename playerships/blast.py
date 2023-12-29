@@ -8,9 +8,10 @@ class Blast(Projectile):
     def __init__(self, ship):
         super().__init__(ship)
         self.sound.stop()
+        self.type = "blast"
 
         self.image = pygame.image.load("assets/images/blast.png")
-        self.image = pygame.Surface.convert(self.image)
+        self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -32,12 +33,8 @@ class Blast(Projectile):
     def update(self):
         super().update()
         if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
-            self.destroy()
+            self.kill()
 
     def kill(self):
-        pass
-        # sike, you thought you can just kill it :D, you have to destroy it!
-
-    def destroy(self):
         super().kill()
         self.mask = None

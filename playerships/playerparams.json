@@ -18,7 +18,7 @@
   },
   {
     "type": "player_mid",
-    "hp": 700,
+    "hp": 800,
     "dmg": 600,
     "explosion_size": 2,
     "max_velocity": 100,

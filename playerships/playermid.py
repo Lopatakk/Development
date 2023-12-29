@@ -7,8 +7,13 @@ from projectile import Projectile
 
 
 class PlayerMid(PlayerShip):
+    """
+    Middle classed ship with balanced properties. Not so light armor, quite good manoeuvrability and a relatively
+    powerful gun results in a universal machine that can withstand some damage as well as fly away from its enemies and
+    killing them while doing so.w
+    """
     def __init__(self, projectile_group: Group):
-        # reading parameters file and picking PlayerMid data from it
+        # reading parameter file and picking PlayerMid data from it
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param[1]
@@ -37,11 +42,12 @@ class PlayerMid(PlayerShip):
         if self.counter >= 0:
             self.counter += 1
         if self.counter >= self.animation_speed and self.index < len(self.shooting_images) - 1:
-            self.counter = 0
-            self.index += 1
             if self.is_q_action_on:
                 self.index += 1
-            self.image_non_rot = self.shooting_images[self.index]
+            else:
+                self.counter = 0
+                self.index += 1
+                self.image_non_rot = self.shooting_images[self.index]
         if self.index >= len(self.shooting_images) - 1 and self.counter >= self.animation_speed:
             self.counter = -1
             self.index = 0

@@ -46,9 +46,5 @@ class EventHorizonPulse(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image_not_shown)
 
     def kill(self):
-        pass
-        # sike, you thought you can just kill it :D, you have to destroy it!
-
-    def destroy(self):
         super().kill()
         self.mask = None
