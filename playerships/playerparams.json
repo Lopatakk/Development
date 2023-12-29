@@ -2,7 +2,7 @@
   {
     "type": "player_light",
     "hp": 400,
-    "dmg": 600,
+    "dmg": 500,
     "explosion_size": 2,
     "max_velocity": 130,
     "acceleration": 2.5,
