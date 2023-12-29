@@ -22,6 +22,8 @@ class Stealer(Enemy):
     def update(self):
         if self.movement == "to_item":
             self.item_follow(self.item.pos)
+            if not self.item.alive():
+                self.movement = "to_player"
         if self.movement == "to_player":
             self.follow_movement(5)
         super().update()
