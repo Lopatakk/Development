@@ -34,7 +34,7 @@ class PlayerLight(PlayerShip):
 
         # shooting animation
         self.shooting_images = []
-        for num in range(1, 9):
+        for num in range(1, 4):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
             # add the image to the list
             self.shooting_images.append(img)

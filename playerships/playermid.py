@@ -24,7 +24,7 @@ class PlayerMid(PlayerShip):
         # shooting animation
         self.image_non_rot_orig = self.image_non_rot
         self.shooting_images = []
-        for num in range(1, 7):
+        for num in range(1, 3):
             img = pygame.image.load(f"assets/animations/shooting/MID/MID{num}.png")
             # add the image to the list
             self.shooting_images.append(img)
