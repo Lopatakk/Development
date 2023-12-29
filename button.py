@@ -30,6 +30,7 @@ class Button():
 		text_color = (40, 40, 40)
 		image_button = self.image_01
 		pos = pygame.mouse.get_pos()	# get mouse position
+
 		if self.rect.collidepoint(pos):
 			text_color = (0, 0, 0)
 			image_button = self.image_02

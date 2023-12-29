@@ -14,15 +14,15 @@ def ship_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    Light_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
-    Mid_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Mid', screen, "assets/sounds/button_click.mp3", 0.2)
-    Tank_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Tank', screen, "assets/sounds/button_click.mp3", 0.2)
+    Light_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/vlod5L.png", 0.3, 0.05, 0.025, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
+    Mid_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/vlod5.png", 0.3, 0.05, 0.025, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
+    Tank_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/vlod5T.png", 0.3, 0.05, 0.025, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
 
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
-        #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
-        screen.blit(font_title.render("Select your ship", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   text "Ship selection"
+        screen.blit(font_title.render("Ship selection", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
         if Light_button.draw_button_and_text(screen):
             return 1
