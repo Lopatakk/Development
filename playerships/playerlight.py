@@ -75,6 +75,7 @@ class PlayerLight(PlayerShip):
             # firing from the left gun
             projectile = Projectile(self)
             self.projectile_group.add(projectile)
+            projectile.sound.stop()
             self.proj_spawn_offset = self.proj_spawn_offset_2
             # firing from the right gun
             projectile = Projectile(self)

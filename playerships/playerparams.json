@@ -11,7 +11,7 @@
     "fire_rate": 5.5,
     "cooling": 6,
     "overheat": 30,
-    "q_cooldown": 10,
+    "q_cooldown": 20,
     "q_ongoing_time": 0.1,
     "e_cooldown": 30,
     "e_ongoing_time": 8
@@ -36,7 +36,7 @@
   {
     "type": "player_tank",
     "hp": 1400,
-    "dmg": 600,
+    "dmg": 4000,
     "explosion_size": 3,
     "max_velocity": 50,
     "acceleration": 0.5,
@@ -47,7 +47,7 @@
     "overheat": 30,
     "q_cooldown": 30,
     "q_ongoing_time": 6,
-    "e_cooldown": 60,
+    "e_cooldown": 10,
     "e_ongoing_time": 0.8
   }
 ]
