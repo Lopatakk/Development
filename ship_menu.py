@@ -1,8 +1,10 @@
 import button
 from renderupdate import *
+import playership
 
 def ship_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
+    #   text
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     text = font_title.render("Ship selection", True, (230, 230, 230))
     text_rect = text.get_rect()
@@ -26,6 +28,7 @@ def ship_menu(screen, clock, cursor_group):
         screen.blit(surface, (0, 0))
         #   text "Ship selection"
         screen.blit(text, text_rect)
+        #   text of ships properties
         #   button
         if Light_button.draw_image_in_center(screen):
             return 1
