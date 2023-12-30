@@ -54,16 +54,16 @@ class Button():
             offset_x_01 = mouse_x - rect_01.x
             offset_y_01 = mouse_y - rect_01.y
             if image_01_mask.get_at((offset_x_01, offset_y_01)):
-                self.collision01 = True
+                self.mask_01_collision = True
             else:
-                self.collision01 = False
+                self.mask_01_collision = False
         else:
-            self.collision01 = False
+            self.mask_01_collision = False
         # main collision check and action
         if rect.collidepoint(mouse_x, mouse_y):
             offset_x = mouse_x - rect.x
             offset_y = mouse_y - rect.y
-            if mask.get_at((offset_x, offset_y)) or self.collision01 == True:
+            if mask.get_at((offset_x, offset_y)) or self.mask_01_collision == True:
                 self.collision = True
                 if pygame.mouse.get_pressed()[0] == 0:  # this makes it impossible to click outside the button and then hover over it and activate it without clicking
                     self.press = True
