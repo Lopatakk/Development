@@ -10,6 +10,7 @@ class Button():
         self.clicked = False    # the button is not clicked at the beginning
         self.collision = False  # at the beginning, no collision occurs
         self.press = False      # the button cannot be pressed at the beginning
+        self.mask_01_collision = False  # the is not anz collision with mouse and first mask at the beginning
         #	image_01
         self.image_01 = pygame.image.load(image_01_path).convert_alpha()  # load button image with transparency
         #	image_02
@@ -36,7 +37,7 @@ class Button():
         rect_02 = image_02.get_rect()  # creates a rectangular frame around the object's image_02
         rect_02.center = (self.x_button, self.y_button)  # placing center of image_02 to wanted position
         image_02_mask = pygame.mask.from_surface(image_02)  # mask from image_02
-        # selecting an image for interaction and display on the screen
+        #   selecting an image for interaction and display on the screen
         if not self.collision:  # image_01 is used for interaction and is displayed on screen
             surface.blit(image_01, rect_01)
             rect = rect_01
@@ -47,11 +48,22 @@ class Button():
             rect = rect_02
             mask = image_02_mask
             text_color = (230, 230, 230)
-        # collision check
+        #   collision check
+        # when this "if" is not there, there is a flicker between image_01 and image_02 on the interface
+        if rect_01.collidepoint(mouse_x, mouse_y):
+            offset_x_01 = mouse_x - rect_01.x
+            offset_y_01 = mouse_y - rect_01.y
+            if image_01_mask.get_at((offset_x_01, offset_y_01)):
+                self.collision01 = True
+            else:
+                self.collision01 = False
+        else:
+            self.collision01 = False
+        # main collision check and action
         if rect.collidepoint(mouse_x, mouse_y):
             offset_x = mouse_x - rect.x
             offset_y = mouse_y - rect.y
-            if mask.get_at((offset_x, offset_y)):
+            if mask.get_at((offset_x, offset_y)) or self.collision01 == True:
                 self.collision = True
                 if pygame.mouse.get_pressed()[0] == 0:  # this makes it impossible to click outside the button and then hover over it and activate it without clicking
                     self.press = True
