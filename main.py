@@ -9,13 +9,9 @@ from cursor import Cursor
 from renderupdate import *
 from collisions import *
 from enemy_spawn import EnemySpawner
-from pause_menu import pause_menu
-from main_menu import main_menu
-from death_menu import death_menu
-from ship_menu import ship_menu
+import menus
 from background import Background
 from itemspawn import ItemSpawner
-
 
 # general setup
 #   pygame
@@ -45,10 +41,10 @@ pygame.mixer.set_num_channels(24)
 while True:
     # main_menu
     if game_main:
-        main_menu(screen, clock, cursor_group)
+        menus.main_menu(screen, clock, cursor_group)
         game_main = False
     # ship_menu
-    selected_number = ship_menu(screen, clock, cursor_group)
+    selected_number = menus.ship_menu(screen, clock, cursor_group)
     if selected_number == 1:
         selected_ship = PlayerLight
     elif selected_number == 2:
@@ -121,7 +117,7 @@ while True:
                        player.hp / player.max_hp)
             render_enemy_health_bar(screen, enemy_group)
             # opening pause menu
-            if pause_menu(screen, clock, score, cursor_group):
+            if menus.pause_menu(screen, clock, score, cursor_group):
                 game_main = True
                 game_paused = False
                 break
@@ -133,7 +129,7 @@ while True:
         if not player_group and not explosion_group:
             #   death_menu
             cursor.set_cursor()
-            if death_menu(screen, clock, cursor_group, score):
+            if menus.death_menu(screen, clock, cursor_group, score):
                 game_main = True
             break
 
