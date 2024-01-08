@@ -5,10 +5,10 @@ from pygame.surface import SurfaceType
 
 
 # This file is used to store functions for rendering and updating.
-def update_groups(groups, screen: SurfaceType):
+def update_groups(groups, screen: SurfaceType) -> None:
     """
-    This function updates all the sprite groups in the input list. The order does matter, because the latter the group
-    is in the list, the upper it will appear.
+    This function updates all the sprite groups in the input list. The order does matter because the later the group
+    is in the list, the later it will be rendered and the upper it will appear
     :param groups: List of groups to update
     :param screen: The surface the groups gets rendered on
     """
@@ -17,14 +17,34 @@ def update_groups(groups, screen: SurfaceType):
         group.draw(screen)
 
 
-def update_time(groups, time_difference):
+def update_time(groups, time_difference) -> None:
+    """
+    Adds the time difference to the time_alive variable of sprites in the groups
+    :param groups: Sprite groups to update their time
+    :param time_difference: The time difference
+    :return: None
+    """
     for group in groups:
         for thing in group:
             thing.time_alive += time_difference
 
 
-def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio, is_q_action_on, e_ratio, is_e_action_on,
-               overheat_ratio, is_overheated: bool, health_ratio):
+def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_action_on: bool, e_ratio: float,
+               is_e_action_on: bool, overheat_ratio: float, is_overheated: bool, health_ratio: float) -> None:
+    """
+    Renders score, q and e action charging bars, overheat and health bar on the screen
+    :param screen: Surface to render the HUD on
+    :param score: The score value
+    :param score_rgb: 3-item list with RGB values for color of the score text
+    :param q_ratio: How much time since the last q action use / how much time does it take to charge it up
+    :param is_q_action_on: Indicates if the q action is currently in use
+    :param e_ratio: How much time since the last e action use / how much time does it take to charge it up
+    :param is_e_action_on: Indicates if the e action is currently in use
+    :param overheat_ratio: How much hot is the players ships gun / how much it can withstand
+    :param is_overheated: Indicates if the players ships gun is overheated
+    :param health_ratio: How much does the players ship has hp / maximum amount of the ships hp
+    :return: None
+    """
     # HUD = Head-up display
     # score
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
@@ -96,14 +116,29 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio, is_q_action_
     pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * health_ratio, bar_size[1]))
 
 
-def render_score(screen: SurfaceType, score, r, g, b):
+def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> None:
+    """
+    Renders score on the screen
+    :param screen: Surface to render the score on
+    :param score: The score value
+    :param r: The value of red in the text color
+    :param g: The value of green in the text color
+    :param b: The value of blue in the text color
+    :return: None
+    """
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (r, g, b))
     x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, ScreenSetup.height / 200))
 
 
-def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group):
+def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group) -> None:
+    """
+    Renders small health bars under enemy ships
+    :param screen: Surface to render the bars on
+    :param enemy_group: A Sprite group of enemy ships the bars will be rendered at/for
+    :return: None
+    """
     # bars proportions
     bar_size = [1/33 * ScreenSetup.width, 1/180 * ScreenSetup.height]
 
