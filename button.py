@@ -1,4 +1,5 @@
 import pygame
+import json
 
 class Button():
     def __init__(self, x_button, y_button, image_01_path, image_02_path, scale_w, scale_h, text_size, text, screen_in_button, sound_path, sound_volume):
@@ -18,10 +19,22 @@ class Button():
         #	text
         font_size = text_size * self.width_screen
         self.font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(font_size))  # loading font
+        self.font_parameters = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(font_size*0.5))  # loading font for ship parameters
         self.text_to_write = text
         #	sound
         self.sound = pygame.mixer.Sound(sound_path)  # Load sound file
         self.sound.set_volume(sound_volume)
+        #   ship parameters
+        # load information about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            player_param = json.load(param_file)
+        # selection of ship
+        if image_01_path == "assets/images/vlod5L.png":
+            self.Ship_param = player_param[0]
+        elif image_01_path == "assets/images/vlod5.png":
+            self.Ship_param = player_param[1]
+        else:
+            self.Ship_param = player_param[2]
 
     def draw_image_in_center(self, surface):
         action = False
@@ -88,6 +101,16 @@ class Button():
         text_rect.centery = self.y_button - (rect_02.height/2) * 1.3
         # draw text on screen
         surface.blit(text, text_rect)
+        #   Printing ship parameters
+        ship_text = [f"HP: {self.Ship_param['hp']}", f"DMG: {self.Ship_param['proj_dmg']}", f"Fire rate: {self.Ship_param['fire_rate']}", f"Acceleration: {self.Ship_param['acceleration']}", f"Speed: {self.Ship_param['max_velocity']}", "Q skill: " + self.Ship_param['q_skill'], "E skill: " + self.Ship_param['e_skill']]
+        y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 2.8, self.y_button + (rect_02.height/2) * 3.1]
+        for parameters, position in zip(ship_text, y_position):
+            text = self.font_parameters.render(str(parameters), True, text_color)
+            text_rect = text.get_rect()
+            text_rect.centerx = self.x_button
+            text_rect.centery = position
+            # draw text on screen
+            surface.blit(text, text_rect)
 
         return action
 

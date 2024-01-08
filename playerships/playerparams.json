@@ -14,7 +14,9 @@
     "q_cooldown": 20,
     "q_ongoing_time": 0.1,
     "e_cooldown": 30,
-    "e_ongoing_time": 8
+    "e_ongoing_time": 8,
+    "q_skill": "Dash",
+    "e_skill": "Shield"
   },
   {
     "type": "player_mid",
@@ -31,7 +33,9 @@
     "q_cooldown": 20,
     "q_ongoing_time": 5,
     "e_cooldown": 40,
-    "e_ongoing_time": 0.1
+    "e_ongoing_time": 0.1,
+    "q_skill": "Rapid fire",
+    "e_skill": "Blast shoot"
   },
   {
     "type": "player_tank",
@@ -48,6 +52,8 @@
     "q_cooldown": 30,
     "q_ongoing_time": 6,
     "e_cooldown": 10,
-    "e_ongoing_time": 0.8
+    "e_ongoing_time": 0.8,
+    "q_skill": "Speed boost",
+    "e_skill": "Pulse"
   }
 ]
