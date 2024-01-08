@@ -156,7 +156,7 @@ def death_menu(screen, clock, cursor_group, score):
         screen.blit(surface, (0, 0))
         #   text "Game over" and "score"
         screen.blit(font_title.render("Game over", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
-        score_text = "score: " + str(score)
+        score_text = "Score: " + str(score)
         screen.blit(font_score.render(score_text, True, (230, 230, 230)), (3.6 * width / 20, 5.7 * height / 20))
         #   button
         if save_name_button.draw_button_and_text(screen):
