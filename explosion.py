@@ -19,6 +19,7 @@ class Explosion(pygame.sprite.Sprite):
                 img = pygame.transform.scale(img, (300 * self.screen_coefficient, 300 * self.screen_coefficient))
             if size == 3:
                 img = pygame.transform.scale(img, (500 * self.screen_coefficient, 500 * self.screen_coefficient))
+            img = pygame.Surface.convert_alpha(img)
             # add the image to the list
             self.images.append(img)
         self.index = 0
