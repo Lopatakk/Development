@@ -57,6 +57,11 @@ class PlayerLight(PlayerShip):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
             img = pygame.transform.scale_by(img, ScreenSetup.width / 1920)
             self.shooting_images.append(img)
+        self.shooting_images_shield = []
+        for num in range(1, 4):
+            img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHTS{num}.png")
+            img = pygame.transform.scale_by(img, ScreenSetup.width / 1920)
+            self.shooting_images_shield.append(img)
         self.index = 0
         self.counter = -1
         self.animation_speed = 3
@@ -69,16 +74,22 @@ class PlayerLight(PlayerShip):
         # shooting animation
         if self.counter >= 0:
             self.counter += 1
-        # changing the picture
+        #   changing the picture
         if self.counter >= self.animation_speed and self.index < len(self.shooting_images) - 1:
             self.counter = 0
             self.index += 1
-            self.image_non_rot = self.shooting_images[self.index]
-        # end of the animation
+            if self.is_e_action_on:
+                self.image_non_rot = self.shooting_images_shield[self.index]
+            else:
+                self.image_non_rot = self.shooting_images[self.index]
+        #   end of the animation
         if self.index >= len(self.shooting_images) - 1 and self.counter >= self.animation_speed:
             self.counter = -1
             self.index = 0
-            self.image_non_rot = self.image_non_rot_without_shield
+            if self.is_e_action_on:
+                self.image_non_rot = self.image_non_rot_with_shield
+            else:
+                self.image_non_rot = self.image_non_rot_without_shield
             # firing from the left gun
             projectile = Projectile(self)
             self.projectile_group.add(projectile)
@@ -150,4 +161,7 @@ class PlayerLight(PlayerShip):
             self.heat += 2
 
             self.counter = 0
-            self.image_non_rot = self.shooting_images[self.index]
+            if self.is_e_action_on:
+                self.image_non_rot = self.shooting_images_shield[self.index]
+            else:
+                self.image_non_rot = self.shooting_images[self.index]
