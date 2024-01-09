@@ -21,7 +21,7 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.screen_width = ScreenSetup.width
         self.screen_height = ScreenSetup.height
         self.enemy_type = enemy_type
-        self.last_spawn_time = 0
+        self.last_spawn_time = -5
         self.shot_group = shot_group
         self.player = player
         self.time_alive = 0
