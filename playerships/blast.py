@@ -10,9 +10,10 @@ class Blast(Projectile):
         self.sound.stop()
         self.type = "blast"
 
-        self.image = pygame.image.load("assets/images/blast.png")
-        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
+        self.image = pygame.image.load("assets/animations/blast/blast1.png")
+        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 3840)
         self.image = pygame.Surface.convert_alpha(self.image)
+        self.image = pygame.transform.rotate(self.image, self.angle)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -31,7 +32,34 @@ class Blast(Projectile):
         self.sound.set_volume(0.3)
         pygame.mixer.find_channel(False).play(self.sound)
 
+        # flying animation setup
+        self.image_orig = self.image
+        self.animation_images = []
+        for num in range(2, 4):
+            img = pygame.image.load(f"assets/animations/blast/blast{num}.png")
+            img = pygame.transform.scale_by(img, ScreenSetup.width / 3840)
+            img = pygame.transform.rotate(img, self.angle)
+            img = pygame.Surface.convert_alpha(img)
+            self.animation_images.append(img)
+        self.index = 0
+        self.counter = 0
+        self.animation_speed = 2
+
     def update(self):
+        # flying animation
+        if self.counter >= 0:
+            self.counter += 1
+        #   changing the picture
+        if self.counter >= self.animation_speed and self.index < len(self.animation_images) - 1:
+            self.counter = 0
+            self.index += 1
+            self.image = self.animation_images[self.index]
+        #   end of the animation
+        if self.index >= len(self.animation_images) - 1 and self.counter >= self.animation_speed:
+            self.counter = 0
+            self.index = 0
+            self.image = self.image_orig
+
         super().update()
         if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
             self.kill()
