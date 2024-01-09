@@ -31,7 +31,7 @@ class PlayerTank(PlayerShip):
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
 
         # image scaling
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920)
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920 * 5/6)
         self.width, self.height = self.image.get_width(), self.image.get_height()
 
         # q action variables and setup
@@ -47,7 +47,7 @@ class PlayerTank(PlayerShip):
         # shooting animation setup
         self.image_non_rot_orig = self.image_non_rot
         self.shooting_image = pygame.image.load(f"assets/animations/shooting/TANK/TANK1.png")
-        self.shooting_image = pygame.transform.scale_by(self.shooting_image, ScreenSetup.width / 1920)
+        self.shooting_image = pygame.transform.scale_by(self.shooting_image, ScreenSetup.width / 1920 * 5/6)
         self.index = 0
         self.counter = -1
         self.animation_speed = 3
