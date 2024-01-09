@@ -20,6 +20,12 @@ class Projectile(pygame.sprite.Sprite):
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
         super().__init__()
 
+        # angle
+
+        # angle - the angle under which the projectile travels through space, it does not change, here it is set to the
+        #   angle of the ship
+        self.angle = ship.angle
+
         # image
 
         # This section loads the image and creates a rect and a mask out of it. It also uses the convert function to
@@ -28,6 +34,7 @@ class Projectile(pygame.sprite.Sprite):
         # performance.
         self.image = pygame.image.load("assets/images/projectile.png")
         self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
+        self.image = pygame.transform.rotate(self.image, self.angle)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -42,12 +49,6 @@ class Projectile(pygame.sprite.Sprite):
                              ship.pos[1] + ship.proj_spawn_offset[1] * np.cos(np.deg2rad(ship.angle))
                              - ship.proj_spawn_offset[0] * np.sin(np.deg2rad(ship.angle))])
         self.rect.center = self.pos
-
-        # angle
-
-        # angle - the angle under which the projectile travels through space, it does not change, here it is set to the
-        #   angle of the ship
-        self.angle = ship.angle
 
         # velocity
 
