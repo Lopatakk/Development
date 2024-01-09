@@ -1,13 +1,14 @@
 import pygame
+from screensetup import ScreenSetup
 
 
 class EventHorizonPulse(pygame.sprite.Sprite):
     def __init__(self, ship):
         super().__init__()
 
-        self.speed = 40
+        self.speed = int(40 * ScreenSetup.width / 1920)
         self.dmg = 10000
-        self.thickness = 40
+        self.thickness = int(40 * ScreenSetup.width / 1920)
 
         self.screen = ship.screen
 

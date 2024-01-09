@@ -4,6 +4,7 @@ import json
 import pygame
 from projectile import Projectile
 import numpy as np
+from screensetup import ScreenSetup
 
 
 class PlayerLight(PlayerShip):
@@ -28,12 +29,17 @@ class PlayerLight(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
 
+        # image scaling
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920 * 5/6)
+        self.width, self.height = self.image.get_width(), self.image.get_height()
+
         # q action variables and setup
         self.velocity_before = None
 
         # e action variables and setup
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
+        self.image_non_rot_with_shield = pygame.transform.scale_by(self.image_non_rot_with_shield, ScreenSetup.width / 1920 * 5/6)
         self.image_non_rot_without_shield = self.image_non_rot
         self.shield_on_sound = pygame.mixer.Sound("assets/sounds/shield_on.mp3")
         self.shield_on_sound.set_volume(0.4)
@@ -41,15 +47,21 @@ class PlayerLight(PlayerShip):
         self.shield_off_sound.set_volume(0.6)
 
         # 2-cannon shooting setup
-        self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/4.5 * self.height])
-        self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/4.5 * self.height])
+        self.proj_spawn_offset_1 = np.array([- 1/3.5 * self.width, - 1/5.5 * self.height])
+        self.proj_spawn_offset_2 = np.array([+ 1/3.5 * self.width, - 1/5.5 * self.height])
         self.proj_spawn_offset = self.proj_spawn_offset_1
 
         # shooting animation setup
         self.shooting_images = []
         for num in range(1, 4):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
+            img = pygame.transform.scale_by(img, ScreenSetup.width / 1920 * 5/6)
             self.shooting_images.append(img)
+        self.shooting_images_shield = []
+        for num in range(1, 4):
+            img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHTS{num}.png")
+            img = pygame.transform.scale_by(img, ScreenSetup.width / 1920 * 5/6)
+            self.shooting_images_shield.append(img)
         self.index = 0
         self.counter = -1
         self.animation_speed = 3
@@ -62,16 +74,22 @@ class PlayerLight(PlayerShip):
         # shooting animation
         if self.counter >= 0:
             self.counter += 1
-        # changing the picture
+        #   changing the picture
         if self.counter >= self.animation_speed and self.index < len(self.shooting_images) - 1:
             self.counter = 0
             self.index += 1
-            self.image_non_rot = self.shooting_images[self.index]
-        # end of the animation
+            if self.is_e_action_on:
+                self.image_non_rot = self.shooting_images_shield[self.index]
+            else:
+                self.image_non_rot = self.shooting_images[self.index]
+        #   end of the animation
         if self.index >= len(self.shooting_images) - 1 and self.counter >= self.animation_speed:
             self.counter = -1
             self.index = 0
-            self.image_non_rot = self.image_non_rot_without_shield
+            if self.is_e_action_on:
+                self.image_non_rot = self.image_non_rot_with_shield
+            else:
+                self.image_non_rot = self.image_non_rot_without_shield
             # firing from the left gun
             projectile = Projectile(self)
             self.projectile_group.add(projectile)
@@ -143,4 +161,7 @@ class PlayerLight(PlayerShip):
             self.heat += 2
 
             self.counter = 0
-            self.image_non_rot = self.shooting_images[self.index]
+            if self.is_e_action_on:
+                self.image_non_rot = self.shooting_images_shield[self.index]
+            else:
+                self.image_non_rot = self.shooting_images[self.index]

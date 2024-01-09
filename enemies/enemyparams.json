@@ -5,7 +5,7 @@
     "dmg": 600,
     "explosion_size": 2,
     "max_velocity": 41,
-    "acceleration": 2.2,
+    "acceleration": 3.2,
     "velocity_coefficient": 0.1,
     "rot_velocity": 0,
     "proj_dmg": 0,

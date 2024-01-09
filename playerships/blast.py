@@ -11,6 +11,7 @@ class Blast(Projectile):
         self.type = "blast"
 
         self.image = pygame.image.load("assets/images/blast.png")
+        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
