@@ -104,6 +104,8 @@ def leaderboard_menu(screen, clock, cursor_group):
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
         #   cursor
