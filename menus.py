@@ -53,9 +53,13 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
                     save(highscore)
                     return True
                 if event.key == pygame.K_BACKSPACE:
-                    user_name = user_name[:-1]
+                    if len(user_name) > 0:
+                        user_name = user_name[:-1]
                 else:
-                    user_name += event.unicode
+                    #   adding text
+                    # only letters, numbers, ".", "-" and maximum of 15 characters
+                    if len(user_name) < 15 and (event.unicode.isalnum() or event.unicode in ['.', '-']):
+                        user_name += event.unicode
         #   data to save
         highscore = [[user_name, score, date, selected_ship]]
         #   rendering input
