@@ -6,6 +6,7 @@ import datetime
 def save_name_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    font_info = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -16,14 +17,14 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    save_button = button.Button(3.6 * width / 20, 37 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
-    cancel_button = button.Button(3.6 * width / 20, 46 * height / 80, "assets/images/button_01.png",  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Cancel', screen,"assets/sounds/button_click.mp3", 0.2)
+    save_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
+    cancel_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Cancel', screen,"assets/sounds/button_click.mp3", 0.2)
     #   the current date
     date = f'{datetime.datetime.now().date()}'
     #   name input
     user_name = ''
     font_input = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
-    text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/4, width/20)
+    text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/2.5, width/20)
     #   selected ship from nuber
     if ship_number == 1:
         selected_ship = "Light ship"
@@ -68,15 +69,19 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
         # input text
         text_surface = font_input.render(user_name, True, (230, 230, 230))
         # box is getting bigger with text (min. width, if is text wider, it is adding more width)
-        text_box.w = max(width/4, text_surface.get_width() + width/50)
+        text_box.w = max(width/2.5, text_surface.get_width() + width/50)
         # text
         text_rect = text_surface.get_rect()
         text_rect.centery = text_box.centery    # to get y center of text to y center of box
         text_rect.x = text_box.x + width/100    # to get left side of text to wanted position
-        # draw text on wanted position
+        # draw input text on wanted position
         screen.blit(text_surface, text_rect)
+        # info about characters and rules when writing name
+        screen.blit(font_info.render("maximum 15 characters", True, (150, 150, 150)), (3.6 * width / 20, text_box.y + text_box.height * 1.3))
+        screen.blit(font_info.render("only letters, numbers, dots, dashes", True, (150, 150, 150)), (3.6 * width / 20, text_box.y + text_box.height * 1.7))
         #   cursor
         update_groups([cursor_group], screen)
+
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
