@@ -135,6 +135,7 @@ while True:
         # player death
         if not player_group and not explosion_group:
             #   death_menu
+            pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
             if menus.death_menu(screen, clock, cursor_group, score):
                 game_main = True
