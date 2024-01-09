@@ -16,18 +16,14 @@ def save_name_menu(screen, clock, cursor_group, score):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    save_button = button.Button(13 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
-
-    # ZDE MÁ BÝT INPUT JMÉNA
-
-
-
-
+    save_button = button.Button(3.6 * width / 20, 37 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
+    cancel_button = button.Button(3.6 * width / 20, 46 * height / 80, "assets/images/button_01.png",  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Cancel', screen,"assets/sounds/button_click.mp3", 0.2)
     #   the current date
     date = f'{datetime.datetime.now().date()}'
-    #   data to save
-    highscore = [['Joe3', score, date]]
-
+    #   name input
+    user_name = ''
+    font_input = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
+    text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/4, width/20)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -37,15 +33,39 @@ def save_name_menu(screen, clock, cursor_group, score):
         if save_button.draw_button_and_text(screen):
             save(highscore)
             return True
-        # Event handling
+        if cancel_button.draw_button_and_text(screen):
+            return False
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
-                quit()
             if event.type == pygame.QUIT:
+                pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    save(highscore)
+                    return True
+                if event.key == pygame.K_BACKSPACE:
+                    user_name = user_name[:-1]
+                else:
+                    user_name += event.unicode
+        #   data to save
+        highscore = [[user_name, score, date]]
+        #   rendering input
+        # draw box around for text input
+        pygame.draw.rect(screen, (230, 230, 230), text_box, int(width/300))
+        # input text
+        text_surface = font_input.render(user_name, True, (230, 230, 230))
+        # box is getting bigger with text (min. width, if is text wider, it is adding more width)
+        text_box.w = max(width/4, text_surface.get_width() + width/50)
+        # text
+        text_rect = text_surface.get_rect()
+        text_rect.centery = text_box.centery    # to get y center of text to y center of box
+        text_rect.x = text_box.x + width/100    # to get left side of text to wanted position
+        # draw text on wanted position
+        screen.blit(text_surface, text_rect)
         #   cursor
         update_groups([cursor_group], screen)
-
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
@@ -258,8 +278,8 @@ def death_menu(screen, clock, cursor_group, score):
         #   button
         if not save_name_clicked:
             if save_name_button.draw_button_and_text(screen):
-                save_name_menu(screen, clock, cursor_group, score)
-                save_name_clicked = True
+                save_name_clicked = save_name_menu(screen, clock, cursor_group, score)
+                # save_name_clicked = True
         if restart_button.draw_button_and_text(screen):
             return False
         if main_menu_button.draw_button_and_text(screen):
