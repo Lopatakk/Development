@@ -27,11 +27,11 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
     text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/2.5, width/20)
     #   selected ship from nuber
     if ship_number == 1:
-        selected_ship = "Light ship"
+        selected_ship = "Light"
     elif ship_number == 2:
-        selected_ship = "Mid ship"
+        selected_ship = "Mid"
     else:
-        selected_ship = "Tank ship"
+        selected_ship = "Tank"
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -90,8 +90,9 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
 
 def leaderboard_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
-    font_scores = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.015 * width))  # loading font
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_scores_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
+    font_scores = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.014 * width))  # loading font
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -114,12 +115,16 @@ def leaderboard_menu(screen, clock, cursor_group):
         if back_button.draw_button_and_text(screen):
             return True
         #   display the high-scores.
-        y_position = list(range(28, 68, 4))
+        screen.blit(font_scores_title.render("NAME", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render("SCORE", True, (230, 230, 230)), (8.5 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render("DATE", True, (230, 230, 230)), (11.15 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render("SHIP", True, (230, 230, 230)), (14.6 * width / 20, 27 * height / 80))
+        y_position = list(range(32, 62, 3))     # the number of numbers here makes the number of names in the scoreboard
         for (hi_name, hi_score, hi_date, hi_selected_ship), y in zip(highscores, y_position):
-            screen.blit(font_scores.render(f'{hi_name}', True, (230, 230, 230)), (3.6 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_score}', True, (230, 230, 230)), (7 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_date}', True, (230, 230, 230)), (10.4 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (230, 230, 230)), (14.4 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_name}', True, (160, 160, 160)), (3.6 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8.5 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (11.15 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (14.6 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
             if event.type == pg.QUIT:

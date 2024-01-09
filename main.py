@@ -20,7 +20,7 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
-screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 background_image = Background()
 background_group = pygame.sprite.Group()
 background_group.add(background_image)
