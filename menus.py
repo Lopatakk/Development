@@ -240,7 +240,7 @@ def death_menu(screen, clock, cursor_group, score):
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6)
-    pygame.mixer.find_channel(True).play(sound)
+    pygame.mixer.find_channel(False).play(sound)
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False
     while True:

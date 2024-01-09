@@ -29,7 +29,7 @@ class Blast(Projectile):
 
         self.sound = pygame.mixer.Sound("assets/sounds/blast_1.mp3")  # Load sound file
         self.sound.set_volume(0.3)
-        pygame.mixer.find_channel(True).play(self.sound)
+        pygame.mixer.find_channel(False).play(self.sound)
 
     def update(self):
         super().update()

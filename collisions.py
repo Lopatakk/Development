@@ -100,8 +100,9 @@ def handle_item_collisions(item_group: Group, ship_group: Group) -> None:
                     ship.hp += item.heal
                     if ship.hp > ship.max_hp:
                         ship.hp = ship.max_hp
-                    pygame.mixer.find_channel(True).play(item.sound)
+                    pygame.mixer.find_channel(False).play(item.sound)
                     item.kill()
                     item.mask = None
                 if ship.type == "stealer":
                     ship.movement = "to_player"
+                    ship.image_non_rot = ship.image_non_rot_with_medkit
