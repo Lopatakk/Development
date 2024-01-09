@@ -23,26 +23,23 @@ class Enemy(Ship):
         self.history_length = history_length    # Sets length of player_position_history
                                                 # aka how many position of player we save
         # Udržet historii na maximální délce
-        self.player_position_history.append(self.player.pos)
-        if len(self.player_position_history) > self.history_length:
-            self.player_position_history.pop(0)
+        self.player_position_history.append(self.player.pos) # stores positions of player
 
-        if self.player_position_history:
-            oldest_player_pos = self.player_position_history[0]
+        oldest_player_pos = self.player_position_history.pop(0) # returns latest position of player and removes it from the list
 
-            # Vypočítat směr k nejstarší historické pozici hráče
-            direction = np.array([oldest_player_pos[0] - self.pos[0],
-                                  oldest_player_pos[1] - self.pos[1]])
+        # Vypočítat směr k nejstarší historické pozici hráče
+        direction = np.array([oldest_player_pos[0] - self.pos[0],
+                                  oldest_player_pos[1] - self.pos[1]]) # vector pointing at player
 
-            # Normalizovat směr, aby měl délku 1
-            norm_direction = direction / np.linalg.norm(direction)
+        # Normalizovat směr, aby měl délku 1
+        norm_direction = direction / np.linalg.norm(direction) # norm vector pointing towards player (his size = 1)
 
-            # Přidat normalizovaný směr k rychlosti Enemy
-            self.velocity[0] += norm_direction[0] * self.acceleration
-            self.velocity[1] += norm_direction[1] * self.acceleration
+        # Přidat normalizovaný směr k rychlosti Enemy
+        self.velocity[0] += norm_direction[0] * self.acceleration # updating positon through velocity with use of norm vector
+        self.velocity[1] += norm_direction[1] * self.acceleration
 
-            # Otáčení enemy k lodi
-            self.angle = self.rot_compute(self.pos[0] - oldest_player_pos[0],
+        # Otáčení enemy k lodi
+        self.angle = self.rot_compute(self.pos[0] - oldest_player_pos[0],
                                           self.pos[1] - oldest_player_pos[1])
 
     def follow_movement_with_offset(self):
