@@ -65,7 +65,7 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
                 if len(user_name) < 15 and (event.unicode.isalnum() or event.unicode in ['.', '-']):
                     user_name += event.unicode
         #   data to save
-        highscore = [[user_name, score, date, selected_ship]]
+        highscore = [[user_name, score, selected_ship, date]]
         #   rendering input
         # draw box around for text input
         pygame.draw.rect(screen, (230, 230, 230), text_box, int(width/300))
@@ -117,14 +117,14 @@ def leaderboard_menu(screen, clock, cursor_group):
         #   display the high-scores.
         screen.blit(font_scores_title.render("NAME", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
         screen.blit(font_scores_title.render("SCORE", True, (230, 230, 230)), (8.5 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render("DATE", True, (230, 230, 230)), (11.15 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render("SHIP", True, (230, 230, 230)), (14.6 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render("SHIP", True, (230, 230, 230)), (11.15 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render("DATE", True, (230, 230, 230)), (13.46 * width / 20, 27 * height / 80))
         y_position = list(range(32, 62, 3))     # the number of numbers here makes the number of names in the scoreboard
-        for (hi_name, hi_score, hi_date, hi_selected_ship), y in zip(highscores, y_position):
+        for (hi_name, hi_score, hi_selected_ship, hi_date), y in zip(highscores, y_position):
             screen.blit(font_scores.render(f'{hi_name}', True, (160, 160, 160)), (3.6 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8.5 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (11.15 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (14.6 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (11.15 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (13.46 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
             if event.type == pg.QUIT:
