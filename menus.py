@@ -95,6 +95,7 @@ def leaderboard_menu(screen, clock, cursor_group):
 def main_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    font_music = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -113,6 +114,10 @@ def main_menu(screen, clock, cursor_group):
         screen.blit(surface, (0, 0))
         #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
         screen.blit(font_title.render("Space shooter", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   text "Soundtrack: Karl Casey @ White Bat Audio"
+        text = font_music.render("Soundtrack by: Karl Casey @ White Bat Audio", True, (150, 150, 150))
+        text_width = text.get_width() # width of text
+        screen.blit(text, (width - text_width * 1.02, 19.5 * height / 20))
         #   BUTTON
         if play_button.draw_button_and_text(screen):
             return
