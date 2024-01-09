@@ -32,7 +32,10 @@ class Projectile(pygame.sprite.Sprite):
         # improve performance. Mask is created because we use a mask collision system. If we did not create mask here,
         # the code would have to make mask every time it checks for some collisions, which can lead to a decrease of
         # performance.
-        self.image = pygame.image.load("assets/images/projectile.png")
+        if ship.type.startswith("player"):
+            self.image = pygame.image.load("assets/images/projectile.png")
+        else:
+            self.image = pygame.image.load("assets/images/projectilered.png")
         self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
         self.image = pygame.transform.rotate(self.image, self.angle)
         self.image = pygame.Surface.convert_alpha(self.image)
