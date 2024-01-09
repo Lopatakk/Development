@@ -1,5 +1,57 @@
 import button
 from renderupdate import *
+from leaderboard import *
+import datetime
+
+def save_name_menu(screen, clock, cursor_group):
+    #   the current date
+    date = f'{datetime.datetime.now().date()}'
+
+    highscore = [['Joe', 50000, date]]
+    save(highscore)
+
+def leaderboard_menu(screen, clock, cursor_group):
+    width, height = screen.get_size()
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    font_scores = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.015 * width))  # loading font
+    #   surface and background
+    # surface
+    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()   # making surface transparent
+    surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+    # background
+    background = pygame.image.load("assets/images/Background.png")
+    background = pygame.transform.scale(background, (width, height))
+    background = pygame.Surface.convert(background)
+    #   create button instances
+    main_menu_button = button.Button(13 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
+    #   load the json file.
+    highscores = load()
+    while True:
+        screen.blit(background, (0, 0))
+        screen.blit(surface, (0, 0))
+        #   text "Leaderboard"
+        screen.blit(font_title.render("Leaderboard", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   BUTTON
+        if main_menu_button.draw_button_and_text(screen):
+            return True
+        #   display the high-scores.
+        y_position = list(range(28, 68, 4))
+        for (hi_name, hi_score, hi_date), y in zip(highscores, y_position):
+            screen.blit(font_scores.render(f'{hi_name}', True, (230, 230, 230)), (3.6 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_score}', True, (230, 230, 230)), (7 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_date}', True, (230, 230, 230)), (10.4 * width / 20, y * height / 80))
+        #   event handling
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                return
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                quit()
+        #   cursor
+        update_groups([cursor_group], screen)
+
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
 
 def main_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
@@ -15,9 +67,8 @@ def main_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen, "assets/sounds/button_click.mp3", 0.3)
-    scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_01.png", 0.3, 0.05, 0.025, 'Scoreboard', screen, "assets/sounds/button_click.mp3", 0.2)
+    scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen, "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
-
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -27,7 +78,7 @@ def main_menu(screen, clock, cursor_group):
         if play_button.draw_button_and_text(screen):
             return
         if scoreboard_button.draw_button_and_text(screen):
-            print("Scoreboard")
+            leaderboard_menu(screen, clock, cursor_group)
         if quit_button.draw_button_and_text(screen):
             quit()
         # Event handling
@@ -150,7 +201,7 @@ def death_menu(screen, clock, cursor_group, score):
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6)
-    pygame.mixer.find_channel(True).play(sound)
+    pygame.mixer.find_channel(False).play(sound)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))

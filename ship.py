@@ -215,7 +215,7 @@ class Ship(pygame.sprite.Sprite):
         if self.heat >= self.overheat and not self.is_overheated:
             self.is_overheated = True
             self.cooling = 2/3 * self.cooling
-            pygame.mixer.find_channel(True).play(self.overheat_sound)
+            pygame.mixer.find_channel(False).play(self.overheat_sound)
         # This section checks if the gun is cool enough, when it was overheated
         elif self.is_overheated and self.heat < 0.75 * self.overheat:
             self.is_overheated = False

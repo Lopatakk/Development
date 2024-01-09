@@ -9,7 +9,7 @@ class Explosion(pygame.sprite.Sprite):
         self.screen_coefficient = ScreenSetup.width / 1920
         self.sound = pygame.mixer.Sound("assets/sounds/explosion.mp3")  # Load sound file
         self.sound.set_volume(0.8)
-        pygame.mixer.find_channel(True).play(self.sound)
+        pygame.mixer.find_channel(False).play(self.sound)
 
         for num in range(1, 9):
             img = pygame.image.load(f"assets/animations/explosion1/exp{num}.png")

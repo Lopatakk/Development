@@ -83,7 +83,7 @@ class PlayerMid(PlayerShip):
         """
         self.fire_rate_time = self.fire_rate_time / 2
         self.cooling = self.cooling * 2.5
-        pygame.mixer.find_channel(True).play(self.gun_upgrade_sound)
+        pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
 
     def q_turn_off(self):
         """
