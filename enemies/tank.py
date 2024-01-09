@@ -28,6 +28,7 @@ class Tank(Enemy):
         for num in range(1, 4):
             img = pygame.image.load(f"assets/animations/shooting/FATBOY/enemytank{num}.png")
             img = pygame.transform.scale_by(img, ScreenSetup.width/1800)
+            img = pygame.Surface.convert_alpha(img)
             self.shooting_images.append(img)
         self.index = 0
         self.counter = -1

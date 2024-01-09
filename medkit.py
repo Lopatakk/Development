@@ -28,6 +28,7 @@ class Medkit(pygame.sprite.Sprite):
         for num in range(1, 7):
             img = pygame.image.load(f"assets/animations/medkit/medkit{num}.png")
             img = pygame.transform.scale_by(img, ScreenSetup.width / 1920)
+            img = pygame.Surface.convert_alpha(img)
             # add the image to the list
             self.animation_images.append(img)
         self.index = 0

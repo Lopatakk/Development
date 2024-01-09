@@ -48,6 +48,7 @@ class PlayerTank(PlayerShip):
         self.image_non_rot_orig = self.image_non_rot
         self.shooting_image = pygame.image.load(f"assets/animations/shooting/TANK/TANK1.png")
         self.shooting_image = pygame.transform.scale_by(self.shooting_image, ScreenSetup.width / 1920 * 5/6)
+        self.shooting_image = pygame.Surface.convert_alpha(self.shooting_image)
         self.index = 0
         self.counter = -1
         self.animation_speed = 3
