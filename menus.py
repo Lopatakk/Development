@@ -38,9 +38,11 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
         #   text "Your name"
         screen.blit(font_title.render("Your name", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   button
-        if save_button.draw_button_and_text(screen):
-            save(highscore)
-            return True
+        # if there is some input text
+        if len(user_name) > 0:
+            if save_button.draw_button_and_text(screen):
+                save(highscore)
+                return True
         if cancel_button.draw_button_and_text(screen):
             return False
         for event in pygame.event.get():
@@ -50,17 +52,18 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
                 return False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    save(highscore)
-                    return True
-                if event.key == pygame.K_BACKSPACE:
-                    if len(user_name) > 0:
-                        user_name = user_name[:-1]
-                else:
-                    #   adding text
-                    # only letters, numbers, ".", "-" and maximum of 15 characters
-                    if len(user_name) < 15 and (event.unicode.isalnum() or event.unicode in ['.', '-']):
-                        user_name += event.unicode
+                #   if there is some input text
+                if len(user_name) > 0:
+                    if event.key == pygame.K_RETURN:
+                        save(highscore)
+                        return True
+                    if event.key == pygame.K_BACKSPACE:
+                        if len(user_name) > 0:
+                            user_name = user_name[:-1]
+                #   adding text
+                # only letters, numbers, ".", "-" and maximum of 15 characters
+                if len(user_name) < 15 and (event.unicode.isalnum() or event.unicode in ['.', '-']):
+                    user_name += event.unicode
         #   data to save
         highscore = [[user_name, score, date, selected_ship]]
         #   rendering input
