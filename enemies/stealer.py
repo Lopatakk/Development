@@ -2,7 +2,7 @@ from enemy import Enemy
 import numpy as np
 import pygame
 import json
-
+from screensetup import ScreenSetup
 
 class Stealer(Enemy):
     def __init__(self, start, player, item):
@@ -15,7 +15,7 @@ class Stealer(Enemy):
                          param["explosion_size"], param["max_velocity"], param["acceleration"],
                          param["velocity_coefficient"], param["rot_velocity"], param["proj_dmg"], param["fire_rate"],
                          param["cooling"], param["overheat"], param["offset"], None, player)
-
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width/3000)
         self.item = item
         self.movement = "to_item"
 

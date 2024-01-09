@@ -3,7 +3,7 @@ import pygame
 import numpy as np
 from pygame.sprite import Group
 import json
-
+from screensetup import ScreenSetup
 
 class Tank(Enemy):
     def __init__(self, start, projectile_group, player):
@@ -18,7 +18,7 @@ class Tank(Enemy):
                          param["cooling"], param["overheat"], param["offset"], projectile_group, player)
         self.proj_spawn_offset = np.array([0, - 1/1.8 * self.height])
 
-        self.image_non_rot = pygame.transform.scale(self.image_non_rot, (150, 150))
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width/1450)
 
     def update(self):
         self.shoot()
