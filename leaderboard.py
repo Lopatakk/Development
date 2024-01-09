@@ -20,5 +20,5 @@ def load():
             highscores = json.load(file)  # read the json file.
     except:
         return []  # return an empty list if the file doesn't exist.
-    # sorted by the score.
+    #   sorted by the score.
     return sorted(highscores, key=itemgetter(1), reverse=True)

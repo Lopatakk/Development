@@ -103,7 +103,7 @@ class Button():
         surface.blit(text, text_rect)
         #   Printing ship parameters
         ship_text = [f"HP: {self.Ship_param['hp']}", f"DMG: {self.Ship_param['proj_dmg']}", f"Fire rate: {self.Ship_param['fire_rate']}", f"Acceleration: {self.Ship_param['acceleration']}", f"Speed: {self.Ship_param['max_velocity']}", "Q skill: " + self.Ship_param['q_skill'], "E skill: " + self.Ship_param['e_skill']]
-        y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 2.8, self.y_button + (rect_02.height/2) * 3.1]
+        y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 3, self.y_button + (rect_02.height/2) * 3.3]
         for parameters, position in zip(ship_text, y_position):
             text = self.font_parameters.render(str(parameters), True, text_color)
             text_rect = text.get_rect()

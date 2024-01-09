@@ -216,9 +216,9 @@ def ship_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    Light_button = button.Button(2 * width / 8, 9 * height / 16, "assets/images/vlod5L.png", "assets/images/vlod5L.png", 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
-    Mid_button = button.Button(4 * width / 8, 9 * height / 16, "assets/images/vlod5.png", "assets/images/vlod5.png", 0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
-    Tank_button = button.Button(6 * width / 8, 9 * height / 16, "assets/images/vlod5T.png", "assets/images/vlod5T.png", 0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
+    Light_button = button.Button(2 * width / 8, 8 * height / 16, "assets/images/vlod5L.png", "assets/images/vlod5L.png", 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
+    Mid_button = button.Button(4 * width / 8, 8 * height / 16, "assets/images/vlod5.png", "assets/images/vlod5.png", 0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
+    Tank_button = button.Button(6 * width / 8, 8 * height / 16, "assets/images/vlod5T.png", "assets/images/vlod5T.png", 0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
