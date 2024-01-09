@@ -47,8 +47,8 @@ class PlayerLight(PlayerShip):
         self.shield_off_sound.set_volume(0.6)
 
         # 2-cannon shooting setup
-        self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/4.5 * self.height])
-        self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/4.5 * self.height])
+        self.proj_spawn_offset_1 = np.array([- 1/3.5 * self.width, - 1/5.5 * self.height])
+        self.proj_spawn_offset_2 = np.array([+ 1/3.5 * self.width, - 1/5.5 * self.height])
         self.proj_spawn_offset = self.proj_spawn_offset_1
 
         # shooting animation setup

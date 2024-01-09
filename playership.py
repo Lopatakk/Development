@@ -47,7 +47,7 @@ class PlayerShip(Ship):
         # adjustment of values
 
         # updated value of proj_spawn_offset for player-type ships
-        self.proj_spawn_offset = np.array([0, - 1/2.2 * self.height])
+        self.proj_spawn_offset = np.array([0, - 1/2.8 * self.height])
 
         # buttons states
 
