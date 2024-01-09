@@ -20,7 +20,7 @@ pygame.init()
 clock = pygame.time.Clock()
 #   screen
 screen = ScreenSetup.start_setup()
-# screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+screen = pygame.display.set_mode((1200, 800))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 background_image = Background()
 background_group = pygame.sprite.Group()
 background_group.add(background_image)
@@ -58,7 +58,6 @@ while True:
     # variables for time in game + score
     time_in_game = 0
     score = 0
-
     # creating sprites/groups
     #   projectiles
     player_projectile_group = pygame.sprite.Group()
@@ -137,7 +136,7 @@ while True:
             #   death_menu
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
-            if menus.death_menu(screen, clock, cursor_group, score):
+            if menus.death_menu(screen, clock, cursor_group, score, selected_number):
                 game_main = True
             break
 

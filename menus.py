@@ -3,7 +3,7 @@ from renderupdate import *
 from leaderboard import *
 import datetime
 
-def save_name_menu(screen, clock, cursor_group, score):
+def save_name_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     #   surface and background
@@ -24,6 +24,13 @@ def save_name_menu(screen, clock, cursor_group, score):
     user_name = ''
     font_input = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
     text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/4, width/20)
+    #   selected ship from nuber
+    if ship_number == 1:
+        selected_ship = "Light ship"
+    elif ship_number == 2:
+        selected_ship = "Mid ship"
+    else:
+        selected_ship = "Tank ship"
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -50,7 +57,7 @@ def save_name_menu(screen, clock, cursor_group, score):
                 else:
                     user_name += event.unicode
         #   data to save
-        highscore = [[user_name, score, date]]
+        highscore = [[user_name, score, date, selected_ship]]
         #   rendering input
         # draw box around for text input
         pygame.draw.rect(screen, (230, 230, 230), text_box, int(width/300))
@@ -83,23 +90,24 @@ def leaderboard_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    main_menu_button = button.Button(13 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
     #   load the json file.
     highscores = load()
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Leaderboard"
-        screen.blit(font_title.render("Leaderboard", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        screen.blit(font_title.render("Scoreboard", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
-        if main_menu_button.draw_button_and_text(screen):
+        if back_button.draw_button_and_text(screen):
             return True
         #   display the high-scores.
         y_position = list(range(28, 68, 4))
-        for (hi_name, hi_score, hi_date), y in zip(highscores, y_position):
+        for (hi_name, hi_score, hi_date, hi_selected_ship), y in zip(highscores, y_position):
             screen.blit(font_scores.render(f'{hi_name}', True, (230, 230, 230)), (3.6 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_score}', True, (230, 230, 230)), (7 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_date}', True, (230, 230, 230)), (10.4 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (230, 230, 230)), (14.4 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -246,7 +254,7 @@ def ship_menu(screen, clock, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
-def death_menu(screen, clock, cursor_group, score):
+def death_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_score = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
@@ -280,7 +288,7 @@ def death_menu(screen, clock, cursor_group, score):
         #   button
         if not save_name_clicked:
             if save_name_button.draw_button_and_text(screen):
-                save_name_clicked = save_name_menu(screen, clock, cursor_group, score)
+                save_name_clicked = save_name_menu(screen, clock, cursor_group, score, ship_number)
                 # save_name_clicked = True
         if restart_button.draw_button_and_text(screen):
             return False
