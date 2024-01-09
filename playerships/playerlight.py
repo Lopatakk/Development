@@ -31,6 +31,7 @@ class PlayerLight(PlayerShip):
 
         # image scaling
         self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920)
+        self.width, self.height = self.image.get_width(), self.image.get_height()
 
         # q action variables and setup
         self.velocity_before = None
