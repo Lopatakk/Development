@@ -77,7 +77,7 @@ class PlayerTank(PlayerShip):
         """
         self.acceleration = 2.5 * self.acceleration
         self.max_velocity = 2 * self.max_velocity
-        pygame.mixer.find_channel(True).play(self.speed_boost_sound)
+        pygame.mixer.find_channel(False).play(self.speed_boost_sound)
 
     def q_turn_off(self):
         """
@@ -86,7 +86,7 @@ class PlayerTank(PlayerShip):
         """
         self.acceleration = 1/2.5 * self.acceleration
         self.max_velocity = 1/2 * self.max_velocity
-        pygame.mixer.find_channel(True).play(self.speed_boost_off_sound)
+        pygame.mixer.find_channel(False).play(self.speed_boost_off_sound)
 
     def e_action(self):
         """

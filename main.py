@@ -35,7 +35,11 @@ cursor_group = pygame.sprite.Group()
 cursor_group.add(cursor)
 cursor_group.update()
 #   sound
-pygame.mixer.set_num_channels(24)
+pygame.mixer.set_num_channels(30)
+#       background music
+background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
+background_music.set_volume(0.04)
+pygame.mixer.set_reserved(1)
 
 # main loop
 while True:
@@ -90,6 +94,9 @@ while True:
     # screen update (must be at the end of the loop before waiting functions!)
     pygame.display.flip()
 
+    # background music start
+    pygame.mixer.Channel(0).play(background_music, 3)
+
     # gameplay loop
     while True:
         # KEYs and window cross functions
@@ -106,8 +113,7 @@ while True:
         # pause menu
         if game_paused:
             # game_pause is False from start and can be changed to True by pressing "esc"
-
-            # destroying crosshair, because I do not want to see him in background in pause menu
+            pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
             update_groups([background_group, player_projectile_group, enemy_projectile_group, enemy_group,
                            player_group, explosion_group], screen)
@@ -124,6 +130,7 @@ while True:
             game_paused = False
             # setting cursor to crosshair
             cursor.set_crosshair()
+            pygame.mixer.Channel(0).unpause()
 
         # player death
         if not player_group and not explosion_group:

@@ -150,7 +150,7 @@ def death_menu(screen, clock, cursor_group, score):
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6)
-    pygame.mixer.find_channel(True).play(sound)
+    pygame.mixer.find_channel(False).play(sound)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))

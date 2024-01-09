@@ -134,7 +134,7 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        pygame.mixer.find_channel(True).play(self.shield_on_sound)
+        pygame.mixer.find_channel(False).play(self.shield_on_sound)
 
     def e_turn_off(self):
         """
@@ -146,7 +146,7 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        pygame.mixer.find_channel(True).play(self.shield_off_sound)
+        pygame.mixer.find_channel(False).play(self.shield_off_sound)
 
     def shoot(self):
         """

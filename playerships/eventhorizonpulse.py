@@ -31,7 +31,7 @@ class EventHorizonPulse(pygame.sprite.Sprite):
         self.type = "event_horizon_pulse"
 
         self.sound = pygame.mixer.Sound("assets/sounds/event_horizon_pulse.mp3")
-        pygame.mixer.find_channel(True).play(self.sound)
+        pygame.mixer.find_channel(False).play(self.sound)
 
     def update(self):
         self.image_not_shown = pygame.Surface((self.image_not_shown.get_width() + self.speed,

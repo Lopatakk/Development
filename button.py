@@ -84,7 +84,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
-                    pygame.mixer.find_channel(True).play(self.sound)
+                    pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
                 self.collision = False
@@ -151,7 +151,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
-                    pygame.mixer.find_channel(True).play(self.sound)
+                    pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
                 self.collision = False
