@@ -18,18 +18,19 @@ class Enemy(Ship):
         self.player = player
         self.rot_velocity = rot_velocity
         self.offset = offset
+        self.oldest_player_pos = [0, 0]
 
     def follow_movement(self, history_length):
         self.history_length = history_length    # Sets length of player_position_history
                                                 # aka how many position of player we save
         # Udržet historii na maximální délce
         self.player_position_history.append(self.player.pos) # stores positions of player
-
-        oldest_player_pos = self.player_position_history.pop(0) # returns latest position of player and removes it from the list
+        if len(self.player_position_history) > history_length:
+            self.oldest_player_pos = self.player_position_history.pop(0) # returns latest position of player and removes it from the list
 
         # Vypočítat směr k nejstarší historické pozici hráče
-        direction = np.array([oldest_player_pos[0] - self.pos[0],
-                                  oldest_player_pos[1] - self.pos[1]]) # vector pointing at player
+        direction = np.array([self.oldest_player_pos[0] - self.pos[0],
+                                  self.oldest_player_pos[1] - self.pos[1]]) # vector pointing at player
 
         # Normalizovat směr, aby měl délku 1
         norm_direction = direction / np.linalg.norm(direction) # norm vector pointing towards player (his size = 1)
@@ -39,8 +40,8 @@ class Enemy(Ship):
         self.velocity[1] += norm_direction[1] * self.acceleration
 
         # Otáčení enemy k lodi
-        self.angle = self.rot_compute(self.pos[0] - oldest_player_pos[0],
-                                          self.pos[1] - oldest_player_pos[1])
+        self.angle = self.rot_compute(self.pos[0] - self.oldest_player_pos[0],
+                                          self.pos[1] - self.oldest_player_pos[1])
 
     def follow_movement_with_offset(self):
         # Vypočítat směr k hráči

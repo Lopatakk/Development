@@ -30,9 +30,9 @@
     "fire_rate": 7,
     "cooling": 5,
     "overheat": 30,
-    "q_cooldown": 15,
+    "q_cooldown": 25,
     "q_ongoing_time": 5,
-    "e_cooldown": 30,
+    "e_cooldown": 35,
     "e_ongoing_time": 0.1,
     "q_skill": "Rapid fire",
     "e_skill": "Blast shoot"
@@ -51,7 +51,7 @@
     "overheat": 30,
     "q_cooldown": 20,
     "q_ongoing_time": 6,
-    "e_cooldown": 40,
+    "e_cooldown": 45,
     "e_ongoing_time": 0.8,
     "q_skill": "Speed boost",
     "e_skill": "Pulse"
