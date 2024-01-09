@@ -51,7 +51,7 @@
     "overheat": 30,
     "q_cooldown": 30,
     "q_ongoing_time": 6,
-    "e_cooldown": 10,
+    "e_cooldown": 50,
     "e_ongoing_time": 0.8,
     "q_skill": "Speed boost",
     "e_skill": "Pulse"
