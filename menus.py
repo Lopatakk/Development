@@ -3,12 +3,51 @@ from renderupdate import *
 from leaderboard import *
 import datetime
 
-def save_name_menu(screen, clock, cursor_group):
+def save_name_menu(screen, clock, cursor_group, score):
+    width, height = screen.get_size()
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    #   surface and background
+    # surface
+    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()   # making surface transparent
+    surface.fill((0, 0, 0, 230))  # fill the whole screen with black transparent color
+    # background
+    background = pygame.image.load("assets/images/Background.png")
+    background = pygame.transform.scale(background, (width, height))
+    background = pygame.Surface.convert(background)
+    #   create button instances
+    save_button = button.Button(13 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
+
+    # ZDE MÁ BÝT INPUT JMÉNA
+
+
+
+
     #   the current date
     date = f'{datetime.datetime.now().date()}'
+    #   data to save
+    highscore = [['Joe3', score, date]]
 
-    highscore = [['Joe', 50000, date]]
-    save(highscore)
+    while True:
+        screen.blit(background, (0, 0))
+        screen.blit(surface, (0, 0))
+        #   text "Your name"
+        screen.blit(font_title.render("Your name", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   button
+        if save_button.draw_button_and_text(screen):
+            save(highscore)
+            return True
+        # Event handling
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                quit()
+            if event.type == pygame.QUIT:
+                quit()
+        #   cursor
+        update_groups([cursor_group], screen)
+
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
 
 def leaderboard_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
@@ -194,7 +233,7 @@ def death_menu(screen, clock, cursor_group, score):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png","assets/images/button_01.png", 0.3, 0.05, 0.025, 'Save name', screen,"assets/sounds/button_click.mp3", 0.3)
+    save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save name', screen,"assets/sounds/button_click.mp3", 0.3)
     restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Again', screen, "assets/sounds/button_click.mp3", 0.3)
     main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
@@ -202,6 +241,8 @@ def death_menu(screen, clock, cursor_group, score):
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6)
     pygame.mixer.find_channel(True).play(sound)
+    #   a variable that makes it possible to make the save name button disappear after saving a name
+    save_name_clicked = False
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -210,8 +251,10 @@ def death_menu(screen, clock, cursor_group, score):
         score_text = "Score: " + str(score)
         screen.blit(font_score.render(score_text, True, (230, 230, 230)), (3.6 * width / 20, 5.7 * height / 20))
         #   button
-        if save_name_button.draw_button_and_text(screen):
-            print("Save name")
+        if not save_name_clicked:
+            if save_name_button.draw_button_and_text(screen):
+                save_name_menu(screen, clock, cursor_group, score)
+                save_name_clicked = True
         if restart_button.draw_button_and_text(screen):
             return False
         if main_menu_button.draw_button_and_text(screen):
