@@ -27,6 +27,7 @@ class Projectile(pygame.sprite.Sprite):
         # the code would have to make mask every time it checks for some collisions, which can lead to a decrease of
         # performance.
         self.image = pygame.image.load("assets/images/projectile.png")
+        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -62,7 +63,7 @@ class Projectile(pygame.sprite.Sprite):
         # sound of firing
 
         self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
-        self.sound.set_volume(0.15)
+        self.sound.set_volume(0.2)
         pygame.mixer.find_channel(True).play(self.sound)
 
         # other

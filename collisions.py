@@ -5,7 +5,27 @@ from pygame.sprite import Group
 
 
 def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
-                      is_target_projectile: bool, explosion_group: Group):
+                      is_target_projectile: bool, explosion_group: Group) -> None | int:
+    """
+    Handles projectile-to-projectile, projectile-to-ship and ship-to-ship sprite collisions.
+    The Following is executed if two sprites collide:
+
+    Projectile-to-projectile: event_horizon_pulse and blast types of projectiles in attacker_group destroys target_group
+    projectiles
+
+    Projectile-to-ship: attacker_group projectiles deal damage to target_group ships, if an attacker is of a normal
+    type, then it is destroyed, if the target hp is <= 0, then it is destroyed
+
+    Ship-to-ship: attacker_group ships deals damage to target_group ships, if the targets hp is <= 0, then it is
+    destroyed, if an attacker is of player_light type and the shield is on, then it gets turned off, else an attacker
+    gets damaged and if its hp is <= 0, then it is destroyed
+    :param attacker_group: Group of attacking sprites
+    :param is_attacker_projectile: True if attackers are projectiles
+    :param target_group: Group of targeted sprites
+    :param is_target_projectile: True if targets are projectiles
+    :param explosion_group: Sprite group for storing explosions
+    :return: if a collision type is ship-to-ship or projectile-to-ship and any targets are destroyed, returns according score, otherwise None
+    """
     hits = pygame.sprite.groupcollide(attacker_group, target_group, dokilla=False, dokillb=False, collided=pygame.sprite.collide_mask)
     score_diff = 0
     for attacker, targets_hit in hits.items():
@@ -63,7 +83,15 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
     return score_diff
 
 
-def handle_item_collisions(item_group: Group, ship_group: Group):
+def handle_item_collisions(item_group: Group, ship_group: Group) -> None:
+    """
+    Handles item-to-ship collisions for medkits and player or stealer types of ships.
+    If any sprite from item_group collides with any sprite from ship_group, then the ships hp increase and the item
+    disappears. If the ship is of stealer type, the collision also changes its movement target to the player.
+    :param item_group: Sprite group of a pickable items
+    :param ship_group: Sprite group with ships that can pick item
+    :return: None
+    """
     hits = pygame.sprite.groupcollide(item_group, ship_group, dokilla=False, dokillb=False, collided=pygame.sprite.collide_mask)
     for item, ships_hit in hits.items():
         for ship in ships_hit:

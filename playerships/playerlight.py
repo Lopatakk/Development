@@ -4,6 +4,7 @@ import json
 import pygame
 from projectile import Projectile
 import numpy as np
+from screensetup import ScreenSetup
 
 
 class PlayerLight(PlayerShip):
@@ -28,12 +29,16 @@ class PlayerLight(PlayerShip):
                          param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
                          param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
 
+        # image scaling
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920)
+
         # q action variables and setup
         self.velocity_before = None
 
         # e action variables and setup
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
+        self.image_non_rot_with_shield = pygame.transform.scale_by(self.image_non_rot_with_shield, ScreenSetup.width / 1920)
         self.image_non_rot_without_shield = self.image_non_rot
         self.shield_on_sound = pygame.mixer.Sound("assets/sounds/shield_on.mp3")
         self.shield_on_sound.set_volume(0.4)
@@ -49,6 +54,7 @@ class PlayerLight(PlayerShip):
         self.shooting_images = []
         for num in range(1, 4):
             img = pygame.image.load(f"assets/animations/shooting/LIGHT/LIGHT{num}.png")
+            img = pygame.transform.scale_by(img, ScreenSetup.width / 1920)
             self.shooting_images.append(img)
         self.index = 0
         self.counter = -1

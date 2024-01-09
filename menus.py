@@ -56,7 +56,6 @@ def pause_menu(screen, clock, score, cursor_group):
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Resume', screen, "assets/sounds/button_click.mp3", 0.2)
     main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
-
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
@@ -102,9 +101,9 @@ def ship_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    Light_button = button.Button(2 * width / 8, 9 * height / 16, "assets/images/vlod5L.png", "assets/images/vlod5L.png", 0.1, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
-    Mid_button = button.Button(4 * width / 8, 9 * height / 16, "assets/images/vlod5.png", "assets/images/vlod5.png", 0.1, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
-    Tank_button = button.Button(6 * width / 8, 9 * height / 16, "assets/images/vlod5T.png", "assets/images/vlod5T.png", 0.1, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
+    Light_button = button.Button(2 * width / 8, 9 * height / 16, "assets/images/vlod5L.png", "assets/images/vlod5L.png", 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
+    Mid_button = button.Button(4 * width / 8, 9 * height / 16, "assets/images/vlod5.png", "assets/images/vlod5.png", 0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
+    Tank_button = button.Button(6 * width / 8, 9 * height / 16, "assets/images/vlod5T.png", "assets/images/vlod5T.png", 0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -152,13 +151,12 @@ def death_menu(screen, clock, cursor_group, score):
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6)
     pygame.mixer.find_channel(True).play(sound)
-
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Game over" and "score"
         screen.blit(font_title.render("Game over", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
-        score_text = "score: " + str(score)
+        score_text = "Score: " + str(score)
         screen.blit(font_score.render(score_text, True, (230, 230, 230)), (3.6 * width / 20, 5.7 * height / 20))
         #   button
         if save_name_button.draw_button_and_text(screen):
