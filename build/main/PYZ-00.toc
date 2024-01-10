@@ -132,6 +132,10 @@
   ('asyncio.windows_utils',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_utils.py',
    'PYMODULE'),
+  ('background',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'ZS\\VMZ\\spaceshooter\\background.py',
+   'PYMODULE'),
   ('base64',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\base64.py',
    'PYMODULE'),
@@ -291,6 +295,10 @@
    'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
    'ZS\\VMZ\\spaceshooter\\enemies\\sniper.py',
    'PYMODULE'),
+  ('enemies.stealer',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'ZS\\VMZ\\spaceshooter\\enemies\\stealer.py',
+   'PYMODULE'),
   ('enemies.tank',
    'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
    'ZS\\VMZ\\spaceshooter\\enemies\\tank.py',
@@ -447,6 +455,10 @@
   ('json.scanner',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\scanner.py',
    'PYMODULE'),
+  ('leaderboard',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'ZS\\VMZ\\spaceshooter\\leaderboard.py',
+   'PYMODULE'),
   ('logging',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\logging\\__init__.py',
    'PYMODULE'),
@@ -456,6 +468,10 @@
   ('medkit',
    'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
    'ZS\\VMZ\\spaceshooter\\medkit.py',
+   'PYMODULE'),
+  ('menus',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'ZS\\VMZ\\spaceshooter\\menus.py',
    'PYMODULE'),
   ('mimetypes',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\mimetypes.py',
@@ -936,10 +952,6 @@
    'PYMODULE'),
   ('pathlib',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\pathlib.py',
-   'PYMODULE'),
-  ('pause_menu',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
-   'ZS\\VMZ\\spaceshooter\\pause_menu.py',
    'PYMODULE'),
   ('pdb',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\pdb.py',
