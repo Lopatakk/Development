@@ -67,7 +67,7 @@ class Projectile(pygame.sprite.Sprite):
         # sound of firing
 
         self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
-        self.sound.set_volume(0.2)
+        self.sound.set_volume(0.2 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
 
         # other

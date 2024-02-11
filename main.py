@@ -38,7 +38,7 @@ cursor_group.update()
 pygame.mixer.set_num_channels(30)
 #       background music
 background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
-background_music.set_volume(0.04)
+background_music.set_volume(0.04 * ScreenSetup.music_volume)
 pygame.mixer.set_reserved(1)
 
 # main loop

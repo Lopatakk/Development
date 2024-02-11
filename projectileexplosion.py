@@ -8,7 +8,7 @@ class ProjectileExplosion(pygame.sprite.Sprite):
         self.images = []
         self.screen_coefficient = ScreenSetup.width / 1920
         self.sound = pygame.mixer.Sound("assets/sounds/video_game_hit_sound.mp3")  # Load sound file
-        self.sound.set_volume(0.05)
+        self.sound.set_volume(0.05 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
         for num in range(1, 8):
             img = pygame.image.load(f"assets/animations/projectile_collision1/proj_col{num}.png")

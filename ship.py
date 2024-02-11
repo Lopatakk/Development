@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from projectile import Projectile
 from pygame.sprite import Group
+from screensetup import ScreenSetup
 
 
 class Ship(pygame.sprite.Sprite):
@@ -156,7 +157,7 @@ class Ship(pygame.sprite.Sprite):
         self.is_overheated = False
         # overheat_sound - sound which plays when the gun overheats
         self.overheat_sound = pygame.mixer.Sound("assets/sounds/overheat.mp3")
-        self.overheat_sound.set_volume(0.55)
+        self.overheat_sound.set_volume(0.55 * ScreenSetup.effects_volume)
 
         # explosion
 

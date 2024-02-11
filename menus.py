@@ -291,7 +291,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
-    sound.set_volume(0.6)
+    sound.set_volume(0.6 * ScreenSetup.effects_volume)
     pygame.mixer.find_channel(False).play(sound)
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False

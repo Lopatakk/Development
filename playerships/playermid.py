@@ -35,7 +35,7 @@ class PlayerMid(PlayerShip):
 
         # q action variables and setup
         self.gun_upgrade_sound = pygame.mixer.Sound("assets/sounds/gun_upgrade.mp3")
-        self.gun_upgrade_sound.set_volume(0.6)
+        self.gun_upgrade_sound.set_volume(0.6 * ScreenSetup.effects_volume)
 
         # shooting animation setup
         self.image_non_rot_orig = self.image_non_rot

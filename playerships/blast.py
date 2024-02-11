@@ -29,7 +29,7 @@ class Blast(Projectile):
         self.dmg = 100000
 
         self.sound = pygame.mixer.Sound("assets/sounds/blast_1.mp3")  # Load sound file
-        self.sound.set_volume(0.3)
+        self.sound.set_volume(0.3 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
 
         # flying animation setup

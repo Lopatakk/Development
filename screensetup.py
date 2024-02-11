@@ -1,4 +1,5 @@
 import pygame
+import json
 
 
 class ScreenSetup:
@@ -11,6 +12,12 @@ class ScreenSetup:
     width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
     fps = 60
     screen = None
+
+    # sound volume
+    with open("settings.json", "r") as settings_file:
+        settings = json.load(settings_file)
+    music_volume = settings["music_volume"]
+    effects_volume = settings["effects_volume"]
 
     def __init__(self):
         # This is just there, so it can be a class :)

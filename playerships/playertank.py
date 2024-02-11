@@ -36,9 +36,9 @@ class PlayerTank(PlayerShip):
 
         # q action variables and setup
         self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")
-        self.speed_boost_sound.set_volume(0.4)
+        self.speed_boost_sound.set_volume(0.4 * ScreenSetup.effects_volume)
         self.speed_boost_off_sound = pygame.mixer.Sound("assets/sounds/speed_boost_off.mp3")
-        self.speed_boost_off_sound.set_volume(0.3)
+        self.speed_boost_off_sound.set_volume(0.3 * ScreenSetup.effects_volume)
 
         # e action variables and setup
         self.event_horizon_pulse = None

@@ -1,5 +1,7 @@
 import pygame
 import json
+from screensetup import ScreenSetup
+
 
 class Button():
     def __init__(self, x_button, y_button, image_01_path, image_02_path, scale_w, scale_h, text_size, text, screen_in_button, sound_path, sound_volume):
@@ -23,7 +25,7 @@ class Button():
         self.text_to_write = text
         #	sound
         self.sound = pygame.mixer.Sound(sound_path)  # Load sound file
-        self.sound.set_volume(sound_volume)
+        self.sound.set_volume(sound_volume * ScreenSetup.effects_volume)
         #   ship parameters
         # load information about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
