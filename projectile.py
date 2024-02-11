@@ -34,8 +34,10 @@ class Projectile(pygame.sprite.Sprite):
         # performance.
         if ship.type.startswith("player"):
             self.image = pygame.image.load("assets/images/projectile.png")
+            self.color = "blue"
         else:
             self.image = pygame.image.load("assets/images/projectilered.png")
+            self.color = "red"
         self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
         self.image = pygame.transform.rotate(self.image, self.angle)
         self.image = pygame.Surface.convert_alpha(self.image)

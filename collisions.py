@@ -33,7 +33,7 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
             # projectile to projectile collision
             if is_attacker_projectile and is_target_projectile:
                 if attacker.type == "event_horizon_pulse" or attacker.type == "blast":
-                    proj_explosion = ProjectileExplosion(attacker.pos, 1)
+                    proj_explosion = ProjectileExplosion(attacker.pos, 1, target.color)
                     explosion_group.add(proj_explosion)
                     target.kill()
 
@@ -42,8 +42,9 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
                 # damaging target
                 target.hp -= attacker.dmg
                 # killing the projectile
-                proj_explosion = ProjectileExplosion(attacker.pos, 1)
-                explosion_group.add(proj_explosion)
+                if attacker.type == "normal" or attacker.type == "blast":
+                    proj_explosion = ProjectileExplosion(attacker.pos, 1, attacker.color)
+                    explosion_group.add(proj_explosion)
                 if attacker.type == "normal":
                     attacker.kill()
                 # killing target

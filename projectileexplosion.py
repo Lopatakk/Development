@@ -3,7 +3,7 @@ from screensetup import ScreenSetup
 
 
 class ProjectileExplosion(pygame.sprite.Sprite):
-    def __init__(self, pos, size):
+    def __init__(self, pos, size, color):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
         self.screen_coefficient = ScreenSetup.width / 1920
@@ -11,7 +11,7 @@ class ProjectileExplosion(pygame.sprite.Sprite):
         self.sound.set_volume(0.05 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
         for num in range(1, 8):
-            img = pygame.image.load(f"assets/animations/projectile_collision1/proj_col{num}.png")
+            img = pygame.image.load(f"assets/animations/projectile_collision_{color}/proj_col{num}.png")
             if size == 1:
                 img = pygame.transform.scale(img, (150 * self.screen_coefficient, 150 * self.screen_coefficient))
             if size == 2:
