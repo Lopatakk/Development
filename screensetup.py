@@ -13,11 +13,19 @@ class ScreenSetup:
     fps = 60
     screen = None
 
-    # sound volume
+    # reading settings
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)
+    #   sound
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+    #   buttons
+    button_up = settings["button_up"]
+    button_down = settings["button_down"]
+    button_left = settings["button_left"]
+    button_right = settings["button_right"]
+    button_function_1 = settings["button_function_1"]
+    button_function_2 = settings["button_function_2"]
 
     def __init__(self):
         # This is just there, so it can be a class :)
