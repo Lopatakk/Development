@@ -1,6 +1,7 @@
 [
   {
     "type": "zarovka",
+    "shooting_ani_images": 0,
     "hp": 500,
     "dmg": 600,
     "explosion_size": 2,
@@ -16,6 +17,7 @@
   },
   {
     "type": "tank",
+    "shooting_ani_images": 3,
     "hp": 4000,
     "dmg": 1200,
     "explosion_size": 3,
@@ -31,6 +33,7 @@
   },
   {
     "type": "sniper",
+    "shooting_ani_images": 3,
     "hp": 200,
     "dmg": 150,
     "explosion_size": 2,
@@ -46,8 +49,9 @@
   },
   {
     "type": "stealer",
+    "shooting_ani_images": 0,
     "hp": 300,
-    "dmg": 200,
+    "dmg": 300,
     "explosion_size": 2,
     "max_velocity": 55,
     "acceleration": 3,

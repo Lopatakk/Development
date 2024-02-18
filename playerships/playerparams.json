@@ -1,6 +1,7 @@
 [
   {
     "type": "player_light",
+    "shooting_ani_images": 3,
     "hp": 400,
     "dmg": 500,
     "explosion_size": 2,
@@ -9,7 +10,7 @@
     "velocity_coefficient": 0.1,
     "proj_dmg": 110,
     "fire_rate": 5.5,
-    "cooling": 6,
+    "cooling": 2,
     "overheat": 30,
     "q_cooldown": 7,
     "q_ongoing_time": 0.1,
@@ -20,6 +21,7 @@
   },
   {
     "type": "player_mid",
+    "shooting_ani_images": 2,
     "hp": 800,
     "dmg": 600,
     "explosion_size": 2,
@@ -39,6 +41,7 @@
   },
   {
     "type": "player_tank",
+    "shooting_ani_images": 1,
     "hp": 1400,
     "dmg": 4000,
     "explosion_size": 3,

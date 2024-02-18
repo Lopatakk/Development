@@ -106,4 +106,4 @@ def handle_item_collisions(item_group: Group, ship_group: Group) -> None:
                     item.mask = None
                 if ship.type == "stealer":
                     ship.movement = "to_player"
-                    ship.image_non_rot = ship.image_non_rot_with_medkit
+                    ship.image_non_rot = ship.image_non_rot_orig_with_medkit

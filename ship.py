@@ -14,13 +14,15 @@ class Ship(pygame.sprite.Sprite):
     calling the super().update() function. Position is then calculated automatically based on the velocity.
     """
 
-    def __init__(self, start_pos: np.ndarray, picture_path: str, ship_type: str, hp: int, dmg: int, explosion_size: int,
-                 max_velocity: float, acceleration: float, velocity_coefficient: float, proj_dmg: int, fire_rate: float,
-                 cooling: float, overheat: int, projectile_group: Group) -> "Ship":
+    def __init__(self, start_pos: np.ndarray, picture_path: str, ani_amount_of_images: int, ship_type: str,
+                 hp: int, dmg: int, explosion_size: int,
+                 max_velocity: float, acceleration: float, velocity_coefficient: float,
+                 proj_dmg: int, fire_rate: float, cooling: float, overheat: int, projectile_group: Group) -> "Ship":
         """
         Creates a ship with all the needed properties:
         :param start_pos: spawning position of the ship
         :param picture_path: directory path to the ship picture
+        :param ani_amount_of_images: number of images in the shooting animation
         :param ship_type: type of the ship
         :param hp: maximum amount of health points
         :param dmg: damage to other ships when ramming
@@ -33,7 +35,7 @@ class Ship(pygame.sprite.Sprite):
         :param cooling: how much of the heat the gun looses every second
         :param overheat: maximum amount of heat the gun can stand
         :param projectile_group: sprite group for fired projectiles
-        :return: a Ship object
+        :return: a Ship-type object
         """
 
         # super().__init__() - allows to use properties of Sprite, starts the code in Sprite constructor
@@ -58,10 +60,12 @@ class Ship(pygame.sprite.Sprite):
 
         # image
 
-        # image_non_rot - original, not-rotated picture of the ship, facing upwards (when rotating an image, it is
-        #                 necessary to use the original image as the image to be rotated, because, when using an already
-        #                 rotated image, the resulting image is distorted)
-        self.image_non_rot = pygame.image.load(picture_path)
+        # image_non_rot_orig - original image of the ship in its basic state, facing upwards
+        self.image_non_rot_orig = pygame.image.load(picture_path)
+        # image_non_rot - the image, that is being rotated, facing upwards (when rotating an image, it is necessary to
+        #                 use a not-rotated image as the image to be rotated because, when using an already rotated
+        #                 image, the resulting image is distorted)
+        self.image_non_rot = self.image_non_rot_orig
         # image - realtime image of the ship, here it gets uploaded and converted (the convert_alpha() and convert()
         #         function improves performance by enabling faster rendering of the images)
         self.image = pygame.image.load(picture_path)
@@ -77,6 +81,26 @@ class Ship(pygame.sprite.Sprite):
         # mask - creates mask from partially transparent ship image, used for calculating precise collisions, is updated
         #        every frame in update()
         self.mask = pygame.mask.from_surface(self.image)
+
+        # shooting animation
+
+        # ani_shooting_images - list for shooting animation images
+        self.ani_shooting_images = []
+        # loading and converting animation images
+        for num in range(1, ani_amount_of_images + 1):
+            img = pygame.image.load(f"assets/animations/shooting/{self.type}/{self.type}{num}.png")
+            img = pygame.Surface.convert_alpha(img)
+            self.ani_shooting_images.append(img)
+        # ani_image_index - current number of the animation picture, if 0, the image_non_rot_orig is used
+        self.ani_image_index = 0
+        # ani_counter - increase by 1 every frame, if it reaches the value of the ani_speed, the ani_image_index
+        #               increases (animation image gets changed), and ani_counter gets reset to 0, if -1, the shooting
+        #               animation is not running at the moment
+        self.ani_counter = -1
+        # ani_speed - the speed of the shooting animation, ani_counter increase by 1 every frame, if it reaches the
+        #             value of the ani_speed, the ani_image_index increases (animation image gets changed), and
+        #             ani_counter gets reset to 0, the greater the value of the ani_speed, the slower the animation gets
+        self.ani_speed = 3
 
         # position
 
@@ -172,6 +196,30 @@ class Ship(pygame.sprite.Sprite):
         :return: None
         """
 
+        # shooting animation
+
+        # These sections take care of running the shooting animation.
+        # This section increases the value of the ani_counter if the animation is running.
+        if self.ani_counter >= 0:
+            self.ani_counter += 1
+        # This section changes the picture. If the value of the ani_counter reaches the value of the ani_speed, and it
+        # is not the last image of the animation, it resets the ani_counter, increases the ani_image_index and changes
+        # the picture.
+        if self.ani_counter >= self.ani_speed and self.ani_image_index < len(self.ani_shooting_images) - 1:
+            self.ani_counter = 0
+            self.ani_image_index += 1
+            self.image_non_rot = self.ani_shooting_images[self.ani_image_index]
+        # This section takes care of ending the animation. If the last image of the animation is on and the value of the
+        # ani_counter reaches the value of the ani_speed, it turns off the animation by setting the ani_counter to -1,
+        # ani_image_index to 0, the image back to image_non_rot_orig and creates a projectile by calling the fire()
+        # method and adds it to the projectile_group.
+        if self.ani_image_index >= len(self.ani_shooting_images) - 1 and self.ani_counter >= self.ani_speed:
+            self.ani_counter = -1
+            self.ani_image_index = 0
+            self.image_non_rot = self.image_non_rot_orig
+            # creating a projectile
+            self.projectile_group.add(self.fire())
+
         # rotation
         # It is recommended to change the variable angle before calling the super().update() function!
 
@@ -245,14 +293,25 @@ class Ship(pygame.sprite.Sprite):
 
     def shoot(self) -> None:
         """
-        If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function creates
-        a projectile, adds it to the projectile group and increases the heat level. In the short term: try to fire the
-        projectile.
+        If the time after last shot is greater than fire_rate_time and the gun is not overheated, this function starts
+        the shooting animation and increases the heat level.
+        Calling the function only tries to fire from the gun, it is not guaranteed that it will shoot.
         :return: None
         """
+        # calculating how much time has passed since the last time the ship shot
         elapsed_time = self.time_alive - self.last_shot_time
+        # if the time after last shot is greater than fire_rate_time and the gun is not overheated, set the
+        # last_shot_time, increase heat and start the shooting animation
         if elapsed_time >= self.fire_rate_time and not self.is_overheated:
-            projectile = Projectile(self)
             self.last_shot_time = self.time_alive
-            self.projectile_group.add(projectile)
             self.heat += 1
+            self.ani_counter = 0
+            self.image_non_rot = self.ani_shooting_images[self.ani_image_index]
+
+    def fire(self) -> Projectile:
+        """
+        Creates a projectile in front of the ship and returns it.
+        :return: The created projectile
+        """
+        projectile = Projectile(self)
+        return projectile

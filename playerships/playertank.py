@@ -25,14 +25,12 @@ class PlayerTank(PlayerShip):
             player_param = json.load(param_file)
         param = player_param[2]
 
-        super().__init__("assets/images/vlod5T.png", param["type"], param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["proj_dmg"],
-                         param["fire_rate"], param["cooling"], param["overheat"], param["q_cooldown"],
-                         param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"], projectile_group)
-
-        # image scaling
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920 * 5/6)
-        self.width, self.height = self.image.get_width(), self.image.get_height()
+        super().__init__("assets/images/vlod5T.png", param["shooting_ani_images"], param["type"],
+                         param["hp"], param["dmg"], param["explosion_size"],
+                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
+                         param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
+                         param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],
+                         projectile_group)
 
         # q action variables and setup
         self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")
@@ -44,31 +42,11 @@ class PlayerTank(PlayerShip):
         self.event_horizon_pulse = None
         self.screen = ScreenSetup.screen
 
-        # shooting animation setup
-        self.image_non_rot_orig = self.image_non_rot
-        self.shooting_image = pygame.image.load(f"assets/animations/shooting/TANK/TANK1.png")
-        self.shooting_image = pygame.transform.scale_by(self.shooting_image, ScreenSetup.width / 1920 * 5/6)
-        self.shooting_image = pygame.Surface.convert_alpha(self.shooting_image)
-        self.index = 0
-        self.counter = -1
-        self.animation_speed = 3
-
     def update(self):
         """
         Customized update function including shooting animation and shield functionality unlike the PlayerShip update.
         :return: None
         """
-        # shooting animation
-        if self.counter >= 0:
-            self.counter += 1
-        if self.counter >= self.animation_speed:
-            # changing the image back
-            self.image_non_rot = self.image_non_rot_orig
-            self.counter = -1
-            # firing from the gun
-            projectile = Projectile(self)
-            self.projectile_group.add(projectile)
-
         super().update()
 
     def q_action(self):
@@ -103,18 +81,3 @@ class PlayerTank(PlayerShip):
         :return: None
         """
         self.event_horizon_pulse.kill()
-
-    def shoot(self):
-        """
-        If the time after last shot is larger than self.fire_rate_time and the gun is not overheated, this function
-        heats the gun and starts the shooting animation by setting the counter to 0. At the end of the animation is
-        created a projectile.
-        :return: None
-        """
-        elapsed_time = self.time_alive - self.last_shot_time
-        if elapsed_time >= self.fire_rate_time and not self.is_overheated:
-            self.last_shot_time = self.time_alive
-            self.heat += 1
-
-            self.counter = 0
-            self.image_non_rot = self.shooting_image
