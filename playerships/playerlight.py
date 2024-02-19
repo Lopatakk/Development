@@ -1,4 +1,4 @@
-from playership import PlayerShip
+from playerships.playership import PlayerShip
 from pygame.sprite import Group
 import json
 import pygame
@@ -24,8 +24,8 @@ class PlayerLight(PlayerShip):
             player_param = json.load(param_file)
         param = player_param[0]
 
-        super().__init__("assets/images/vlod5L.png", param["shooting_ani_images"], param["type"],
-                         param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__("assets/images/vlod5L.png", param["img_scaling_coefficient"], param["shooting_ani_images"],
+                         param["type"], param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
                          param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],

@@ -15,12 +15,15 @@ class PlayerShip(Ship):
     pressed; turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
     class based on this class.
     """
-    def __init__(self, picture_path, ani_amount_of_images, ship_type, hp, dmg, explosion_size,
-                 max_velocity, acceleration, velocity_coefficient, proj_dmg, fire_rate, cooling, overheat,
+    def __init__(self, picture_path, img_scaling_coefficient, ani_amount_of_images,
+                 ship_type, hp, dmg, explosion_size,
+                 max_velocity, acceleration, velocity_coefficient,
+                 proj_dmg, fire_rate, cooling, overheat,
                  q_cooldown: float, q_ongoing_time: float, e_cooldown: float, e_ongoing_time: float,
                  projectile_group) -> "PlayerShip":
         """
         :param picture_path: directory path to the ship picture
+        :param img_scaling_coefficient: used to calculate scaling factor by dividing screen width with it
         :param ani_amount_of_images: number of images in the shooting animation
         :param ship_type: type of the ship
         :param hp: maximum amount of health points
@@ -42,7 +45,8 @@ class PlayerShip(Ship):
         """
 
         # super().__init__ - creates a Ship object
-        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]), picture_path, ani_amount_of_images,
+        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]),
+                         picture_path, img_scaling_coefficient, ani_amount_of_images,
                          ship_type, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
                          proj_dmg, fire_rate, cooling, overheat, projectile_group)
 
@@ -77,19 +81,6 @@ class PlayerShip(Ship):
         self.is_e_action_on = False
         # e_ongoing_time - time in seconds, how long is the e action active
         self.e_ongoing_time = e_ongoing_time
-
-        # image scaling
-
-        # scale_ratio - ratio with which will images be scaled
-        scale_ratio = ScreenSetup.width / 1920 * 5/6
-        # scaling the original images
-        self.image_non_rot_orig = pygame.transform.scale_by(self.image_non_rot_orig, scale_ratio)
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, scale_ratio)
-        # scaling images for the shooting animation
-        for num in range(len(self.ani_shooting_images)):
-            self.ani_shooting_images[num] = pygame.transform.scale_by(self.ani_shooting_images[num], scale_ratio)
-        # rewriting the width and height variables to new values
-        self.width, self.height = self.image_non_rot_orig.get_width(), self.image_non_rot_orig.get_height()
 
     def update(self) -> None:
         """

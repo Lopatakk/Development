@@ -1,9 +1,8 @@
 import pygame.mixer
 from playerships.blast import Blast
-from playership import PlayerShip
+from playerships.playership import PlayerShip
 from pygame.sprite import Group
 import json
-from projectile import Projectile
 from screensetup import ScreenSetup
 
 
@@ -24,8 +23,8 @@ class PlayerMid(PlayerShip):
             player_param = json.load(param_file)
         param = player_param[1]
 
-        super().__init__("assets/images/vlod5.png", param["shooting_ani_images"], param["type"],
-                         param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__("assets/images/vlod5.png", param["img_scaling_coefficient"], param["shooting_ani_images"],
+                         param["type"], param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
                          param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],

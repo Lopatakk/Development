@@ -14,14 +14,16 @@ class Ship(pygame.sprite.Sprite):
     calling the super().update() function. Position is then calculated automatically based on the velocity.
     """
 
-    def __init__(self, start_pos: np.ndarray, picture_path: str, ani_amount_of_images: int, ship_type: str,
-                 hp: int, dmg: int, explosion_size: int,
+    def __init__(self, start_pos: np.ndarray,
+                 picture_path: str, img_scaling_coefficient: float, ani_amount_of_images: int,
+                 ship_type: str, hp: int, dmg: int, explosion_size: int,
                  max_velocity: float, acceleration: float, velocity_coefficient: float,
                  proj_dmg: int, fire_rate: float, cooling: float, overheat: int, projectile_group: Group) -> "Ship":
         """
         Creates a ship with all the needed properties:
         :param start_pos: spawning position of the ship
         :param picture_path: directory path to the ship picture
+        :param img_scaling_coefficient: used to calculate scaling factor by dividing screen width with it
         :param ani_amount_of_images: number of images in the shooting animation
         :param ship_type: type of the ship
         :param hp: maximum amount of health points
@@ -60,15 +62,19 @@ class Ship(pygame.sprite.Sprite):
 
         # image
 
+        # img_scale_ratio - the ratio by which image sizes are increased, it is dependent on the screen width
+        self.img_scale_ratio = ScreenSetup.width / img_scaling_coefficient
         # image_non_rot_orig - original image of the ship in its basic state, facing upwards
         self.image_non_rot_orig = pygame.image.load(picture_path)
+        # scaling the original image
+        self.image_non_rot_orig = pygame.transform.scale_by(self.image_non_rot_orig, self.img_scale_ratio)
         # image_non_rot - the image, that is being rotated, facing upwards (when rotating an image, it is necessary to
         #                 use a not-rotated image as the image to be rotated because, when using an already rotated
         #                 image, the resulting image is distorted)
         self.image_non_rot = self.image_non_rot_orig
         # image - realtime image of the ship, here it gets uploaded and converted (the convert_alpha() and convert()
         #         function improves performance by enabling faster rendering of the images)
-        self.image = pygame.image.load(picture_path)
+        self.image = self.image_non_rot
         self.image = pygame.Surface.convert_alpha(self.image)
         # rect - sprites work with rectangles, it is one of the necessary things, is created from the ship image
         self.rect = self.image.get_rect()
@@ -86,9 +92,10 @@ class Ship(pygame.sprite.Sprite):
 
         # ani_shooting_images - list for shooting animation images
         self.ani_shooting_images = []
-        # loading and converting animation images
+        # loading, scaling and converting animation images
         for num in range(1, ani_amount_of_images + 1):
             img = pygame.image.load(f"assets/animations/shooting/{self.type}/{self.type}{num}.png")
+            img = pygame.transform.scale_by(img, self.img_scale_ratio)
             img = pygame.Surface.convert_alpha(img)
             self.ani_shooting_images.append(img)
         # ani_image_index - current number of the animation picture, if 0, the image_non_rot_orig is used

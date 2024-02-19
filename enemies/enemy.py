@@ -8,12 +8,15 @@ from pygame.sprite import Sprite
 
 
 class Enemy(Ship):
-    def __init__(self, start: np.ndarray, picture_path, ani_amount_of_images, ship_type, hp, dmg, explosion_size, max_velocity, acceleration,
-                 velocity_coefficient, rot_velocity, proj_dmg, fire_rate, cooling, overheat, offset, projectile_group,
-                 player: Sprite):
+    def __init__(self, start: np.ndarray, picture_path, img_scaling_coefficient, ani_amount_of_images,
+                 ship_type, hp, dmg, explosion_size,
+                 max_velocity, acceleration, velocity_coefficient, rot_velocity,
+                 proj_dmg, fire_rate, cooling, overheat, offset, projectile_group, player: Sprite):
 
-        super().__init__(start, picture_path, ani_amount_of_images, ship_type, hp, dmg, explosion_size, max_velocity, acceleration,
-                         velocity_coefficient, proj_dmg, fire_rate, cooling, overheat, projectile_group)
+        super().__init__(start, picture_path, img_scaling_coefficient, ani_amount_of_images,
+                         ship_type, hp, dmg, explosion_size,
+                         max_velocity, acceleration, velocity_coefficient,
+                         proj_dmg, fire_rate, cooling, overheat, projectile_group)
         self.player_position_history = []  # Historie pozic hráče
         self.player = player
         self.rot_velocity = rot_velocity
@@ -21,8 +24,7 @@ class Enemy(Ship):
         self.oldest_player_pos = [0, 0]
 
     def follow_movement(self, history_length):
-        self.history_length = history_length    # Sets length of player_position_history
-                                                # aka how many position of player we save
+        # history_length sets length of player_position_history, aka how many position of player we save
         # Udržet historii na maximální délce
         self.player_position_history.append(self.player.pos) # stores positions of player
         if len(self.player_position_history) > history_length:
