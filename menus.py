@@ -1,7 +1,84 @@
+import pygame
+
 import button
 from renderupdate import *
 from leaderboard import *
 import datetime
+
+def blit_text(surface, text, pos, font, color=pygame.Color(230, 230, 230)):
+    words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+    space = font.size(' ')[0]  # The width of a space.
+    max_width, max_height = surface.get_size()
+    x, y = pos
+    for line in words:
+        for word in line:
+            word_surface = font.render(word, 0, color)
+            word_width, word_height = word_surface.get_size()
+            if x + word_width >= max_width:
+                x = pos[0]  # Reset the x.
+                y += word_height  # Start on new row.
+            surface.blit(word_surface, (x, y))
+            x += word_width + space
+        x = pos[0]  # Reset the x.
+        y += word_height  # Start on new row.
+
+
+text = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
+
+
+
+def aboutgame_menu(screen, clock, cursor_group):
+    width, height = screen.get_size()
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))    # loading font
+    #   variable for text y position
+    y_scroll = 0
+    #   surface and background
+    # surface
+    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()   # making surface transparent
+    surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+    # background
+    background = pygame.image.load("assets/images/Background.png")
+    background = pygame.transform.scale(background, (width, height))
+    background = pygame.Surface.convert(background)
+    #   create button instances
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    while True:
+        screen.blit(background, (0, 0))
+        screen.blit(surface, (0, 0))
+        #   text "About game"
+        screen.blit(font_title.render("About game", True, (230, 230, 230)), (3.6 * width / 20, (3.4 * height / 20) + y_scroll))
+        #   BUTTON
+        if back_button.draw_button_and_text(screen):
+            return True
+        #   event handling
+        for event in pg.event.get():
+            if event.type == pygame.MOUSEWHEEL:     # 1 means up, -1 means down
+                if event.y == 1 and y_scroll < 0:   # scroll up
+                    y_scroll += 20
+                elif event.y == -1 and y_scroll > -1000: # scroll down (to maximum bz chtelo nejak omezit pres screen)
+                    y_scroll -= 20
+            if event.type == pg.QUIT:
+                return
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                return
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                quit()
+
+
+        #   about game text
+        blit_text(screen, text, (3.6 * width / 20, (27 * height / 80) + y_scroll), font_text)
+
+
+        #   cursor
+        update_groups([cursor_group], screen)
+
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
+
+        print(y_scroll)
+
 
 def save_name_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
@@ -155,7 +232,8 @@ def main_menu(screen, clock, cursor_group):
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen, "assets/sounds/button_click.mp3", 0.3)
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen, "assets/sounds/button_click.mp3", 0.2)
-    quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
+    aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,"assets/sounds/button_click.mp3", 0.2)
+    quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -170,6 +248,9 @@ def main_menu(screen, clock, cursor_group):
             return
         if scoreboard_button.draw_button_and_text(screen):
             leaderboard_menu(screen, clock, cursor_group)
+        if aboutgame_button.draw_button_and_text(screen):
+            print("aboutgame")
+            # aboutgame_menu(screen, clock, cursor_group)
         if quit_button.draw_button_and_text(screen):
             quit()
         # Event handling
