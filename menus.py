@@ -10,15 +10,19 @@ def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   text
     # variables for text
+    spaceBetween = 0.01 * width
     textAlignLeft = 0
     textAlignRight = 1
     textAlignCenter = 2
     textAlignBlock = 3
     # fonts for text
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_subtitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.02 * width))    # loading font
+    subtitle_height = font_subtitle.size("Tq")[1]   # height of font
     font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.011 * width))    # loading font
-    #   variable for text y position
-    y_scroll = 0
+    text_height = font_text.size("Tq")[1]   # height of font
+    # variable for text y position
+    y_scroll = -400
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -52,10 +56,40 @@ def aboutgame_menu(screen, clock, cursor_group):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
 
+
         #   about game text
+        # about game
         msg = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
         textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, (230, 230, 230), textRect, font_text, textAlignBlock, True, None)
+        lowest_value = drawText.drawText(screen, msg, (230, 230, 230), textRect, font_text, textAlignLeft, True, None)
+        # why was created
+        msg = "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year."
+        textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, (230, 230, 230), textRect, font_text, textAlignLeft, True, None)
+        # development team
+        screen.blit(font_subtitle.render("Development team", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        screen.blit(font_text.render("Jan Sebele", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Pavel Franek", True, (230, 230, 230)), (8 * width / 20, lowest_value + spaceBetween * 2))
+        lowest_value = lowest_value + spaceBetween * 2 + text_height
+        screen.blit(font_text.render("Michal Lopata", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween))
+        screen.blit(font_text.render("Tomas Fikart", True, (230, 230, 230)), (8 * width / 20, lowest_value + spaceBetween))
+        lowest_value = lowest_value + spaceBetween + text_height
+        # controls
+        screen.blit(font_subtitle.render("Controls", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
+        screen.blit(font_text.render("Shooting:         left mouse button", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
+        screen.blit(font_text.render("Special skills:   Q and E", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
+        screen.blit(font_text.render("Pause:            ESC", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
+        lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
+
+
+        # ships
+        screen.blit(font_subtitle.render("Ships", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+
+
         print(lowest_value)
 
         #   cursor
@@ -219,6 +253,11 @@ def main_menu(screen, clock, cursor_group):
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,"assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
+
+
+        # aboutgame_menu(screen, clock, cursor_group)
+
+
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
@@ -330,6 +369,9 @@ def ship_menu(screen, clock, cursor_group):
                 quit()
             if event.type == pygame.QUIT:
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return 0
         #   cursor
         update_groups([cursor_group], screen)
 

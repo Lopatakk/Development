@@ -27,6 +27,7 @@ background_group.add(background_image)
 #   text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 #   variables for menus
+selected_number = 0
 game_paused = False
 game_main = True
 #   cursor
@@ -44,17 +45,30 @@ pygame.mixer.set_reserved(1)
 # main loop
 while True:
     # main_menu
-    if game_main:
-        menus.main_menu(screen, clock, cursor_group)
-        game_main = False
-    # ship_menu
-    selected_number = menus.ship_menu(screen, clock, cursor_group)
-    if selected_number == 1:
-        selected_ship = PlayerLight
-    elif selected_number == 2:
-        selected_ship = PlayerMid
-    elif selected_number == 3:
-        selected_ship = PlayerTank
+    while selected_number == 0:
+        if game_main:
+            menus.main_menu(screen, clock, cursor_group)
+            # ship_menu
+            selected_number = menus.ship_menu(screen, clock, cursor_group)
+            if selected_number == 1:
+                selected_ship = PlayerLight
+            elif selected_number == 2:
+                selected_ship = PlayerMid
+            elif selected_number == 3:
+                selected_ship = PlayerTank
+            if selected_number != 0:
+                game_main = False
+        else:
+            # ship_menu
+            selected_number = menus.ship_menu(screen, clock, cursor_group)
+            if selected_number == 1:
+                selected_ship = PlayerLight
+            elif selected_number == 2:
+                selected_ship = PlayerMid
+            elif selected_number == 3:
+                selected_ship = PlayerTank
+            if selected_number == 0:
+                game_main = True
     # variables for time in game + score
     time_in_game = 0
     score = 0
@@ -125,6 +139,7 @@ while True:
             if menus.pause_menu(screen, clock, score, cursor_group):
                 game_main = True
                 game_paused = False
+                selected_number = 0
                 break
             game_paused = False
             # setting cursor to crosshair
@@ -138,6 +153,7 @@ while True:
             cursor.set_cursor()
             if menus.death_menu(screen, clock, cursor_group, score, selected_number):
                 game_main = True
+            selected_number = 0
             break
 
         # rendering/update
