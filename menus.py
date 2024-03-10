@@ -45,7 +45,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   event handling
         for event in pg.event.get():
             if event.type == pygame.MOUSEWHEEL:     # 1 means up, -1 means down
-                if event.y == 1:# and y_scroll < 0:   # scroll up
+                if event.y == 1 and y_scroll < 0:   # scroll up
                     y_scroll += 0.0375 * width
                 elif event.y == -1:# and y_scroll > -1000: # scroll down (to maximum bz chtelo nejak omezit pres screen)
                     y_scroll -= 0.0375 * width
@@ -55,7 +55,6 @@ def aboutgame_menu(screen, clock, cursor_group):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-
 
         #   about game text
         # about game
@@ -84,13 +83,74 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(font_text.render("Special skills:   Q and E", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
         screen.blit(font_text.render("Pause:            ESC", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
         lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
-
-
-        # ships
+        #   ships
         screen.blit(font_subtitle.render("Ships", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+
+        # ship number 1
+        # load and write image
+        vlod5L = pygame.image.load("assets/images/vlod5L.png")  # load image
+        vlod5L = pygame.transform.scale(vlod5L, (int(vlod5L.get_rect().width * 0.8), int(vlod5L.get_rect().height * 0.8)))  # transforming image
+        screen.blit(vlod5L, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
+        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            player_param = json.load(param_file)
+        Ship_param = player_param[0]
+        # write info about ship
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
+        lowest_value = lowest_value + vlod5L.get_rect().height + 6 * spaceBetween
+
+        # ship number 2
+        # load and write image
+        vlod5 = pygame.image.load("assets/images/vlod5.png")  # load image
+        vlod5 = pygame.transform.scale(vlod5, (int(vlod5.get_rect().width * 0.8), int(vlod5.get_rect().height * 0.8)))  # transforming image
+        screen.blit(vlod5, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
+        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            player_param = json.load(param_file)
+        Ship_param = player_param[1]
+        # write info about ship
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
+        lowest_value = lowest_value + vlod5.get_rect().height + 6 * spaceBetween
+
+        # ship number 2
+        # load and write image
+        vlod5T = pygame.image.load("assets/images/vlod5T.png")  # load image
+        vlod5T = pygame.transform.scale(vlod5T, (int(vlod5T.get_rect().width * 0.8), int(vlod5T.get_rect().height * 0.8)))  # transforming image
+        screen.blit(vlod5T, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
+        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            player_param = json.load(param_file)
+        Ship_param = player_param[2]
+        # write info about ship
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
+        lowest_value = lowest_value + vlod5.get_rect().height + 6 * spaceBetween
+
+        #   enemies
+        screen.blit(font_subtitle.render("Enemies lode vyse umistit doprostred, takhle to vypada na picu", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
 
 
-        print(lowest_value)
+
+
 
         #   cursor
         update_groups([cursor_group], screen)
