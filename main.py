@@ -56,6 +56,7 @@ while True:
                 selected_ship = PlayerMid
             elif selected_number == 3:
                 selected_ship = PlayerTank
+
             if selected_number != 0:
                 game_main = False
         else:

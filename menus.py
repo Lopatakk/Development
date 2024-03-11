@@ -10,19 +10,23 @@ def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   text
     # variables for text
-    spaceBetween = 0.01 * width
+    spaceBetween = 0.009 * width
     textAlignLeft = 0
     textAlignRight = 1
     textAlignCenter = 2
     textAlignBlock = 3
     # fonts for text
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    title_color = (230, 230, 230)
     font_subtitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.02 * width))    # loading font
     subtitle_height = font_subtitle.size("Tq")[1]   # height of font
-    font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.011 * width))    # loading font
+    font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))    # loading font
     text_height = font_text.size("Tq")[1]   # height of font
+    text_color = (180, 180, 180)
+    font_name = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.012 * width))    # loading font
+    name_color = (200, 200, 200)
     # variable for text y position
-    y_scroll = -400
+    y_scroll = 0
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -42,12 +46,202 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   BUTTON
         if back_button.draw_button_and_text(screen):
             return True
+        #   about game text
+        # about game
+        msg = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
+        textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # why was created
+        msg = "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year."
+        textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # development team
+        screen.blit(font_subtitle.render("Development team", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        screen.blit(font_text.render("Jan Sebele", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Pavel Franek", True, text_color), (8 * width / 20, lowest_value + spaceBetween * 2))
+        lowest_value = lowest_value + spaceBetween * 2 + text_height
+        screen.blit(font_text.render("Michal Lopata", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween))
+        screen.blit(font_text.render("Tomas Fikart", True, text_color), (8 * width / 20, lowest_value + spaceBetween))
+        lowest_value = lowest_value + spaceBetween + text_height
+        # controls
+        screen.blit(font_subtitle.render("Controls", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
+        screen.blit(font_text.render("Shooting:         left mouse button", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
+        screen.blit(font_text.render("Special skills:   Q and E", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
+        screen.blit(font_text.render("Pause:            ESC", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
+        lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
+        #   ships
+        screen.blit(font_subtitle.render("Ships", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        # ship number 1
+        # load and write image
+        vlod5L = pygame.image.load("assets/images/vlod5L.png")  # load image
+        vlod5L = pygame.transform.scale(vlod5L, (int(width * 0.08), int(width * 0.09)))  # transforming image
+        screen.blit(vlod5L, ((5 * width / 20) - vlod5L.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5L.get_rect().centery))
+        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[0]
+        # write info about ship
+        text = font_name.render("LIGHT", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, text_color), (7.5 * width / 20, lowest_value + 9 * spaceBetween + 6 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, text_color), (7.5 * width / 20, lowest_value + 10 * spaceBetween + 7 * text_height))
+        lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
+        # ship number 2
+        # load and write image
+        vlod5 = pygame.image.load("assets/images/vlod5.png")  # load image
+        vlod5 = pygame.transform.scale(vlod5, (int(width * 0.11), int(width * 0.12)))  # transforming image
+        screen.blit(vlod5, ((5 * width / 20) - vlod5.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5.get_rect().centery))        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[1]
+        # write info about ship
+        text = font_name.render("MID", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, text_color), (7.5 * width / 20, lowest_value + 9 * spaceBetween + 6 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, text_color), (7.5 * width / 20, lowest_value + 10 * spaceBetween + 7 * text_height))
+        lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
+        # ship number 3
+        # load and write image
+        vlod5T = pygame.image.load("assets/images/vlod5T.png")  # load image
+        vlod5T = pygame.transform.scale(vlod5T, (int(width * 0.1), int(width * 0.12)))  # transforming image
+        screen.blit(vlod5T, ((5 * width / 20) - vlod5T.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5T.get_rect().centery))
+        # load info about ship from json
+        with open("playerships/playerparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[2]
+        # write info about ship
+        text = font_name.render("TANK", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, text_color), (7.5 * width / 20, lowest_value + 9 * spaceBetween + 6 * text_height))
+        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, text_color), (7.5 * width / 20, lowest_value + 10 * spaceBetween + 7 * text_height))
+        lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
+        #   enemies
+        screen.blit(font_subtitle.render("Enemies", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+        # enemy number 1
+        # load info about ship from json
+        with open("enemies/enemyparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[0]
+        # write info about ship
+        text = font_name.render("ZAROVKA", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        # writen info by myself
+        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # load and write image
+        zarovka = pygame.image.load("assets/images/zarovka.png")  # load image
+        zarovka = pygame.transform.scale(zarovka, (int(width * 0.053), int(width * 0.08)))  # transforming image
+        screen.blit(zarovka, ((5 * width / 20) - zarovka.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - zarovka.get_rect().centery))
+        lowest_value += 3 * spaceBetween
+        # enemy number 2
+        # load info about ship from json
+        with open("enemies/enemyparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[1]
+        # write info about ship
+        text = font_name.render("TANK", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        # writen info by myself
+        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # load and write image
+        tank = pygame.image.load("assets/images/tank.png")  # load image
+        tank = pygame.transform.scale(tank, (int(width * 0.13), int(width * 0.12)))  # transforming image
+        screen.blit(tank, ((5 * width / 20) - tank.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - tank.get_rect().centery))
+        lowest_value += 3 * spaceBetween
+        # enemy number 3
+        # load info about ship from json
+        with open("enemies/enemyparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[2]
+        # write info about ship
+        text = font_name.render("SNIPER", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        # writen info by myself
+        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # load and write image
+        sniper = pygame.image.load("assets/images/sniper.png")  # load image
+        sniper = pygame.transform.scale(sniper, (int(width * 0.06), int(width * 0.08)))  # transforming image
+        screen.blit(sniper, ((5 * width / 20) - sniper.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - sniper.get_rect().centery))
+        lowest_value += 3 * spaceBetween
+        # enemy number 4
+        # load info about ship from json
+        with open("enemies/enemyparams.json", "r") as param_file:
+            enemy_param = json.load(param_file)
+        Ship_param = enemy_param[2]
+        # write info about ship
+        text = font_name.render("STEALER", True, name_color)
+        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        # writen info by myself
+        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        # load and write image
+        stealer1 = pygame.image.load("assets/images/stealer1.png")  # load image
+        stealer1 = pygame.transform.scale(stealer1, (int(width * 0.06), int(width * 0.08)))  # transforming image
+        screen.blit(stealer1, ((5 * width / 20) - stealer1.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer1.get_rect().centery))
+        # load and write image
+        stealer2 = pygame.image.load("assets/images/stealer2.png")  # load image
+        stealer2 = pygame.transform.scale(stealer2, (int(width * 0.06), int(width * 0.08)))  # transforming image
+        screen.blit(stealer2, ((5 * width / 20) - stealer2.get_rect().centerx + stealer1.get_width() * 1.25, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer2.get_rect().centery))
+        lowest_value += 3 * spaceBetween
+        #   thank you for playing our game
+        screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        lowest_value = lowest_value + spaceBetween * 4 + 6 * spaceBetween
         #   event handling
         for event in pg.event.get():
             if event.type == pygame.MOUSEWHEEL:     # 1 means up, -1 means down
                 if event.y == 1 and y_scroll < 0:   # scroll up
                     y_scroll += 0.0375 * width
-                elif event.y == -1:# and y_scroll > -1000: # scroll down (to maximum bz chtelo nejak omezit pres screen)
+                elif event.y == -1 and lowest_value - height> 0 : # scroll down
                     y_scroll -= 0.0375 * width
             if event.type == pg.QUIT:
                 return
@@ -55,103 +249,6 @@ def aboutgame_menu(screen, clock, cursor_group):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-
-        #   about game text
-        # about game
-        msg = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
-        textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, (230, 230, 230), textRect, font_text, textAlignLeft, True, None)
-        # why was created
-        msg = "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year."
-        textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, (230, 230, 230), textRect, font_text, textAlignLeft, True, None)
-        # development team
-        screen.blit(font_subtitle.render("Development team", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
-        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Jan Sebele", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Pavel Franek", True, (230, 230, 230)), (8 * width / 20, lowest_value + spaceBetween * 2))
-        lowest_value = lowest_value + spaceBetween * 2 + text_height
-        screen.blit(font_text.render("Michal Lopata", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween))
-        screen.blit(font_text.render("Tomas Fikart", True, (230, 230, 230)), (8 * width / 20, lowest_value + spaceBetween))
-        lowest_value = lowest_value + spaceBetween + text_height
-        # controls
-        screen.blit(font_subtitle.render("Controls", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
-        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
-        screen.blit(font_text.render("Shooting:         left mouse button", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
-        screen.blit(font_text.render("Special skills:   Q and E", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
-        screen.blit(font_text.render("Pause:            ESC", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
-        lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
-        #   ships
-        screen.blit(font_subtitle.render("Ships", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
-        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-
-        # ship number 1
-        # load and write image
-        vlod5L = pygame.image.load("assets/images/vlod5L.png")  # load image
-        vlod5L = pygame.transform.scale(vlod5L, (int(vlod5L.get_rect().width * 0.8), int(vlod5L.get_rect().height * 0.8)))  # transforming image
-        screen.blit(vlod5L, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
-        # load info about ship from json
-        with open("playerships/playerparams.json", "r") as param_file:
-            player_param = json.load(param_file)
-        Ship_param = player_param[0]
-        # write info about ship
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
-        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
-        lowest_value = lowest_value + vlod5L.get_rect().height + 6 * spaceBetween
-
-        # ship number 2
-        # load and write image
-        vlod5 = pygame.image.load("assets/images/vlod5.png")  # load image
-        vlod5 = pygame.transform.scale(vlod5, (int(vlod5.get_rect().width * 0.8), int(vlod5.get_rect().height * 0.8)))  # transforming image
-        screen.blit(vlod5, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
-        # load info about ship from json
-        with open("playerships/playerparams.json", "r") as param_file:
-            player_param = json.load(param_file)
-        Ship_param = player_param[1]
-        # write info about ship
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
-        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
-        lowest_value = lowest_value + vlod5.get_rect().height + 6 * spaceBetween
-
-        # ship number 2
-        # load and write image
-        vlod5T = pygame.image.load("assets/images/vlod5T.png")  # load image
-        vlod5T = pygame.transform.scale(vlod5T, (int(vlod5T.get_rect().width * 0.8), int(vlod5T.get_rect().height * 0.8)))  # transforming image
-        screen.blit(vlod5T, (3.6 * width / 20, lowest_value + 2 * spaceBetween))
-        # load info about ship from json
-        with open("playerships/playerparams.json", "r") as param_file:
-            player_param = json.load(param_file)
-        Ship_param = player_param[2]
-        # write info about ship
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 3 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 4 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render("Q skill: " + Ship_param['q_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 5 * text_height))
-        screen.blit(font_text.render("E skill: " + Ship_param['e_skill'], True, (230, 230, 230)), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 6 * text_height))
-        lowest_value = lowest_value + vlod5.get_rect().height + 6 * spaceBetween
-
-        #   enemies
-        screen.blit(font_subtitle.render("Enemies lode vyse umistit doprostred, takhle to vypada na picu", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
-        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-
-
-
-
-
         #   cursor
         update_groups([cursor_group], screen)
 
@@ -315,7 +412,7 @@ def main_menu(screen, clock, cursor_group):
     while True:
 
 
-        # aboutgame_menu(screen, clock, cursor_group)
+        aboutgame_menu(screen, clock, cursor_group)
 
 
         screen.blit(background, (0, 0))
