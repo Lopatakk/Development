@@ -149,11 +149,11 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
         screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
         screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         # writen info by myself
-        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        msg = "He acts like a kamikaze pilot. It doesn't have a cannon to shoot, but it deals a lot of damage on contact with a ship."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
@@ -176,7 +176,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
-        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        msg = "His name describes him correctly. He has a lot of HP, he's big, and he shoots fast, but his shots don't do much damage."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
@@ -199,7 +199,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
-        msg = "Like kamikaze. Trying to fly toward you and kill you"
+        msg = "He tries to keep his distance from the ship, making it hard to hit him. His missiles deal a lot of damage, but he has low HP."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
@@ -211,28 +211,27 @@ def aboutgame_menu(screen, clock, cursor_group):
         # load info about ship from json
         with open("enemies/enemyparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
-        Ship_param = enemy_param[2]
+        Ship_param = enemy_param[3]
         # write info about ship
         text = font_name.render("STEALER", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
         screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         # writen info by myself
-        msg = "Like kamikaze. Trying to fly toward you and kill you"
-        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        msg = "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds a Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
         stealer1 = pygame.image.load("assets/images/stealer1.png")  # load image
         stealer1 = pygame.transform.scale(stealer1, (int(width * 0.06), int(width * 0.08)))  # transforming image
-        screen.blit(stealer1, ((5 * width / 20) - stealer1.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer1.get_rect().centery))
+        screen.blit(stealer1, ((5 * width / 20) - stealer1.get_rect().width * 1.2, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer1.get_rect().centery))
         # load and write image
         stealer2 = pygame.image.load("assets/images/stealer2.png")  # load image
         stealer2 = pygame.transform.scale(stealer2, (int(width * 0.06), int(width * 0.08)))  # transforming image
-        screen.blit(stealer2, ((5 * width / 20) - stealer2.get_rect().centerx + stealer1.get_width() * 1.25, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer2.get_rect().centery))
+        screen.blit(stealer2, ((5 * width / 20) + stealer1.get_rect().width * 0.2, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer2.get_rect().centery))
         lowest_value += 3 * spaceBetween
         #   thank you for playing our game
         screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
@@ -240,7 +239,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   scroll bar
         # record of biggest lowest_value
         if record:
-            lowest_value_first  = lowest_value - height
+            lowest_value_first = lowest_value - height
             record = False
         # page ratio for slide bar
         page_ratio = (int(lowest_value_first - (lowest_value - height)) / (lowest_value_first))
@@ -269,7 +268,6 @@ def aboutgame_menu(screen, clock, cursor_group):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-
         #   cursor
         update_groups([cursor_group], screen)
 
@@ -431,11 +429,6 @@ def main_menu(screen, clock, cursor_group):
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,"assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
-
-
-        aboutgame_menu(screen, clock, cursor_group)
-
-
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
