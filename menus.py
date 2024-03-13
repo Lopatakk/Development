@@ -8,6 +8,9 @@ import drawText
 
 def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
+    #   variable for scroll
+    record = True
+    y_scroll = 0
     #   text
     # variables for text
     spaceBetween = 0.009 * width
@@ -25,8 +28,6 @@ def aboutgame_menu(screen, clock, cursor_group):
     text_color = (180, 180, 180)
     font_name = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.012 * width))    # loading font
     name_color = (200, 200, 200)
-    # variable for text y position
-    y_scroll = 0
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -236,19 +237,39 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   thank you for playing our game
         screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + 6 * spaceBetween
+        #   scroll bar
+        # record of biggest lowest_value
+        if record:
+            lowest_value_first  = lowest_value - height
+            record = False
+        # page ratio for slide bar
+        page_ratio = (int(lowest_value_first - (lowest_value - height)) / (lowest_value_first))
+        # bars proportions
+        bar_pos = [39 / 40 * width, 7 / 40 * height]
+        bar_size = [2 / 400 * width, 25 / 40 * height]
+        # draw the bar
+        pygame.draw.rect(screen, (100, 100, 100), (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
+        pygame.draw.rect(screen, (230, 230, 230), (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1] * page_ratio))
         #   event handling
         for event in pg.event.get():
-            if event.type == pygame.MOUSEWHEEL:     # 1 means up, -1 means down
+            if event.type == pygame.MOUSEWHEEL:     # 1 mean up, -1 mean down
                 if event.y == 1 and y_scroll < 0:   # scroll up
-                    y_scroll += 0.0375 * width
-                elif event.y == -1 and lowest_value - height> 0 : # scroll down
-                    y_scroll -= 0.0375 * width
+                    if -y_scroll < (0.06 * height):
+                        y_scroll = 0
+                    else:
+                        y_scroll += 0.06 * height
+                elif event.y == -1 and lowest_value - height > 0 : # scroll down
+                    if (lowest_value - height) < (0.06 * height):
+                        y_scroll = (-lowest_value_first)
+                    else:
+                        y_scroll -= 0.06 * height
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
+
         #   cursor
         update_groups([cursor_group], screen)
 
