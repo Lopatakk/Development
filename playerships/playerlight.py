@@ -37,7 +37,15 @@ class PlayerLight(PlayerShip):
         # e action variables and setup
         self.hp_before = None
         self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
-        self.image_non_rot_with_shield = pygame.transform.scale_by(self.image_non_rot_with_shield, ScreenSetup.width / 1920 * 5/6)
+        self.image_non_rot_with_shield = pygame.transform.scale_by(self.image_non_rot_with_shield, self.img_scale_ratio)
+        self.ani_shooting_images_with_shield = []
+        # loading, scaling and converting animation images
+        for num in range(1, len(self.ani_shooting_images)):
+            img = pygame.image.load(f"assets/animations/shooting/{self.type}/{self.type}S{num}.png")
+            img = pygame.transform.scale_by(img, self.img_scale_ratio)
+            img = pygame.Surface.convert_alpha(img)
+            self.ani_shooting_images_with_shield.append(img)
+        self.ani_shooting_images_without_shield = self.ani_shooting_images
         self.image_non_rot_without_shield = self.image_non_rot
         self.shield_on_sound = pygame.mixer.Sound("assets/sounds/shield_on.mp3")
         self.shield_on_sound.set_volume(0.4 * ScreenSetup.effects_volume)
@@ -84,7 +92,9 @@ class PlayerLight(PlayerShip):
         :return: None
         """
         self.hp_before = self.hp
+        self.image_non_rot_orig = self.image_non_rot_with_shield
         self.image_non_rot = self.image_non_rot_with_shield
+        self.ani_shooting_images = self.ani_shooting_images_with_shield
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -96,7 +106,9 @@ class PlayerLight(PlayerShip):
         :return: None
         """
         self.hp = self.hp_before
+        self.image_non_rot_orig = self.image_non_rot_without_shield
         self.image_non_rot = self.image_non_rot_without_shield
+        self.ani_shooting_images = self.ani_shooting_images_without_shield
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
