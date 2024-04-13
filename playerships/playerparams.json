@@ -11,7 +11,7 @@
     "velocity_coefficient": 0.1,
     "proj_dmg": 110,
     "fire_rate": 6,
-    "cooling": 2.5,
+    "cooling": 3,
     "overheat": 30,
     "q_cooldown": 15,
     "q_ongoing_time": 0.1,
