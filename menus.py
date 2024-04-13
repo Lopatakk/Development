@@ -6,6 +6,8 @@ from leaderboard import *
 import datetime
 import drawText
 
+# def option_menu(screen, clock, cursor_group):
+
 def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   variable for scroll
