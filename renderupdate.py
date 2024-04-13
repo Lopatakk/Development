@@ -52,45 +52,9 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
     x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, ScreenSetup.height / 200))
 
-    # q and e bars
-    # bars proportions
-    #   position [both_x_pos, q_y_pos, e_y_pos]
-    bars_pos = [3 / 400 * ScreenSetup.width, 38 / 40 * ScreenSetup.height, 39 / 40 * ScreenSetup.height]
-    #   size [both_width, both_height]
-    bars_size = [47 / 400 * ScreenSetup.width, 1 / 70 * ScreenSetup.height]
-    # ratios limitations
-    if q_ratio > 1:
-        q_ratio = 1
-    if e_ratio > 1:
-        e_ratio = 1
-    # render gray back rects
-    #   q
-    pygame.draw.rect(screen, "gray", (bars_pos[0], bars_pos[1], bars_size[0], bars_size[1]))
-    #   e
-    pygame.draw.rect(screen, "gray", (bars_pos[0], bars_pos[2], bars_size[0], bars_size[1]))
-    # render the colour part
-    #   q
-    if is_q_action_on:
-        pygame.draw.rect(screen, "red", (bars_pos[0], bars_pos[1], bars_size[0], bars_size[1]))
-    elif q_ratio == 1:
-        pygame.draw.rect(screen, "green", (bars_pos[0], bars_pos[1], bars_size[0], bars_size[1]))
-    elif q_ratio > 0.5:
-        pygame.draw.rect(screen, "yellow", (bars_pos[0], bars_pos[1], bars_size[0] * q_ratio, bars_size[1]))
-    else:
-        pygame.draw.rect(screen, "orange", (bars_pos[0], bars_pos[1], bars_size[0] * q_ratio, bars_size[1]))
-    #   e
-    if is_e_action_on:
-        pygame.draw.rect(screen, "red", (bars_pos[0], bars_pos[2], bars_size[0], bars_size[1]))
-    elif e_ratio == 1:
-        pygame.draw.rect(screen, "green", (bars_pos[0], bars_pos[2], bars_size[0], bars_size[1]))
-    elif e_ratio > 0.5:
-        pygame.draw.rect(screen, "yellow", (bars_pos[0], bars_pos[2], bars_size[0] * e_ratio, bars_size[1]))
-    else:
-        pygame.draw.rect(screen, "orange", (bars_pos[0], bars_pos[2], bars_size[0] * e_ratio, bars_size[1]))
-
     # overheat bar
     # bars proportions [x, y]
-    bar_pos = [35 / 40 * ScreenSetup.width, 38 / 40 * ScreenSetup.height]
+    bar_pos = [3 / 400 * ScreenSetup.width, 38 / 40 * ScreenSetup.height]
     bar_size = [47 / 400 * ScreenSetup.width, 1 / 70 * ScreenSetup.height]
     # calculating how much of the bar gets filled
     if overheat_ratio > 1:
@@ -109,11 +73,46 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
 
     # health bar
     # bars proportions
-    bar_pos = [35/40 * ScreenSetup.width, 39/40 * ScreenSetup.height]
-    bar_size = [47/400 * ScreenSetup.width, 1/70 * ScreenSetup.height]
+    bar_pos = [3 / 400 * ScreenSetup.width, 39 / 40 * ScreenSetup.height]
     # draw the bar
     pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
     pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * health_ratio, bar_size[1]))
+
+    # q and e bars
+    # bars proportions
+    #   position [both_x_pos, q_y_pos, e_y_pos]
+    bars_pos = [35 / 40 * ScreenSetup.width, 38 / 40 * ScreenSetup.height, 39 / 40 * ScreenSetup.height]
+    #   size [both_width, both_height]
+    bar_size = [47 / 400 * ScreenSetup.width, 1 / 70 * ScreenSetup.height]
+    # ratios limitations
+    if q_ratio > 1:
+        q_ratio = 1
+    if e_ratio > 1:
+        e_ratio = 1
+    # render gray back rects
+    #   q
+    pygame.draw.rect(screen, "gray", (bars_pos[0], bars_pos[1], bar_size[0], bar_size[1]))
+    #   e
+    pygame.draw.rect(screen, "gray", (bars_pos[0], bars_pos[2], bar_size[0], bar_size[1]))
+    # render the colour part
+    #   q
+    if is_q_action_on:
+        pygame.draw.rect(screen, "red", (bars_pos[0], bars_pos[1], bar_size[0], bar_size[1]))
+    elif q_ratio == 1:
+        pygame.draw.rect(screen, "green", (bars_pos[0], bars_pos[1], bar_size[0], bar_size[1]))
+    elif q_ratio > 0.5:
+        pygame.draw.rect(screen, "yellow", (bars_pos[0], bars_pos[1], bar_size[0] * q_ratio, bar_size[1]))
+    else:
+        pygame.draw.rect(screen, "orange", (bars_pos[0], bars_pos[1], bar_size[0] * q_ratio, bar_size[1]))
+    #   e
+    if is_e_action_on:
+        pygame.draw.rect(screen, "red", (bars_pos[0], bars_pos[2], bar_size[0], bar_size[1]))
+    elif e_ratio == 1:
+        pygame.draw.rect(screen, "green", (bars_pos[0], bars_pos[2], bar_size[0], bar_size[1]))
+    elif e_ratio > 0.5:
+        pygame.draw.rect(screen, "yellow", (bars_pos[0], bars_pos[2], bar_size[0] * e_ratio, bar_size[1]))
+    else:
+        pygame.draw.rect(screen, "orange", (bars_pos[0], bars_pos[2], bar_size[0] * e_ratio, bar_size[1]))
 
 
 def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> None:
