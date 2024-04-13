@@ -13,6 +13,12 @@ class ScreenSetup:
     fps = 60
     screen = None
 
+    # in-game icons
+    q_action_icon_off = None
+    q_action_icon_on = None
+    e_action_icon_off = None
+    e_action_icon_on = None
+
     # reading settings
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)

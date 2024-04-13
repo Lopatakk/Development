@@ -82,6 +82,25 @@ class PlayerShip(Ship):
         # e_ongoing_time - time in seconds, how long is the e action active
         self.e_ongoing_time = e_ongoing_time
 
+        # q and e action icons
+        # loading q and e action icons for specific ship
+
+        ScreenSetup.q_action_icon_off = pygame.image.load(f"assets/icons/{self.type}/q_off.png")
+        ScreenSetup.q_action_icon_off = pygame.transform.scale_by(ScreenSetup.q_action_icon_off, 2/1920 * ScreenSetup.width)
+        ScreenSetup.q_action_icon_off = pygame.Surface.convert_alpha(ScreenSetup.q_action_icon_off)
+
+        ScreenSetup.q_action_icon_on = pygame.image.load(f"assets/icons/{self.type}/q_on.png")
+        ScreenSetup.q_action_icon_on = pygame.transform.scale_by(ScreenSetup.q_action_icon_on, 2/1920 * ScreenSetup.width)
+        ScreenSetup.q_action_icon_on = pygame.Surface.convert_alpha(ScreenSetup.q_action_icon_on)
+
+        ScreenSetup.e_action_icon_off = pygame.image.load(f"assets/icons/{self.type}/e_off.png")
+        ScreenSetup.e_action_icon_off = pygame.transform.scale_by(ScreenSetup.e_action_icon_off, 2/1920 * ScreenSetup.width)
+        ScreenSetup.e_action_icon_off = pygame.Surface.convert_alpha(ScreenSetup.e_action_icon_off)
+
+        ScreenSetup.e_action_icon_on = pygame.image.load(f"assets/icons/{self.type}/e_on.png")
+        ScreenSetup.e_action_icon_on = pygame.transform.scale_by(ScreenSetup.e_action_icon_on, 2/1920 * ScreenSetup.width)
+        ScreenSetup.e_action_icon_on = pygame.Surface.convert_alpha(ScreenSetup.e_action_icon_on)
+
     def update(self) -> None:
         """
         Uses the update from Ship class + processes player input (including q and e functions (both turn-on and
