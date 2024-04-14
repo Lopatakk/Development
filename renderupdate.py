@@ -68,6 +68,7 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
         pygame.draw.rect(screen, "yellow", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
     else:
         pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
+    # render the image
     screen.blit(ScreenSetup.overheat_icon, [bar_pos[0] - 2/23 * bar_size[0], bar_pos[1] - 8/13 * bar_size[1]])
 
     # health bar
@@ -77,6 +78,7 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
     # draw the bar
     pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
     pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * health_ratio, bar_size[1]))
+    # render the image
     screen.blit(ScreenSetup.hp_icon, [bar_pos[0] - 1/8 * bar_size[0], bar_pos[1] - 7/26 * bar_size[1]])
 
     # q and e bars
@@ -94,6 +96,7 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
     #   q
     if is_q_action_on:
         pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[2], bar_size[0], bar_size[1]))
+        # render the image
         screen.blit(ScreenSetup.q_action_icon_on, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     else:
         if q_ratio == 1:
@@ -102,10 +105,12 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
             pygame.draw.rect(screen, "yellow", (bar_pos[0], bar_pos[2] + (1-q_ratio) * bar_size[1], bar_size[0], bar_size[1] * q_ratio))
         else:
             pygame.draw.rect(screen, "orange", (bar_pos[0], bar_pos[2] + (1-q_ratio) * bar_size[1], bar_size[0], bar_size[1] * q_ratio))
+        # render the image
         screen.blit(ScreenSetup.q_action_icon_off, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     #   e
     if is_e_action_on:
         pygame.draw.rect(screen, "red", (bar_pos[1], bar_pos[2], bar_size[0], bar_size[1]))
+        # render the image
         screen.blit(ScreenSetup.e_action_icon_on, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     else:
         if e_ratio == 1:
@@ -114,6 +119,7 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
             pygame.draw.rect(screen, "yellow", (bar_pos[1], bar_pos[2] + (1-e_ratio) * bar_size[1], bar_size[0], bar_size[1] * e_ratio + 1))
         else:
             pygame.draw.rect(screen, "orange", (bar_pos[1], bar_pos[2] + (1-e_ratio) * bar_size[1], bar_size[0], bar_size[1] * e_ratio + 1))
+        # render the image
         screen.blit(ScreenSetup.e_action_icon_off, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
 
 
