@@ -1,11 +1,10 @@
 {
-  "music_volume": 1.5,
-  "effects_volume": 1.5,
-
-  "button_up": 119,
-  "button_down": 115,
-  "button_left": 97,
-  "button_right": 100,
-  "button_function_1": 113,
-  "button_function_2": 101
+    "music_volume": 2.054166666666667,
+    "effects_volume": 1.2312499999999997,
+    "button_up": 119,
+    "button_down": 115,
+    "button_left": 97,
+    "button_right": 100,
+    "button_function_1": 113,
+    "button_function_2": 101
 }

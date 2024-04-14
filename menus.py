@@ -1,14 +1,16 @@
-import pygame
-
 import button
 from renderupdate import *
 from leaderboard import *
 import datetime
 import drawText
+from slider import Slider
 
 def settingsPause_menu(screen, clock, cursor_group, background_copy):
     width, height = screen.get_size()
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    #   fonts
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))    # loading font
+    font_height = font_subTitle.get_height()
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
@@ -17,23 +19,59 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
     #   create button instances
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    #   volume
+    min_value = 0
+    max_value = 10
+    with open("settings.json", "r") as settings_file:
+        settings = json.load(settings_file)
+    music_volume = settings["music_volume"]
+    effects_volume = settings["effects_volume"]
+    # percentage
+    percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
+    percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
+    #   sliders
+    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageMusic)
+    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageEffects)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
-        #   text "Main Menu"
+        #   text "Settings"
         screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   changing volume
+        screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+        screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            return False
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
-                return False
+            ScreenSetup.music_volume = new_music_volume
+            ScreenSetup.effects_volume = new_effects_volume
+            settings["music_volume"] = new_music_volume
+            settings["effects_volume"] = new_effects_volume
+            with open("settings.json", "w") as settings_file:
+                json.dump(settings, settings_file, indent=4)
+            return
+        #   volume
+        # music
+        sliderMusic.update()
+        sliderMusic.draw(screen)
+        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
+        # effects
+        sliderEffects.update()
+        sliderEffects.draw(screen)
+        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                return
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                ScreenSetup.music_volume = new_music_volume
+                ScreenSetup.effects_volume = new_effects_volume
+                settings["music_volume"] = new_music_volume
+                settings["effects_volume"] = new_effects_volume
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
+                return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-            if event.type == pygame.QUIT:
-                quit()
-        #   score and cursor
-        # render_score(screen, score, 230, 230, 230)
+        #   cursor
         update_groups([cursor_group], screen)
 
         clock.tick(ScreenSetup.fps)
@@ -41,7 +79,10 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
 
 def settingsMain_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
+    #   fonts
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))    # loading font
+    font_height = font_subTitle.get_height()
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
@@ -53,18 +94,55 @@ def settingsMain_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
     #   create button instances
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    #   volume
+    min_value = 0
+    max_value = 10
+    with open("settings.json", "r") as settings_file:
+        settings = json.load(settings_file)
+    music_volume = settings["music_volume"]
+    effects_volume = settings["effects_volume"]
+    # percentage
+    percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
+    percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
+    #   sliders
+    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageMusic)
+    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageEffects)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Settings"
         screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   changing volume
+        screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+        screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            return True
+            ScreenSetup.music_volume = new_music_volume
+            ScreenSetup.effects_volume = new_effects_volume
+            settings["music_volume"] = new_music_volume
+            settings["effects_volume"] = new_effects_volume
+            with open("settings.json", "w") as settings_file:
+                json.dump(settings, settings_file, indent=4)
+            return
+        #   volume
+        # music
+        sliderMusic.update()
+        sliderMusic.draw(screen)
+        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
+        # effects
+        sliderEffects.update()
+        sliderEffects.draw(screen)
+        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                ScreenSetup.music_volume = new_music_volume
+                ScreenSetup.effects_volume = new_effects_volume
+                settings["music_volume"] = new_music_volume
+                settings["effects_volume"] = new_effects_volume
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
