@@ -38,6 +38,54 @@ class Button():
         else:
             self.Ship_param = player_param[2]
 
+    def draw_image_topRight(self, surface):
+        action = False
+        mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
+        #   button
+        # button_01
+        image_01 = pygame.transform.scale(self.image_01, (int(self.width_screen * self.scale_w), int(self.width_screen * self.scale_h)))  # transforming image_01
+        rect_01 = image_01.get_rect()  # creates a rectangular frame around the object's image_01
+        rect_01.topright = (self.x_button, self.y_button)  # placing topright corner of image_01 to wanted position
+        image_01_mask = pygame.mask.from_surface(image_01)  # mask from image_01
+        # button_02
+        image_02 = pygame.transform.scale(self.image_02, (int(self.width_screen * self.scale_w), int(self.width_screen * self.scale_h)))  # transforming image_02
+        rect_02 = image_02.get_rect()  # creates a rectangular frame around the object's image_02
+        rect_02.topright = (self.x_button, self.y_button)  # placing topright corner of image_02 to wanted position
+        image_02_mask = pygame.mask.from_surface(image_02)  # mask from image_02
+        # selecting an image for interaction and display on the screen
+        if not self.collision:  # image_01 is used for interaction and is displayed on screen
+            surface.blit(image_01, rect_01)
+            rect = rect_01
+            mask = image_01_mask
+        else:
+            surface.blit(image_02, rect_02)  # image_02 is used for interaction and is displayed on screen
+            rect = rect_02
+            mask = image_02_mask
+        # collision check
+        if rect.collidepoint(mouse_x, mouse_y):
+            offset_x = mouse_x - rect.x
+            offset_y = mouse_y - rect.y
+            if mask.get_at((offset_x, offset_y)):
+                self.collision = True
+                if pygame.mouse.get_pressed()[0] == 0:  # this makes it impossible to click outside the button and then hover over it and activate it without clicking
+                    self.press = True
+                if pygame.mouse.get_pressed()[0] == 1 and not self.clicked and self.press == 1:
+                    self.clicked = True
+                if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
+                    self.clicked = False
+                    pygame.mixer.Channel(1).play(self.sound)
+                    action = True
+            else:
+                self.collision = False
+                self.clicked = False
+                self.press = False
+        else:
+            self.collision = False
+            self.clicked = False
+            self.press = False
+
+        return action
+
     def draw_image_in_center(self, surface):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position

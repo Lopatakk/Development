@@ -6,7 +6,7 @@ from leaderboard import *
 import datetime
 import drawText
 
-# def option_menu(screen, clock, cursor_group):
+# def settings_menu(screen, clock, cursor_group):
 
 def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
@@ -524,6 +524,7 @@ def main_menu(screen, clock, cursor_group):
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen, "assets/sounds/button_click.mp3", 0.2)
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,"assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)), "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025, 0.025, 0.01,'', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -541,6 +542,8 @@ def main_menu(screen, clock, cursor_group):
         if aboutgame_button.draw_button_and_text(screen):
             aboutgame_menu(screen, clock, cursor_group)
         if quit_button.draw_button_and_text(screen):
+            quit()
+        if settings_button.draw_image_topRight(screen):
             quit()
         # Event handling
         for event in pygame.event.get():
