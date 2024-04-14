@@ -6,7 +6,40 @@ from leaderboard import *
 import datetime
 import drawText
 
-def settings_menu(screen, clock, cursor_group):
+def settingsPause_menu(screen, clock, cursor_group, background_copy):
+    width, height = screen.get_size()
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    #   surface and background
+    # surface
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
+    # background
+    surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
+    #   create button instances
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    while True:
+        screen.blit(background_copy, (0, 0))
+        screen.blit(surface, (0, 0))
+        #   text "Main Menu"
+        screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        #   BUTTON
+        if back_button.draw_button_and_text(screen):
+            return False
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
+                return False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                quit()
+            if event.type == pygame.QUIT:
+                quit()
+        #   score and cursor
+        # render_score(screen, score, 230, 230, 230)
+        update_groups([cursor_group], screen)
+
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
+
+def settingsMain_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
     #   surface and background
@@ -215,7 +248,7 @@ def main_menu(screen, clock, cursor_group):
         if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settings_menu(screen, clock, cursor_group)
+            settingsMain_menu(screen, clock, cursor_group)
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
@@ -242,6 +275,7 @@ def pause_menu(screen, clock, score, cursor_group):
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Resume', screen, "assets/sounds/button_click.mp3", 0.2)
     main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)), "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025, 0.025, 0.01,'', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
@@ -254,6 +288,8 @@ def pause_menu(screen, clock, score, cursor_group):
             return True
         if quit_button.draw_button_and_text(screen):
             quit()
+        if settings_button.draw_image_topRight(screen):
+            settingsPause_menu(screen, clock, cursor_group, background_copy)
         #   closing pause  menu
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
