@@ -39,7 +39,6 @@ cursor_group.update()
 pygame.mixer.set_num_channels(30)
 #       background music
 background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
-background_music.set_volume(0.04 * ScreenSetup.music_volume)
 pygame.mixer.set_reserved(1)
 
 # main loop
@@ -109,6 +108,7 @@ while True:
 
     # background music start
     pygame.mixer.Channel(0).play(background_music, 3)
+    pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
     # gameplay loop
     while True:
@@ -145,6 +145,7 @@ while True:
             # setting cursor to crosshair
             cursor.set_crosshair()
             pygame.mixer.Channel(0).unpause()
+            pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
         # player death
         if not player_group and not explosion_group:
