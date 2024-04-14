@@ -48,9 +48,9 @@ class PlayerLight(PlayerShip):
         self.ani_shooting_images_without_shield = self.ani_shooting_images
         self.image_non_rot_without_shield = self.image_non_rot
         self.shield_on_sound = pygame.mixer.Sound("assets/sounds/shield_on.mp3")
-        self.shield_on_sound.set_volume(0.4 * ScreenSetup.effects_volume)
+        self.shield_on_sound.set_volume(0.6 * ScreenSetup.effects_volume)
         self.shield_off_sound = pygame.mixer.Sound("assets/sounds/shield_off.mp3")
-        self.shield_off_sound.set_volume(0.6 * ScreenSetup.effects_volume)
+        self.shield_off_sound.set_volume(0.7 * ScreenSetup.effects_volume)
 
         # 2-cannon shooting setup
         self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/5.5 * self.height])

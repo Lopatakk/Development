@@ -47,7 +47,7 @@ class PlayerMid(PlayerShip):
         :return: None
         """
         self.fire_rate_time = self.fire_rate_time / 2
-        self.cooling = self.cooling * 5
+        self.cooling = self.cooling * 4
         self.ani_speed -= 1
         pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
 
@@ -57,7 +57,7 @@ class PlayerMid(PlayerShip):
         :return: None
         """
         self.fire_rate_time = self.fire_rate_time * 2
-        self.cooling = self.cooling / 5
+        self.cooling = self.cooling / 4
         self.ani_speed += 1
 
     def e_action(self):

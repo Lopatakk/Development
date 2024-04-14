@@ -14,6 +14,8 @@ class ScreenSetup:
     screen = None
 
     # in-game icons
+    hp_icon = None
+    overheat_icon = None
     q_action_icon_off = None
     q_action_icon_on = None
     e_action_icon_off = None
@@ -48,4 +50,10 @@ class ScreenSetup:
         screen = pygame.display.set_mode((cls.width, cls.height), pygame.FULLSCREEN)
         cls.width, cls.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         cls.screen = screen
+        cls.hp_icon = pygame.image.load("assets/icons/bars/health_bar.png")
+        cls.hp_icon = pygame.transform.scale_by(cls.hp_icon, 2 / 1920 * cls.width)
+        cls.hp_icon = pygame.Surface.convert_alpha(cls.hp_icon)
+        cls.overheat_icon = pygame.image.load("assets/icons/bars/tempreture_bar.png")
+        cls.overheat_icon = pygame.transform.scale_by(cls.overheat_icon, 2 / 1920 * cls.width)
+        cls.overheat_icon = pygame.Surface.convert_alpha(cls.overheat_icon)
         return screen

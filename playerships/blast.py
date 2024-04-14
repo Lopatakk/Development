@@ -23,7 +23,7 @@ class Blast(Projectile):
 
         self.velocity = 25
 
-        self.recoil = 40
+        self.recoil = 60
         ship.velocity += self.recoil * np.array([np.sin(np.deg2rad(self.angle)), np.cos(np.deg2rad(self.angle))])
 
         self.dmg = 100000

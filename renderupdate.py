@@ -54,13 +54,11 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
 
     # overheat bar
     # bars proportions [x, y]
-    bar_pos = [3 / 400 * ScreenSetup.width, 38 / 40 * ScreenSetup.height]
-    bar_size = [47 / 400 * ScreenSetup.width, 1 / 70 * ScreenSetup.height]
+    bar_pos = [35 / 1920 * ScreenSetup.width, 990 / 1080 * ScreenSetup.height]
+    bar_size = [230 / 1920 * ScreenSetup.width, 26 / 1080 * ScreenSetup.height]
     # calculating how much of the bar gets filled
     if overheat_ratio > 1:
         overheat_ratio = 1
-    # drawing gray background of the bar
-    pygame.draw.rect(screen, "gray", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
     # drawing the color portion
     if is_overheated:
         pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
@@ -70,13 +68,16 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
         pygame.draw.rect(screen, "yellow", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
     else:
         pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
+    screen.blit(ScreenSetup.overheat_icon, [bar_pos[0] - 2/23 * bar_size[0], bar_pos[1] - 8/13 * bar_size[1]])
 
     # health bar
     # bars proportions
-    bar_pos = [3 / 400 * ScreenSetup.width, 39 / 40 * ScreenSetup.height]
+    bar_pos = [43 / 1920 * ScreenSetup.width, 1038 / 1080 * ScreenSetup.height]
+    bar_size = [224 / 1920 * ScreenSetup.width, 26 / 1080 * ScreenSetup.height]
     # draw the bar
     pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
     pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * health_ratio, bar_size[1]))
+    screen.blit(ScreenSetup.hp_icon, [bar_pos[0] - 1/8 * bar_size[0], bar_pos[1] - 7/26 * bar_size[1]])
 
     # q and e bars
     # bars proportions
