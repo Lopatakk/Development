@@ -518,7 +518,7 @@ def aboutgame_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -557,8 +557,6 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   ships
         screen.blit(font_subtitle.render("Ships", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-
-
         # ship number 1
         # load and write image
         vlod5L = pygame.image.load("assets/images/vlod5L.png")  # load image
@@ -574,13 +572,10 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
         screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-
         textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
         textAcc_width = textAcc.get_width()  # getting width of text
         screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
-
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
@@ -591,7 +586,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_dash_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
@@ -603,13 +598,11 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/E_shield_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
-
-
         # ship number 2
         # load and write image
         vlod5 = pygame.image.load("assets/images/vlod5.png")  # load image
@@ -628,7 +621,6 @@ def aboutgame_menu(screen, clock, cursor_group):
         textAcc_width = textAcc.get_width()  # getting width of text
         screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
-
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
@@ -639,7 +631,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_rapidfire_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
@@ -651,13 +643,11 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/E_blastshoot_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
-
-
         # ship number 3
         # load and write image
         vlod5T = pygame.image.load("assets/images/vlod5T.png")  # load image
@@ -673,14 +663,10 @@ def aboutgame_menu(screen, clock, cursor_group):
         screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
         screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-
         textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
         textAcc_width = textAcc.get_width()  # getting width of text
         screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-
         screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
-
-
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
@@ -691,7 +677,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_speedboos_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
@@ -703,13 +689,11 @@ def aboutgame_menu(screen, clock, cursor_group):
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/E_gravitypulse_aboutGame.png").convert_alpha()  # load image
-        image_Q = pygame.transform.scale(image_Q, (int(width * 0.06), int(width * 0.06)))  # transforming image
+        image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
         screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
-
-
         #   enemies
         screen.blit(font_subtitle.render("Enemies", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height

@@ -14,7 +14,7 @@ class Slider:
 
     def draw(self, screen):
         # Color of the slider background
-        pygame.draw.rect(screen, (70, 70, 70), (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(screen, (100, 100, 100), (self.x, self.y, self.width, self.height))
         # Color of the slider button
         pygame.draw.rect(screen, (230, 230, 230), (self.x, self.y, (self.value - self.min_value) / (self.max_value - self.min_value) * self.width, self.height))
 
