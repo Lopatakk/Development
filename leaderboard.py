@@ -12,7 +12,7 @@ def save(new_highscores):
     existing_highscores.extend(new_highscores)
     #   save the updated list back to the file
     with open('highscores.json', 'w') as file:
-        json.dump(existing_highscores, file)
+        json.dump(existing_highscores, file, indent=4)
 
 def load():
     try:
