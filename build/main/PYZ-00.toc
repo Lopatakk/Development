@@ -1,4 +1,4 @@
-('C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+('C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
  'ZS\\VMZ\\spaceshooter\\build\\main\\PYZ-00.pyz',
  [('__future__',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__future__.py',
@@ -133,7 +133,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\windows_utils.py',
    'PYMODULE'),
   ('background',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\background.py',
    'PYMODULE'),
   ('base64',
@@ -146,7 +146,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\bisect.py',
    'PYMODULE'),
   ('button',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\button.py',
    'PYMODULE'),
   ('bz2',
@@ -156,7 +156,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\calendar.py',
    'PYMODULE'),
   ('checkbuttons',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\checkbuttons.py',
    'PYMODULE'),
   ('cmd',
@@ -169,7 +169,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\codeop.py',
    'PYMODULE'),
   ('collisions',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\collisions.py',
    'PYMODULE'),
   ('concurrent',
@@ -209,7 +209,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\ctypes\\_endian.py',
    'PYMODULE'),
   ('cursor',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\cursor.py',
    'PYMODULE'),
   ('dataclasses',
@@ -229,6 +229,10 @@
    'PYMODULE'),
   ('doctest',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\doctest.py',
+   'PYMODULE'),
+  ('drawText',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
+   'ZS\\VMZ\\spaceshooter\\drawText.py',
    'PYMODULE'),
   ('email',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\email\\__init__.py',
@@ -291,32 +295,32 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\email\\utils.py',
    'PYMODULE'),
   ('enemies', '-', 'PYMODULE'),
+  ('enemies.enemy',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
+   'ZS\\VMZ\\spaceshooter\\enemies\\enemy.py',
+   'PYMODULE'),
   ('enemies.sniper',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\enemies\\sniper.py',
    'PYMODULE'),
   ('enemies.stealer',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\enemies\\stealer.py',
    'PYMODULE'),
   ('enemies.tank',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\enemies\\tank.py',
    'PYMODULE'),
   ('enemies.zarovka',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\enemies\\zarovka.py',
    'PYMODULE'),
-  ('enemy',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
-   'ZS\\VMZ\\spaceshooter\\enemy.py',
-   'PYMODULE'),
   ('enemy_spawn',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\enemy_spawn.py',
    'PYMODULE'),
   ('explosion',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\explosion.py',
    'PYMODULE'),
   ('fnmatch',
@@ -440,7 +444,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\ipaddress.py',
    'PYMODULE'),
   ('itemspawn',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\itemspawn.py',
    'PYMODULE'),
   ('json',
@@ -456,7 +460,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\scanner.py',
    'PYMODULE'),
   ('leaderboard',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\leaderboard.py',
    'PYMODULE'),
   ('logging',
@@ -466,11 +470,11 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\lzma.py',
    'PYMODULE'),
   ('medkit',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\medkit.py',
    'PYMODULE'),
   ('menus',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\menus.py',
    'PYMODULE'),
   ('mimetypes',
@@ -1094,29 +1098,29 @@
   ('platform',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\platform.py',
    'PYMODULE'),
-  ('playership',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
-   'ZS\\VMZ\\spaceshooter\\playership.py',
-   'PYMODULE'),
   ('playerships', '-', 'PYMODULE'),
   ('playerships.blast',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\playerships\\blast.py',
    'PYMODULE'),
   ('playerships.eventhorizonpulse',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\playerships\\eventhorizonpulse.py',
    'PYMODULE'),
   ('playerships.playerlight',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\playerships\\playerlight.py',
    'PYMODULE'),
   ('playerships.playermid',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\playerships\\playermid.py',
    'PYMODULE'),
+  ('playerships.playership',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
+   'ZS\\VMZ\\spaceshooter\\playerships\\playership.py',
+   'PYMODULE'),
   ('playerships.playertank',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\playerships\\playertank.py',
    'PYMODULE'),
   ('plistlib',
@@ -1126,11 +1130,11 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\pprint.py',
    'PYMODULE'),
   ('projectile',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\projectile.py',
    'PYMODULE'),
   ('projectileexplosion',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\projectileexplosion.py',
    'PYMODULE'),
   ('py_compile',
@@ -1194,14 +1198,14 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\random.py',
    'PYMODULE'),
   ('renderupdate',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\renderupdate.py',
    'PYMODULE'),
   ('runpy',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\runpy.py',
    'PYMODULE'),
   ('screensetup',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\screensetup.py',
    'PYMODULE'),
   ('secrets',
@@ -1211,7 +1215,7 @@
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\selectors.py',
    'PYMODULE'),
   ('ship',
-   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2. ročník; '
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
    'ZS\\VMZ\\spaceshooter\\ship.py',
    'PYMODULE'),
   ('shlex',
@@ -1222,6 +1226,10 @@
    'PYMODULE'),
   ('signal',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\signal.py',
+   'PYMODULE'),
+  ('slider',
+   'C:\\Users\\honza\\OneDrive\\Plocha\\Vysoká\\2.1 ročník - '
+   'ZS\\VMZ\\spaceshooter\\slider.py',
    'PYMODULE'),
   ('socket',
    'C:\\Users\\honza\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\socket.py',
