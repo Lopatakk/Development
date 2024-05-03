@@ -45,12 +45,12 @@ class Slider:
 
                 if option == "music_volume":
                     pass
-                    pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
-                    pygame.mixer.Channel(0).play(self.button_music, 1)
+                    pygame.mixer.Channel(3).set_volume(0.04 * ScreenSetup.music_volume)
+                    pygame.mixer.Channel(3).play(self.button_music, 1)
                 else:
-                    pygame.mixer.Channel(0).stop()
+                    pygame.mixer.Channel(3).stop()
                     self.button_sound.set_volume(0.2 * ScreenSetup.effects_volume)
-                    pygame.mixer.Channel(1).play(self.button_sound)
+                    pygame.mixer.Channel(3).play(self.button_sound)
 
 
     def get_value_in_percent(self):

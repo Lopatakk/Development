@@ -75,13 +75,14 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
 
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            pygame.mixer.Channel(0).stop()
+            pygame.mixer.Channel(3).stop()
             return
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                pygame.mixer.Channel(3).stop()
                 return
             elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
                 mouse_pressed = True
@@ -99,11 +100,15 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
             if danger_button_on.draw_button_and_text(screen):
                 settings["danger_blinking"] = False
                 danger_blinking = False
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
                 ScreenSetup.update()
         else:
             if danger_button_off.draw_button_and_text(screen):
                 settings["danger_blinking"] = True
                 danger_blinking = True
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
                 ScreenSetup.update()
 
         #   volume
@@ -197,13 +202,14 @@ def settingsMain_menu(screen, clock, cursor_group):
 
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            pygame.mixer.Channel(0).stop()
+            pygame.mixer.Channel(3).stop()
             return
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                pygame.mixer.Channel(3).stop()
                 return
             elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
                 mouse_pressed = True
@@ -234,10 +240,14 @@ def settingsMain_menu(screen, clock, cursor_group):
             if danger_button_on.draw_button_and_text(screen):
                 settings["danger_blinking"] = False
                 danger_blinking = False
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
         else:
             if danger_button_off.draw_button_and_text(screen):
                 settings["danger_blinking"] = True
                 danger_blinking = True
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
 
         # cursor
         update_groups([cursor_group], screen)

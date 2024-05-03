@@ -193,7 +193,6 @@ while True:
         # upgrade menu
         if game_paused_upgrade:
             # game_paused_upgrade is False from start and can be changed to True by pressing "esc"
-            pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
             # opening pause menu
             if menus.upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
@@ -204,8 +203,6 @@ while True:
             game_paused_upgrade = False
             # setting cursor to crosshair
             cursor.set_crosshair()
-            pygame.mixer.Channel(0).unpause()
-            pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
         # player death
         if not player_group and not explosion_group:
