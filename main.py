@@ -26,12 +26,12 @@ background_group = pygame.sprite.Group()
 background_group.add(background_image)
 # collectable items
 scrap_metal_count = 0
-upgrade = ShipUpgrade((0, 0), 'booster', True)
-upgrade1 = ShipUpgrade((0, 0), 'repair_module', True)
-upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
-upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
-storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
-# storage_items = []
+# upgrade = ShipUpgrade((0, 0), 'booster', True)
+# upgrade1 = ShipUpgrade((0, 0), 'repair_module', True)
+# upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
+# upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
+# storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
+storage_items = []
 installed_items = {
     "weapons": None,
     "cooling": None,
@@ -43,12 +43,9 @@ installed_items = {
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 # variables for menus
 selected_number = 0
-# game_paused = False
-# game_paused_upgrade = False
-# game_main = True
 game_paused = False
-game_paused_upgrade = True
-game_main = False
+game_paused_upgrade = False
+game_main = True
 
 # cursor
 cursor = Cursor()
@@ -132,7 +129,7 @@ while True:
     pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
     # setting
-    # storage_items = []
+    storage_items = []
     installed_items = {
         "weapons": None,
         "cooling": None,
@@ -173,7 +170,7 @@ while True:
                        player.hp / player.max_hp)
             render_enemy_health_bar(screen, enemy_group)
             # opening pause menu
-            if menus.pause_menu(screen, clock, score, cursor_group):
+            if menus.pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
                 game_paused = False
                 selected_number = 0

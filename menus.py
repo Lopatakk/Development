@@ -323,15 +323,18 @@ def main_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_music = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
@@ -381,16 +384,43 @@ def main_menu(screen, clock, cursor_group):
         pygame.display.flip()
 
 
-def pause_menu(screen, clock, score, cursor_group):
+def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items, installed_items):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
+
     # background
     background_copy = screen.copy()
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
+
+    # ship
+    ship_surf = player.build_ship(player.type)
+    pos = (1200, 500)
+    new_width = int(ship_surf.get_width() * 1.7)
+    new_height = int(ship_surf.get_height() * 1.7)
+    ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
+    ship_rect = ship_surf.get_rect(center=pos)
+    ship_mask = pygame.mask.from_surface(ship_surf)
+    over_ship = False
+    ship_surf_transparent = ship_surf.copy()
+    ship_surf_transparent.set_alpha(100)
+
+    # settings
+    settings_icon = pygame.image.load("assets/images/settings_icon_big.png").convert_alpha()
+    new_width = int(settings_icon.get_width() * 0.7)
+    new_height = int(settings_icon.get_height() * 0.7)
+    settings_icon = pygame.transform.scale(settings_icon, (new_width, new_height))
+    settings_rect = settings_icon.get_rect()
+    settings_rect.centerx = ship_rect.centerx
+    settings_rect.centery = ship_rect.centery + 50
+
+    # mouse mask
+    mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
+
     #   create button instances
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                   "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Resume', screen,
@@ -407,6 +437,19 @@ def pause_menu(screen, clock, score, cursor_group):
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        if ship_mask.overlap(mouse_mask, (mouse_pos[0] - ship_rect.x, mouse_pos[1] - ship_rect.y)):
+            over_ship = True
+        else:
+            over_ship = False
+        if over_ship:
+            screen.blit(ship_surf_transparent, ship_rect)
+            screen.blit(settings_icon, settings_rect)
+        else:
+            screen.blit(ship_surf, ship_rect)
+
         #   text "Main Menu"
         screen.blit(font_title.render("Pause menu", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
@@ -426,6 +469,9 @@ def pause_menu(screen, clock, score, cursor_group):
                 quit()
             if event.type == pygame.QUIT:
                 quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
+                if over_ship:
+                    upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items)
         #   score and cursor
         render_score(screen, score, 230, 230, 230)
         update_groups([cursor_group], screen)
@@ -501,10 +547,10 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
     ship_surf_transparent.set_alpha(100)
 
     # settings
-    settings_icon = pygame.image.load("assets/images/controller.png").convert_alpha()
-    settings_rect = settings_icon.get_rect()
-    settings_rect.centerx = ship_rect.centerx
-    settings_rect.centery = ship_rect.centery + 50
+    controller_icon = pygame.image.load("assets/images/controller.png").convert_alpha()
+    controller_rect = controller_icon.get_rect()
+    controller_rect.centerx = ship_rect.centerx
+    controller_rect.centery = ship_rect.centery + 50
 
     # create buttons
     x = 932
@@ -525,7 +571,7 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
         screen.blit(storage, (0, 0))
         if over_ship:
             screen.blit(ship_surf_transparent, ship_rect)
-            screen.blit(settings_icon, settings_rect)
+            screen.blit(controller_icon, controller_rect)
         else:
             screen.blit(ship_surf, ship_rect)
         if over_thrash_bin:
