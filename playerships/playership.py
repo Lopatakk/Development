@@ -49,13 +49,15 @@ class PlayerShip(Ship):
                            'shield': 0,
                            'booster': 0}
         # building ship
-        if not mini:
+        if mini:
+            start = np.array([ScreenSetup.width/2, 30 + ScreenSetup.height/2])
+        else:
+            start = np.array([ScreenSetup.width/2, ScreenSetup.height/2])
             image = self.build_ship(ship_type)
             image = self.scale_image(image)
 
         # super().__init__ - creates a Ship object
-        super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]),
-                         image, self.ship_parts, hp, acceleration, dmg,
+        super().__init__(start, image, self.ship_parts, hp, acceleration, dmg,
                          proj_dmg, fire_rate, overheat, cooling, regeneration,
                          img_scaling_coefficient, ani_amount_of_images,
                          ship_type, explosion_size, max_velocity, velocity_coefficient,

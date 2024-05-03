@@ -4,7 +4,7 @@
     "img_scaling_coefficient": 3500,
     "shooting_ani_images": 0,
     "hp": 500,
-    "dmg": 600,
+    "dmg": 1,
     "explosion_size": 2,
     "max_velocity": 41,
     "acceleration": 3.2,

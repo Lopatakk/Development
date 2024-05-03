@@ -10,6 +10,7 @@ from collisions import *
 
 from enemy_spawn import EnemySpawner
 from playerships.mini_player import *
+from background import Background
 from itemspawn import ItemSpawner
 from cursor import Cursor
 
@@ -778,76 +779,101 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
 
 def menu_cockpit(screen, clock, player, cursor, cursor_group):
     width, height = screen.get_size()
+    in_minigame = False
 
-    # background
-    background = pygame.image.load("assets/images/cockpit/cockpit1.png").convert_alpha()
-    background = pygame.transform.scale(background, (width, height))
+    # hp
+    hp = []
+    for i in range(4):
+        img = pygame.image.load(f"assets/images/cockpit/hp{i}.png").convert_alpha()
+        hp.append(img)
 
-    # ships
-    mini_vlod = pygame.image.load("assets/images/cockpit/vlod_player_mid.png").convert_alpha()
-    mini_zarovka = pygame.image.load("assets/images/cockpit/zarovka.png").convert_alpha()
-    mini_sniper = pygame.image.load("assets/images/cockpit/sniper.png").convert_alpha()
-    mini_tank = pygame.image.load("assets/images/cockpit/tank.png").convert_alpha()
-    mini_stealer = pygame.image.load("assets/images/cockpit/stealer1.png").convert_alpha()
+    background_image = Background("cockpit", 4, (200, 350))
+    background_group = pygame.sprite.Group()
+    background_group.add(background_image)
 
     # button
-    play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
-                                "assets/sounds/button_click.mp3", 0.3)
+    play_button = button.Button(650, 330, "assets/images/cockpit/button_01.png",
+                                "assets/images/cockpit/button_02.png", 0.15, 0.05,
+                                0.021, '', screen,"assets/sounds/button_click.mp3",
+                                0.3)
 
+    (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
+     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+
+    cursor.set_cursor()
+
+    while True:
+
+        # closing upgrade menu
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
+                if in_minigame:
+                    in_minigame = False
+                    (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+                else:
+                    return False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
+                pass
+
+        if in_minigame:
+            if not mini_player_group and not mini_explosion_group:
+                #   death_menu
+                in_minigame = False
+                pygame.mixer.Channel(0).pause()
+                cursor.set_cursor()
+            # updating groups
+            update_groups([background_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
+                           mini_player_group, mini_spawner_group, mini_explosion_group], screen)
+
+            screen.blit(hp[int(mini_player.hp)], (520, 500))
+
+            # updating cursor
+            update_groups([cursor_group], screen)
+
+            handle_collisions(mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
+            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False, mini_explosion_group)
+            handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False, mini_explosion_group)
+            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True, mini_explosion_group)
+
+            cursor.check_cursor()
+            clock.tick(ScreenSetup.fps)
+
+            # FPS lock and adding time
+            time_diff = clock.tick(ScreenSetup.fps) / 1000
+            update_time([mini_player_group, mini_enemy_group, mini_item_group, mini_spawner_group], time_diff)
+        else:
+            screen.blit(mini_player.image, mini_player.rect)
+            update_groups([background_group], screen)
+            screen.blit(hp[3], (520, 500))
+            update_groups([cursor_group], screen)
+            if play_button.draw_button_and_text(screen):
+                in_minigame = True
+
+        pygame.display.flip()
+
+def set_minigame():
+    # groups
     mini_enemy_group = pygame.sprite.Group()
     mini_spawner_group = pygame.sprite.Group()
     mini_item_group = pygame.sprite.Group()
     mini_player_projectile_group = pygame.sprite.Group()
     mini_enemy_projectile_group = pygame.sprite.Group()
     mini_explosion_group = pygame.sprite.Group()
-
-    mini_player = MiniPlayer(mini_player_projectile_group)
     mini_player_group = pygame.sprite.Group()
+
+
+    #player
+    mini_player = MiniPlayer(mini_player_projectile_group)
     mini_player_group.add(mini_player)
 
-    # mini_medkit_spawner = ItemSpawner( mini_item_group, "medkit", 53, player)
-    # mini_spawner_group.add(mini_medkit_spawner)
-
-    mini_zarovka_spawner = EnemySpawner(mini_enemy_group, "minizarovka", 5, mini_player)
-    # mini_tank_spawner = EnemySpawner(mini_enemy_group, "tank", 25, player, shot_group=mini_enemy_projectile_group)
-    # mini_sniper_spawner = EnemySpawner(mini_enemy_group, "sniper", 10, player, shot_group=mini_enemy_projectile_group)
-    # mini_stealer_spawner = EnemySpawner(mini_enemy_group, "stealer", 7, player, item_group=mini_item_group)
-    # mini_spawner_group.add(mini_zarovka_spawner, mini_tank_spawner, mini_sniper_spawner, mini_stealer_spawner)
+    mini_zarovka_spawner = EnemySpawner(mini_enemy_group, "minizarovka", 3, mini_player)
     mini_spawner_group.add(mini_zarovka_spawner)
 
-    cursor.set_cursor()
-
-    while True:
-        # render background
-        screen.blit(background, (0, 0))
-
-        # closing upgrade menu
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
-                return False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
-                quit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
-                pass
-
-        # cursor
-        update_groups([cursor_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
-                       mini_player_group, mini_spawner_group, mini_explosion_group], screen)
-
-        handle_collisions(mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
-        handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False, mini_explosion_group)
-        handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False, mini_explosion_group)
-        handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True, mini_explosion_group)
-
-        cursor.check_cursor()
-        clock.tick(ScreenSetup.fps)
-        pygame.display.flip()
-
-        # FPS lock and adding time
-        time_diff = clock.tick(ScreenSetup.fps) / 1000
-        update_time([mini_player_group, mini_enemy_group, mini_item_group, mini_spawner_group], time_diff)
-
+    return (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
+            mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group)
 
 def ship_menu(screen, clock, cursor_group):
     width, height = screen.get_size()

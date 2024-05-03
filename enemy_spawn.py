@@ -22,7 +22,10 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.screen_width = ScreenSetup.width
         self.screen_height = ScreenSetup.height
         self.enemy_type = enemy_type
-        self.last_spawn_time = -5
+        if self.enemy_type == "minizarovka":
+            self.last_spawn_time = -1
+        else:
+            self.last_spawn_time = -5
         self.projectile_group = projectile_group
         self.player = player
         self.time_alive = 0
@@ -30,6 +33,7 @@ class EnemySpawner(pygame.sprite.Sprite):
         self.item_group = item_group
 
         self.image = pygame.image.load("assets/images/spawner_lol.png")
+        self.warning_icon = pygame.image.load("assets/images/cockpit/warning.png")
         self.rect = self.image.get_rect()
         self.rect.center = [-70, -70]
 
@@ -57,42 +61,53 @@ class EnemySpawner(pygame.sprite.Sprite):
 
     def update(self):
         self.scaling = 1 + self.time_alive / 500
+
         start_time = time.time()
         elapsed_time = self.time_alive - self.last_spawn_time
 
         if self.enemy_type == "zarovka":
             ship = Zarovka
-            start = self.spawn_outside_screen()
-            self.spawn_ship(ship, start_time, elapsed_time, start)
+            start_pos = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_pos, start_time, elapsed_time)
         elif self.enemy_type == "sniper":
             ship = Sniper
-            start = self.spawn_outside_screen()
-            self.spawn_ship(ship, start_time, elapsed_time, start, self.projectile_group)
+            start_pos = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_pos, start_time, elapsed_time, self.projectile_group)
         elif self.enemy_type == "tank":
             ship = Tank
-            start = self.spawn_outside_screen()
-            self.spawn_ship(ship, start_time, elapsed_time, start, self.projectile_group)
+            start_pos = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_pos, start_time, elapsed_time, self.projectile_group)
         elif self.enemy_type == "stealer":
             for thing in self.item_group:
                 if thing.type == "medkit":
                     if thing.time_alive >= 3 and not thing.has_thief:
-                        start = self.spawn_outside_screen()
-                        enemy = Stealer(start, self.player, thing)
+                        start_pos = self.spawn_outside_screen()
+                        enemy = Stealer(start_pos, self.player, thing)
                         self.enemy_group.add(enemy)
                         thing.has_thief = True
         elif self.enemy_type == "minizarovka":
             ship = MiniZarovka
-            start = self.spawn_outside_mini_screen()
-            self.spawn_ship(ship, start_time, elapsed_time, start)
+            start_pos = self.spawn_outside_mini_screen()
+            self.spawn_ship(ship, start_pos, start_time, elapsed_time)
 
-    def spawn_ship(self, ship, start_time, elapsed_time, start, projectile_group=None):
+    def spawn_ship(self, ship, start_pos, start_time, elapsed_time, projectile_group=None):
         if elapsed_time >= self.spawn_interval / self.scaling:
             # Spawnování nové nepřátelské lodě mimo obrazovku
             if ship == Zarovka or ship == MiniZarovka:
-                enemy = ship(start, self.player)
+                enemy = ship(start_pos, self.player)
             else:
-                enemy = ship(start, projectile_group, self.player)
+                enemy = ship(start_pos, projectile_group, self.player)
             self.enemy_group.add(enemy)
             # Aktualizovat čas od posledního spawnu
             end_time = time.time()
             self.last_spawn_time = self.time_alive - (end_time - start_time)
+
+    def find_start_position(self):
+        if self.enemy_type == "minizarovka":
+            self.last_spawn_time = 1
+            start = self.spawn_outside_mini_screen()
+        else:
+            self.last_spawn_time = -5
+            start = self.spawn_outside_screen()
+        return start
+

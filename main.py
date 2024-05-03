@@ -21,7 +21,7 @@ clock = pygame.time.Clock()
 # screen
 screen = ScreenSetup.start_setup()
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
-background_image = Background()
+background_image = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()
 background_group.add(background_image)
 # collectable items
