@@ -18,7 +18,7 @@ class Stealer(Enemy):
                          param["type"], param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["rot_velocity"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
-                         param["offset"], None, player)
+                         param["offset"], False, None, player)
 
         self.item = item
         self.image_non_rot_orig_with_medkit = pygame.image.load("assets/images/enemy/stealer/stealer2.png")

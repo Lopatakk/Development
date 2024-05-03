@@ -19,7 +19,7 @@ class Sniper(Enemy):
                          param["type"], param["hp"], param["dmg"], param["explosion_size"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"], param["rot_velocity"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
-                         param["offset"], projectile_group, player)
+                         param["offset"], False, projectile_group, player)
 
         self.proj_spawn_offset = np.array([0, -1/2 * self.height])
         self.rot_direction = random.choice([1, -1])
