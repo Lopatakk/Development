@@ -131,6 +131,21 @@ while True:
     pygame.mixer.Channel(0).play(background_music, 3)
     pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
+    # setting
+    storage_items = []
+    installed_items = {
+        "weapons": None,
+        "cooling": None,
+        "repair_module": None,
+        "shield": None,
+        "booster": None
+    }
+    player.ship_upgrade = {'weapons': 0,
+                           'cooling': 0,
+                           'repair_module': 0,
+                           'shield': 0,
+                           'booster': 0}
+
     # gameplay loop
     while True:
         # KEYs and window cross functions
@@ -189,11 +204,6 @@ while True:
         # player death
         if not player_group and not explosion_group:
             #   death_menu
-            player.ship_upgrade = {'weapons': 0,
-                                   'cooling': 0,
-                                   'repair_module': 0,
-                                   'shield': 0,
-                                   'booster': 0}
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
             if menus.death_menu(screen, clock, cursor_group, score, selected_number):

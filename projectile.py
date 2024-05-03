@@ -11,7 +11,7 @@ class Projectile(pygame.sprite.Sprite):
     of in collisions.py).
     """
 
-    def __init__(self, ship, mini):
+    def __init__(self, ship, mini=False):
         """
         Creates a projectile itself with all the needed properties.
         :param ship: The ship that fired the projectile
