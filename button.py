@@ -24,8 +24,9 @@ class Button():
         self.font_parameters = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(font_size*0.5))  # loading font for ship parameters
         self.text_to_write = text
         #	sound
+        self.sound_volume = sound_volume
         self.sound = pygame.mixer.Sound(sound_path)  # Load sound file
-        self.sound.set_volume(sound_volume * ScreenSetup.effects_volume)
+        self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
         #   ship parameters
         # load information about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
@@ -73,6 +74,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
+                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
@@ -134,6 +136,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
+                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
@@ -201,6 +204,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
+                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:

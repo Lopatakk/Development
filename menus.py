@@ -27,7 +27,14 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     surface = surface.convert_alpha()  # making surface transparent
     # background
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
+
     #   create button instances
+    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
+                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
+                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
+                                      "assets/sounds/button_click.mp3", 0.2)
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
                                 "assets/sounds/button_click.mp3", 0.2)
@@ -37,7 +44,10 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)
     music_volume = settings["music_volume"]
+    new_music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+    new_effects_volume = settings["effects_volume"]
+    danger_blinking = settings["danger_blinking"]
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
@@ -46,46 +56,77 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
                          100, percentageMusic)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
                            0, 100, percentageEffects)
+
     while True:
+        mouse_pressed = False
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
+
         #   text "Settings"
         screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+
         #   changing volume
         screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
         screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
+
+        # danger blinking
+        screen.blit(font_subTitle.render("Low health blinking", True, (230, 230, 230)),
+                    (3.6 * width / 20, 52 * height / 80))
+
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            ScreenSetup.music_volume = new_music_volume
-            ScreenSetup.effects_volume = new_effects_volume
-            settings["music_volume"] = new_music_volume
-            settings["effects_volume"] = new_effects_volume
-            with open("settings.json", "w") as settings_file:
-                json.dump(settings, settings_file, indent=4)
+            pygame.mixer.Channel(0).stop()
             return
-        #   volume
-        # music
-        sliderMusic.update()
-        sliderMusic.draw(screen)
-        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
-        # effects
-        sliderEffects.update()
-        sliderEffects.draw(screen)
-        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
-                ScreenSetup.music_volume = new_music_volume
-                ScreenSetup.effects_volume = new_effects_volume
+                return
+            elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
+                mouse_pressed = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pressed = False
                 settings["music_volume"] = new_music_volume
                 settings["effects_volume"] = new_effects_volume
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
-                return
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                ScreenSetup.update()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-        #   cursor
+
+        if danger_blinking:
+            if danger_button_on.draw_button_and_text(screen):
+                settings["danger_blinking"] = False
+                danger_blinking = False
+                ScreenSetup.update()
+        else:
+            if danger_button_off.draw_button_and_text(screen):
+                settings["danger_blinking"] = True
+                danger_blinking = True
+                ScreenSetup.update()
+
+        #   volume
+        # music
+        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
+        sliderMusic.update(mouse_pressed, settings, "music_volume")
+        sliderMusic.draw(screen)
+
+        # effects
+        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
+        sliderEffects.update(mouse_pressed, settings, "effects_volume")
+        sliderEffects.draw(screen)
+
+        if danger_blinking:
+            if danger_button_on.draw_button_and_text(screen):
+                settings["danger_blinking"] = False
+                danger_blinking = False
+        else:
+            if danger_button_off.draw_button_and_text(screen):
+                settings["danger_blinking"] = True
+                danger_blinking = True
+
+        # cursor
         update_groups([cursor_group], screen)
 
         clock.tick(ScreenSetup.fps)
@@ -107,7 +148,14 @@ def settingsMain_menu(screen, clock, cursor_group):
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
     #   create button instances
+    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
+                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
+                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
+                                      "assets/sounds/button_click.mp3", 0.2)
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
                                 "assets/sounds/button_click.mp3", 0.2)
@@ -117,55 +165,81 @@ def settingsMain_menu(screen, clock, cursor_group):
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)
     music_volume = settings["music_volume"]
+    new_music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+    new_effects_volume = settings["effects_volume"]
+    danger_blinking = settings["danger_blinking"]
+
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
+
     #   sliders
     sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0,
                          100, percentageMusic)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
                            0, 100, percentageEffects)
     while True:
+        mouse_pressed = False
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
+
         #   text "Settings"
+
         screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   changing volume
         screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+
         screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
+        # danger blinking
+        screen.blit(font_subTitle.render("Low health blinking", True, (230, 230, 230)),
+                    (3.6 * width / 20, 52 * height / 80))
+
         #   BUTTON
         if back_button.draw_button_and_text(screen):
-            ScreenSetup.music_volume = new_music_volume
-            ScreenSetup.effects_volume = new_effects_volume
-            settings["music_volume"] = new_music_volume
-            settings["effects_volume"] = new_effects_volume
-            with open("settings.json", "w") as settings_file:
-                json.dump(settings, settings_file, indent=4)
+            pygame.mixer.Channel(0).stop()
             return
-        #   volume
-        # music
-        sliderMusic.update()
-        sliderMusic.draw(screen)
-        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
-        # effects
-        sliderEffects.update()
-        sliderEffects.draw(screen)
-        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                return
+            elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
+                mouse_pressed = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pressed = False
                 ScreenSetup.music_volume = new_music_volume
                 ScreenSetup.effects_volume = new_effects_volume
                 settings["music_volume"] = new_music_volume
                 settings["effects_volume"] = new_effects_volume
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
-                return
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                ScreenSetup.update()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-        #   cursor
+
+        #   volume
+        # music
+        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
+        sliderMusic.update(mouse_pressed, settings, "music_volume")
+        sliderMusic.draw(screen)
+
+        # effects
+        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
+        sliderEffects.update(mouse_pressed, settings, "effects_volume")
+        sliderEffects.draw(screen)
+
+        if danger_blinking:
+            if danger_button_on.draw_button_and_text(screen):
+                settings["danger_blinking"] = False
+                danger_blinking = False
+        else:
+            if danger_button_off.draw_button_and_text(screen):
+                settings["danger_blinking"] = True
+                danger_blinking = True
+
+        # cursor
         update_groups([cursor_group], screen)
 
         clock.tick(ScreenSetup.fps)
@@ -681,7 +755,8 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
                         item_stat_color = 'red'
                     elif current_stat < item_stat:
                         item_stat_color = 'green'
-                    screen.blit(font_description.render(str(item_stat), True, item_stat_color), (1050 + width, 650 + i * 60))
+                    screen.blit(font_description.render(str(item_stat), True, item_stat_color),
+                                (1050 + width, 650 + i * 60))
 
         for i, text in enumerate(texts):
             screen.blit(font_title.render(text, True, (255, 255, 255)), texts_pos[i])
@@ -713,10 +788,10 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
                 module_button_x_center = module_button_x + 93
                 module_button_y_center = module_button_y + 90
 
-                item_rect = ship_parts_images[module][player.ship_parts[module]-1].get_rect()
+                item_rect = ship_parts_images[module][player.ship_parts[module] - 1].get_rect()
                 item_x = module_button_x_center - item_rect.width // 2
                 item_y = module_button_y_center - item_rect.height // 2
-                screen.blit(ship_parts_images[module][player.ship_parts[module]-1], (item_x, item_y))
+                screen.blit(ship_parts_images[module][player.ship_parts[module] - 1], (item_x, item_y))
 
         # rendering picked mark
         if picked_mark_active >= 0:
@@ -759,7 +834,7 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
                 if over_thrash_bin and picked_mark_active < len(storage_items):
                     storage_items.pop(picked_mark_active)
                 if over_ship:
-                    menu_cockpit(screen, clock, player, cursor, cursor_group)   # entering cockpit menu
+                    menu_cockpit(screen, clock, player, cursor, cursor_group)  # entering cockpit menu
 
                 # collision with storage rects
                 for i, (x, y) in enumerate(storage_buttons):
@@ -833,14 +908,15 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
         img = pygame.image.load(f"assets/images/cockpit/hp{i}.png").convert_alpha()
         hp.append(img)
 
-    background_image = Background("cockpit", 4, (200, 350))
+    # background
+    background_image = Background("cockpit", 5, (30, 100))
     background_group = pygame.sprite.Group()
     background_group.add(background_image)
 
     # button
     play_button = button.Button(650, 330, "assets/images/cockpit/button_01.png",
                                 "assets/images/cockpit/button_02.png", 0.15, 0.05,
-                                0.021, '', screen,"assets/sounds/button_click.mp3",
+                                0.021, '', screen, "assets/sounds/button_click.mp3",
                                 0.3)
 
     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
@@ -855,6 +931,7 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
                 if in_minigame:
                     in_minigame = False
+                    cursor.set_cursor()
                     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
                      mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
                 else:
@@ -865,14 +942,10 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
                 pass
 
         if in_minigame:
-            if not mini_player_group and not mini_explosion_group:
-                #   death_menu
-                in_minigame = False
-                pygame.mixer.Channel(0).pause()
-                cursor.set_cursor()
             # updating groups
-            update_groups([background_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
-                           mini_player_group, mini_spawner_group, mini_explosion_group], screen)
+            update_groups(
+                [background_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
+                 mini_player_group, mini_spawner_group, mini_explosion_group], screen)
 
             screen.blit(hp[int(mini_player.hp)], (520, 500))
 
@@ -880,16 +953,25 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
             update_groups([cursor_group], screen)
 
             handle_collisions(mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
-            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False, mini_explosion_group)
-            handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False, mini_explosion_group)
-            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True, mini_explosion_group)
+            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False,
+                              mini_explosion_group)
+            handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False,
+                              mini_explosion_group)
+            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True,
+                              mini_explosion_group)
 
             cursor.check_cursor()
-            clock.tick(ScreenSetup.fps)
 
             # FPS lock and adding time
             time_diff = clock.tick(ScreenSetup.fps) / 1000
             update_time([mini_player_group, mini_enemy_group, mini_item_group, mini_spawner_group], time_diff)
+
+            if not mini_player_group and not mini_explosion_group:
+                #   death_menu
+                in_minigame = False
+                cursor.set_cursor()
+                (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
+                 mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
         else:
             screen.blit(mini_player.image, mini_player.rect)
             update_groups([background_group], screen)
@@ -899,6 +981,8 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
                 in_minigame = True
 
         pygame.display.flip()
+        clock.tick(ScreenSetup.fps)
+
 
 def set_minigame():
     # groups
@@ -910,8 +994,7 @@ def set_minigame():
     mini_explosion_group = pygame.sprite.Group()
     mini_player_group = pygame.sprite.Group()
 
-
-    #player
+    # player
     mini_player = MiniPlayer(mini_player_projectile_group)
     mini_player_group.add(mini_player)
 
@@ -920,6 +1003,7 @@ def set_minigame():
 
     return (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
             mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group)
+
 
 def ship_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
@@ -1094,7 +1178,6 @@ def aboutgame_menu(screen, clock, cursor_group):
     vlod5T_mask = pygame.mask.from_surface(vlod5T)
     over_vlod5T = False
 
-
     # fonts for text
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     title_color = (230, 230, 230)
@@ -1178,16 +1261,20 @@ def aboutgame_menu(screen, clock, cursor_group):
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
 
         # checking if mouse is over image
-        if vlod5L_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height / 2))):
+        if vlod5L_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width / 2),
+                                            mouse_pos[1] - (
+                                                    lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height / 2))):
             over_vlod5L = True
         else:
             over_vlod5L = False
 
         # ship number 1
         if over_vlod5L:
-            screen.blit(enlarged_vlod5L, ((5 * width / 20) + enlarged_vlod5L_rect.x - vlod5L_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - enlarged_vlod5L_rect.height/2))
+            screen.blit(enlarged_vlod5L, ((5 * width / 20) + enlarged_vlod5L_rect.x - vlod5L_rect.width / 2,
+                                          lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - enlarged_vlod5L_rect.height / 2))
         else:
-            screen.blit(vlod5L, ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height/2))
+            screen.blit(vlod5L, ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width / 2,
+                                 lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height / 2))
         # load info about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
@@ -1266,16 +1353,20 @@ def aboutgame_menu(screen, clock, cursor_group):
         # ship number 2
 
         # checking if mouse is over image
-        if vlod5_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height / 2))):
+        if vlod5_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width / 2),
+                                           mouse_pos[1] - (
+                                                   lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height / 2))):
             over_vlod5 = True
         else:
             over_vlod5 = False
 
         # write image
         if over_vlod5:
-            screen.blit(enlarged_vlod5, ((5 * width / 20) + enlarged_vlod5_rect.x - vlod5_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - enlarged_vlod5_rect.height/2))
+            screen.blit(enlarged_vlod5, ((5 * width / 20) + enlarged_vlod5_rect.x - vlod5_rect.width / 2,
+                                         lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - enlarged_vlod5_rect.height / 2))
         else:
-            screen.blit(vlod5, ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height/2))
+            screen.blit(vlod5, ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width / 2,
+                                lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height / 2))
 
         with open("playerships/playerparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
@@ -1351,16 +1442,20 @@ def aboutgame_menu(screen, clock, cursor_group):
 
         # ship number 3
 
-        if vlod5T_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height / 2))):
+        if vlod5T_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width / 2),
+                                            mouse_pos[1] - (
+                                                    lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height / 2))):
             over_vlod5T = True
         else:
             over_vlod5T = False
 
         # write image
         if over_vlod5T:
-            screen.blit(enlarged_vlod5T, ((5 * width / 20) + enlarged_vlod5T_rect.x - vlod5T_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - enlarged_vlod5T_rect.height/2))
+            screen.blit(enlarged_vlod5T, ((5 * width / 20) + enlarged_vlod5T_rect.x - vlod5T_rect.width / 2,
+                                          lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - enlarged_vlod5T_rect.height / 2))
         else:
-            screen.blit(vlod5T, ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height/2))
+            screen.blit(vlod5T, ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width / 2,
+                                 lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height / 2))
 
         # load info about ship from json
         with open("playerships/playerparams.json", "r") as param_file:

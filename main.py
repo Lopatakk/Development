@@ -16,14 +16,19 @@ from itemspawn import ItemSpawner
 # general setup
 # pygame
 pygame.init()
+
 # time
 clock = pygame.time.Clock()
+
 # screen
 screen = ScreenSetup.start_setup()
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
-background_image = Background("Background", 3, (200, 350))
+
+background = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()
-background_group.add(background_image)
+background_group.add(background)
+
+
 # collectable items
 scrap_metal_count = 0
 # upgrade = ShipUpgrade((0, 0), 'booster', True)
@@ -39,8 +44,10 @@ installed_items = {
     "shield": None,
     "booster": None
 }
+
 # text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+
 # variables for menus
 selected_number = 0
 game_paused = False
@@ -52,8 +59,10 @@ cursor = Cursor()
 cursor_group = pygame.sprite.Group()
 cursor_group.add(cursor)
 cursor_group.update()
+
 # sound
 pygame.mixer.set_num_channels(30)
+
 # background music
 background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
 pygame.mixer.set_reserved(1)
@@ -125,8 +134,8 @@ while True:
     pygame.display.flip()
 
     # background music start
-    pygame.mixer.Channel(0).play(background_music, 3)
     pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
+    pygame.mixer.Channel(0).play(background_music, 3)
 
     # setting
     storage_items = []
@@ -238,6 +247,9 @@ while True:
         render_enemy_health_bar(screen, enemy_group)
         #   enemy health bar
         render_enemy_health_bar(screen, enemy_group)
+
+        if player.hp/player.max_hp <= 0.3 and ScreenSetup.danger_blinking:
+            background.blink_danger(screen)
 
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()

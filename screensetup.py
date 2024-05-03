@@ -25,9 +25,15 @@ class ScreenSetup:
     # reading settings
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)
+
     #   sound
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+
+    # low health blinking
+    danger_blinking = settings["danger_blinking"]
+    button_up = settings["button_up"]
+
     #   buttons
     button_up = settings["button_up"]
     button_down = settings["button_down"]
@@ -39,6 +45,27 @@ class ScreenSetup:
     def __init__(self):
         # This is just there, so it can be a class :)
         pass
+
+    @classmethod
+    def update(cls):
+        with open("settings.json", "r") as settings_file:
+            settings = json.load(settings_file)
+
+        #   sound
+        cls.music_volume = settings["music_volume"]
+        cls.effects_volume = settings["effects_volume"]
+
+        # low health blinking
+        cls.danger_blinking = settings["danger_blinking"]
+        cls.button_up = settings["button_up"]
+
+        #   buttons
+        cls.button_up = settings["button_up"]
+        cls.button_down = settings["button_down"]
+        cls.button_left = settings["button_left"]
+        cls.button_right = settings["button_right"]
+        cls.button_function_1 = settings["button_function_1"]
+        cls.button_function_2 = settings["button_function_2"]
 
     @classmethod
     def start_setup(cls):

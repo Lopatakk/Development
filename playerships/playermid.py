@@ -63,6 +63,7 @@ class PlayerMid(PlayerShip):
                 self.fire_rate_time = 1 / self.fire_rate_array[level] / 2
                 self.cooling = self.cooling_array[level] / 60 * 4
                 self.ani_speed -= 1
+                self.gun_upgrade_sound.set_volume(0.6 * ScreenSetup.effects_volume)
                 pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
 
     def q_turn_off(self):

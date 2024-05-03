@@ -99,6 +99,7 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        self.shield_on_sound.set_volume(0.7 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.shield_on_sound)
 
     def e_turn_off(self):
@@ -113,6 +114,7 @@ class PlayerLight(PlayerShip):
         self.image = self.image_non_rot
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        self.shield_off_sound.set_volume(0.7 * ScreenSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.shield_off_sound)
 
     def fire(self) -> Projectile:
