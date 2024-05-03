@@ -14,7 +14,12 @@ class PlayerMid(PlayerShip):
     Q action: rapid fire - increases fire rate and cooling
     E action: blast - fires a big projectile, which destroys everything in its path
     """
-    def __init__(self, projectile_group: Group):
+    def __init__(self, projectile_group: Group, mini=False, image=None, img_scaling_coefficient=None,
+                 ani_amount_of_images=None, ship_type=None, hp=None, dmg=None, explosion_size=None,
+                 regeneration=None, max_velocity=None, acceleration=None, velocity_coefficient=None,
+                 proj_dmg=None, fire_rate=None, cooling=None, overheat=None,
+                 q_cooldown=None, q_ongoing_time=None, e_cooldown=None,
+                 e_ongoing_time=None) -> "PlayerShip":
         """
         :param projectile_group: sprite group for fired projectiles
         """
@@ -22,13 +27,19 @@ class PlayerMid(PlayerShip):
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param[1]
-
-        super().__init__("assets/images/vlod5.png", param["img_scaling_coefficient"], param["shooting_ani_images"],
-                         param["type"], param["hp"], param["dmg"], param["explosion_size"],
-                         param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
-                         param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
-                         param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],
-                         projectile_group)
+        if mini:
+            super().__init__(image, img_scaling_coefficient, ani_amount_of_images, ship_type, hp,
+                             dmg, explosion_size, regeneration, max_velocity, acceleration, velocity_coefficient,
+                             proj_dmg, fire_rate, cooling, overheat, q_cooldown, q_ongoing_time, e_cooldown,
+                             e_ongoing_time, mini, projectile_group)
+        else:
+            image = pygame.image.load("assets/images/player_mid/vlod_player_mid.png").convert_alpha()
+            super().__init__(image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+                             param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
+                             param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
+                             param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
+                             param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],
+                             mini, projectile_group)
 
         # q action variables and setup
         self.gun_upgrade_sound = pygame.mixer.Sound("assets/sounds/gun_upgrade.mp3")
@@ -46,19 +57,25 @@ class PlayerMid(PlayerShip):
         Rapid fire start, the ship can shoot more often, cooling is increased, shooting animation speed increased.
         :return: None
         """
-        self.fire_rate_time = self.fire_rate_time / 2
-        self.cooling = self.cooling * 4
-        self.ani_speed -= 1
-        pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
+
+        for module, level in self.ship_parts.items():
+            if module == 'weapons':
+                self.fire_rate_time = 1 / self.fire_rate_array[level] / 2
+                self.cooling = self.cooling_array[level] / 60 * 4
+                self.ani_speed -= 1
+                pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
 
     def q_turn_off(self):
         """
         Rapid fire end, the ship can shoot, cool the gun and run the shooting animation as fast as before.
         :return: None
         """
-        self.fire_rate_time = self.fire_rate_time * 2
-        self.cooling = self.cooling / 4
-        self.ani_speed += 1
+
+        for module, level in self.ship_parts.items():
+            if module == 'weapons':
+                self.fire_rate_time = 1/self.fire_rate_array[level]
+                self.cooling = self.cooling_array[level]/60
+                self.ani_speed += 1
 
     def e_action(self):
         """
@@ -74,3 +91,4 @@ class PlayerMid(PlayerShip):
         :return: None
         """
         pass
+

@@ -11,7 +11,7 @@ class Projectile(pygame.sprite.Sprite):
     of in collisions.py).
     """
 
-    def __init__(self, ship):
+    def __init__(self, ship, mini):
         """
         Creates a projectile itself with all the needed properties.
         :param ship: The ship that fired the projectile
@@ -25,6 +25,7 @@ class Projectile(pygame.sprite.Sprite):
         # angle - the angle under which the projectile travels through space, it does not change, here it is set to the
         #   angle of the ship
         self.angle = ship.angle
+        self.mini = mini
 
         # image
 
@@ -89,7 +90,18 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
         #  kill behind borders
-        if self.pos[0] > ScreenSetup.width or self.pos[0] < 0 or self.pos[1] > ScreenSetup.height or self.pos[1] < 0:
+        if self.mini:
+            left_border = 515
+            right_border = ScreenSetup.width - 515
+            top_border = 285
+            bottom_border = ScreenSetup.height - 305
+        else:
+            left_border = 0
+            right_border = ScreenSetup.width
+            top_border = 0
+            bottom_border = ScreenSetup.height
+
+        if self.pos[0] > right_border or self.pos[0] < left_border or self.pos[1] > bottom_border or self.pos[1] < top_border:
             self.kill()
 
     def kill(self):

@@ -2,9 +2,12 @@ import pygame
 from explosion import Explosion
 from projectileexplosion import ProjectileExplosion
 from pygame.sprite import Group
+from ship_upgrade import ShipUpgrade
+from scrap_metal import ScrapMetal
+import random
 
 
-def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
+def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
                       is_target_projectile: bool, explosion_group: Group) -> None | int:
     """
     Handles projectile-to-projectile, projectile-to-ship and ship-to-ship sprite collisions.
@@ -19,6 +22,7 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
     Ship-to-ship: attacker_group ships deals damage to target_group ships, if the targets hp is <= 0, then it is
     destroyed, if an attacker is of player_light type and the shield is on, then it gets turned off, else an attacker
     gets damaged and if its hp is <= 0, then it is destroyed
+    :param item_group: Group of all items
     :param attacker_group: Group of attacking sprites
     :param is_attacker_projectile: True if attackers are projectiles
     :param target_group: Group of targeted sprites
@@ -30,6 +34,7 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
     score_diff = 0
     for attacker, targets_hit in hits.items():
         for target in targets_hit:
+
             # projectile to projectile collision
             if is_attacker_projectile and is_target_projectile:
                 if attacker.type == "event_horizon_pulse" or attacker.type == "blast":
@@ -41,6 +46,11 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
             if is_attacker_projectile and not is_target_projectile:
                 # damaging target
                 target.hp -= attacker.dmg
+                if target.type == 'tank':
+                    spawn_scrap_metal(item_group, target, {1: 0.05})
+                else:
+                    spawn_scrap_metal(item_group, target, {1: 0.1})
+
                 # killing the projectile
                 if attacker.type == "normal" or attacker.type == "blast":
                     proj_explosion = ProjectileExplosion(attacker.pos, 1, attacker.color)
@@ -54,6 +64,12 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
                     explosion_group.add(explosion)
                     target.kill()
                     target.mask = None
+
+                    # spawning items
+                    if target.type == 'tank':
+                        spawn_ship_upgrade(item_group, target)
+                    else:
+                        spawn_scrap_metal(item_group, target, {1: 0.3, 2: 0.1, 3: 0.1})
 
             # ship to ship collision
             if not is_attacker_projectile and not is_target_projectile:
@@ -81,14 +97,57 @@ def handle_collisions(attacker_group: Group, is_attacker_projectile: bool, targe
                     target.kill()  # Odstranění cílového sprite, pokud má životy menší nebo rovno nule
                     target.mask = None
 
+                    # spawning items
+                    if target.type == 'tank':
+                        spawn_ship_upgrade(item_group, target)
+                    else:
+                        spawn_scrap_metal(item_group, target, {1: 0.5, 2: 0.2, 3: 0.2})
+
     return score_diff
 
 
-def handle_item_collisions(item_group: Group, ship_group: Group) -> None:
+def spawn_ship_upgrade(item_group, target):
+    modules = {
+        "weapons": 0.2,
+        "cooling": 0.2,
+        "repair_module": 0.2,
+        "shield": 0.2,
+        "booster": 0.2
+    }
+    rand_num = random.random()
+    cumulative_probability = 0  # acumulating the probability of the last items
+    for module, probability in modules.items():
+        cumulative_probability += probability  # adding actual probability to acumulated probability
+        if rand_num < cumulative_probability:
+            ship_upgrade = ShipUpgrade(target.pos, module, True, target.velocity, target.velocity_coefficient)
+            item_group.add(ship_upgrade)
+            break
+
+
+def spawn_scrap_metal(item_group, target, probability):
+    rand_num = random.random()
+    scrap_metal_prob = probability
+    cumulative_probability = 0  # acumulating the probability of the last items
+
+    for number, probability in scrap_metal_prob.items():
+        cumulative_probability += probability  # adding actual probability to acumulated probability
+        if rand_num < cumulative_probability:
+            for i in range(number):
+                rand_dir_x = random.uniform(0.25, 1.5)
+                rand_dir_y = random.uniform(0.25, 1.5)
+                scrap_metal = ScrapMetal(target.pos, (target.velocity[0] * rand_dir_x, target.velocity[1] * rand_dir_y),
+                                         target.velocity_coefficient)
+                item_group.add(scrap_metal)
+            break
+
+
+def handle_item_collisions(item_group: Group, ship_group: Group, storage_items, scrap_metal_count) -> str:
     """
-    Handles item-to-ship collisions for medkits and player or stealer types of ships.
+    Handles item-to-ship collisions for medkits and player, stealer types of ships or upgrade parts.
     If any sprite from item_group collides with any sprite from ship_group, then the ships hp increase and the item
     disappears. If the ship is of stealer type, the collision also changes its movement target to the player.
+    :param scrap_metal_count: Number of collected scrap metal
+    :param storage_items: Collecting items to storage
     :param item_group: Sprite group of a pickable items
     :param ship_group: Sprite group with ships that can pick item
     :return: None
@@ -104,6 +163,30 @@ def handle_item_collisions(item_group: Group, ship_group: Group) -> None:
                     pygame.mixer.find_channel(False).play(item.sound)
                     item.kill()
                     item.mask = None
-                if ship.type == "stealer":
-                    ship.movement = "to_player"
-                    ship.image_non_rot = ship.image_non_rot_orig_with_medkit
+                    if ship.type == "stealer":
+                        ship.movement = "to_player"
+                        ship.image_non_rot = ship.image_non_rot_orig_with_medkit
+                        ship.took_item = True
+                if item.type == "ship_upgrade":
+                    if len(storage_items) < 4:
+                        storage_items.append(item)
+                    pygame.mixer.find_channel(False).play(item.sound)
+                    item.kill()
+                    item.mask = None
+                    return "game_paused_upgrade"
+                if item.type == "scrap_metal":
+                    pygame.mixer.find_channel(False).play(item.sound)
+                    item.kill()
+                    item.mask = None
+                    return "scrap_metal_collected"
+
+#
+# def remove_pixels(image, rect):
+#     transparent_image = image.copy()
+#     removed_pixels_image = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
+#     for x in range(rect.width):
+#         for y in range(rect.height):
+#             transparent_image.set_at((x + rect.x, y + rect.y), (0, 0, 0, 0))
+#             pixel_color = image.get_at((x + rect.x, y + rect.y))
+#             removed_pixels_image.set_at((x, y), pixel_color)
+#     return transparent_image, removed_pixels_image

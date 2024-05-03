@@ -8,6 +8,7 @@ class Cursor(pygame.sprite.Sprite):
 
     Calling the constructor makes the mouse invisible and creates a custom cursor in its position.
     """
+
     def __init__(self):
         super().__init__()
         # cursor
@@ -59,3 +60,20 @@ class Cursor(pygame.sprite.Sprite):
         """
         pygame.mouse.set_visible(True)
         self.kill()
+
+    @classmethod
+    def is_cursor_in_rect(cls, rect):
+        return   # Check if the cursor is inside the rectangle
+
+    def check_cursor(self):
+
+        """
+        Checks if the cursor is inside the mini screen.
+
+        """
+        mouse_pos = pygame.mouse.get_pos()  # Get the mouse cursor position
+        rect = pygame.rect.Rect(480, 285, 572, 275)
+        if rect.collidepoint(mouse_pos):
+            self.set_crosshair()
+        else:
+            self.set_cursor()

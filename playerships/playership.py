@@ -15,14 +15,14 @@ class PlayerShip(Ship):
     pressed; turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
     class based on this class.
     """
-    def __init__(self, picture_path, img_scaling_coefficient, ani_amount_of_images,
-                 ship_type, hp, dmg, explosion_size,
+    def __init__(self, image, img_scaling_coefficient, ani_amount_of_images,
+                 ship_type, hp, dmg, explosion_size, regeneration,
                  max_velocity, acceleration, velocity_coefficient,
                  proj_dmg, fire_rate, cooling, overheat,
                  q_cooldown: float, q_ongoing_time: float, e_cooldown: float, e_ongoing_time: float,
-                 projectile_group) -> "PlayerShip":
+                 mini, projectile_group) -> "PlayerShip":
         """
-        :param picture_path: directory path to the ship picture
+        :param image: ship picture
         :param img_scaling_coefficient: used to calculate scaling factor by dividing screen width with it
         :param ani_amount_of_images: number of images in the shooting animation
         :param ship_type: type of the ship
@@ -43,12 +43,23 @@ class PlayerShip(Ship):
         :param projectile_group: sprite group for fired projectiles
         :return: Player-type Ship object
         """
+        self.ship_parts = {'weapons': 0,
+                           'cooling': 0,
+                           'repair_module': 0,
+                           'shield': 0,
+                           'booster': 0}
+        # building ship
+        if not mini:
+            image = self.build_ship(ship_type)
+            image = self.scale_image(image)
 
         # super().__init__ - creates a Ship object
         super().__init__(np.array([ScreenSetup.width/2, ScreenSetup.height/2]),
-                         picture_path, img_scaling_coefficient, ani_amount_of_images,
-                         ship_type, hp, dmg, explosion_size, max_velocity, acceleration, velocity_coefficient,
-                         proj_dmg, fire_rate, cooling, overheat, projectile_group)
+                         image, self.ship_parts, hp, acceleration, dmg,
+                         proj_dmg, fire_rate, overheat, cooling, regeneration,
+                         img_scaling_coefficient, ani_amount_of_images,
+                         ship_type, explosion_size, max_velocity, velocity_coefficient,
+                         mini, projectile_group)
 
         # adjustment of values
 
@@ -168,19 +179,38 @@ class PlayerShip(Ship):
         # makes sure the ship does not reach out borders of the screen, resets the velocity in given axis when the
         # border is reached
         #   X axis
-        if self.pos[0] < 0:
-            self.pos[0] = 0
+        if self.mini:
+            left_border = 520
+            right_border = ScreenSetup.width-520
+            top_border = 310
+            bottom_border = ScreenSetup.height-330
+        else:
+            left_border = 0
+            right_border = ScreenSetup.width
+            top_border = 0
+            bottom_border = ScreenSetup.height
+
+        if self.pos[0] < left_border:
+            self.pos[0] = left_border
             self.velocity[0] = 0
-        elif self.pos[0] > ScreenSetup.width:
-            self.pos[0] = ScreenSetup.width
+        elif self.pos[0] > right_border:
+            self.pos[0] = right_border
             self.velocity[0] = 0
         #   Y axis
-        if self.pos[1] < 0:
-            self.pos[1] = 0
+        if self.pos[1] < top_border:
+            self.pos[1] = top_border
             self.velocity[1] = 0
-        elif self.pos[1] > ScreenSetup.height:
-            self.pos[1] = ScreenSetup.height
+        elif self.pos[1] > bottom_border:
+            self.pos[1] = bottom_border
             self.velocity[1] = 0
+
+        # regeneration
+
+        # This section regenerates health
+        if self.hp < self.max_hp:
+            self.hp += self.regeneration
+        else:
+            self.hp = self.max_hp
 
     def accelerate(self) -> None:
         """
@@ -240,3 +270,4 @@ class PlayerShip(Ship):
         :return: None
         """
         print("\"E\" turn off action not defined")
+

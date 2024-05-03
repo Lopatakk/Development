@@ -23,13 +23,14 @@ class PlayerTank(PlayerShip):
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param[2]
+        image = pygame.image.load("assets/images/player_tank/vlod_player_tank.png")
 
-        super().__init__("assets/images/vlod5T.png", param["img_scaling_coefficient"], param["shooting_ani_images"],
-                         param["type"], param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__(image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+                         param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
                          param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],
-                         projectile_group)
+                         False, projectile_group)
 
         # q action variables and setup
         self.speed_boost_sound = pygame.mixer.Sound("assets/sounds/speed_boost.mp3")

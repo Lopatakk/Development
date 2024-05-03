@@ -1,15 +1,24 @@
+import pygame
 import button
 from renderupdate import *
 from leaderboard import *
 import datetime
 import drawText
 from slider import Slider
+from ship_upgrade import *
+from collisions import *
+
+from enemy_spawn import EnemySpawner
+from playerships.mini_player import *
+from itemspawn import ItemSpawner
+from cursor import Cursor
+
 
 def settingsPause_menu(screen, clock, cursor_group, background_copy):
     width, height = screen.get_size()
     #   fonts
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
-    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))    # loading font
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
+    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
     font_height = font_subTitle.get_height()
     #   surface and background
     # surface
@@ -18,7 +27,9 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     # background
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
     #   create button instances
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
     #   volume
     min_value = 0
     max_value = 10
@@ -30,8 +41,10 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
     #   sliders
-    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageMusic)
-    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageEffects)
+    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0,
+                         100, percentageMusic)
+    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
+                           0, 100, percentageEffects)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
@@ -77,23 +90,26 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def settingsMain_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   fonts
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
-    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))    # loading font
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
+    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
     font_height = font_subTitle.get_height()
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
     #   volume
     min_value = 0
     max_value = 10
@@ -105,8 +121,10 @@ def settingsMain_menu(screen, clock, cursor_group):
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
     #   sliders
-    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageMusic)
-    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0, 100, percentageEffects)
+    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0,
+                         100, percentageMusic)
+    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
+                           0, 100, percentageEffects)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -152,28 +170,33 @@ def settingsMain_menu(screen, clock, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def save_name_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_info = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 230))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    save_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Save', screen, "assets/sounds/button_click.mp3", 0.2)
-    cancel_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Cancel', screen,"assets/sounds/button_click.mp3", 0.2)
+    save_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
+    cancel_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
+                                  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Cancel', screen,
+                                  "assets/sounds/button_click.mp3", 0.2)
     #   the current date
     date = f'{datetime.datetime.now().date()}'
     #   name input
     user_name = ''
     font_input = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
-    text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width/2.5, width/20)
+    text_box = pygame.Rect(3.6 * width / 20, 28 * height / 80, width / 2.5, width / 20)
     #   selected ship from nuber
     if ship_number == 1:
         selected_ship = "Light"
@@ -217,42 +240,47 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
         highscore = [[user_name, score, selected_ship, date]]
         #   rendering input
         # draw box around for text input
-        pygame.draw.rect(screen, (230, 230, 230), text_box, int(width/300))
+        pygame.draw.rect(screen, (230, 230, 230), text_box, int(width / 300))
         # input text
         text_surface = font_input.render(user_name, True, (230, 230, 230))
         # box is getting bigger with text (min. width, if is text wider, it is adding more width)
-        text_box.w = max(width/2.5, text_surface.get_width() + width/50)
+        text_box.w = max(width / 2.5, text_surface.get_width() + width / 50)
         # text
         text_rect = text_surface.get_rect()
-        text_rect.centery = text_box.centery    # to get y center of text to y center of box
-        text_rect.x = text_box.x + width/100    # to get left side of text to wanted position
+        text_rect.centery = text_box.centery  # to get y center of text to y center of box
+        text_rect.x = text_box.x + width / 100  # to get left side of text to wanted position
         # draw input text on wanted position
         screen.blit(text_surface, text_rect)
         # info about characters and rules when writing name
-        screen.blit(font_info.render("maximum 15 characters", True, (150, 150, 150)), (3.6 * width / 20, text_box.y + text_box.height * 1.3))
-        screen.blit(font_info.render("only letters, numbers, dots, dashes", True, (150, 150, 150)), (3.6 * width / 20, text_box.y + text_box.height * 1.7))
+        screen.blit(font_info.render("maximum 15 characters", True, (150, 150, 150)),
+                    (3.6 * width / 20, text_box.y + text_box.height * 1.3))
+        screen.blit(font_info.render("only letters, numbers, dots, dashes", True, (150, 150, 150)),
+                    (3.6 * width / 20, text_box.y + text_box.height * 1.7))
         #   cursor
         update_groups([cursor_group], screen)
 
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def leaderboard_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_scores_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
     font_scores = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.014 * width))  # loading font
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
     #   load the json file.
     highscores = load()
     while True:
@@ -268,11 +296,12 @@ def leaderboard_menu(screen, clock, cursor_group):
         screen.blit(font_scores_title.render("SCORE", True, (230, 230, 230)), (8.5 * width / 20, 27 * height / 80))
         screen.blit(font_scores_title.render("SHIP", True, (230, 230, 230)), (11.15 * width / 20, 27 * height / 80))
         screen.blit(font_scores_title.render("DATE", True, (230, 230, 230)), (13.46 * width / 20, 27 * height / 80))
-        y_position = list(range(32, 62, 3))     # the number of numbers here makes the number of names in the scoreboard
+        y_position = list(range(32, 62, 3))  # the number of numbers here makes the number of names in the scoreboard
         for (hi_name, hi_score, hi_selected_ship, hi_date), y in zip(highscores, y_position):
             screen.blit(font_scores.render(f'{hi_name}', True, (160, 160, 160)), (3.6 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8.5 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (11.15 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)),
+                        (11.15 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (13.46 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
@@ -288,25 +317,36 @@ def leaderboard_menu(screen, clock, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def main_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_music = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen, "assets/sounds/button_click.mp3", 0.3)
-    scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen, "assets/sounds/button_click.mp3", 0.2)
-    aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,"assets/sounds/button_click.mp3", 0.2)
-    quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
-    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)), "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025, 0.025, 0.01,'', screen, "assets/sounds/button_click.mp3", 0.2)
+    play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
+                                "assets/sounds/button_click.mp3", 0.3)
+    scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
+                                      "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen,
+                                      "assets/sounds/button_click.mp3", 0.2)
+    aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
+                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025,
+                                    0.025, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -314,7 +354,7 @@ def main_menu(screen, clock, cursor_group):
         screen.blit(font_title.render("Space shooter", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   text "Soundtrack: Karl Casey @ White Bat Audio"
         text = font_music.render("Soundtrack by: Karl Casey @ White Bat Audio", True, (150, 150, 150))
-        text_width = text.get_width() # width of text
+        text_width = text.get_width()  # width of text
         screen.blit(text, (width - text_width * 1.02, 19.5 * height / 20))
         #   BUTTON
         if play_button.draw_button_and_text(screen):
@@ -339,21 +379,30 @@ def main_menu(screen, clock, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def pause_menu(screen, clock, score, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     # background
     background_copy = screen.copy()
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
     #   create button instances
-    resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Resume', screen, "assets/sounds/button_click.mp3", 0.2)
-    main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
-    quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
-    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)), "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025, 0.025, 0.01,'', screen, "assets/sounds/button_click.mp3", 0.2)
+    resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
+                                  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Resume', screen,
+                                  "assets/sounds/button_click.mp3", 0.2)
+    main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Main menu', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
+                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025,
+                                    0.025, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
@@ -383,6 +432,423 @@ def pause_menu(screen, clock, score, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
+def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
+    player.update_animation()
+    width, height = screen.get_size()
+
+    # background
+    background = pygame.image.load("assets/images/Background.png").convert_alpha()
+    background = pygame.transform.scale(background, (width, height))
+    storage = pygame.image.load("assets/images/storage.png").convert_alpha()
+
+    # storage background
+    storage = pygame.transform.scale(storage, (width, height))
+
+    # mouse mask
+    mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
+
+    # bin
+    thrash_bin = pygame.image.load("assets/images/thrash_bin.png").convert_alpha()
+    thrash_bin_rect = thrash_bin.get_rect()
+    thrash_bin_rect.center = (1400, 740)
+
+    enlarged_thrash_bin_size = pygame.Vector2(thrash_bin.get_size()) * 1.3
+    enlarged_thrash_bin_surf = pygame.transform.scale(thrash_bin, enlarged_thrash_bin_size)
+    enlarged_thrash_bin_rect = enlarged_thrash_bin_surf.get_rect()
+    enlarged_thrash_bin_rect.center = thrash_bin_rect.center
+    thrash_bin_mask = pygame.mask.from_surface(thrash_bin)
+    over_thrash_bin = False
+
+    # description
+    font_description = pygame.font.Font('assets/fonts/PublicPixel.ttf', 28)
+
+    # modules
+    module_white = pygame.image.load("assets/images/module_white.png").convert_alpha()
+    module_black = pygame.image.load("assets/images/module_black.png").convert_alpha()
+
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', 32)
+    texts = ['Weapons', 'Cooling', 'Repair', 'module', 'Shield', 'Booster']
+    texts_pos = [(80, 80), (605, 80), (55, 570), (55, 610), (660, 570), (340, 770)]
+
+    # ship parts
+    ship_parts_images = {
+        "weapons": [],
+        "cooling": [],
+        "repair_module": [],
+        "shield": [],
+        "booster": []
+    }
+    for module in ship_parts_images.keys():
+        for i in range(3):
+            ship_parts_images[module].append(pygame.image.load(f"assets/images/{module}{i}.png").convert_alpha())
+
+    # picked mark
+    picked_mark = pygame.image.load("assets/images/picked_mark.png").convert_alpha()
+    picked_mark_active = 0
+
+    # ship
+    ship_surf = player.build_ship(player.type)
+    pos = (440, 320)
+    new_width = int(ship_surf.get_width() * 2.3)
+    new_height = int(ship_surf.get_height() * 2.3)
+    ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
+    ship_rect = ship_surf.get_rect(center=pos)
+    ship_mask = pygame.mask.from_surface(ship_surf)
+    over_ship = False
+    ship_surf_transparent = ship_surf.copy()
+    ship_surf_transparent.set_alpha(100)
+
+    # settings
+    settings_icon = pygame.image.load("assets/images/controller.png").convert_alpha()
+    settings_rect = settings_icon.get_rect()
+    settings_rect.centerx = ship_rect.centerx
+    settings_rect.centery = ship_rect.centery + 50
+
+    # create buttons
+    x = 932
+    y = 78
+    storage_buttons = [(x, y), (x + 260, y), (x, y + 260), (x + 260, y + 260)]
+    module_buttons = {
+        "weapons": (90, 118, True),
+        "cooling": (628, 118, True),
+        "repair_module": (55, 392, True),
+        "shield": (663, 392, True),
+        "booster": (353, 590, True)
+    }
+    max_level = 3
+
+    while True:
+        # render background
+        screen.blit(background, (0, 0))
+        screen.blit(storage, (0, 0))
+        if over_ship:
+            screen.blit(ship_surf_transparent, ship_rect)
+            screen.blit(settings_icon, settings_rect)
+        else:
+            screen.blit(ship_surf, ship_rect)
+        if over_thrash_bin:
+            screen.blit(enlarged_thrash_bin_surf, enlarged_thrash_bin_rect)
+        else:
+            screen.blit(thrash_bin, thrash_bin_rect)
+
+        description = None
+        max_level_reached = False
+        item_stat_color = 'white'
+        for module, level in player.ship_parts.items():
+            if 0 <= picked_mark_active < len(storage_items):
+                if module == storage_items[picked_mark_active].upgrade_type:
+                    if module == 'weapons':
+                        current_dmg = player.proj_dmg_array[level]
+                        current_fire_rate = player.fire_rate_array[level]
+                        current_overheat = player.overheat_array[level]
+
+                        if storage_items[picked_mark_active].upgradable:
+                            if level + 1 > max_level:
+                                max_level_reached = True
+                                item_dmg = None
+                                item_fire_rate = None
+                                item_overheat = None
+                            else:
+                                item_dmg = player.proj_dmg_array[level + 1]
+                                item_fire_rate = player.fire_rate_array[level + 1]
+                                item_overheat = player.overheat_array[level + 1]
+                        else:
+                            item_dmg = player.proj_dmg_array[storage_items[picked_mark_active].level]
+                            item_fire_rate = player.fire_rate_array[storage_items[picked_mark_active].level]
+                            item_overheat = player.overheat_array[storage_items[picked_mark_active].level]
+
+                        description = {'DMG:': (current_dmg, item_dmg),
+                                       'Fire rate:': (current_fire_rate, item_fire_rate),
+                                       'Overheat:': (current_overheat, item_overheat)}
+
+                    elif module == 'cooling':
+                        current_cooling = player.cooling_array[level]
+
+                        if storage_items[picked_mark_active].upgradable:
+                            if level + 1 > max_level:
+                                max_level_reached = True
+                                item_cooling = None
+                            else:
+                                item_cooling = player.cooling_array[level + 1]
+                        else:
+                            item_cooling = player.cooling_array[storage_items[picked_mark_active].level]
+
+                        description = {'Cooling:': (current_cooling, item_cooling)}
+
+                    elif module == 'repair_module':
+                        current_regeneration = player.regeneration_array[level]
+
+                        if storage_items[picked_mark_active].upgradable:
+                            if level + 1 > max_level:
+                                max_level_reached = True
+                                item_regeneration = None
+                            else:
+                                item_regeneration = player.regeneration_array[level + 1]
+                        else:
+                            item_regeneration = player.regeneration_array[storage_items[picked_mark_active].level]
+
+                        description = {'Regeneration:': (current_regeneration, item_regeneration)}
+
+                    elif module == 'shield':
+                        current_max_hp = player.max_hp_array[level]
+                        current_collision_dmg = player.dmg_array[level]
+
+                        if storage_items[picked_mark_active].upgradable:
+                            if level + 1 > max_level:
+                                max_level_reached = True
+                                item_max_hp = None
+                                item_collision_dmg = None
+                            else:
+                                item_max_hp = player.max_hp_array[level + 1]
+                                item_collision_dmg = player.dmg_array[level + 1]
+                        else:
+                            item_max_hp = player.max_hp_array[storage_items[picked_mark_active].level]
+                            item_collision_dmg = player.dmg_array[storage_items[picked_mark_active].level]
+
+                        description = {'Max HP:': (current_max_hp, item_max_hp),
+                                       'Collision DMG:': (current_collision_dmg, item_collision_dmg)}
+
+                    elif module == 'booster':
+                        current_acceleration = player.acceleration_array[level]
+
+                        if storage_items[picked_mark_active].upgradable:
+                            if level + 1 > max_level:
+                                max_level_reached = True
+                                item_acceleration = None
+                            else:
+                                item_acceleration = player.acceleration_array[level + 1]
+                        else:
+                            item_acceleration = player.acceleration_array[storage_items[picked_mark_active].level]
+
+                        description = {'Acceleration:': (current_acceleration, item_acceleration)}
+        if description:
+            for i, (stat_name, (current_stat, item_stat)) in enumerate(description.items()):
+                screen.blit(font_description.render(stat_name, True, 'white'), (660, 650 + i * 60))
+                if max_level_reached:
+                    screen.blit(font_description.render(str(current_stat), True, 'white'), (1000, 650 + i * 60))
+                else:
+                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (1000, 650 + i * 60))
+                    width = font_description.render(str(current_stat) + ' → ', True, 'white').get_width()
+                    if current_stat > item_stat:
+                        item_stat_color = 'red'
+                    elif current_stat < item_stat:
+                        item_stat_color = 'green'
+                    screen.blit(font_description.render(str(item_stat), True, item_stat_color), (1000 + width, 650 + i * 60))
+
+        for i, text in enumerate(texts):
+            screen.blit(font_title.render(text, True, (255, 255, 255)), texts_pos[i])
+
+        # rendering storage items
+        for i, item in enumerate(storage_items):
+            # calculating centers of rects
+            storage_button_x = storage_buttons[i][0] + 132
+            storage_button_y = storage_buttons[i][1] + 130
+
+            item_rect = item.unscaled_image.get_rect()
+            item_x = storage_button_x - item_rect.width // 2
+            item_y = storage_button_y - item_rect.height // 2
+            screen.blit(item.unscaled_image, (item_x, item_y))
+
+        # rendering modules
+        for module, (x, y, active) in module_buttons.items():
+            rect = pygame.Rect(x, y, 260, 260)
+            if active:
+                screen.blit(module_white, rect)
+            else:
+                screen.blit(module_black, rect)
+
+        # rendering installed items
+        for module, i in player.ship_parts.items():
+            # calculating centers of module rects
+            if i > 0:
+                module_button_x, module_button_y, active = module_buttons[module]
+                module_button_x_center = module_button_x + 93
+                module_button_y_center = module_button_y + 90
+
+                item_rect = ship_parts_images[module][player.ship_parts[module]-1].get_rect()
+                item_x = module_button_x_center - item_rect.width // 2
+                item_y = module_button_y_center - item_rect.height // 2
+                screen.blit(ship_parts_images[module][player.ship_parts[module]-1], (item_x, item_y))
+
+        # rendering picked mark
+        if picked_mark_active >= 0:
+            # calculating centers of storage button rects
+            storage_button_x = storage_buttons[picked_mark_active][0] + 132
+            storage_button_y = storage_buttons[picked_mark_active][1] + 130
+
+            picked_mark_rect = picked_mark.get_rect()
+            picked_mark_x = storage_button_x - picked_mark_rect.width // 2
+            picked_mark_y = storage_button_y - picked_mark_rect.height // 2
+            screen.blit(picked_mark, (picked_mark_x, picked_mark_y))
+
+        # searching if the item type fits the part of the ship, the ones that doesn't fit are unactive
+        for module, (x, y, active) in module_buttons.items():
+            if 0 <= picked_mark_active < len(storage_items):
+                if module == storage_items[picked_mark_active].upgrade_type:
+                    module_buttons[module] = (x, y, True)
+                else:
+                    module_buttons[module] = (x, y, False)
+            else:
+                module_buttons[module] = (x, y, True)
+
+        mouse_pos = pygame.mouse.get_pos()
+        if thrash_bin_mask.overlap(mouse_mask, (mouse_pos[0] - thrash_bin_rect.x, mouse_pos[1] - thrash_bin_rect.y)):
+            over_thrash_bin = True
+        else:
+            over_thrash_bin = False
+        if ship_mask.overlap(mouse_mask, (mouse_pos[0] - ship_rect.x, mouse_pos[1] - ship_rect.y)):
+            over_ship = True
+        else:
+            over_ship = False
+
+        # closing upgrade menu
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
+                return False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
+                if over_thrash_bin and picked_mark_active < len(storage_items):
+                    storage_items.pop(picked_mark_active)
+                if over_ship:
+                    menu_cockpit(screen, clock, player, cursor, cursor_group)   # entering cockpit menu
+
+                # collision with storage rects
+                for i, (x, y) in enumerate(storage_buttons):
+                    rect = pygame.Rect(x, y, 260, 260)
+                    if rect.collidepoint(mouse_pos):
+                        picked_mark_active = i
+                        break
+
+                # collision with module rects
+                for module, (x, y, active) in module_buttons.items():
+                    rect = pygame.Rect(x, y, 260, 260)
+                    if rect.collidepoint(mouse_pos):
+                        if picked_mark_active < len(storage_items):
+                            if storage_items[picked_mark_active].upgradable:
+                                if installed_items[module]:
+                                    if player.ship_parts[module] + 1 <= max_level:
+                                        installed_items[module].level_up()
+                                        player.ship_parts[module] += 1
+                                        storage_items.pop(picked_mark_active)
+                                    else:
+                                        storage_items.append(installed_items[module])
+                                        installed_items[module] = None
+                                        player.ship_parts[module] = 0
+                                else:
+                                    if module == storage_items[picked_mark_active].upgrade_type:
+                                        player.ship_parts[module] += 1
+                                        installed_items[module] = ShipUpgrade((0, 0), module, False)
+                                        storage_items.pop(picked_mark_active)
+                            else:
+                                if installed_items[module]:
+                                    storage_items.append(installed_items[module])
+                                    installed_items[module] = None
+                                    player.ship_parts[module] = 0
+                                else:
+                                    if picked_mark_active < len(storage_items):
+                                        if module == storage_items[picked_mark_active].upgrade_type:
+                                            installed_items[module] = storage_items[picked_mark_active]
+                                            player.ship_parts[module] = installed_items[module].level
+                                            storage_items.pop(picked_mark_active)
+                        else:
+                            if installed_items[module]:
+                                storage_items.append(installed_items[module])
+                                installed_items[module] = None
+                                player.ship_parts[module] = 0
+
+                player.image_non_rot_orig = player.build_ship(player.type)
+                player.image_non_rot_orig = pygame.transform.scale_by(player.image_non_rot_orig, player.img_scale_ratio)
+                player.image_non_rot_orig = player.scale_image(player.image_non_rot_orig)
+                player.image_non_rot = player.image_non_rot_orig
+                player.image = player.image_non_rot
+
+                player.update_animation()
+                ship_surf = player.build_ship(player.type)
+                ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
+        player.update_parameters()
+
+        # cursor
+        update_groups([cursor_group], screen)
+
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
+
+
+def menu_cockpit(screen, clock, player, cursor, cursor_group):
+    width, height = screen.get_size()
+
+    # background
+    background = pygame.image.load("assets/images/cockpit/cockpit1.png").convert_alpha()
+    background = pygame.transform.scale(background, (width, height))
+
+    # ships
+    mini_vlod = pygame.image.load("assets/images/cockpit/vlod_player_mid.png").convert_alpha()
+    mini_zarovka = pygame.image.load("assets/images/cockpit/zarovka.png").convert_alpha()
+    mini_sniper = pygame.image.load("assets/images/cockpit/sniper.png").convert_alpha()
+    mini_tank = pygame.image.load("assets/images/cockpit/tank.png").convert_alpha()
+    mini_stealer = pygame.image.load("assets/images/cockpit/stealer1.png").convert_alpha()
+
+    # button
+    play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
+                                "assets/sounds/button_click.mp3", 0.3)
+
+    mini_enemy_group = pygame.sprite.Group()
+    mini_spawner_group = pygame.sprite.Group()
+    mini_item_group = pygame.sprite.Group()
+    mini_player_projectile_group = pygame.sprite.Group()
+    mini_enemy_projectile_group = pygame.sprite.Group()
+    mini_explosion_group = pygame.sprite.Group()
+
+    mini_player = MiniPlayer(mini_player_projectile_group)
+    mini_player_group = pygame.sprite.Group()
+    mini_player_group.add(mini_player)
+
+    # mini_medkit_spawner = ItemSpawner( mini_item_group, "medkit", 53, player)
+    # mini_spawner_group.add(mini_medkit_spawner)
+
+    mini_zarovka_spawner = EnemySpawner(mini_enemy_group, "minizarovka", 5, mini_player)
+    # mini_tank_spawner = EnemySpawner(mini_enemy_group, "tank", 25, player, shot_group=mini_enemy_projectile_group)
+    # mini_sniper_spawner = EnemySpawner(mini_enemy_group, "sniper", 10, player, shot_group=mini_enemy_projectile_group)
+    # mini_stealer_spawner = EnemySpawner(mini_enemy_group, "stealer", 7, player, item_group=mini_item_group)
+    # mini_spawner_group.add(mini_zarovka_spawner, mini_tank_spawner, mini_sniper_spawner, mini_stealer_spawner)
+    mini_spawner_group.add(mini_zarovka_spawner)
+
+    cursor.set_cursor()
+
+    while True:
+        # render background
+        screen.blit(background, (0, 0))
+
+        # closing upgrade menu
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
+                return False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
+                pass
+
+        # cursor
+        update_groups([cursor_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
+                       mini_player_group, mini_spawner_group, mini_explosion_group], screen)
+
+        handle_collisions(mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
+        handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False, mini_explosion_group)
+        handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False, mini_explosion_group)
+        handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True, mini_explosion_group)
+
+        cursor.check_cursor()
+        clock.tick(ScreenSetup.fps)
+        pygame.display.flip()
+
+        # FPS lock and adding time
+        time_diff = clock.tick(ScreenSetup.fps) / 1000
+        update_time([mini_player_group, mini_enemy_group, mini_item_group, mini_spawner_group], time_diff)
+
+
 def ship_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   text
@@ -393,17 +859,23 @@ def ship_menu(screen, clock, cursor_group):
     text_rect.y = 3.4 * height / 20
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    Light_button = button.Button(2 * width / 8, 8 * height / 16, "assets/images/vlod5L.png", "assets/images/vlod5L.png", 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
-    Mid_button = button.Button(4 * width / 8, 8 * height / 16, "assets/images/vlod5.png", "assets/images/vlod5.png", 0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
-    Tank_button = button.Button(6 * width / 8, 8 * height / 16, "assets/images/vlod5T.png", "assets/images/vlod5T.png", 0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
+    Light_button = button.Button(2 * width / 8, 8 * height / 16, "assets/images/player_light/vlod_player_light.png",
+                                 "assets/images/player_light/vlod_player_light.png",
+                                 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
+    Mid_button = button.Button(4 * width / 8, 8 * height / 16, "assets/images/player_mid/vlod_player_mid.png",
+                               "assets/images/player_mid/vlod_player_mid.png",
+                               0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
+    Tank_button = button.Button(6 * width / 8, 8 * height / 16, "assets/images/player_tank/vlod_player_tank.png",
+                                "assets/images/player_tank/vlod_player_tank.png",
+                                0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -432,24 +904,33 @@ def ship_menu(screen, clock, cursor_group):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def death_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_score = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 230))  # fill the whole screen with black transparent color
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
     #   create button instances
-    save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png","assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save name', screen,"assets/sounds/button_click.mp3", 0.3)
-    restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Again', screen, "assets/sounds/button_click.mp3", 0.3)
-    main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Main menu', screen, "assets/sounds/button_click.mp3", 0.2)
-    quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.3, 0.05, 0.025,'Quit', screen, "assets/sounds/button_click.mp3", 0.2)
+    save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save name', screen,
+                                     "assets/sounds/button_click.mp3", 0.3)
+    restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
+                                   "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Again', screen,
+                                   "assets/sounds/button_click.mp3", 0.3)
+    main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Main menu', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6 * ScreenSetup.effects_volume)
@@ -486,11 +967,16 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
         clock.tick(ScreenSetup.fps)
         pygame.display.flip()
 
+
 def aboutgame_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
     #   variable for scroll
     record = True
     y_scroll = 0
+
+    # mouse mask
+    mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
+
     #   text
     # variables for text
     spaceBetween = 0.009 * width
@@ -498,204 +984,388 @@ def aboutgame_menu(screen, clock, cursor_group):
     textAlignRight = 1
     textAlignCenter = 2
     textAlignBlock = 3
+
+    # ship images
+    vlod5L = pygame.image.load("assets/images/player_light/vlod_player_light.png").convert_alpha()
+    vlod5L = pygame.transform.scale(vlod5L, (int(width * 0.08), int(width * 0.09)))  # transforming image
+    vlod5L_pos = vlod5L.get_rect().center
+    new_width = int(vlod5L.get_width() * 1.4)
+    new_height = int(vlod5L.get_height() * 1.4)
+    vlod5L_rect = vlod5L.get_rect(center=vlod5L_pos)
+    enlarged_vlod5L = pygame.transform.scale(vlod5L, (new_width, new_height))
+    enlarged_vlod5L_rect = enlarged_vlod5L.get_rect()
+    enlarged_vlod5L_rect.center = vlod5L_rect.center
+    vlod5L_mask = pygame.mask.from_surface(vlod5L)
+    over_vlod5L = False
+
+    vlod5 = pygame.image.load("assets/images/player_mid/vlod_player_mid.png").convert_alpha()
+    vlod5 = pygame.transform.scale(vlod5, (int(width * 0.11), int(width * 0.12)))  # transforming image
+    vlod5_pos = vlod5.get_rect().center
+    new_width = int(vlod5.get_width() * 1.4)
+    new_height = int(vlod5.get_height() * 1.4)
+    vlod5_rect = vlod5.get_rect(center=vlod5_pos)
+    enlarged_vlod5 = pygame.transform.scale(vlod5, (new_width, new_height))
+    enlarged_vlod5_rect = enlarged_vlod5.get_rect()
+    enlarged_vlod5_rect.center = vlod5_rect.center
+    vlod5_mask = pygame.mask.from_surface(vlod5)
+    over_vlod5 = False
+
+    vlod5T = pygame.image.load("assets/images/player_tank/vlod_player_tank.png").convert_alpha()
+    vlod5T = pygame.transform.scale(vlod5T, (int(width * 0.1), int(width * 0.12)))  # transforming image
+    vlod5T_pos = vlod5T.get_rect().center
+    new_width = int(vlod5T.get_width() * 1.4)
+    new_height = int(vlod5T.get_height() * 1.4)
+    vlod5T_rect = vlod5T.get_rect(center=vlod5T_pos)
+    enlarged_vlod5T = pygame.transform.scale(vlod5T, (new_width, new_height))
+    enlarged_vlod5T_rect = enlarged_vlod5T.get_rect()
+    enlarged_vlod5T_rect.center = vlod5T_rect.center
+    vlod5T_mask = pygame.mask.from_surface(vlod5T)
+    over_vlod5T = False
+
+
     # fonts for text
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))    # loading font
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     title_color = (230, 230, 230)
-    font_subtitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.02 * width))    # loading font
-    subtitle_height = font_subtitle.size("Tq")[1]   # height of font
-    font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))    # loading font
-    text_height = font_text.size("Tq")[1]   # height of font
+    font_subtitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.02 * width))  # loading font
+    subtitle_height = font_subtitle.size("Tq")[1]  # height of font
+    font_text = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))  # loading font
+    text_height = font_text.size("Tq")[1]  # height of font
     text_color = (180, 180, 180)
-    font_name = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.012 * width))    # loading font
+    font_name = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.012 * width))  # loading font
     name_color = (200, 200, 200)
+
     #   surface and background
     # surface
-    surface = pygame.Surface(screen.get_size())    # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()   # making surface transparent
+    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+    surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
     #   create button instances
-    back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png", "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen, "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "About game"
-        screen.blit(font_title.render("About game", True, (230, 230, 230)), (3.6 * width / 20, (3.4 * height / 20) + y_scroll))
+        screen.blit(font_title.render("About game", True, (230, 230, 230)),
+                    (3.6 * width / 20, (3.4 * height / 20) + y_scroll))
+
+        mouse_pos = pygame.mouse.get_pos()
+
         #   BUTTON
         if back_button.draw_button_and_text(screen):
             return True
         #   about game text
         # about game
         msg = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
-        textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # why was created
         msg = "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year."
-        textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # development team
-        screen.blit(font_subtitle.render("Development team", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        screen.blit(font_subtitle.render("Development team", True, title_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Jan Sebele", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Pavel Franek", True, text_color), (8 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Jan Sebele", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Pavel Franek", True, text_color),
+                    (8 * width / 20, lowest_value + spaceBetween * 2))
         lowest_value = lowest_value + spaceBetween * 2 + text_height
-        screen.blit(font_text.render("Michal Lopata", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween))
+        screen.blit(font_text.render("Michal Lopata", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween))
         screen.blit(font_text.render("Tomas Fikart", True, text_color), (8 * width / 20, lowest_value + spaceBetween))
         lowest_value = lowest_value + spaceBetween + text_height
         # controls
-        screen.blit(font_subtitle.render("Controls", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        screen.blit(font_subtitle.render("Controls", True, title_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
-        screen.blit(font_text.render("Shooting:         left mouse button", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
-        screen.blit(font_text.render("Special skills:   Q and E", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
-        screen.blit(font_text.render("Pause:            ESC", True, text_color), (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
+        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 2))
+        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
+        screen.blit(font_text.render("Shooting:         left mouse button", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
+        screen.blit(font_text.render("Special skills:   Q and E", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
+        screen.blit(font_text.render("Pause:            ESC", True, text_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
         lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
         #   ships
-        screen.blit(font_subtitle.render("Ships", True, title_color), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        screen.blit(font_subtitle.render("Ships", True, title_color),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+
+        # checking if mouse is over image
+        if vlod5L_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height / 2))):
+            over_vlod5L = True
+        else:
+            over_vlod5L = False
+
         # ship number 1
-        # load and write image
-        vlod5L = pygame.image.load("assets/images/vlod5L.png")  # load image
-        vlod5L = pygame.transform.scale(vlod5L, (int(width * 0.08), int(width * 0.09)))  # transforming image
-        screen.blit(vlod5L, ((5 * width / 20) - vlod5L.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5L.get_rect().centery))
+        if over_vlod5L:
+            screen.blit(enlarged_vlod5L, ((5 * width / 20) + enlarged_vlod5L_rect.x - vlod5L_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - enlarged_vlod5L_rect.height/2))
+        else:
+            screen.blit(vlod5L, ((5 * width / 20) + vlod5L_rect.x - vlod5L_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5L_rect.y - vlod5L_rect.height/2))
         # load info about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
         Ship_param = enemy_param[0]
+
         # write info about ship
-        text = font_name.render("LIGHT", True, name_color)
-        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
-        textAcc_width = textAcc.get_width()  # getting width of text
-        screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+
+        if over_vlod5L:
+            text = font_name.render("LIGHT", True, name_color)
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc_width = textAcc.get_width()  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        else:
+
+            text = font_name.render("LIGHT", True, name_color)
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc_width = textAcc.get_width() + 100  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.25), lowest_value + 4 * spaceBetween + text_height))
         text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width),
+                                    lowest_value + 4 * spaceBetween + text_height))
         image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_dash_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
         text_skill_01 = font_text.render("E skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.25), lowest_value + 7 * spaceBetween + 4 * text_height))
         text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
-        image_Q = pygame.image.load("assets/images/skills_aboutGame/E_shield_aboutGame.png").convert_alpha()  # load image
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width),
+                                    lowest_value + 7 * spaceBetween + 4 * text_height))
+        image_Q = pygame.image.load(
+            "assets/images/skills_aboutGame/E_shield_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
+
         # ship number 2
-        # load and write image
-        vlod5 = pygame.image.load("assets/images/vlod5.png")  # load image
-        vlod5 = pygame.transform.scale(vlod5, (int(width * 0.11), int(width * 0.12)))  # transforming image
-        screen.blit(vlod5, ((5 * width / 20) - vlod5.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5.get_rect().centery))        # load info about ship from json
+
+        # checking if mouse is over image
+        if vlod5_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height / 2))):
+            over_vlod5 = True
+        else:
+            over_vlod5 = False
+
+        # write image
+        if over_vlod5:
+            screen.blit(enlarged_vlod5, ((5 * width / 20) + enlarged_vlod5_rect.x - vlod5_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - enlarged_vlod5_rect.height/2))
+        else:
+            screen.blit(vlod5, ((5 * width / 20) + vlod5_rect.x - vlod5_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5_rect.y - vlod5_rect.height/2))
+
         with open("playerships/playerparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
         Ship_param = enemy_param[1]
         # write info about ship
         text = font_name.render("MID", True, name_color)
-        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
-        textAcc_width = textAcc.get_width()  # getting width of text
-        screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+
+        if over_vlod5:
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc_width = textAcc.get_width()  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        else:
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc_width = textAcc.get_width() + 100  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 4 * spaceBetween + text_height))
         text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
-        image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_rapidfire_aboutGame.png").convert_alpha()  # load image
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
+                                    lowest_value + 4 * spaceBetween + text_height))
+        image_Q = pygame.image.load(
+            "assets/images/skills_aboutGame/Q_rapidfire_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
         text_skill_01 = font_text.render("E skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 7 * spaceBetween + 4 * text_height))
         text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
-        image_Q = pygame.image.load("assets/images/skills_aboutGame/E_blastshoot_aboutGame.png").convert_alpha()  # load image
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
+                                    lowest_value + 7 * spaceBetween + 4 * text_height))
+        image_Q = pygame.image.load(
+            "assets/images/skills_aboutGame/E_blastshoot_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
+
         # ship number 3
-        # load and write image
-        vlod5T = pygame.image.load("assets/images/vlod5T.png")  # load image
-        vlod5T = pygame.transform.scale(vlod5T, (int(width * 0.1), int(width * 0.12)))  # transforming image
-        screen.blit(vlod5T, ((5 * width / 20) - vlod5T.get_rect().centerx, lowest_value + 7 * spaceBetween + 4.5 * text_height - vlod5T.get_rect().centery))
+
+        if vlod5T_mask.overlap(mouse_mask, (mouse_pos[0] - ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width / 2), mouse_pos[1] - (lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height / 2))):
+            over_vlod5T = True
+        else:
+            over_vlod5T = False
+
+        # write image
+        if over_vlod5T:
+            screen.blit(enlarged_vlod5T, ((5 * width / 20) + enlarged_vlod5T_rect.x - vlod5T_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - enlarged_vlod5T_rect.height/2))
+        else:
+            screen.blit(vlod5T, ((5 * width / 20) + vlod5T_rect.x - vlod5T_rect.width/2, lowest_value + 7 * spaceBetween + 4.5 * text_height + vlod5T_rect.y - vlod5T_rect.height/2))
+
         # load info about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
             enemy_param = json.load(param_file)
         Ship_param = enemy_param[2]
+
         # write info about ship
-        text = font_name.render("TANK", True, name_color)
-        screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
-        textAcc_width = textAcc.get_width()  # getting width of text
-        screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        if over_vlod5T:
+            text = font_name.render("TANK", True, name_color)
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc_width = textAcc.get_width()  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        else:
+            text = font_name.render("TANK", True, name_color)
+            screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
+            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc_width = textAcc.get_width() + 100  # getting width of text
+            screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                        (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
         text_skill_01 = font_text.render("Q skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 4 * spaceBetween + text_height))
         text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 4 * spaceBetween + text_height))
-        image_Q = pygame.image.load("assets/images/skills_aboutGame/Q_speedboos_aboutGame.png").convert_alpha()  # load image
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
+                                    lowest_value + 4 * spaceBetween + text_height))
+        image_Q = pygame.image.load(
+            "assets/images/skills_aboutGame/Q_speedboos_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
         text_skill_01 = font_text.render("E skill: ", True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
-        screen.blit(text_skill_01, (((7.5 * width / 20) + textAcc_width * 1.2), lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(text_skill_01,
+                    (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 7 * spaceBetween + 4 * text_height))
         text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
-        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width), lowest_value + 7 * spaceBetween + 4 * text_height))
-        image_Q = pygame.image.load("assets/images/skills_aboutGame/E_gravitypulse_aboutGame.png").convert_alpha()  # load image
+        screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
+                                    lowest_value + 7 * spaceBetween + 4 * text_height))
+        image_Q = pygame.image.load(
+            "assets/images/skills_aboutGame/E_gravitypulse_aboutGame.png").convert_alpha()  # load image
         image_Q = pygame.transform.scale(image_Q, (int(width * 0.03), int(width * 0.03)))  # transforming image
         image_width = image_Q.get_width()  # getting width of image
-        screen.blit(image_Q, ((((7.5 * width / 20) + textAcc_width * 1.2 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2), lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
+        screen.blit(image_Q, (
+            (((
+                      7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
+            lowest_value + 7 * spaceBetween + 4 * text_height + text_skill_02_height * 1.5))
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
         #   enemies
-        screen.blit(font_subtitle.render("Enemies", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        screen.blit(font_subtitle.render("Enemies", True, (230, 230, 230)),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
         # enemy number 1
         # load info about ship from json
@@ -705,19 +1375,25 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("ZAROVKA", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         # writen info by myself
-        msg = "He acts like a kamikaze pilot. It doesn't have a cannon to shoot, but it deals a lot of damage on contact with a ship."
-        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        msg = "He acts like a kamikaze pilot. He doesn't have a cannon to shoot, but he deals a lot of damage on contact with a ship."
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
-        zarovka = pygame.image.load("assets/images/zarovka.png")  # load image
+        zarovka = pygame.image.load("assets/images/enemy/zarovka/zarovka.png")  # load image
         zarovka = pygame.transform.scale(zarovka, (int(width * 0.053), int(width * 0.08)))  # transforming image
-        screen.blit(zarovka, ((5 * width / 20) - zarovka.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - zarovka.get_rect().centery))
+        screen.blit(zarovka, ((5 * width / 20) - zarovka.get_rect().centerx, (
+                lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - zarovka.get_rect().centery))
         lowest_value += 3 * spaceBetween
         # enemy number 2
         # load info about ship from json
@@ -727,20 +1403,27 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("TANK", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
         msg = "His name describes him correctly. He has a lot of HP, he's big, and he shoots fast, but his shots don't do much damage."
-        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
-        tank = pygame.image.load("assets/images/tank.png")  # load image
+        tank = pygame.image.load("assets/images/enemy/tank/tank.png")  # load image
         tank = pygame.transform.scale(tank, (int(width * 0.13), int(width * 0.12)))  # transforming image
-        screen.blit(tank, ((5 * width / 20) - tank.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - tank.get_rect().centery))
+        screen.blit(tank, ((5 * width / 20) - tank.get_rect().centerx, (
+                lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - tank.get_rect().centery))
         lowest_value += 3 * spaceBetween
         # enemy number 3
         # load info about ship from json
@@ -750,20 +1433,27 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("SNIPER", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
         msg = "He tries to keep his distance from the ship, making it hard to hit him. His missiles deal a lot of damage, but he has low HP."
-        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
-        sniper = pygame.image.load("assets/images/sniper.png")  # load image
+        sniper = pygame.image.load("assets/images/enemy/sniper/sniper.png")  # load image
         sniper = pygame.transform.scale(sniper, (int(width * 0.06), int(width * 0.08)))  # transforming image
-        screen.blit(sniper, ((5 * width / 20) - sniper.get_rect().centerx, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - sniper.get_rect().centery))
+        screen.blit(sniper, ((5 * width / 20) - sniper.get_rect().centerx, (
+                lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - sniper.get_rect().centery))
         lowest_value += 3 * spaceBetween
         # enemy number 4
         # load info about ship from json
@@ -773,26 +1463,34 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("STEALER", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color), (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
+        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color), (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color), (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color), (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
+        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
+        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+                    (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         # writen info by myself
-        msg = "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds a Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka"
-        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20, 50)  # x-axis, y-axis, size on x-axis, size on y-axis
+        msg = "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds the Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka"
+        textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
+                               50)  # x-axis, y-axis, size on x-axis, size on y-axis
         lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
-        stealer1 = pygame.image.load("assets/images/stealer1.png")  # load image
+        stealer1 = pygame.image.load("assets/images/enemy/stealer/stealer1.png")  # load image
         stealer1 = pygame.transform.scale(stealer1, (int(width * 0.06), int(width * 0.08)))  # transforming image
-        screen.blit(stealer1, ((5 * width / 20) - stealer1.get_rect().width * 1.2, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer1.get_rect().centery))
+        screen.blit(stealer1, ((5 * width / 20) - stealer1.get_rect().width * 1.2, (
+                lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - stealer1.get_rect().centery))
         # load and write image
-        stealer2 = pygame.image.load("assets/images/stealer2.png")  # load image
+        stealer2 = pygame.image.load("assets/images/enemy/stealer/stealer2.png")  # load image
         stealer2 = pygame.transform.scale(stealer2, (int(width * 0.06), int(width * 0.08)))  # transforming image
-        screen.blit(stealer2, ((5 * width / 20) + stealer1.get_rect().width * 0.2, (lowest_value - lowest_value_firstText)/2 + lowest_value_firstText - stealer2.get_rect().centery))
+        screen.blit(stealer2, ((5 * width / 20) + stealer1.get_rect().width * 0.2, (
+                lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - stealer2.get_rect().centery))
         lowest_value += 3 * spaceBetween
         #   thank you for playing our game
-        screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)), (3.6 * width / 20, lowest_value + spaceBetween * 4))
+        screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)),
+                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + 6 * spaceBetween
         #   scroll bar
         # record of biggest lowest_value
@@ -809,13 +1507,13 @@ def aboutgame_menu(screen, clock, cursor_group):
         pygame.draw.rect(screen, (230, 230, 230), (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1] * page_ratio))
         #   event handling
         for event in pg.event.get():
-            if event.type == pygame.MOUSEWHEEL:     # 1 mean up, -1 mean down
-                if event.y == 1 and y_scroll < 0:   # scroll up
+            if event.type == pygame.MOUSEWHEEL:  # 1 mean up, -1 mean down
+                if event.y == 1 and y_scroll < 0:  # scroll up
                     if -y_scroll < (0.06 * height):
                         y_scroll = 0
                     else:
                         y_scroll += 0.06 * height
-                elif event.y == -1 and lowest_value - height > 0 : # scroll down
+                elif event.y == -1 and lowest_value - height > 0:  # scroll down
                     if (lowest_value - height) < (0.06 * height):
                         y_scroll = (-lowest_value_first)
                     else:

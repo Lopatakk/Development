@@ -8,20 +8,22 @@ from pygame.sprite import Sprite
 
 
 class Enemy(Ship):
-    def __init__(self, start: np.ndarray, picture_path, img_scaling_coefficient, ani_amount_of_images,
+    def __init__(self, start: np.ndarray, image, img_scaling_coefficient, ani_amount_of_images,
                  ship_type, hp, dmg, explosion_size,
                  max_velocity, acceleration, velocity_coefficient, rot_velocity,
-                 proj_dmg, fire_rate, cooling, overheat, offset, projectile_group, player: Sprite):
+                 proj_dmg, fire_rate, cooling, overheat, offset, mini, projectile_group, player: Sprite):
 
-        super().__init__(start, picture_path, img_scaling_coefficient, ani_amount_of_images,
-                         ship_type, hp, dmg, explosion_size,
-                         max_velocity, acceleration, velocity_coefficient,
-                         proj_dmg, fire_rate, cooling, overheat, projectile_group)
-        self.player_position_history = []  # Historie pozic hráče
+        super().__init__(start, image, None, hp, acceleration, dmg, proj_dmg, fire_rate,
+                         overheat, cooling, 0, img_scaling_coefficient, ani_amount_of_images,
+                         ship_type, explosion_size, max_velocity, velocity_coefficient, mini,
+                         projectile_group)
+
+        self.player_position_history = []  # player pos history
         self.player = player
         self.rot_velocity = rot_velocity
         self.offset = offset
         self.oldest_player_pos = [0, 0]
+        self.direction = np.array([self.oldest_player_pos[0] - self.pos[0], self.oldest_player_pos[1] - self.pos[1]])
 
     def follow_movement(self, history_length):
         # history_length sets length of player_position_history, aka how many position of player we save
@@ -31,11 +33,10 @@ class Enemy(Ship):
             self.oldest_player_pos = self.player_position_history.pop(0) # returns latest position of player and removes it from the list
 
         # Vypočítat směr k nejstarší historické pozici hráče
-        direction = np.array([self.oldest_player_pos[0] - self.pos[0],
-                                  self.oldest_player_pos[1] - self.pos[1]]) # vector pointing at player
+        self.direction = np.array([self.oldest_player_pos[0] - self.pos[0], self.oldest_player_pos[1] - self.pos[1]]) # vector pointing at player
 
         # Normalizovat směr, aby měl délku 1
-        norm_direction = direction / np.linalg.norm(direction) # norm vector pointing towards player (his size = 1)
+        norm_direction = self.direction / np.linalg.norm(self.direction) # norm vector pointing towards player (his size = 1)
 
         # Přidat normalizovaný směr k rychlosti Enemy
         self.velocity[0] += norm_direction[0] * self.acceleration # updating positon through velocity with use of norm vector
@@ -46,12 +47,10 @@ class Enemy(Ship):
                                           self.pos[1] - self.oldest_player_pos[1])
 
     def follow_movement_with_offset(self):
-        # Vypočítat směr k hráči
-        direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
         # Normalizovat směr, aby měl délku 1
-        norm_direction = direction / np.linalg.norm(direction)
+        norm_direction = self.direction / np.linalg.norm(self.direction)
         # vypocet vzdalenosti
-        player_distance = (direction[0]**2 + direction[1]**2) ** (1/2)
+        player_distance = (self.direction[0]**2 + self.direction[1]**2) ** (1/2)
 
         # kdyz je bliz nez ma
         if player_distance <= self.offset:
@@ -71,10 +70,8 @@ class Enemy(Ship):
                                       self.rect.center[1] - self.player.pos[1])
 
     def angle_speed(self, rot_direction):
-        # delta x a delta y hrace a enemy
-        direction = np.array([self.player.pos[0] - self.pos[0], self.player.pos[1] - self.pos[1]])
         # nromála vektoru direction(tečna kružnice pohybu)
-        normal_vector = np.array([direction[1]*rot_direction, direction[0]*rot_direction*(-1)])
+        normal_vector = np.array([self.direction[1]*rot_direction, self.direction[0]*rot_direction*(-1)])
         # přepona delty x a y
         hypotenuse = (normal_vector[0]**2 + normal_vector[1]**2)**(1/2)
         # normalovy vektor (vždy velikost rovna 1 => rika smer kterym se ma lod pohybovat)
@@ -85,16 +82,16 @@ class Enemy(Ship):
         self.velocity += rot_vector
 
     def item_follow(self, item_pos):
-        self.item_pos = item_pos
-        # vektor ukazujici k cili
-        direction = np.array([self.item_pos[0] - self.pos[0], self.item_pos[1] - self.pos[1]])
         # normalovy vektor, ktery zajisti stejnou rychlost lodi ve smeru k cili
-        norm_direction = direction / np.linalg.norm(direction)
+        norm_direction = self.direction / np.linalg.norm(self.direction)
         self.velocity[0] += norm_direction[0] * self.acceleration
         self.velocity[1] += norm_direction[1] * self.acceleration
         # otaceni modelu
-        self.angle = self.rot_compute(self.pos[0] - self.item_pos[0],
-                                      self.pos[1] - self.item_pos[1])
+        self.angle = self.rot_compute(self.pos[0] - item_pos[0],
+                                      self.pos[1] - item_pos[1])
+
+    def find_direction(self, target):
+        self.direction = np.array([target[0] - self.pos[0], target[1] - self.pos[1]])
 
     def update(self):
         super().update()

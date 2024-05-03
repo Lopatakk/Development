@@ -29,10 +29,11 @@ def update_time(groups, time_difference) -> None:
             thing.time_alive += time_difference
 
 
-def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_action_on: bool, e_ratio: float,
+def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rgb, q_ratio: float, is_q_action_on: bool, e_ratio: float,
                is_e_action_on: bool, overheat_ratio: float, is_overheated: bool, health_ratio: float) -> None:
     """
     Renders score, q and e action charging bars, overheat and health bar on the screen
+    :param scrap_metal_count: Number of colledcted scrap metal
     :param screen: Surface to render the HUD on
     :param score: The score value
     :param score_rgb: 3-item list with RGB values for color of the score text
@@ -50,7 +51,16 @@ def render_hud(screen: SurfaceType, score: int, score_rgb, q_ratio: float, is_q_
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
     x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
-    screen.blit(text, (x, ScreenSetup.height / 200))
+    screen.blit(text, (x, 10 + ScreenSetup.height / 200))
+
+    # scrap metal
+    x = ScreenSetup.width - 170  # score in the middle of the screen
+    screen.blit(ScreenSetup.scrap_metal_icon, (x, ScreenSetup.height / 200))
+
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    text = font.render(str(scrap_metal_count), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
+    screen.blit(text, (x + 70, 10 + ScreenSetup.height / 200))
+
 
     # overheat bar
     # bars proportions [x, y]
@@ -138,6 +148,20 @@ def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> Non
     x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, ScreenSetup.height / 200))
 
+def render_scrapmetal(screen: SurfaceType, scrap_metal_count: int, r: int, g: int, b: int) -> None:
+    """
+    Renders score on the screen
+    :param screen: Surface to render the score on
+    :param score: The score value
+    :param r: The value of red in the text color
+    :param g: The value of green in the text color
+    :param b: The value of blue in the text color
+    :return: None
+    """
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    text = font.render(str(scrap_metal_count), True, (r, g, b))
+    x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
+    screen.blit(text, (x, ScreenSetup.height / 200))
 
 def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group) -> None:
     """

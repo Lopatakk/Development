@@ -23,20 +23,21 @@ class PlayerLight(PlayerShip):
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param[0]
+        image = pygame.image.load("assets/images/player_light/vlod_player_light.png")
 
-        super().__init__("assets/images/vlod5L.png", param["img_scaling_coefficient"], param["shooting_ani_images"],
-                         param["type"], param["hp"], param["dmg"], param["explosion_size"],
+        super().__init__(image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+                         param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],
                          param["q_cooldown"], param["q_ongoing_time"], param["e_cooldown"], param["e_ongoing_time"],
-                         projectile_group)
+                         False, projectile_group)
 
         # q action variables and setup
         self.velocity_before = None
 
         # e action variables and setup
         self.hp_before = None
-        self.image_non_rot_with_shield = pygame.image.load("assets/images/vlod5LS.png")
+        self.image_non_rot_with_shield = pygame.image.load("assets/images/player_light/shield.png")
         self.image_non_rot_with_shield = pygame.transform.scale_by(self.image_non_rot_with_shield, self.img_scale_ratio)
         self.ani_shooting_images_with_shield = []
         # loading, scaling and converting animation images

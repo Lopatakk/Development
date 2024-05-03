@@ -9,6 +9,7 @@ from enemies.sniper import Sniper
 from pygame.sprite import Sprite
 import pygame
 from enemies.stealer import Stealer
+from enemies.minigame.minizarovka import MiniZarovka
 time_at_the_beginning = time.time()
 
 
@@ -43,45 +44,52 @@ class EnemySpawner(pygame.sprite.Sprite):
         elif side == "right":
             return np.array([self.screen_width + 50, random.randint(0, self.screen_height)])
 
+    def spawn_outside_mini_screen(self):
+        side = random.choice(["top", "bottom", "left", "right"])
+        if side == "top":
+            return np.array([random.randint(515, ScreenSetup.width - 515), 285])
+        elif side == "bottom":
+            return np.array([random.randint(515, ScreenSetup.width - 515), ScreenSetup.height - 305])
+        elif side == "left":
+            return np.array([515, random.randint(285, ScreenSetup.height - 305)])
+        elif side == "right":
+            return np.array([ScreenSetup.width - 515, random.randint(285, ScreenSetup.height - 305)])
+
     def update(self):
         self.scaling = 1 + self.time_alive / 500
         start_time = time.time()
         elapsed_time = self.time_alive - self.last_spawn_time
 
         if self.enemy_type == "zarovka":
-            if elapsed_time >= self.spawn_interval/self.scaling:
-                # Spawnování nové nepřátelské lodě mimo obrazovku
-                start = self.spawn_outside_screen()
-                enemy = Zarovka(start, self.player)
-                self.enemy_group.add(enemy)
-                # Aktualizovat čas od posledního spawnu
-                end_time = time.time()
-                self.last_spawn_time = self.time_alive - (end_time - start_time)
-
-        elif self.enemy_type == "tank":
-            if elapsed_time >= self.spawn_interval/self.scaling:
-                # Spawnování nové nepřátelské lodě mimo obrazovku
-                start = self.spawn_outside_screen()
-                enemy = Tank(start, self.shot_group, self.player)
-                self.enemy_group.add(enemy)
-                # Aktualizovat čas od posledního spawnu
-                end_time = time.time()
-                self.last_spawn_time = self.time_alive - (end_time - start_time)
-
+            ship = Zarovka
+            start = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_time, elapsed_time, start)
         elif self.enemy_type == "sniper":
-            if elapsed_time >= self.spawn_interval/self.scaling:
-                # Spawnování nové nepřátelské lodě mimo obrazovku
-                start = self.spawn_outside_screen()
-                enemy = Sniper(start, self.shot_group, self.player)
-                self.enemy_group.add(enemy)
-                # Aktualizovat čas od posledního spawnu
-                end_time = time.time()
-                self.last_spawn_time = self.time_alive - (end_time - start_time)
-
+            ship = Zarovka
+            start = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_time, elapsed_time, start)
+        elif self.enemy_type == "tank":
+            ship = Zarovka
+            start = self.spawn_outside_screen()
+            self.spawn_ship(ship, start_time, elapsed_time, start)
         elif self.enemy_type == "stealer":
             for thing in self.item_group:
-                if thing.time_alive >= 3 and not thing.has_thief:
-                    start = self.spawn_outside_screen()
-                    enemy = Stealer(start, self.player, thing)
-                    self.enemy_group.add(enemy)
-                    thing.has_thief = True
+                if thing.type == "medkit":
+                    if thing.time_alive >= 3 and not thing.has_thief:
+                        start = self.spawn_outside_screen()
+                        enemy = Stealer(start, self.player, thing)
+                        self.enemy_group.add(enemy)
+                        thing.has_thief = True
+        elif self.enemy_type == "minizarovka":
+            ship = MiniZarovka
+            start = self.spawn_outside_mini_screen()
+            self.spawn_ship(ship, start_time, elapsed_time, start)
+
+    def spawn_ship(self, ship, start_time, elapsed_time, start):
+        if elapsed_time >= self.spawn_interval / self.scaling:
+            # Spawnování nové nepřátelské lodě mimo obrazovku
+            enemy = ship(start, self.player)
+            self.enemy_group.add(enemy)
+            # Aktualizovat čas od posledního spawnu
+            end_time = time.time()
+            self.last_spawn_time = self.time_alive - (end_time - start_time)

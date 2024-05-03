@@ -5,13 +5,11 @@ from screensetup import ScreenSetup
 class Medkit(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        # basic
-        self.type = "medkit"
-        self.heal = 300
         self.pos = pos
         self.time_alive = 0
+        self.type = "medkit"
+        self.heal = 300
 
-        # image
         self.image = pygame.image.load("assets/images/medkit.png")
         self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
         self.image = pygame.Surface.convert_alpha(self.image)
@@ -19,13 +17,14 @@ class Medkit(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.center = self.pos
+        self.index = 0
+        self.counter = -1
+        self.last_animation_time = 0
 
-        # Stealer follow
         self.has_thief = False
 
-        # sound
         self.sound = pygame.mixer.Sound("assets/sounds/heal-up.mp3")
-        self.sound.set_volume(0.2 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.2)
 
         # animation
         self.animation_images = []
@@ -35,10 +34,7 @@ class Medkit(pygame.sprite.Sprite):
             img = pygame.Surface.convert_alpha(img)
             # add the image to the list
             self.animation_images.append(img)
-        self.index = 0
-        self.counter = -1
         self.animation_speed = 5
-        self.last_animation_time = 0
         self.time_between_animations = 3
 
     def update(self):

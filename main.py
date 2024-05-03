@@ -14,30 +14,50 @@ from background import Background
 from itemspawn import ItemSpawner
 
 # general setup
-#   pygame
+# pygame
 pygame.init()
-#   time
+# time
 clock = pygame.time.Clock()
-#   screen
+# screen
 screen = ScreenSetup.start_setup()
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 background_image = Background()
 background_group = pygame.sprite.Group()
 background_group.add(background_image)
-#   text font
+# collectable items
+scrap_metal_count = 0
+# upgrade = ShipUpgrade((0, 0), 'weapons', True)
+# upgrade1 = ShipUpgrade((0, 0), 'weapons', True)
+# upgrade2 = ShipUpgrade((0, 0), 'weapons', True)
+# upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
+# storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
+storage_items = []
+installed_items = {
+    "weapons": None,
+    "cooling": None,
+    "repair_module": None,
+    "shield": None,
+    "booster": None
+}
+# text font
 font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
-#   variables for menus
+# variables for menus
 selected_number = 0
+# game_paused = False
+# game_paused_upgrade = False
+# game_main = True
 game_paused = False
-game_main = True
-#   cursor
+game_paused_upgrade = True
+game_main = False
+
+# cursor
 cursor = Cursor()
 cursor_group = pygame.sprite.Group()
 cursor_group.add(cursor)
 cursor_group.update()
-#   sound
+# sound
 pygame.mixer.set_num_channels(30)
-#       background music
+# background music
 background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
 pygame.mixer.set_reserved(1)
 
@@ -87,12 +107,13 @@ while True:
     spawner_group = pygame.sprite.Group()
     medkit_spawner = ItemSpawner(item_group, "medkit", 53, player)
     spawner_group.add(medkit_spawner)
-    #   enemy spawners
+    # #   enemy spawners
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, player)
     tank_spawner = EnemySpawner(enemy_group, "tank", 25, player, shot_group=enemy_projectile_group)
     sniper_spawner = EnemySpawner(enemy_group, "sniper", 10, player, shot_group=enemy_projectile_group)
     stealer_spawner = EnemySpawner(enemy_group, "stealer", 7, player, item_group=item_group)
     spawner_group.add(zarovka_spawner, tank_spawner, sniper_spawner, stealer_spawner)
+
     #   explosions
     explosion_group = pygame.sprite.Group()
 
@@ -123,6 +144,7 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
         # pause menu
         if game_paused:
             # game_pause is False from start and can be changed to True by pressing "esc"
@@ -130,7 +152,7 @@ while True:
             cursor.set_cursor()
             update_groups([background_group, player_projectile_group, enemy_projectile_group, enemy_group,
                            player_group, explosion_group], screen)
-            render_hud(screen, score, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
+            render_hud(screen, score, scrap_metal_count, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
                        player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
                        player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
                        player.hp / player.max_hp)
@@ -147,14 +169,37 @@ while True:
             pygame.mixer.Channel(0).unpause()
             pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
+        # upgrade menu
+        if game_paused_upgrade:
+            # game_paused_upgrade is False from start and can be changed to True by pressing "esc"
+            pygame.mixer.Channel(0).pause()
+            cursor.set_cursor()
+            # opening pause menu
+            if menus.upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
+                game_main = True
+                game_paused_upgrade = False
+                selected_number = 0
+                break
+            game_paused_upgrade = False
+            # setting cursor to crosshair
+            cursor.set_crosshair()
+            pygame.mixer.Channel(0).unpause()
+            pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
+
         # player death
         if not player_group and not explosion_group:
             #   death_menu
+            player.ship_upgrade = {'weapons': 0,
+                                   'cooling': 0,
+                                   'repair_module': 0,
+                                   'shield': 0,
+                                   'booster': 0}
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
             if menus.death_menu(screen, clock, cursor_group, score, selected_number):
                 game_main = True
             selected_number = 0
+            scrap_metal_count = 0
             break
 
         # rendering/update
@@ -163,18 +208,27 @@ while True:
                        player_group, explosion_group, cursor_group, spawner_group], screen)
         #   score and collisions
         score_diff = 0
-        score_diff += handle_collisions(player_group, False, enemy_group, False, explosion_group)
-        score_diff += handle_collisions(player_projectile_group, True, enemy_group, False, explosion_group)
+        score_diff += handle_collisions(item_group, player_group, False, enemy_group, False, explosion_group)
+        score_diff += handle_collisions(item_group, player_projectile_group, True, enemy_group, False, explosion_group)
         score += score_diff
-        handle_collisions(enemy_projectile_group, True, player_group, False, explosion_group)
-        handle_collisions(player_projectile_group, True, enemy_projectile_group, True, explosion_group)
-        handle_item_collisions(item_group, player_group)
-        handle_item_collisions(item_group, enemy_group)
+        handle_collisions(item_group, enemy_projectile_group, True, player_group, False, explosion_group)
+        handle_collisions(item_group, player_projectile_group, True, enemy_projectile_group, True, explosion_group)
+
+        handle_item_collisions(item_group, enemy_group, storage_items, scrap_metal_count)
+
+        outcome = handle_item_collisions(item_group, player_group, storage_items, scrap_metal_count)
+        if outcome == "scrap_metal_collected":
+            scrap_metal_count += 1
+        elif outcome == "game_paused_upgrade":
+            game_paused_upgrade = True
+
         #   HUD
-        render_hud(screen, score, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
+        render_hud(screen, score, scrap_metal_count, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
                    player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
                    player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
                    player.hp / player.max_hp)
+        #   enemy scrap metal score
+        render_enemy_health_bar(screen, enemy_group)
         #   enemy health bar
         render_enemy_health_bar(screen, enemy_group)
 

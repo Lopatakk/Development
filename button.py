@@ -31,9 +31,9 @@ class Button():
         with open("playerships/playerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         # selection of ship
-        if image_01_path == "assets/images/vlod5L.png":
+        if image_01_path == "assets/images/player_light/vlod_player_light.png":
             self.Ship_param = player_param[0]
-        elif image_01_path == "assets/images/vlod5.png":
+        elif image_01_path == "assets/images/player_mid/vlod_player_mid.png":
             self.Ship_param = player_param[1]
         else:
             self.Ship_param = player_param[2]
@@ -152,7 +152,7 @@ class Button():
         # draw text on screen
         surface.blit(text, text_rect)
         #   Printing ship parameters
-        ship_text = [f"HP: {self.Ship_param['hp']}", f"DMG: {self.Ship_param['proj_dmg']}", f"Fire rate: {self.Ship_param['fire_rate']}", f"Acceleration: {self.Ship_param['acceleration']}", f"Speed: {self.Ship_param['max_velocity']}", "Q skill: " + self.Ship_param['q_skill'], "E skill: " + self.Ship_param['e_skill']]
+        ship_text = [f"HP: {self.Ship_param['hp'][0]}", f"DMG: {self.Ship_param['proj_dmg'][0]}", f"Fire rate: {self.Ship_param['fire_rate'][0]}", f"Acceleration: {self.Ship_param['acceleration'][0]}", f"Speed: {self.Ship_param['max_velocity']}", "Q skill: " + self.Ship_param['q_skill'], "E skill: " + self.Ship_param['e_skill']]
         y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 3, self.y_button + (rect_02.height/2) * 3.3]
         for parameters, position in zip(ship_text, y_position):
             text = self.font_parameters.render(str(parameters), True, text_color)

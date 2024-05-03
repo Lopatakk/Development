@@ -16,6 +16,7 @@ class ScreenSetup:
     # in-game icons
     hp_icon = None
     overheat_icon = None
+    scrap_metal_icon = None
     q_action_icon_off = None
     q_action_icon_on = None
     e_action_icon_off = None
@@ -56,4 +57,7 @@ class ScreenSetup:
         cls.overheat_icon = pygame.image.load("assets/icons/bars/tempreture_bar.png")
         cls.overheat_icon = pygame.transform.scale_by(cls.overheat_icon, 2 / 1920 * cls.width)
         cls.overheat_icon = pygame.Surface.convert_alpha(cls.overheat_icon)
+        cls.scrap_metal_icon = pygame.image.load('assets/images/scrap_metal0.png')
+        cls.scrap_metal_icon = pygame.transform.scale(cls.scrap_metal_icon, (64, 64))
+        cls.scrap_metal_icon = pygame.Surface.convert_alpha(cls.scrap_metal_icon)
         return screen
