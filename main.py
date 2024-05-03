@@ -26,12 +26,12 @@ background_group = pygame.sprite.Group()
 background_group.add(background_image)
 # collectable items
 scrap_metal_count = 0
-# upgrade = ShipUpgrade((0, 0), 'weapons', True)
-# upgrade1 = ShipUpgrade((0, 0), 'weapons', True)
-# upgrade2 = ShipUpgrade((0, 0), 'weapons', True)
-# upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
-# storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
-storage_items = []
+upgrade = ShipUpgrade((0, 0), 'booster', True)
+upgrade1 = ShipUpgrade((0, 0), 'repair_module', True)
+upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
+upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
+storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
+# storage_items = []
 installed_items = {
     "weapons": None,
     "cooling": None,
@@ -132,7 +132,7 @@ while True:
     pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
 
     # setting
-    storage_items = []
+    # storage_items = []
     installed_items = {
         "weapons": None,
         "cooling": None,

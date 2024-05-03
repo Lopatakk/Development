@@ -627,15 +627,15 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
             for i, (stat_name, (current_stat, item_stat)) in enumerate(description.items()):
                 screen.blit(font_description.render(stat_name, True, 'white'), (660, 650 + i * 60))
                 if max_level_reached:
-                    screen.blit(font_description.render(str(current_stat), True, 'white'), (1000, 650 + i * 60))
+                    screen.blit(font_description.render(str(current_stat), True, 'white'), (1050, 650 + i * 60))
                 else:
-                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (1000, 650 + i * 60))
+                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (1050, 650 + i * 60))
                     width = font_description.render(str(current_stat) + ' → ', True, 'white').get_width()
                     if current_stat > item_stat:
                         item_stat_color = 'red'
                     elif current_stat < item_stat:
                         item_stat_color = 'green'
-                    screen.blit(font_description.render(str(item_stat), True, item_stat_color), (1000 + width, 650 + i * 60))
+                    screen.blit(font_description.render(str(item_stat), True, item_stat_color), (1050 + width, 650 + i * 60))
 
         for i, text in enumerate(texts):
             screen.blit(font_title.render(text, True, (255, 255, 255)), texts_pos[i])
