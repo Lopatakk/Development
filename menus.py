@@ -34,6 +34,35 @@ def settings_menu(screen, clock, cursor_group, background, environment):
     else:
         surface.fill((0, 0, 0, 170))
 
+        # languages
+    # flags
+    flags = ['eng', 'cz', 'fr', 'de', 'esp']
+    flag_rects = []
+    flags_images = []
+    flag_width = 0
+    flag_height = 0
+    on_language = False
+    flag_offset_x = 20
+    flag_offset_y = 20
+    for i, flag in enumerate(flags):
+        flag_surf = pygame.image.load(f"assets/images/languages/{flag}.png").convert_alpha()
+        flag_width = int(flag_surf.get_width() * 0.8)
+        flag_height = int(flag_surf.get_height() * 0.8)
+        flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
+        flag_rect = pygame.rect.Rect(1400, 30 + (flag_offset_y + flag_height) * i, flag_width, flag_height)
+        flags_images.append(flag_surf)
+        flag_rects.append(flag_rect)
+
+    # flags background
+    background_flag_width = flag_width + flag_offset_x
+    background_flag_height = len(flags_images) * (flag_height + flag_offset_y)
+    flag_background = pygame.Surface((int(background_flag_width), int(background_flag_height)))
+    flag_background.set_alpha(50)
+    flag_background.fill('gray')
+    flag_background_rect = flag_background.get_rect()
+    flag_background_rect.x = 1400 - flag_offset_y / 2
+    flag_background_rect.y = 30 - flag_offset_y / 2
+
     #   volume
     min_value = 0
     max_value = 10
@@ -44,12 +73,7 @@ def settings_menu(screen, clock, cursor_group, background, environment):
     danger_blinking = settings["danger_blinking"]
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['settings']['title']
-            game_text = language['text']['settings']['content']
+    title, game_text = GameSetup.set_language("settings")
 
     #   create button instances
     danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
@@ -73,8 +97,23 @@ def settings_menu(screen, clock, cursor_group, background, environment):
 
     while True:
         mouse_pressed = False
+        mouse_pos = pygame.mouse.get_pos()
+
+        # background
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
+
+        # button update
+        back_button.update_text(game_text[3])
+
+        # render languages
+        if on_language:
+            screen.blit(flag_background, flag_background_rect)
+            for i, flag in enumerate(flags_images):
+                screen.blit(flag, flag_rects[i])
+        else:
+            language_index = GameSetup.all_languages.index(GameSetup.language)
+            screen.blit(flags_images[language_index], flag_rects[0])
 
         #   text "Settings"
         screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
@@ -101,10 +140,28 @@ def settings_menu(screen, clock, cursor_group, background, environment):
             elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
                 mouse_pressed = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                # switching danger blinking
                 mouse_pressed = False
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
+
+                # clicking on languages
+                if on_language:
+                    for i, rect in enumerate(flag_rects):
+                        if rect.collidepoint(mouse_pos):
+                            GameSetup.language = GameSetup.all_languages[i]
+                            on_language = False
+                            title, game_text = GameSetup.set_language("settings")
+                            settings["language"] = GameSetup.language
+                            with open("settings.json", "w") as settings_file:
+                                json.dump(settings, settings_file, indent=4)
+                elif flag_rects[0].collidepoint(mouse_pos):
+                    if on_language:
+                        on_language = False
+                    else:
+                        on_language = True
+
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
 
@@ -257,12 +314,7 @@ def leaderboard_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['statistics']['title']
-            game_text = language['text']['statistics']['content']
+    title, game_text = GameSetup.set_language("statistics")
 
     #   create button instances
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
@@ -321,12 +373,7 @@ def main_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['main_menu']['title']
-            game_text = language['text']['main_menu']['content']
+    title, game_text = GameSetup.set_language("main_menu")
 
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
@@ -347,13 +394,21 @@ def main_menu(screen, clock, cursor_group):
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
+
         #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
         screen.blit(font_title.render("Space shooter", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   text "Soundtrack: Karl Casey @ White Bat Audio"
+
         text = font_music.render(game_text[4], True, (150, 150, 150))
         text_width = text.get_width()  # width of text
         screen.blit(text, (width - text_width * 1.02, 19.5 * height / 20))
+
         #   BUTTON
+        play_button.update_text(game_text[0])
+        scoreboard_button.update_text(game_text[1])
+        aboutgame_button.update_text(game_text[2])
+        quit_button.update_text(game_text[3])
+
         if play_button.draw_button_and_text(screen):
             return
         if scoreboard_button.draw_button_and_text(screen):
@@ -364,6 +419,7 @@ def main_menu(screen, clock, cursor_group):
             quit()
         if settings_button.draw_image_topRight(screen):
             settings_menu(screen, clock, cursor_group, background, "main")
+            title, game_text = GameSetup.set_language("main_menu")
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
@@ -392,11 +448,10 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
 
     # ship
     ship_surf = player.image_non_rot
-    pos = (1150, 500)
     new_width = int(ship_surf.get_width() * 1.9)
     new_height = int(ship_surf.get_height() * 1.9)
     ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
-    ship_rect = ship_surf.get_rect(center=pos)
+    ship_rect = ship_surf.get_rect(center=(1150, 500))
     ship_mask = pygame.mask.from_surface(ship_surf)
     ship_surf_transparent = ship_surf.copy()
     ship_surf_transparent.set_alpha(100)
@@ -414,12 +469,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
     mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['pause']['title']
-            game_text = language['text']['pause']['content']
+    title, game_text = GameSetup.set_language("pause")
 
     #   create button instances
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
@@ -443,9 +493,16 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
         ship_surf_transparent = ship_surf.copy()
         ship_surf_transparent.set_alpha(100)
 
+        # render background
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
 
+        # update buttons
+        resume_button.update_text(game_text[0])
+        main_menu_button.update_text(game_text[1])
+        quit_button.update_text(game_text[2])
+
+        # mouse
         mouse_pos = pygame.mouse.get_pos()
 
         if ship_mask.overlap(mouse_mask, (mouse_pos[0] - ship_rect.x, mouse_pos[1] - ship_rect.y)):
@@ -469,6 +526,8 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
             quit()
         if settings_button.draw_image_topRight(screen):
             settings_menu(screen, clock, cursor_group, background_copy, "pause")
+            title, game_text = GameSetup.set_language("pause")
+
         #   closing pause  menu
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
@@ -968,12 +1027,7 @@ def ship_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['ship_select']['title']
-            game_text = language['text']['ship_select']['content']
+    title, game_text = GameSetup.set_language("ship_select")
 
     #   text
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
@@ -1038,12 +1092,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
     background = pygame.Surface.convert(background)
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['game_over']['title']
-            game_text = language['text']['game_over']['content']
+    title, game_text = GameSetup.set_language("game_over")
 
     #   create button instances
     save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
@@ -1172,12 +1221,7 @@ def aboutgame_menu(screen, clock, cursor_group):
     background = pygame.Surface.convert(background)
 
     # text
-    title = None
-    game_text = None
-    for language in GameSetup.languages:
-        if language['language'] == GameSetup.language:
-            title = language['text']['about_game']['title']
-            game_text = language['text']['about_game']['content']
+    title, game_text = GameSetup.set_language("about_game")
 
     #   create button instances
     back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",

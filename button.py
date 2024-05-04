@@ -39,6 +39,9 @@ class Button():
         else:
             self.Ship_param = player_param[2]
 
+    def update_text(self, text):
+        self.text_to_write = text
+
     def draw_image_topRight(self, surface):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position

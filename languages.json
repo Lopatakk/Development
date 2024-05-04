@@ -158,85 +158,6 @@
 }
   },
   {
-	"language": "russian",
-	"text":{
-      "main_menu": {
-        "title": "Главное меню",
-        "content": ["Играть", "Статистика", "Об игре", "Выйти", "Саундтрек от: Карл Кейси @ White Bat Audio"]
-      },
-      "settings": {
-        "title": "Настройки",
-        "content": ["Громкость музыки", "Громкость звуков", "Мигание при низком здоровье", "Назад"]
-      },
-      "statistics": {
-        "title": "Статистика",
-        "content": ["Имя", "Результат", "Корабль", "Дата"]
-      },
-      "about_game": {
-        "title": "Об игре",
-        "content": [
-          "Игра представляет собой 2D аркадный шутер. Игрок управляет космическим кораблем и должен защищать его от нападения врагов. Цель - набрать как можно больше очков.",
-          "Была создана в качестве семестрового проекта по предмету КЭП/ВМЗ на Факультете электротехники Университета Западной Богемии. Предмет проходил в зимнем семестре учебного года 2023/24.",
-          "Команда разработчиков:",
-          "Ян Шебеле",
-          "Павел Франек",
-          "Михал Лопата",
-          "Томаш Фикарт",
-          "Управление:",
-          "Движение:        W–вверх, S–вниз, A–влево, D–вправо",
-          "Прицеливание:    мышь (прицел)",
-          "Стрельба:        левая кнопка мыши",
-          "Специальные навыки:  Q и E",
-          "Пауза:           ESC",
-          "Корабли:",		  
-          "Здоровье:",
-          "Урон:",
-          "Скорострельность:",
-          "Ускорение:",
-          "Скорость:",
-          "Навык Q:",
-          "Навык E:",
-		  "Рывок",
-		  "Щит",
-		  "Быстрый огонь",
-		  "Взрывной выстрел",
-		  "Ускорение",
-		  "Гравитационный импульс",
-		  "Враги: ",
-          "Он действует как камикадзе. У него нет пушки для стрельбы, но он наносит много урона при контакте с кораблем.",
-          "Его имя описывает его верно. У него много здоровья, он большой и стреляет быстро, но его выстрелы не наносят много урона.",
-          "Он пытается держаться на расстоянии от корабля, что делает его трудным для попадания. Его ракеты наносят много урона, но у него мало здоровья.",
-          "Время от времени на экране появляется аптечка. Если аптечка не подобрана в течение нескольких секунд, появится вор и попытается ее забрать. Если вы подберете ее перед ним, или если он ее подберет, его дизайн изменится и он будет действовать как Заровка.",
-		  "Спасибо, что играете в нашу игру <3",
-		  "Назад"
-        ]
-      },
-      "ship_select": {
-        "title": "Выбор корабля",
-        "content": [
-          "Здоровье:",
-          "Урон:",
-          "Скорострельность:",
-          "Ускорение:",
-          "Скорость:",
-          "Навык Q:",
-          "Навык E:"
-        ]
-      },
-      "pause": {
-        "title": "Пауза",
-        "content": ["Продолжить", "Главное меню", "Выйти"]
-      },
-      "game_over": {
-        "title": "Конец игры",
-        "content": ["Результат:", "Сохранить имя", "Снова", "Главное меню", "Выйти"]
-      },
-	  "upgrade": {
-		"content": ["Оружие", "Охлаждение", "Щит", "Регенерация", "Тяга"]
-}
-    }
-  },
-  {
 	  "language": "spanish",
 	  "text":{
       "main_menu": {
@@ -314,5 +235,163 @@
 		"content": ["Armas", "Refrigeración", "Escudo", "Regeneración", "Propulsor"]
 }
     }
+  },
+  {
+  "language": "french",
+  "text": {
+    "main_menu": {
+      "title": "Menu Principal",
+      "content": ["Jouer", "Statistiques", "À propos du jeu", "Quitter", "Bande son par: Karl Casey @ White Bat Audio"]
+    },
+    "settings": {
+      "title": "Paramètres",
+      "content": ["Volume de la musique", "Volume des effets", "Clignotement de santé faible", "Retour"]
+    },
+    "statistics": {
+      "title": "Statistiques",
+      "content": ["Nom", "Score", "Vaisseau", "Date"]
+    },
+    "about_game": {
+      "title": "À propos du jeu",
+      "content": [
+        "Le jeu est un jeu de tir arcade en 2D. Le joueur contrôle un vaisseau spatial et doit le défendre contre les attaques ennemies. Le but est de marquer le plus de points possible.",
+        "A été créé comme projet de semestre dans le cadre de la matière KEP/VMZ à la Faculté de génie électrique de l'Université de Bohême de l'Ouest. La matière a eu lieu au semestre d'hiver de l'année académique 2023/24.",
+        "Équipe de développement :",
+        "Jan Sebele",
+        "Pavel Franek",
+        "Michal Lopata",
+        "Tomas Fikart",
+        "Contrôles",
+        "Mouvement :        W–haut, S–bas, A–gauche, D–droite",
+        "Visée :             souris (viseur)",
+        "Tir :                  bouton gauche de la souris",
+        "Compétences spéciales : Q et E",
+        "Pause :               ESC",
+        "Vaisseaux :",
+        "HP : ",
+        "DMG : ",
+        "Cadence de tir :",
+        "Accélération : ",
+        "Vitesse : ",
+        "Q :",
+        "E :",
+        "Dash",
+        "Bouclier",
+        "Tir rapide",
+        "Tir explosif",
+        "Boost de vitesse",
+        "Pulsation de gravité",
+        "Ennemis : ",
+        "Il agit comme un pilote kamikaze. Il n'a pas de canon pour tirer, mais il inflige beaucoup de dégâts au contact d'un vaisseau.",
+        "Son nom le décrit correctement. Il a beaucoup de PV, il est gros, et il tire vite, mais ses tirs ne font pas beaucoup de dégâts.",
+        "Il essaie de maintenir sa distance par rapport au vaisseau, ce qui le rend difficile à toucher. Ses missiles infligent beaucoup de dégâts, mais il a peu de PV.",
+        "De temps en temps, un kit médical apparaîtra à l'écran. Si le kit médical n'est pas ramassé dans quelques secondes, le Voleur apparaîtra et essayera de prendre le kit médical. Si vous le ramassez devant lui, ou s'il le ramasse, sa conception changera et il agira comme un Zarovka.",
+        "Merci d'avoir joué à notre jeu <3",
+        "Retour"
+      ]
+    },
+    "ship_select": {
+      "title": "Sélection",
+      "content": [
+        "HP : ",
+        "DMG : ",
+        "Cadence de tir :",
+        "Accélération : ",
+        "Vitesse : ",
+        "Q :",
+        "E :"
+      ]
+    },
+    "pause": {
+      "title": "Pause",
+      "content": ["Reprendre", "Menu Principal", "Quitter"]
+    },
+    "game_over": {
+      "title": "Partie Terminée",
+      "content": ["Score : ", "Nom de Sauvegarde", "Encore", "Menu Principal", "Quitter"]
+    },
+    "upgrade": {
+      "content": ["Armes", "Refroidissement", "Bouclier", "Régénération", "Propulseur"]
+    }
   }
+},
+{
+	"language": "german",
+	"text":{
+      "main_menu": {
+        "title": "Hauptmenü",
+        "content": ["Spielen", "Statistiken", "Über das Spiel", "Beenden", "Soundtrack von: Karl Casey @ White Bat Audio"]
+      },
+      "settings": {
+        "title": "Einstellungen",
+        "content": ["Musik Lautstärke", "Effekte Lautstärke", "Blinken bei niedriger Gesundheit", "Zurück"]
+      },
+      "statistics": {
+        "title": "Statistiken",
+        "content": ["Name", "Punktzahl", "Schiff", "Datum"]
+      },
+      "about_game": {
+        "title": "Über das Spiel",
+        "content": [
+          "Das Spiel ist ein 2D-Arcade-Shooter. Der Spieler steuert ein Raumschiff und muss es gegen feindliche Angriffe verteidigen. Das Ziel ist es, so viele Punkte wie möglich zu erzielen.",
+          "Wurde als Semesterprojekt im Fach KEP/VMZ an der Fakultät für Elektrotechnik der Westböhmischen Universität erstellt. Das Fach fand im Wintersemester des akademischen Jahres 2023/24 statt.",
+          "Entwicklungsteam: ",
+          "Jan Sebele",
+          "Pavel Franek",
+          "Michal Lopata",
+          "Tomas Fikart",
+          "Steuerung",
+          "Bewegung:         W–hoch, S–runter, A–links, D–rechts",
+          "Zielen:            Maus (Fadenkreuz)",
+          "Schießen:        linker Mausklick",
+          "Spezialfähigkeiten:  Q und E",
+          "Pause:             ESC",
+          "Schiffe: ",		  
+          "HP: ",
+          "Schaden: ",
+          "Feuerrate: ",
+          "Beschleunigung: ",
+          "Geschwindigkeit: ",
+          "Q-Fähigkeit:",
+          "E-Fähigkeit:",
+		  "Dash",
+		  "Schild",
+		  "Schnellfeuer",
+		  "Explosionsschuss",
+		  "Geschwindigkeits-Boost",
+		  "Gravitationspuls",
+		  "Feinde: ",
+          "Er agiert wie ein Kamikaze-Pilot. Er hat keine Kanone zum Schießen, aber er verursacht viel Schaden bei Kontakt mit einem Schiff.",
+          "Sein Name beschreibt ihn richtig. Er hat viele HP, er ist groß und er schießt schnell, aber seine Schüsse richten nicht viel Schaden an.",
+          "Er versucht, Abstand zum Schiff zu halten, was es schwer macht, ihn zu treffen. Seine Raketen verursachen viel Schaden, aber er hat wenig HP.",
+          "Gelegentlich erscheint ein MedKit auf dem Bildschirm, wenn das MedKit nicht innerhalb weniger Sekunden aufgenommen wird, wird der Stealer erscheinen und versuchen, das MedKit zu nehmen. Wenn Sie es vor ihm aufheben oder wenn er es aufhebt, ändert sich sein Design und er wird sich wie ein Zarovka verhalten.",
+		  "Vielen Dank, dass Sie unser Spiel gespielt haben <3",
+		  "Zurück"
+        ]
+      },
+      "ship_select": {
+        "title": "Schiffsauswahl",
+        "content": [
+          "HP: ",
+          "Schaden: ",
+          "Feuerrate: ",
+          "Beschleunigung: ",
+          "Geschwindigkeit: ",
+          "Q-Fähigkeit:",
+          "E-Fähigkeit:"
+        ]
+      },
+      "pause": {
+        "title": "Pause",
+        "content": ["Fortsetzen", "Hauptmenü", "Beenden"]
+      },
+      "game_over": {
+        "title": "Spiel vorbei",
+        "content": ["Punktzahl: ", "Speichern", "Erneut", "Hauptmenü", "Beenden"]
+      },
+	  "upgrade": {
+		"content": ["Waffen", "Kühlung", "Schild", "Regeneration", "Schubdüse"]
+}
+    }
+}
 ]

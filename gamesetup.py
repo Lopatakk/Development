@@ -47,7 +47,8 @@ class GameSetup:
     button_function_2 = settings["button_function_2"]
 
     # languages
-    language = "czech"
+    all_languages = ['english', 'czech', 'french', 'german', 'spanish']
+    language = settings["language"]
     with open("languages.json", "r", encoding='utf-8') as languages_file:
         languages = json.load(languages_file)
 
@@ -55,6 +56,13 @@ class GameSetup:
         # This is just there, so it can be a class :)
         pass
 
+    @classmethod
+    def set_language(cls, environment):
+        for language in cls.languages:
+            if language['language'] == cls.language:
+                title = language['text'][environment]['title']
+                game_text = language['text'][environment]['content']
+                return title, game_text
     @classmethod
     def update(cls):
         with open("settings.json", "r") as settings_file:
