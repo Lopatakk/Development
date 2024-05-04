@@ -1,5 +1,5 @@
 import pygame
-from screensetup import *
+from gamesetup import *
 
 
 class Slider:
@@ -44,17 +44,17 @@ class Slider:
 
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
-                ScreenSetup.update()
+                GameSetup.update()
 
                 if option == "music_volume":
                     pass
-                    pygame.mixer.Channel(3).set_volume(0.04 * ScreenSetup.music_volume)
+                    pygame.mixer.Channel(3).set_volume(0.04 * GameSetup.music_volume)
                     if not pygame.mixer.Channel(3).get_busy():
-                        pygame.mixer.Channel(3).play(ScreenSetup.button_music, 1)
+                        pygame.mixer.Channel(3).play(GameSetup.button_music, 1)
                 else:
                     pygame.mixer.Channel(3).stop()
-                    pygame.mixer.Channel(3).set_volume(0.2 * ScreenSetup.effects_volume)
-                    pygame.mixer.Channel(3).play(ScreenSetup.button_sound)
+                    pygame.mixer.Channel(3).set_volume(0.2 * GameSetup.effects_volume)
+                    pygame.mixer.Channel(3).play(GameSetup.button_sound)
 
     def get_value_in_percent(self):
         return ((self.value - self.min_value) / (self.max_value - self.min_value)) * 100

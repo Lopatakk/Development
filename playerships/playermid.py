@@ -3,7 +3,7 @@ from playerships.blast import Blast
 from playerships.playership import PlayerShip
 from pygame.sprite import Group
 import json
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class PlayerMid(PlayerShip):
@@ -43,7 +43,7 @@ class PlayerMid(PlayerShip):
 
         # q action variables and setup
         self.gun_upgrade_sound = pygame.mixer.Sound("assets/sounds/gun_upgrade.mp3")
-        self.gun_upgrade_sound.set_volume(0.6 * ScreenSetup.effects_volume)
+        self.gun_upgrade_sound.set_volume(0.6 * GameSetup.effects_volume)
 
     def update(self):
         """
@@ -63,7 +63,7 @@ class PlayerMid(PlayerShip):
                 self.fire_rate_time = 1 / self.fire_rate_array[level] / 2
                 self.cooling = self.cooling_array[level] / 60 * 4
                 self.ani_speed -= 1
-                self.gun_upgrade_sound.set_volume(0.6 * ScreenSetup.effects_volume)
+                self.gun_upgrade_sound.set_volume(0.6 * GameSetup.effects_volume)
                 pygame.mixer.find_channel(False).play(self.gun_upgrade_sound)
 
     def q_turn_off(self):

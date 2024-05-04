@@ -1,6 +1,6 @@
 import pygame
 import numpy as np
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Projectile(pygame.sprite.Sprite):
@@ -39,7 +39,7 @@ class Projectile(pygame.sprite.Sprite):
         else:
             self.image = pygame.image.load("assets/images/projectilered.png")
             self.color = "red"
-        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
+        self.image = pygame.transform.scale_by(self.image, GameSetup.width / 1920)
         self.image = pygame.transform.rotate(self.image, self.angle)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.rect = self.image.get_rect()
@@ -70,7 +70,7 @@ class Projectile(pygame.sprite.Sprite):
         # sound of firing
 
         self.sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
-        self.sound.set_volume(0.2 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.2 * GameSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
 
         # other
@@ -92,14 +92,14 @@ class Projectile(pygame.sprite.Sprite):
         #  kill behind borders
         if self.mini:
             left_border = 515
-            right_border = ScreenSetup.width - 515
+            right_border = GameSetup.width - 515
             top_border = 285
-            bottom_border = ScreenSetup.height - 305
+            bottom_border = GameSetup.height - 305
         else:
             left_border = 0
-            right_border = ScreenSetup.width
+            right_border = GameSetup.width
             top_border = 0
-            bottom_border = ScreenSetup.height
+            bottom_border = GameSetup.height
 
         if self.pos[0] > right_border or self.pos[0] < left_border or self.pos[1] > bottom_border or self.pos[1] < top_border:
             self.kill()

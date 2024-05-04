@@ -1,5 +1,5 @@
 import random
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 import time
 from enemies.zarovka import Zarovka
 from enemies.tank import Tank
@@ -19,8 +19,8 @@ class EnemySpawner(pygame.sprite.Sprite):
         super().__init__()
         self.enemy_group = enemy_group
         self.spawn_interval = spawn_interval
-        self.screen_width = ScreenSetup.width
-        self.screen_height = ScreenSetup.height
+        self.screen_width = GameSetup.width
+        self.screen_height = GameSetup.height
         self.enemy_type = enemy_type
         if self.enemy_type == "minizarovka":
             self.last_spawn_time = -1
@@ -51,13 +51,13 @@ class EnemySpawner(pygame.sprite.Sprite):
     def spawn_outside_mini_screen(self):
         side = random.choice(["top", "bottom", "left", "right"])
         if side == "top":
-            return np.array([random.randint(515, ScreenSetup.width - 515), 285])
+            return np.array([random.randint(515, GameSetup.width - 515), 285])
         elif side == "bottom":
-            return np.array([random.randint(515, ScreenSetup.width - 515), ScreenSetup.height - 305])
+            return np.array([random.randint(515, GameSetup.width - 515), GameSetup.height - 305])
         elif side == "left":
-            return np.array([515, random.randint(285, ScreenSetup.height - 305)])
+            return np.array([515, random.randint(285, GameSetup.height - 305)])
         elif side == "right":
-            return np.array([ScreenSetup.width - 515, random.randint(285, ScreenSetup.height - 305)])
+            return np.array([GameSetup.width - 515, random.randint(285, GameSetup.height - 305)])
 
     def update(self):
         self.scaling = 1 + self.time_alive / 500

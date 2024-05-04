@@ -1,6 +1,6 @@
 import pygame
 from ship import Ship
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 import numpy as np
 import random
 from projectile import Projectile
@@ -62,8 +62,8 @@ class Enemy(Ship):
             self.velocity[1] += norm_direction[1] * self.acceleration
 
         # Ošetřit okraje obrazovky
-        self.pos[0] = np.clip(self.pos[0], 0, ScreenSetup.width)
-        self.pos[1] = np.clip(self.pos[1], 0, ScreenSetup.height)
+        self.pos[0] = np.clip(self.pos[0], 0, GameSetup.width)
+        self.pos[1] = np.clip(self.pos[1], 0, GameSetup.height)
 
         # Otáčení enemy k lodi
         self.angle = self.rot_compute(self.rect.center[0] - self.player.pos[0],

@@ -4,7 +4,7 @@ import time
 from playerships.playerlight import PlayerLight
 from playerships.playermid import PlayerMid
 from playerships.playertank import PlayerTank
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 from cursor import Cursor
 from renderupdate import *
 from collisions import *
@@ -21,7 +21,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # screen
-screen = ScreenSetup.start_setup()
+screen = GameSetup.start_setup()
 # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 background = Background("Background", 3, (200, 350))
@@ -134,7 +134,7 @@ while True:
     pygame.display.flip()
 
     # background music start
-    pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
+    pygame.mixer.Channel(0).set_volume(0.04 * GameSetup.music_volume)
     pygame.mixer.Channel(0).play(background_music, 3)
 
     # setting
@@ -188,7 +188,7 @@ while True:
             # setting cursor to crosshair
             cursor.set_crosshair()
             pygame.mixer.Channel(0).unpause()
-            pygame.mixer.Channel(0).set_volume(0.04 * ScreenSetup.music_volume)
+            pygame.mixer.Channel(0).set_volume(0.04 * GameSetup.music_volume)
 
         # upgrade menu
         if game_paused_upgrade:
@@ -245,14 +245,14 @@ while True:
         #   enemy health bar
         render_enemy_health_bar(screen, enemy_group)
 
-        if player.hp/player.max_hp <= 0.3 and ScreenSetup.danger_blinking:
+        if player.hp/player.max_hp <= 0.3 and GameSetup.danger_blinking:
             background.blink_danger(screen)
 
         # screen update (must be at the end of the loop before waiting functions!)
         pygame.display.flip()
 
         # FPS lock and adding time
-        time_diff = clock.tick(ScreenSetup.fps) / 1000
+        time_diff = clock.tick(GameSetup.fps) / 1000
         time_in_game += time_diff
         update_time([player_group, enemy_group, item_group, spawner_group], time_diff)
 

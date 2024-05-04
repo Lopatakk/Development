@@ -1,14 +1,14 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class EventHorizonPulse(pygame.sprite.Sprite):
     def __init__(self, ship):
         super().__init__()
 
-        self.speed = int(40 * ScreenSetup.width / 1920)
+        self.speed = int(40 * GameSetup.width / 1920)
         self.dmg = 10000
-        self.thickness = int(40 * ScreenSetup.width / 1920)
+        self.thickness = int(40 * GameSetup.width / 1920)
 
         self.screen = ship.screen
 
@@ -31,7 +31,7 @@ class EventHorizonPulse(pygame.sprite.Sprite):
         self.type = "event_horizon_pulse"
 
         self.sound = pygame.mixer.Sound("assets/sounds/event_horizon_pulse.mp3")
-        self.sound.set_volume(1 * ScreenSetup.effects_volume)
+        self.sound.set_volume(1 * GameSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
 
     def update(self):

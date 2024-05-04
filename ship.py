@@ -2,7 +2,7 @@ import pygame
 import numpy as np
 from projectile import Projectile
 from pygame.sprite import Group
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Ship(pygame.sprite.Sprite):
@@ -127,7 +127,7 @@ class Ship(pygame.sprite.Sprite):
         # image
 
         # img_scale_ratio - the ratio by which image sizes are increased, it is dependent on the screen width
-        self.img_scale_ratio = ScreenSetup.width / img_scaling_coefficient
+        self.img_scale_ratio = GameSetup.width / img_scaling_coefficient
         # image_non_rot_orig - original image of the ship in its basic state, facing upwards
         self.image_non_rot_orig = image
         # scaling the original image
@@ -247,7 +247,7 @@ class Ship(pygame.sprite.Sprite):
         self.is_overheated = False
         # overheat_sound - sound which plays when the gun overheats
         self.overheat_sound = pygame.mixer.Sound("assets/sounds/overheat.mp3")
-        self.overheat_sound.set_volume(0.55 * ScreenSetup.effects_volume)
+        self.overheat_sound.set_volume(0.55 * GameSetup.effects_volume)
 
         # explosion
 

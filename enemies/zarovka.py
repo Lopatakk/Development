@@ -1,7 +1,6 @@
 from enemies.enemy import Enemy
 import pygame
 import json
-from screensetup import ScreenSetup
 
 
 class Zarovka(Enemy):

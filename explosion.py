@@ -1,14 +1,14 @@
 import pygame.sprite
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, pos, size):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        self.screen_coefficient = ScreenSetup.width / 1920
+        self.screen_coefficient = GameSetup.width / 1920
         self.sound = pygame.mixer.Sound("assets/sounds/explosion.mp3")  # Load sound file
-        self.sound.set_volume(0.8 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.8 * GameSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
 
         for num in range(1, 9):

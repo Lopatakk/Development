@@ -1,6 +1,6 @@
 import pygame
 import random
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class ShipUpgrade(pygame.sprite.Sprite):
@@ -34,7 +34,7 @@ class ShipUpgrade(pygame.sprite.Sprite):
                     self.unscaled_image = pygame.image.load(f"assets/images/{module}0.png").convert_alpha()
 
         self.image_non_rot = pygame.transform.scale(self.unscaled_image, (128, 128))
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920)
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, GameSetup.width / 1920)
         self.image_non_rot = pygame.Surface.convert_alpha(self.image_non_rot)
         self.image_orig = self.image_non_rot
         self.image = self.image_orig
@@ -44,14 +44,14 @@ class ShipUpgrade(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
         self.sound = pygame.mixer.Sound("assets/sounds/heal-up.mp3")  # Load sound file
-        self.sound.set_volume(0.2 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.2 * GameSetup.effects_volume)
 
     def level_up(self):
         self.level += 1
         self.unscaled_image = pygame.image.load(f"assets/images/{self.upgrade_type}{self.level-1}.png")
 
         self.image = pygame.transform.scale(self.unscaled_image, (64, 64))
-        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
+        self.image = pygame.transform.scale_by(self.image, GameSetup.width / 1920)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.image_orig = self.image
         self.rect = self.image.get_rect()

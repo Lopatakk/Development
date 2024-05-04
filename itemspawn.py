@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 from medkit import Medkit
 import random
 import numpy as np
@@ -35,13 +35,13 @@ class ItemSpawner(pygame.sprite.Sprite):
         side = random.choice(["t", "b", "l", "r"])
         # top
         if side == "t":
-            return np.array([random.randint(0, ScreenSetup.width), random.randint(0, int(1/5*ScreenSetup.height))])
+            return np.array([random.randint(0, GameSetup.width), random.randint(0, int(1/5*GameSetup.height))])
         # bottom
         elif side == "b":
-            return np.array([random.randint(0, ScreenSetup.width), random.randint(int(4/5*ScreenSetup.height), ScreenSetup.height)])
+            return np.array([random.randint(0, GameSetup.width), random.randint(int(4/5*GameSetup.height), GameSetup.height)])
         # left
         elif side == "l":
-            return np.array([random.randint(0, int(1/6*ScreenSetup.width)), random.randint(0, ScreenSetup.height)])
+            return np.array([random.randint(0, int(1/6*GameSetup.width)), random.randint(0, GameSetup.height)])
         # right
         else:
-            return np.array([random.randint(int(5/6*ScreenSetup.width), ScreenSetup.width), random.randint(0, ScreenSetup.height)])
+            return np.array([random.randint(int(5/6*GameSetup.width), GameSetup.width), random.randint(0, GameSetup.height)])

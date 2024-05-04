@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Cursor(pygame.sprite.Sprite):
@@ -13,11 +13,11 @@ class Cursor(pygame.sprite.Sprite):
         super().__init__()
         # cursor
         self.cursor_image = pygame.image.load("assets/images/cursor.png")
-        self.cursor_image = pygame.transform.scale_by(self.cursor_image, ScreenSetup.width / 960)
+        self.cursor_image = pygame.transform.scale_by(self.cursor_image, GameSetup.width / 960)
         self.cursor_image = pygame.Surface.convert_alpha(self.cursor_image)
         # crosshair
         self.crosshair_image = pygame.image.load("assets/images/crosshair.png")
-        self.crosshair_image = pygame.transform.scale_by(self.crosshair_image, ScreenSetup.width / 960)
+        self.crosshair_image = pygame.transform.scale_by(self.crosshair_image, GameSetup.width / 960)
         self.crosshair_image = pygame.Surface.convert_alpha(self.crosshair_image)
         self.is_crosshair = False
         # setting up

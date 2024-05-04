@@ -1,6 +1,6 @@
 import pygame
 import json
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Button():
@@ -26,7 +26,7 @@ class Button():
         #	sound
         self.sound_volume = sound_volume
         self.sound = pygame.mixer.Sound(sound_path)  # Load sound file
-        self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
+        self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
         #   ship parameters
         # load information about ship from json
         with open("playerships/playerparams.json", "r") as param_file:
@@ -74,7 +74,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
-                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
+                    self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
@@ -136,7 +136,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
-                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
+                    self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:
@@ -204,7 +204,7 @@ class Button():
                     self.clicked = True
                 if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
                     self.clicked = False
-                    self.sound.set_volume(self.sound_volume * ScreenSetup.effects_volume)
+                    self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(self.sound)
                     action = True
             else:

@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 from ship import Ship
 import numpy as np
 from checkbuttons import *
@@ -50,9 +50,9 @@ class PlayerShip(Ship):
                            'booster': 0}
         # building ship
         if mini:
-            start = np.array([ScreenSetup.width/2, 30 + ScreenSetup.height/2])
+            start = np.array([GameSetup.width/2, 30 + GameSetup.height/2])
         else:
-            start = np.array([ScreenSetup.width/2, ScreenSetup.height/2])
+            start = np.array([GameSetup.width/2, GameSetup.height/2])
             image = self.build_ship(ship_type)
             image = self.scale_image(image)
 
@@ -98,21 +98,21 @@ class PlayerShip(Ship):
         # q and e action icons
         # loading q and e action icons for specific ship
 
-        ScreenSetup.q_action_icon_off = pygame.image.load(f"assets/icons/bars/{self.type}/q_off.png")
-        ScreenSetup.q_action_icon_off = pygame.transform.scale_by(ScreenSetup.q_action_icon_off, 2/1920 * ScreenSetup.width)
-        ScreenSetup.q_action_icon_off = pygame.Surface.convert_alpha(ScreenSetup.q_action_icon_off)
+        GameSetup.q_action_icon_off = pygame.image.load(f"assets/icons/bars/{self.type}/q_off.png")
+        GameSetup.q_action_icon_off = pygame.transform.scale_by(GameSetup.q_action_icon_off, 2/1920 * GameSetup.width)
+        GameSetup.q_action_icon_off = pygame.Surface.convert_alpha(GameSetup.q_action_icon_off)
 
-        ScreenSetup.q_action_icon_on = pygame.image.load(f"assets/icons/bars/{self.type}/q_on.png")
-        ScreenSetup.q_action_icon_on = pygame.transform.scale_by(ScreenSetup.q_action_icon_on, 2/1920 * ScreenSetup.width)
-        ScreenSetup.q_action_icon_on = pygame.Surface.convert_alpha(ScreenSetup.q_action_icon_on)
+        GameSetup.q_action_icon_on = pygame.image.load(f"assets/icons/bars/{self.type}/q_on.png")
+        GameSetup.q_action_icon_on = pygame.transform.scale_by(GameSetup.q_action_icon_on, 2/1920 * GameSetup.width)
+        GameSetup.q_action_icon_on = pygame.Surface.convert_alpha(GameSetup.q_action_icon_on)
 
-        ScreenSetup.e_action_icon_off = pygame.image.load(f"assets/icons/bars/{self.type}/e_off.png")
-        ScreenSetup.e_action_icon_off = pygame.transform.scale_by(ScreenSetup.e_action_icon_off, 2/1920 * ScreenSetup.width)
-        ScreenSetup.e_action_icon_off = pygame.Surface.convert_alpha(ScreenSetup.e_action_icon_off)
+        GameSetup.e_action_icon_off = pygame.image.load(f"assets/icons/bars/{self.type}/e_off.png")
+        GameSetup.e_action_icon_off = pygame.transform.scale_by(GameSetup.e_action_icon_off, 2/1920 * GameSetup.width)
+        GameSetup.e_action_icon_off = pygame.Surface.convert_alpha(GameSetup.e_action_icon_off)
 
-        ScreenSetup.e_action_icon_on = pygame.image.load(f"assets/icons/bars/{self.type}/e_on.png")
-        ScreenSetup.e_action_icon_on = pygame.transform.scale_by(ScreenSetup.e_action_icon_on, 2/1920 * ScreenSetup.width)
-        ScreenSetup.e_action_icon_on = pygame.Surface.convert_alpha(ScreenSetup.e_action_icon_on)
+        GameSetup.e_action_icon_on = pygame.image.load(f"assets/icons/bars/{self.type}/e_on.png")
+        GameSetup.e_action_icon_on = pygame.transform.scale_by(GameSetup.e_action_icon_on, 2/1920 * GameSetup.width)
+        GameSetup.e_action_icon_on = pygame.Surface.convert_alpha(GameSetup.e_action_icon_on)
 
     def update(self) -> None:
         """
@@ -183,14 +183,14 @@ class PlayerShip(Ship):
         #   X axis
         if self.mini:
             left_border = 520
-            right_border = ScreenSetup.width-520
+            right_border = GameSetup.width-520
             top_border = 310
-            bottom_border = ScreenSetup.height-330
+            bottom_border = GameSetup.height-330
         else:
             left_border = 0
-            right_border = ScreenSetup.width
+            right_border = GameSetup.width
             top_border = 0
-            bottom_border = ScreenSetup.height
+            bottom_border = GameSetup.height
 
         if self.pos[0] < left_border:
             self.pos[0] = left_border

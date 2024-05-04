@@ -2,7 +2,7 @@ import pygame
 import json
 
 
-class ScreenSetup:
+class GameSetup:
     """
     This class is used to store screen parameters and functions
     """
@@ -29,6 +29,7 @@ class ScreenSetup:
     #   sound
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+
     #volume
     button_sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")
     button_music = pygame.mixer.Sound("assets/sounds/background_music_volume.mp3")
@@ -44,6 +45,11 @@ class ScreenSetup:
     button_right = settings["button_right"]
     button_function_1 = settings["button_function_1"]
     button_function_2 = settings["button_function_2"]
+
+    # languages
+
+    # with open("languages.json", "r", encoding='utf-8') as languages_file:
+    #     languages = json.load(languages_file)
 
     def __init__(self):
         # This is just there, so it can be a class :)

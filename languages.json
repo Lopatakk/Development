@@ -1,0 +1,238 @@
+[
+  {
+    "english": {
+      "main_menu": {
+        "title": "Main Menu",
+        "content": ["Play", "Scoreboard", "About Game", "Quit"]
+      },
+      "settings": {
+        "title": "Settings",
+        "content": ["Music Volume", "Effects Volume", "Low Health Blinking", "Back"]
+      },
+      "scoreboard": {
+        "title": "Scoreboard",
+        "content": ["Name", "Score", "Ship", "Date"]
+      },
+      "about_game": {
+        "title": "About Game",
+        "content": [
+          "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible.",
+          "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year.",
+          "Development team:",
+          "Jan Sebele",
+          "Pavel Franek",
+          "Michal Lopata",
+          "Tomas Fikart",
+          "Controls",
+          "Movement:         W–up, S–down, A–left, D–right",
+          "Aim:              mouse (crosshair)",
+          "Shooting:         left mouse button",
+          "Special skills:   Q and E",
+          "Pause:            ESC",
+          "Ships: ",
+          "He acts like a kamikaze pilot. He doesn't have a cannon to shoot, but he deals a lot of damage on contact with a ship.",
+          "His name describes him correctly. He has a lot of HP, he's big, and he shoots fast, but his shots don't do much damage.",
+          "He tries to keep his distance from the ship, making it hard to hit him. His missiles deal a lot of damage, but he has low HP.",
+          "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds the Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka."
+        ]
+      },
+      "ship_select": {
+        "title": "Ship Select",
+        "content": [
+          "hp: ",
+          "DMG: ",
+          "Fire rate:",
+          "Acceleration: ",
+          "Speed: ",
+          "Q skill:",
+          "E skill:"
+        ]
+      },
+      "pause": {
+        "title": "Pause",
+        "content": ["Resume", "Main Menu", "Quit"]
+      },
+      "game_over": {
+        "title": "Game Over",
+        "content": ["Score: ", "Save Name", "Again", "Main Menu", "Quit"]
+      }
+    }
+  },
+  {
+    "czech": {
+      "main_menu": {
+        "title": "Hlavní menu",
+        "content": ["Hrát", "Tabulka skóre", "O hře", "Ukončit"]
+      },
+      "settings": {
+        "title": "Nastavení",
+        "content": ["Hlasitost hudby", "Hlasitost efektů", "Blikání při nízkém zdraví", "Zpět"]
+      },
+      "scoreboard": {
+        "title": "Tabulka skóre",
+        "content": ["Jméno", "Skóre", "Loď", "Datum"]
+      },
+      "about_game": {
+        "title": "O hře",
+        "content": [
+          "Hra je 2D arkádová střílečka. Hráč ovládá vesmírnou loď a musí ji bránit proti útokům nepřátel. Cílem je dosáhnout co nejvyššího skóre.",
+          "Byla vytvořena jako semestrální projekt v předmětu KEP/VMZ na Fakultě elektrotechniky, Západočeské univerzity v Plzni. Předmět probíhal v zimním semestru akademického roku 2023/24.",
+          "Vývojový tým:",
+          "Jan Šebel",
+          "Pavel Franěk",
+          "Michal Lopata",
+          "Tomáš Fikart",
+          "Ovládání:",
+          "Pohyb:         W–nahoru, S–dolů, A–vlevo, D–vpravo",
+          "Zaměření:      myš (záměrný kříž)",
+          "Střelba:       levé tlačítko myši",
+          "Speciální dovednosti:   Q a E",
+          "Pauza:         ESC",
+          "Lodě: ",
+          "Jedná se o kamikaze pilota. Nemá kanón k útoku, ale při kontaktu s lodí způsobí velké množství škod.",
+          "Jeho jméno ho popisuje správně. Má hodně životů, je velký a střílí rychle, ale jeho střely nedělají moc škody.",
+          "Snaží se udržovat odstup od lodi, což ho činí obtížným zasáhnout. Jeho rakety způsobují velké škody, ale má málo životů.",
+          "Občas se na obrazovce objeví MedKit, pokud není MedKit sebrán do několika sekund, objeví se Stealer a pokusí se MedKit získat. Pokud ho seberete před ním, nebo ho sebere on, jeho design se změní a bude se chovat jako Zarovka."
+        ]
+      },
+      "ship_select": {
+        "title": "Výběr lodě",
+        "content": [
+          "HP: ",
+          "Poškození:",
+          "Frekvence střelby:",
+          "Zrychlení:",
+          "Rychlost: ",
+          "Schopnost Q:",
+          "Schopnost E:"
+        ]
+      },
+      "pause": {
+        "title": "Pauza",
+        "content": ["Pokračovat", "Hlavní menu", "Ukončit"]
+      },
+      "game_over": {
+        "title": "Konec hry",
+        "content": ["Skóre:", "Uložit jméno", "Znovu", "Hlavní menu", "Ukončit"]
+      }
+    }
+  },
+  {
+	"russian": {
+      "main_menu": {
+        "title": "Главное меню",
+        "content": ["Играть", "Таблица рекордов", "Об игре", "Выйти"]
+      },
+      "settings": {
+        "title": "Настройки",
+        "content": ["Громкость музыки", "Громкость звуков", "Мигание при низком здоровье", "Назад"]
+      },
+      "scoreboard": {
+        "title": "Таблица рекордов",
+        "content": ["Имя", "Результат", "Корабль", "Дата"]
+      },
+      "about_game": {
+        "title": "Об игре",
+        "content": [
+          "Игра представляет собой 2D аркадный шутер. Игрок управляет космическим кораблем и должен защищать его от нападения врагов. Цель - набрать как можно больше очков.",
+          "Была создана в качестве семестрового проекта по предмету КЭП/ВМЗ на Факультете электротехники Университета Западной Богемии. Предмет проходил в зимнем семестре учебного года 2023/24.",
+          "Команда разработчиков:",
+          "Ян Шебеле",
+          "Павел Франек",
+          "Михал Лопата",
+          "Томаш Фикарт",
+          "Управление:",
+          "Движение:        W–вверх, S–вниз, A–влево, D–вправо",
+          "Прицеливание:    мышь (прицел)",
+          "Стрельба:        левая кнопка мыши",
+          "Специальные навыки:  Q и E",
+          "Пауза:           ESC",
+          "Корабли:",
+          "Он действует как камикадзе. У него нет пушки для стрельбы, но он наносит много урона при контакте с кораблем.",
+          "Его имя описывает его верно. У него много здоровья, он большой и стреляет быстро, но его выстрелы не наносят много урона.",
+          "Он пытается держаться на расстоянии от корабля, что делает его трудным для попадания. Его ракеты наносят много урона, но у него мало здоровья.",
+          "Время от времени на экране появляется аптечка. Если аптечка не подобрана в течение нескольких секунд, появится вор и попытается ее забрать. Если вы подберете ее перед ним, или если он ее подберет, его дизайн изменится и он будет действовать как Заровка."
+        ]
+      },
+      "ship_select": {
+        "title": "Выбор корабля",
+        "content": [
+          "Здоровье:",
+          "Урон:",
+          "Скорострельность:",
+          "Ускорение:",
+          "Скорость:",
+          "Навык Q:",
+          "Навык E:"
+        ]
+      },
+      "pause": {
+        "title": "Пауза",
+        "content": ["Продолжить", "Главное меню", "Выйти"]
+      },
+      "game_over": {
+        "title": "Конец игры",
+        "content": ["Результат:", "Сохранить имя", "Снова", "Главное меню", "Выйти"]
+      }
+    }
+  },
+  {
+	  "spanish": {
+      "main_menu": {
+        "title": "Menú Principal",
+        "content": ["Jugar", "Tabla de Puntuaciones", "Sobre el Juego", "Salir"]
+      },
+      "settings": {
+        "title": "Ajustes",
+        "content": ["Volumen de la Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Atrás"]
+      },
+      "scoreboard": {
+        "title": "Tabla de Puntuaciones",
+        "content": ["Nombre", "Puntuación", "Nave", "Fecha"]
+      },
+      "about_game": {
+        "title": "Sobre el Juego",
+        "content": [
+          "El juego es un shooter arcade en 2D. El jugador controla una nave espacial y debe defenderla contra los ataques enemigos. El objetivo es obtener la mayor cantidad de puntos posible.",
+          "Fue creado como un proyecto semestral en la asignatura KEP/VMZ en la Facultad de Ingeniería Eléctrica de la Universidad de West Bohemia. La asignatura tuvo lugar en el semestre de invierno del año académico 2023/24.",
+          "Equipo de Desarrollo:",
+          "Jan Šebel",
+          "Pavel Franěk",
+          "Michal Lopata",
+          "Tomáš Fikart",
+          "Controles: ",
+          "Movimiento:         W–arriba, S–abajo, A–izquierda, D–derecha",
+          "Apuntar:              ratón (cruz de mira)",
+          "Disparar:            botón izquierdo del ratón",
+          "Habilidades Especiales:   Q y E",
+          "Pausa:            ESC",
+          "Naves: ",
+          "Actúa como un piloto kamikaze. No tiene un cañón para disparar, pero inflige mucho daño al contacto con una nave.",
+          "Su nombre lo describe correctamente. Tiene mucha vida, es grande y dispara rápido, pero sus disparos no causan mucho daño.",
+          "Intenta mantener su distancia de la nave, lo que hace difícil golpearlo. Sus misiles causan mucho daño, pero tiene poca vida.",
+          "De vez en cuando aparecerá un MedKit en la pantalla, si el MedKit no es recogido dentro de unos segundos, aparecerá el Stealer y tratará de tomar el MedKit. Si lo recoges delante de él, o si él lo recoge, su diseño cambiará y actuará como un Zarovka."
+        ]
+      },
+      "ship_select": {
+        "title": "Seleccionar Nave",
+        "content": [
+          "Vida: ",
+          "Daño:",
+          "Frecuencia de Disparo:",
+          "Aceleración:",
+          "Velocidad: ",
+          "Habilidad Q:",
+          "Habilidad E:"
+        ]
+      },
+      "pause": {
+        "title": "Pausa",
+        "content": ["Continuar", "Menú Principal", "Salir"]
+      },
+      "game_over": {
+        "title": "Fin del Juego",
+        "content": ["Puntuación:", "Guardar Nombre", "Nuevamente", "Menú Principal", "Salir"]
+      }
+    }
+  }
+]

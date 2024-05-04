@@ -1,14 +1,14 @@
 import pygame.sprite
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class ProjectileExplosion(pygame.sprite.Sprite):
     def __init__(self, pos, size, color):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        self.screen_coefficient = ScreenSetup.width / 1920
+        self.screen_coefficient = GameSetup.width / 1920
         self.sound = pygame.mixer.Sound("assets/sounds/video_game_hit_sound.mp3")  # Load sound file
-        self.sound.set_volume(0.05 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.05 * GameSetup.effects_volume)
         pygame.mixer.find_channel(False).play(self.sound)
         for num in range(1, 8):
             img = pygame.image.load(f"assets/animations/projectile_collision_{color}/proj_col{num}.png")

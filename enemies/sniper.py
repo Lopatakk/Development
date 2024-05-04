@@ -3,7 +3,6 @@ import numpy as np
 import pygame
 import random
 import json
-from screensetup import ScreenSetup
 
 
 class Sniper(Enemy):

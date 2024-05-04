@@ -2,7 +2,6 @@ from enemies.enemy import Enemy
 import pygame
 import numpy as np
 import json
-from screensetup import ScreenSetup
 
 
 class Tank(Enemy):

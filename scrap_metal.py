@@ -1,6 +1,6 @@
 import pygame
 import random
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class ScrapMetal(pygame.sprite.Sprite):
@@ -20,7 +20,7 @@ class ScrapMetal(pygame.sprite.Sprite):
             self.unscaled_image = pygame.image.load(f"assets/images/scrap_metal1.png").convert_alpha()
 
         self.image_non_rot = pygame.transform.scale(self.unscaled_image, (64, 64))
-        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, ScreenSetup.width / 1920)
+        self.image_non_rot = pygame.transform.scale_by(self.image_non_rot, GameSetup.width / 1920)
         self.image_non_rot = pygame.Surface.convert_alpha(self.image_non_rot)
         self.image_orig = self.image_non_rot
         self.image = self.image_orig
@@ -30,7 +30,7 @@ class ScrapMetal(pygame.sprite.Sprite):
         self.rect.center = pos
 
         self.sound = pygame.mixer.Sound("assets/sounds/scrap_metal_collect.mp3")  # Load sound file
-        self.sound.set_volume(0.2 * ScreenSetup.effects_volume)
+        self.sound.set_volume(0.2 * GameSetup.effects_volume)
 
     def update(self):
         # moving after the destruction of the ship

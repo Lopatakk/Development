@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 from pygame.sprite import Group
 from pygame.surface import SurfaceType
 
@@ -50,22 +50,22 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
     # score
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
-    x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
-    screen.blit(text, (x, 10 + ScreenSetup.height / 200))
+    x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
+    screen.blit(text, (x, 10 + GameSetup.height / 200))
 
     # scrap metal
-    x = ScreenSetup.width - 170  # score in the middle of the screen
-    screen.blit(ScreenSetup.scrap_metal_icon, (x, ScreenSetup.height / 200))
+    x = GameSetup.width - 170  # score in the middle of the screen
+    screen.blit(GameSetup.scrap_metal_icon, (x, GameSetup.height / 200))
 
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(scrap_metal_count), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
-    screen.blit(text, (x + 70, 10 + ScreenSetup.height / 200))
+    screen.blit(text, (x + 70, 10 + GameSetup.height / 200))
 
 
     # overheat bar
     # bars proportions [x, y]
-    bar_pos = [35 / 1920 * ScreenSetup.width, 990 / 1080 * ScreenSetup.height]
-    bar_size = [230 / 1920 * ScreenSetup.width, 26 / 1080 * ScreenSetup.height]
+    bar_pos = [35 / 1920 * GameSetup.width, 990 / 1080 * GameSetup.height]
+    bar_size = [230 / 1920 * GameSetup.width, 26 / 1080 * GameSetup.height]
     # calculating how much of the bar gets filled
     if overheat_ratio > 1:
         overheat_ratio = 1
@@ -79,24 +79,24 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
     else:
         pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * overheat_ratio, bar_size[1]))
     # render the image
-    screen.blit(ScreenSetup.overheat_icon, [bar_pos[0] - 2/23 * bar_size[0], bar_pos[1] - 8/13 * bar_size[1]])
+    screen.blit(GameSetup.overheat_icon, [bar_pos[0] - 2/23 * bar_size[0], bar_pos[1] - 8/13 * bar_size[1]])
 
     # health bar
     # bars proportions
-    bar_pos = [43 / 1920 * ScreenSetup.width, 1038 / 1080 * ScreenSetup.height]
-    bar_size = [224 / 1920 * ScreenSetup.width, 26 / 1080 * ScreenSetup.height]
+    bar_pos = [43 / 1920 * GameSetup.width, 1038 / 1080 * GameSetup.height]
+    bar_size = [224 / 1920 * GameSetup.width, 26 / 1080 * GameSetup.height]
     # draw the bar
     pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[1], bar_size[0], bar_size[1]))
     pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[1], bar_size[0] * health_ratio, bar_size[1]))
     # render the image
-    screen.blit(ScreenSetup.hp_icon, [bar_pos[0] - 1/8 * bar_size[0], bar_pos[1] - 7/26 * bar_size[1]])
+    screen.blit(GameSetup.hp_icon, [bar_pos[0] - 1/8 * bar_size[0], bar_pos[1] - 7/26 * bar_size[1]])
 
     # q and e bars
     # bars proportions
     #   position [q_x_pos, e_x_pos, both_y_pos]
-    bar_pos = [1725 / 1920 * ScreenSetup.width, 1825 / 1920 * ScreenSetup.width, 1004 / 1080 * ScreenSetup.height]
+    bar_pos = [1725 / 1920 * GameSetup.width, 1825 / 1920 * GameSetup.width, 1004 / 1080 * GameSetup.height]
     #   size [both_width, both_height]
-    bar_size = [62 / 1920 * ScreenSetup.width, 62 / 1920 * ScreenSetup.width]
+    bar_size = [62 / 1920 * GameSetup.width, 62 / 1920 * GameSetup.width]
     # ratios limitations
     if q_ratio > 1:
         q_ratio = 1
@@ -107,7 +107,7 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
     if is_q_action_on:
         pygame.draw.rect(screen, "red", (bar_pos[0], bar_pos[2], bar_size[0], bar_size[1]))
         # render the image
-        screen.blit(ScreenSetup.q_action_icon_on, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
+        screen.blit(GameSetup.q_action_icon_on, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     else:
         if q_ratio == 1:
             pygame.draw.rect(screen, "green", (bar_pos[0], bar_pos[2], bar_size[0], bar_size[1]))
@@ -116,12 +116,12 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
         else:
             pygame.draw.rect(screen, "orange", (bar_pos[0], bar_pos[2] + (1-q_ratio) * bar_size[1], bar_size[0], bar_size[1] * q_ratio))
         # render the image
-        screen.blit(ScreenSetup.q_action_icon_off, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
+        screen.blit(GameSetup.q_action_icon_off, [bar_pos[0] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     #   e
     if is_e_action_on:
         pygame.draw.rect(screen, "red", (bar_pos[1], bar_pos[2], bar_size[0], bar_size[1]))
         # render the image
-        screen.blit(ScreenSetup.e_action_icon_on, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
+        screen.blit(GameSetup.e_action_icon_on, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
     else:
         if e_ratio == 1:
             pygame.draw.rect(screen, "green", (bar_pos[1], bar_pos[2], bar_size[0], bar_size[1]))
@@ -130,7 +130,7 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
         else:
             pygame.draw.rect(screen, "orange", (bar_pos[1], bar_pos[2] + (1-e_ratio) * bar_size[1], bar_size[0], bar_size[1] * e_ratio + 1))
         # render the image
-        screen.blit(ScreenSetup.e_action_icon_off, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
+        screen.blit(GameSetup.e_action_icon_off, [bar_pos[1] - 1/14 * bar_size[0], bar_pos[2] - 2/3 * bar_size[1]])
 
 
 def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> None:
@@ -145,8 +145,8 @@ def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> Non
     """
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (r, g, b))
-    x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
-    screen.blit(text, (x, ScreenSetup.height / 200))
+    x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
+    screen.blit(text, (x, GameSetup.height / 200))
 
 def render_scrapmetal(screen: SurfaceType, scrap_metal_count: int, r: int, g: int, b: int) -> None:
     """
@@ -160,8 +160,8 @@ def render_scrapmetal(screen: SurfaceType, scrap_metal_count: int, r: int, g: in
     """
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(scrap_metal_count), True, (r, g, b))
-    x = (ScreenSetup.width - text.get_width()) / 2  # score in the middle of the screen
-    screen.blit(text, (x, ScreenSetup.height / 200))
+    x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
+    screen.blit(text, (x, GameSetup.height / 200))
 
 def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group) -> None:
     """
@@ -171,7 +171,7 @@ def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group) -> None:
     :return: None
     """
     # bars proportions
-    bar_size = [1/33 * ScreenSetup.width, 1/180 * ScreenSetup.height]
+    bar_size = [1/33 * GameSetup.width, 1/180 * GameSetup.height]
 
     for ship in enemy_group:
         if ship.hp != ship.max_hp:

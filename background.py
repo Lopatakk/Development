@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 import random
 
 
@@ -10,7 +10,7 @@ class Background(pygame.sprite.Sprite):
         self.rand = rand
         for num in range(frames_num):
             img = pygame.image.load(f"assets/animations/background/{background_type}{num}.png")
-            img = pygame.transform.scale(img, (ScreenSetup.width, ScreenSetup.height))
+            img = pygame.transform.scale(img, (GameSetup.width, GameSetup.height))
             img = pygame.Surface.convert(img)
             # add the image to the list
             self.images.append(img)
@@ -22,7 +22,7 @@ class Background(pygame.sprite.Sprite):
         self.rect.topleft = [0, 0]
 
         # blinking parameters
-        self.red_surface = pygame.Surface((ScreenSetup.width, ScreenSetup.height), pygame.SRCALPHA)
+        self.red_surface = pygame.Surface((GameSetup.width, GameSetup.height), pygame.SRCALPHA)
         self.fade_speed = 2
         self.pulse_pause_duration = 20
         self.current_alpha = 0

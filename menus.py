@@ -15,18 +15,24 @@ from itemspawn import ItemSpawner
 from cursor import Cursor
 
 
-def settingsPause_menu(screen, clock, cursor_group, background_copy):
+def settings_menu(screen, clock, cursor_group, background, environment):
     width, height = screen.get_size()
     #   fonts
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
     font_height = font_subTitle.get_height()
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
+
     # background
-    surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
+    # fill the whole screen with black transparent color
+    if environment == "main":
+        surface.fill((0, 0, 0, 80))
+    else:
+        surface.fill((0, 0, 0, 170))
 
     #   create button instances
     danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
@@ -44,159 +50,29 @@ def settingsPause_menu(screen, clock, cursor_group, background_copy):
     with open("settings.json", "r") as settings_file:
         settings = json.load(settings_file)
     music_volume = settings["music_volume"]
-    new_music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
-    new_effects_volume = settings["effects_volume"]
     danger_blinking = settings["danger_blinking"]
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
-    #   sliders
-    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0,
-                         100, percentageMusic)
-    sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                           0, 100, percentageEffects)
-
-    while True:
-        mouse_pressed = False
-        screen.blit(background_copy, (0, 0))
-        screen.blit(surface, (0, 0))
-
-        #   text "Settings"
-        screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
-
-        #   changing volume
-        screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
-        screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
-
-        # danger blinking
-        screen.blit(font_subTitle.render("Low health blinking", True, (230, 230, 230)),
-                    (3.6 * width / 20, 52 * height / 80))
-
-        #   BUTTON
-        if back_button.draw_button_and_text(screen):
-            pygame.mixer.Channel(3).stop()
-            return
-
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                return
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
-                pygame.mixer.Channel(3).stop()
-                return
-            elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
-                mouse_pressed = True
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pressed = False
-                settings["music_volume"] = new_music_volume
-                settings["effects_volume"] = new_effects_volume
-                with open("settings.json", "w") as settings_file:
-                    json.dump(settings, settings_file, indent=4)
-                ScreenSetup.update()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
-                quit()
-
-        if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
-                settings["danger_blinking"] = False
-                danger_blinking = False
-                with open("settings.json", "w") as settings_file:
-                    json.dump(settings, settings_file, indent=4)
-                ScreenSetup.update()
-        else:
-            if danger_button_off.draw_button_and_text(screen):
-                settings["danger_blinking"] = True
-                danger_blinking = True
-                with open("settings.json", "w") as settings_file:
-                    json.dump(settings, settings_file, indent=4)
-                ScreenSetup.update()
-
-        #   volume
-        # music
-        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
-        sliderMusic.update(mouse_pressed, settings, "music_volume")
-        sliderMusic.draw(screen)
-
-        # effects
-        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
-        sliderEffects.update(mouse_pressed, settings, "effects_volume")
-        sliderEffects.draw(screen)
-
-        if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
-                settings["danger_blinking"] = False
-                danger_blinking = False
-        else:
-            if danger_button_off.draw_button_and_text(screen):
-                settings["danger_blinking"] = True
-                danger_blinking = True
-
-        # cursor
-        update_groups([cursor_group], screen)
-
-        clock.tick(ScreenSetup.fps)
-        pygame.display.flip()
-
-
-def settingsMain_menu(screen, clock, cursor_group):
-    width, height = screen.get_size()
-    #   fonts
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
-    font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
-    font_height = font_subTitle.get_height()
-    #   surface and background
-    # surface
-    surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
-    surface = surface.convert_alpha()  # making surface transparent
-    surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
-    # background
-    background = pygame.image.load("assets/images/Background.png")
-    background = pygame.transform.scale(background, (width, height))
-    background = pygame.Surface.convert(background)
-
-    #   create button instances
-    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
-                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
-                                     "assets/sounds/button_click.mp3", 0.2)
-    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
-                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
-                                      "assets/sounds/button_click.mp3", 0.2)
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
-                                "assets/sounds/button_click.mp3", 0.2)
-    #   volume
-    min_value = 0
-    max_value = 10
-    with open("settings.json", "r") as settings_file:
-        settings = json.load(settings_file)
-    music_volume = settings["music_volume"]
-    new_music_volume = settings["music_volume"]
-    effects_volume = settings["effects_volume"]
-    new_effects_volume = settings["effects_volume"]
-    danger_blinking = settings["danger_blinking"]
-
-    # percentage
-    percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
-    percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
-
     #   sliders
     sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                         min_value,
-                         max_value, percentageMusic)
+                         min_value, max_value, percentageMusic)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
                            min_value, max_value, percentageEffects)
+
     while True:
         mouse_pressed = False
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
 
         #   text "Settings"
-
         screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+
         #   changing volume
         screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
-
         screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
+
         # danger blinking
         screen.blit(font_subTitle.render("Low health blinking", True, (230, 230, 230)),
                     (3.6 * width / 20, 52 * height / 80))
@@ -218,9 +94,24 @@ def settingsMain_menu(screen, clock, cursor_group):
                 mouse_pressed = False
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
-                ScreenSetup.update()
+                GameSetup.update()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
+
+        if danger_blinking:
+            if danger_button_on.draw_button_and_text(screen):
+                settings["danger_blinking"] = False
+                danger_blinking = False
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
+                GameSetup.update()
+        else:
+            if danger_button_off.draw_button_and_text(screen):
+                settings["danger_blinking"] = True
+                danger_blinking = True
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
+                GameSetup.update()
 
         #   volume
         # music
@@ -235,21 +126,16 @@ def settingsMain_menu(screen, clock, cursor_group):
             if danger_button_on.draw_button_and_text(screen):
                 settings["danger_blinking"] = False
                 danger_blinking = False
-                with open("settings.json", "w") as settings_file:
-                    json.dump(settings, settings_file, indent=4)
         else:
             if danger_button_off.draw_button_and_text(screen):
                 settings["danger_blinking"] = True
                 danger_blinking = True
-                with open("settings.json", "w") as settings_file:
-                    json.dump(settings, settings_file, indent=4)
 
         # cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
-
 
 def save_name_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
@@ -339,7 +225,7 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -394,7 +280,7 @@ def leaderboard_menu(screen, clock, cursor_group):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -449,7 +335,7 @@ def main_menu(screen, clock, cursor_group):
         if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settingsMain_menu(screen, clock, cursor_group)
+            settings_menu(screen, clock, cursor_group, background, "main")
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
@@ -459,7 +345,7 @@ def main_menu(screen, clock, cursor_group):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -511,8 +397,8 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
-                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.4,
-                                    0.4, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
+                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
+                                    0.04, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
@@ -539,7 +425,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
         if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settingsPause_menu(screen, clock, cursor_group, background_copy)
+            settings_menu(screen, clock, cursor_group, background_copy, "pause")
         #   closing pause  menu
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
@@ -555,7 +441,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
         render_score(screen, score, 230, 230, 230)
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -899,7 +785,7 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
         # cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -968,7 +854,7 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
             cursor.check_cursor()
 
             # FPS lock and adding time
-            time_diff = clock.tick(ScreenSetup.fps) / 1000
+            time_diff = clock.tick(GameSetup.fps) / 1000
             update_time([mini_player_group, mini_enemy_group, mini_item_group, mini_spawner_group], time_diff)
 
             if not mini_player_group and not mini_explosion_group:
@@ -986,7 +872,7 @@ def menu_cockpit(screen, clock, player, cursor, cursor_group):
                 in_minigame = True
 
         pygame.display.flip()
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
 
 
 def set_minigame():
@@ -1062,7 +948,7 @@ def ship_menu(screen, clock, cursor_group):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -1094,7 +980,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
                                 "assets/sounds/button_click.mp3", 0.2)
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
-    sound.set_volume(0.6 * ScreenSetup.effects_volume)
+    sound.set_volume(0.6 * GameSetup.effects_volume)
     pygame.mixer.find_channel(False).play(sound)
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False
@@ -1125,7 +1011,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
@@ -1699,5 +1585,5 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   cursor
         update_groups([cursor_group], screen)
 
-        clock.tick(ScreenSetup.fps)
+        clock.tick(GameSetup.fps)
         pygame.display.flip()

@@ -1,5 +1,5 @@
 import pygame
-from screensetup import ScreenSetup
+from gamesetup import GameSetup
 
 
 class Medkit(pygame.sprite.Sprite):
@@ -11,7 +11,7 @@ class Medkit(pygame.sprite.Sprite):
         self.heal = 300
 
         self.image = pygame.image.load("assets/images/medkit.png")
-        self.image = pygame.transform.scale_by(self.image, ScreenSetup.width / 1920)
+        self.image = pygame.transform.scale_by(self.image, GameSetup.width / 1920)
         self.image = pygame.Surface.convert_alpha(self.image)
         self.image_orig = self.image
         self.rect = self.image.get_rect()
@@ -30,7 +30,7 @@ class Medkit(pygame.sprite.Sprite):
         self.animation_images = []
         for num in range(1, 7):
             img = pygame.image.load(f"assets/animations/medkit/medkit{num}.png")
-            img = pygame.transform.scale_by(img, ScreenSetup.width / 1920)
+            img = pygame.transform.scale_by(img, GameSetup.width / 1920)
             img = pygame.Surface.convert_alpha(img)
             # add the image to the list
             self.animation_images.append(img)
