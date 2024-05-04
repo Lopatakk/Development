@@ -88,7 +88,7 @@ class Button():
 
         return action
 
-    def draw_image_in_center(self, surface):
+    def draw_image_in_center(self, surface, game_text):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
         #   button
@@ -155,7 +155,7 @@ class Button():
         # draw text on screen
         surface.blit(text, text_rect)
         #   Printing ship parameters
-        ship_text = [f"HP: {self.Ship_param['hp'][0]}", f"DMG: {self.Ship_param['proj_dmg'][0]}", f"Fire rate: {self.Ship_param['fire_rate'][0]}", f"Acceleration: {self.Ship_param['acceleration'][0]}", f"Speed: {self.Ship_param['max_velocity']}", "Q skill: " + self.Ship_param['q_skill'], "E skill: " + self.Ship_param['e_skill']]
+        ship_text = [f"{game_text[0]}{self.Ship_param['hp'][0]}", f"{game_text[1]}{self.Ship_param['proj_dmg'][0]}", f"{game_text[2]}{self.Ship_param['fire_rate'][0]}", f"{game_text[3]}{self.Ship_param['acceleration'][0]}", f"{game_text[4]}{self.Ship_param['max_velocity']}", game_text[5] + self.Ship_param['q_skill'], game_text[6] + self.Ship_param['e_skill']]
         y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 3, self.y_button + (rect_02.height/2) * 3.3]
         for parameters, position in zip(ship_text, y_position):
             text = self.font_parameters.render(str(parameters), True, text_color)
@@ -170,17 +170,20 @@ class Button():
     def draw_button_and_text(self, surface):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
+
         #   button
         # button_01
         image_01 = pygame.transform.scale(self.image_01, (int(self.width_screen * self.scale_w), int(self.width_screen * self.scale_h)))  # transforming image_01
         rect_01 = image_01.get_rect()  # creates a rectangular frame around the object's image_01
         rect_01.topleft = (self.x_button, self.y_button)  # placing topleft corner of image_01 to wanted position
         image_01_mask = pygame.mask.from_surface(image_01)  # mask from image_01
+
         # button_02
         image_02 = pygame.transform.scale(self.image_02, (int(self.width_screen * self.scale_w), int(self.width_screen * self.scale_h)))  # transforming image_02
         rect_02 = image_02.get_rect()  # creates a rectangular frame around the object's image_02
         rect_02.topleft = (self.x_button, self.y_button)  # placing topleft corner of image_02 to wanted position
         image_02_mask = pygame.mask.from_surface(image_02)  # mask from image_02
+
         # selecting an image for interaction and display on the screen
         if not self.collision:  # image_01 is used for interaction and is displayed on screen
             surface.blit(image_01, rect_01)

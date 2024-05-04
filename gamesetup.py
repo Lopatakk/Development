@@ -47,9 +47,9 @@ class GameSetup:
     button_function_2 = settings["button_function_2"]
 
     # languages
-
-    # with open("languages.json", "r", encoding='utf-8') as languages_file:
-    #     languages = json.load(languages_file)
+    language = "czech"
+    with open("languages.json", "r", encoding='utf-8') as languages_file:
+        languages = json.load(languages_file)
 
     def __init__(self):
         # This is just there, so it can be a class :)

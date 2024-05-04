@@ -1,16 +1,17 @@
 [
   {
-    "english": {
+    "language": "english",
+	"text":{
       "main_menu": {
         "title": "Main Menu",
-        "content": ["Play", "Scoreboard", "About Game", "Quit"]
+        "content": ["Play", "Statistics", "About Game", "Quit", "Soundtrack by: Karl Casey @ White Bat Audio"]
       },
       "settings": {
         "title": "Settings",
         "content": ["Music Volume", "Effects Volume", "Low Health Blinking", "Back"]
       },
-      "scoreboard": {
-        "title": "Scoreboard",
+      "statistics": {
+        "title": "Statistics",
         "content": ["Name", "Score", "Ship", "Date"]
       },
       "about_game": {
@@ -29,17 +30,33 @@
           "Shooting:         left mouse button",
           "Special skills:   Q and E",
           "Pause:            ESC",
-          "Ships: ",
+          "Ships: ",		  
+          "HP: ",
+          "DMG: ",
+          "Fire rate:",
+          "Acceleration: ",
+          "Speed: ",
+          "Q skill:",
+          "E skill:",
+		  "Dash",
+		  "Shield",
+		  "Rapid fire",
+		  "Blast shoot",
+		  "Speed boost",
+		  "Gravity pulse",
+		  "Enemies: ",
           "He acts like a kamikaze pilot. He doesn't have a cannon to shoot, but he deals a lot of damage on contact with a ship.",
           "His name describes him correctly. He has a lot of HP, he's big, and he shoots fast, but his shots don't do much damage.",
           "He tries to keep his distance from the ship, making it hard to hit him. His missiles deal a lot of damage, but he has low HP.",
-          "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds the Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka."
+          "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds the Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka.",
+		  "Thank you for playing our game <3",
+		  "Back"
         ]
       },
       "ship_select": {
         "title": "Ship Select",
         "content": [
-          "hp: ",
+          "HP: ",
           "DMG: ",
           "Fire rate:",
           "Acceleration: ",
@@ -55,21 +72,25 @@
       "game_over": {
         "title": "Game Over",
         "content": ["Score: ", "Save Name", "Again", "Main Menu", "Quit"]
-      }
+      },
+	  "upgrade": {
+		"content": ["Weapons", "Cooling", "Shield", "Regeneration", "Thruster"]
+}
     }
   },
   {
-    "czech": {
+    "language": "czech",
+	"text":{
       "main_menu": {
         "title": "Hlavní menu",
-        "content": ["Hrát", "Tabulka skóre", "O hře", "Ukončit"]
+        "content": ["Hrát", "Statistiky", "O hře", "Ukončit", "Soundtrack: Karl Casey @ White Bat Audio"]
       },
       "settings": {
         "title": "Nastavení",
         "content": ["Hlasitost hudby", "Hlasitost efektů", "Blikání při nízkém zdraví", "Zpět"]
       },
-      "scoreboard": {
-        "title": "Tabulka skóre",
+      "statistics": {
+        "title": "Statistiky",
         "content": ["Jméno", "Skóre", "Loď", "Datum"]
       },
       "about_game": {
@@ -86,13 +107,29 @@
           "Pohyb:         W–nahoru, S–dolů, A–vlevo, D–vpravo",
           "Zaměření:      myš (záměrný kříž)",
           "Střelba:       levé tlačítko myši",
-          "Speciální dovednosti:   Q a E",
+          "Dovednosti:    Q a E",
           "Pauza:         ESC",
-          "Lodě: ",
+          "Lodě: ",		  
+          "HP: ",
+          "Poškození:",
+          "Rychlost střelby:",
+          "Zrychlení:",
+          "Rychlost: ",
+          "Dovednost Q:",
+          "Dovednost E:",
+		  "Úhyb",
+		  "Štít",
+		  "Rychlopálka",
+		  "Výstřel exploze",
+		  "Zrychlení",
+		  "Gravitační puls",
+		  "Nepřátelé:",
           "Jedná se o kamikaze pilota. Nemá kanón k útoku, ale při kontaktu s lodí způsobí velké množství škod.",
           "Jeho jméno ho popisuje správně. Má hodně životů, je velký a střílí rychle, ale jeho střely nedělají moc škody.",
           "Snaží se udržovat odstup od lodi, což ho činí obtížným zasáhnout. Jeho rakety způsobují velké škody, ale má málo životů.",
-          "Občas se na obrazovce objeví MedKit, pokud není MedKit sebrán do několika sekund, objeví se Stealer a pokusí se MedKit získat. Pokud ho seberete před ním, nebo ho sebere on, jeho design se změní a bude se chovat jako Zarovka."
+          "Občas se na obrazovce objeví MedKit, pokud není MedKit sebrán do několika sekund, objeví se Stealer a pokusí se MedKit získat. Pokud ho seberete před ním, nebo ho sebere on, jeho design se změní a bude se chovat jako Zarovka.",
+		  "Děkujeme, že hrajete naši hru <3",
+		  "Zpět"
         ]
       },
       "ship_select": {
@@ -100,11 +137,11 @@
         "content": [
           "HP: ",
           "Poškození:",
-          "Frekvence střelby:",
+          "Rychlost střelby:",
           "Zrychlení:",
           "Rychlost: ",
-          "Schopnost Q:",
-          "Schopnost E:"
+          "Dovednost Q:",
+          "Dovednost E:"
         ]
       },
       "pause": {
@@ -114,21 +151,25 @@
       "game_over": {
         "title": "Konec hry",
         "content": ["Skóre:", "Uložit jméno", "Znovu", "Hlavní menu", "Ukončit"]
-      }
+      },
+	 "upgrade": {
+		"content": ["Zbraně", "Chlazení", "Štít", "Regenerace", "Pohon"]
     }
+}
   },
   {
-	"russian": {
+	"language": "russian",
+	"text":{
       "main_menu": {
         "title": "Главное меню",
-        "content": ["Играть", "Таблица рекордов", "Об игре", "Выйти"]
+        "content": ["Играть", "Статистика", "Об игре", "Выйти", "Саундтрек от: Карл Кейси @ White Bat Audio"]
       },
       "settings": {
         "title": "Настройки",
         "content": ["Громкость музыки", "Громкость звуков", "Мигание при низком здоровье", "Назад"]
       },
-      "scoreboard": {
-        "title": "Таблица рекордов",
+      "statistics": {
+        "title": "Статистика",
         "content": ["Имя", "Результат", "Корабль", "Дата"]
       },
       "about_game": {
@@ -147,11 +188,27 @@
           "Стрельба:        левая кнопка мыши",
           "Специальные навыки:  Q и E",
           "Пауза:           ESC",
-          "Корабли:",
+          "Корабли:",		  
+          "Здоровье:",
+          "Урон:",
+          "Скорострельность:",
+          "Ускорение:",
+          "Скорость:",
+          "Навык Q:",
+          "Навык E:",
+		  "Рывок",
+		  "Щит",
+		  "Быстрый огонь",
+		  "Взрывной выстрел",
+		  "Ускорение",
+		  "Гравитационный импульс",
+		  "Враги: ",
           "Он действует как камикадзе. У него нет пушки для стрельбы, но он наносит много урона при контакте с кораблем.",
           "Его имя описывает его верно. У него много здоровья, он большой и стреляет быстро, но его выстрелы не наносят много урона.",
           "Он пытается держаться на расстоянии от корабля, что делает его трудным для попадания. Его ракеты наносят много урона, но у него мало здоровья.",
-          "Время от времени на экране появляется аптечка. Если аптечка не подобрана в течение нескольких секунд, появится вор и попытается ее забрать. Если вы подберете ее перед ним, или если он ее подберет, его дизайн изменится и он будет действовать как Заровка."
+          "Время от времени на экране появляется аптечка. Если аптечка не подобрана в течение нескольких секунд, появится вор и попытается ее забрать. Если вы подберете ее перед ним, или если он ее подберет, его дизайн изменится и он будет действовать как Заровка.",
+		  "Спасибо, что играете в нашу игру <3",
+		  "Назад"
         ]
       },
       "ship_select": {
@@ -173,21 +230,25 @@
       "game_over": {
         "title": "Конец игры",
         "content": ["Результат:", "Сохранить имя", "Снова", "Главное меню", "Выйти"]
-      }
+      },
+	  "upgrade": {
+		"content": ["Оружие", "Охлаждение", "Щит", "Регенерация", "Тяга"]
+}
     }
   },
   {
-	  "spanish": {
+	  "language": "spanish",
+	  "text":{
       "main_menu": {
         "title": "Menú Principal",
-        "content": ["Jugar", "Tabla de Puntuaciones", "Sobre el Juego", "Salir"]
+        "content": ["Jugar", "Estadísticas", "Sobre el Juego", "Salir", "Banda sonora de: Karl Casey @ White Bat Audio"]
       },
       "settings": {
         "title": "Ajustes",
         "content": ["Volumen de la Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Atrás"]
       },
-      "scoreboard": {
-        "title": "Tabla de Puntuaciones",
+      "statistics": {
+        "title": "Estadísticas",
         "content": ["Nombre", "Puntuación", "Nave", "Fecha"]
       },
       "about_game": {
@@ -207,10 +268,26 @@
           "Habilidades Especiales:   Q y E",
           "Pausa:            ESC",
           "Naves: ",
+          "Vida: ",
+          "Daño:",
+          "Frecuencia de Disparo:",
+          "Aceleración:",
+          "Velocidad: ",
+          "Habilidad Q:",
+          "Habilidad E:",
+		  "Embestida",
+		  "Escudo",
+		  "Disparo rápido",
+		  "Disparo explosivo",
+		  "Impulso de velocidad",
+		  "Pulso de gravedad",
+		  "Enemigos: ",
           "Actúa como un piloto kamikaze. No tiene un cañón para disparar, pero inflige mucho daño al contacto con una nave.",
           "Su nombre lo describe correctamente. Tiene mucha vida, es grande y dispara rápido, pero sus disparos no causan mucho daño.",
           "Intenta mantener su distancia de la nave, lo que hace difícil golpearlo. Sus misiles causan mucho daño, pero tiene poca vida.",
-          "De vez en cuando aparecerá un MedKit en la pantalla, si el MedKit no es recogido dentro de unos segundos, aparecerá el Stealer y tratará de tomar el MedKit. Si lo recoges delante de él, o si él lo recoge, su diseño cambiará y actuará como un Zarovka."
+          "De vez en cuando aparecerá un MedKit en la pantalla, si el MedKit no es recogido dentro de unos segundos, aparecerá el Stealer y tratará de tomar el MedKit. Si lo recoges delante de él, o si él lo recoge, su diseño cambiará y actuará como un Zarovka.",
+		  "Gracias por jugar nuestro juego <3",
+		  "Atrás"
         ]
       },
       "ship_select": {
@@ -232,7 +309,10 @@
       "game_over": {
         "title": "Fin del Juego",
         "content": ["Puntuación:", "Guardar Nombre", "Nuevamente", "Menú Principal", "Salir"]
-      }
+      },
+	  "upgrade": {
+		"content": ["Armas", "Refrigeración", "Escudo", "Regeneración", "Propulsor"]
+}
     }
   }
 ]

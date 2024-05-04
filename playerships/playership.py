@@ -45,8 +45,8 @@ class PlayerShip(Ship):
         """
         self.ship_parts = {'weapons': 0,
                            'cooling': 0,
-                           'repair_module': 0,
                            'shield': 0,
+                           'repair_module': 0,
                            'booster': 0}
         # building ship
         if mini:

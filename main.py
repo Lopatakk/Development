@@ -40,8 +40,8 @@ storage_items = []
 installed_items = {
     "weapons": None,
     "cooling": None,
-    "repair_module": None,
     "shield": None,
+    "repair_module": None,
     "booster": None
 }
 

@@ -34,16 +34,6 @@ def settings_menu(screen, clock, cursor_group, background, environment):
     else:
         surface.fill((0, 0, 0, 170))
 
-    #   create button instances
-    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
-                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
-                                     "assets/sounds/button_click.mp3", 0.2)
-    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
-                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
-                                      "assets/sounds/button_click.mp3", 0.2)
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
-                                "assets/sounds/button_click.mp3", 0.2)
     #   volume
     min_value = 0
     max_value = 10
@@ -52,6 +42,26 @@ def settings_menu(screen, clock, cursor_group, background, environment):
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
     danger_blinking = settings["danger_blinking"]
+
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['settings']['title']
+            game_text = language['text']['settings']['content']
+
+    #   create button instances
+    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
+                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
+                                     "assets/sounds/button_click.mp3", 0.2)
+    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
+                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
+                                      "assets/sounds/button_click.mp3", 0.2)
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[3], screen,
+                                "assets/sounds/button_click.mp3", 0.2)
+
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
@@ -67,14 +77,14 @@ def settings_menu(screen, clock, cursor_group, background, environment):
         screen.blit(surface, (0, 0))
 
         #   text "Settings"
-        screen.blit(font_title.render("Settings", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
 
         #   changing volume
-        screen.blit(font_subTitle.render("Music volume", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
-        screen.blit(font_subTitle.render("Effects volume", True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
+        screen.blit(font_subTitle.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+        screen.blit(font_subTitle.render(game_text[1], True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
 
         # danger blinking
-        screen.blit(font_subTitle.render("Low health blinking", True, (230, 230, 230)),
+        screen.blit(font_subTitle.render(game_text[2], True, (230, 230, 230)),
                     (3.6 * width / 20, 52 * height / 80))
 
         #   BUTTON
@@ -234,15 +244,26 @@ def leaderboard_menu(screen, clock, cursor_group):
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_scores_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
     font_scores = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.014 * width))  # loading font
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['statistics']['title']
+            game_text = language['text']['statistics']['content']
+
     #   create button instances
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
@@ -253,22 +274,21 @@ def leaderboard_menu(screen, clock, cursor_group):
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Leaderboard"
-        screen.blit(font_title.render("Scoreboard", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
         if back_button.draw_button_and_text(screen):
             return True
         #   display the high-scores.
-        screen.blit(font_scores_title.render("NAME", True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render("SCORE", True, (230, 230, 230)), (8.5 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render("SHIP", True, (230, 230, 230)), (11.15 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render("DATE", True, (230, 230, 230)), (13.46 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render(game_text[1], True, (230, 230, 230)), (8 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render(game_text[2], True, (230, 230, 230)), (11.8 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render(game_text[3], True, (230, 230, 230)), (15 * width / 20, 27 * height / 80))
         y_position = list(range(32, 62, 3))  # the number of numbers here makes the number of names in the scoreboard
         for (hi_name, hi_score, hi_selected_ship, hi_date), y in zip(highscores, y_position):
             screen.blit(font_scores.render(f'{hi_name}', True, (160, 160, 160)), (3.6 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8.5 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)),
-                        (11.15 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (13.46 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (11.8 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (15 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -300,18 +320,26 @@ def main_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
 
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['main_menu']['title']
+            game_text = language['text']['main_menu']['content']
+
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[0], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
-                                      "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen,
+                                      "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[1], screen,
                                       "assets/sounds/button_click.mp3", 0.2)
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'About game', screen,
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[2], screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[3], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
                                     "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
@@ -322,7 +350,7 @@ def main_menu(screen, clock, cursor_group):
         #   text "Space shooter"            Pavel: Pozdeji by to místo toho možná chtělo nějakou grafickou náhradu
         screen.blit(font_title.render("Space shooter", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   text "Soundtrack: Karl Casey @ White Bat Audio"
-        text = font_music.render("Soundtrack by: Karl Casey @ White Bat Audio", True, (150, 150, 150))
+        text = font_music.render(game_text[4], True, (150, 150, 150))
         text_width = text.get_width()  # width of text
         screen.blit(text, (width - text_width * 1.02, 19.5 * height / 20))
         #   BUTTON
@@ -363,14 +391,13 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
     surface.fill((0, 0, 0, 170))  # fill the whole screen with black transparent color
 
     # ship
-    ship_surf = player.build_ship(player.type)
-    pos = (1200, 500)
-    new_width = int(ship_surf.get_width() * 1.7)
-    new_height = int(ship_surf.get_height() * 1.7)
+    ship_surf = player.image_non_rot
+    pos = (1150, 500)
+    new_width = int(ship_surf.get_width() * 1.9)
+    new_height = int(ship_surf.get_height() * 1.9)
     ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
     ship_rect = ship_surf.get_rect(center=pos)
     ship_mask = pygame.mask.from_surface(ship_surf)
-    over_ship = False
     ship_surf_transparent = ship_surf.copy()
     ship_surf_transparent.set_alpha(100)
 
@@ -386,20 +413,36 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
     # mouse mask
     mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
 
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['pause']['title']
+            game_text = language['text']['pause']['content']
+
     #   create button instances
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                  "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Resume', screen,
+                                  "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[0], screen,
                                   "assets/sounds/button_click.mp3", 0.2)
     main_menu_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Main menu', screen,
+                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[1], screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[2], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
                                     "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
                                     0.04, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
+        # actual ship
+        ship_surf = player.image_non_rot
+        new_width = int(ship_surf.get_width() * 1.9)
+        new_height = int(ship_surf.get_height() * 1.9)
+        ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
+        ship_surf_transparent = ship_surf.copy()
+        ship_surf_transparent.set_alpha(100)
+
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))
 
@@ -416,7 +459,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
             screen.blit(ship_surf, ship_rect)
 
         #   text "Main Menu"
-        screen.blit(font_title.render("Pause menu", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
         if resume_button.draw_button_and_text(screen):
             return False
@@ -479,16 +522,20 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
     module_white = pygame.image.load("assets/images/module_white.png").convert_alpha()
     module_black = pygame.image.load("assets/images/module_black.png").convert_alpha()
 
+    # text
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            game_text = language['text']['upgrade']['content']
+
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', 32)
-    texts = ['Weapons', 'Cooling', 'Repair', 'module', 'Shield', 'Booster']
-    texts_pos = [(80, 80), (605, 80), (55, 570), (55, 610), (660, 570), (340, 770)]
 
     # ship parts
     ship_parts_images = {
         "weapons": [],
         "cooling": [],
-        "repair_module": [],
         "shield": [],
+        "repair_module": [],
         "booster": []
     }
     for module in ship_parts_images.keys():
@@ -524,8 +571,8 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
     module_buttons = {
         "weapons": (90, 118, True),
         "cooling": (628, 118, True),
-        "repair_module": (55, 392, True),
-        "shield": (663, 392, True),
+        "shield": (55, 392, True),
+        "repair_module": (663, 392, True),
         "booster": (353, 590, True)
     }
     max_level = 3
@@ -649,9 +696,6 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
                     screen.blit(font_description.render(str(item_stat), True, item_stat_color),
                                 (1050 + width, 650 + i * 60))
 
-        for i, text in enumerate(texts):
-            screen.blit(font_title.render(text, True, (255, 255, 255)), texts_pos[i])
-
         # rendering storage items
         for i, item in enumerate(storage_items):
             # calculating centers of rects
@@ -664,12 +708,20 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
             screen.blit(item.unscaled_image, (item_x, item_y))
 
         # rendering modules
-        for module, (x, y, active) in module_buttons.items():
-            rect = pygame.Rect(x, y, 260, 260)
+        for i, (module, (x, y, active)) in enumerate(module_buttons.items()):
+            module_rect = module_white.get_rect()
+            module_rect.x = x
+            module_rect.y = y
             if active:
-                screen.blit(module_white, rect)
+                screen.blit(module_white, module_rect)
             else:
-                screen.blit(module_black, rect)
+                screen.blit(module_black, module_rect)
+
+            text = font_title.render(game_text[i], True, (255, 255, 255))
+            text_rect = text.get_rect()
+            text_rect.centerx = module_rect.centerx
+            text_rect.y = module_rect.y + 180
+            screen.blit(text, text_rect)
 
         # rendering installed items
         for module, i in player.ship_parts.items():
@@ -718,6 +770,11 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
         # closing upgrade menu
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to continue play
+                player.image_non_rot_orig = player.build_ship(player.type)
+                player.image_non_rot_orig = pygame.transform.scale_by(player.image_non_rot_orig, player.img_scale_ratio)
+                player.image_non_rot_orig = player.scale_image(player.image_non_rot_orig)
+                player.image_non_rot = player.image_non_rot_orig
+                player.image = player.image_non_rot
                 return False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
                 quit()
@@ -898,21 +955,33 @@ def set_minigame():
 
 def ship_menu(screen, clock, cursor_group):
     width, height = screen.get_size()
-    #   text
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
-    text = font_title.render("Ship selection", True, (230, 230, 230))
-    text_rect = text.get_rect()
-    text_rect.centerx = width / 2
-    text_rect.y = 3.4 * height / 20
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 80))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['ship_select']['title']
+            game_text = language['text']['ship_select']['content']
+
+    #   text
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
+    text = font_title.render(title, True, (230, 230, 230))
+    text_rect = text.get_rect()
+    text_rect.centerx = width / 2
+    text_rect.y = 3.4 * height / 20
+
     #   create button instances
     Light_button = button.Button(2 * width / 8, 8 * height / 16, "assets/images/player_light/vlod_player_light.png",
                                  "assets/images/player_light/vlod_player_light.png",
@@ -930,11 +999,11 @@ def ship_menu(screen, clock, cursor_group):
         screen.blit(text, text_rect)
         #   text of ships properties
         #   button
-        if Light_button.draw_image_in_center(screen):
+        if Light_button.draw_image_in_center(screen, game_text):
             return 1
-        if Mid_button.draw_image_in_center(screen):
+        if Mid_button.draw_image_in_center(screen, game_text):
             return 2
-        if Tank_button.draw_image_in_center(screen):
+        if Tank_button.draw_image_in_center(screen, game_text):
             return 3
         #   Event handling
         for event in pygame.event.get():
@@ -956,27 +1025,38 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_score = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 230))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['game_over']['title']
+            game_text = language['text']['game_over']['content']
+
     #   create button instances
     save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save name', screen,
+                                     "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[1], screen,
                                      "assets/sounds/button_click.mp3", 0.3)
     restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
-                                   "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Again', screen,
+                                   "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[2], screen,
                                    "assets/sounds/button_click.mp3", 0.3)
     main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Main menu', screen,
+                                     "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[3], screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
+                                "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[4], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
@@ -988,8 +1068,8 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Game over" and "score"
-        screen.blit(font_title.render("Game over", True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
-        score_text = "Score: " + str(score)
+        screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        score_text = game_text[0] + str(score)
         screen.blit(font_score.render(score_text, True, (230, 230, 230)), (3.6 * width / 20, 5.7 * height / 20))
         #   button
         if not save_name_clicked:
@@ -1091,15 +1171,23 @@ def aboutgame_menu(screen, clock, cursor_group):
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
 
+    # text
+    title = None
+    game_text = None
+    for language in GameSetup.languages:
+        if language['language'] == GameSetup.language:
+            title = language['text']['about_game']['title']
+            game_text = language['text']['about_game']['content']
+
     #   create button instances
     back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[33], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "About game"
-        screen.blit(font_title.render("About game", True, (230, 230, 230)),
+        screen.blit(font_title.render(title, True, (230, 230, 230)),
                     (3.6 * width / 20, (3.4 * height / 20) + y_scroll))
 
         mouse_pos = pygame.mouse.get_pos()
@@ -1109,45 +1197,44 @@ def aboutgame_menu(screen, clock, cursor_group):
             return True
         #   about game text
         # about game
-        msg = "The game is a 2D arcade-like shooter. The player controls a spaceship and must defend it against enemy attacks. The goal is to score as many points as possible."
+
         textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[0], text_color, textRect, font_text, textAlignLeft, True, None)
         # why was created
-        msg = "Was created as a semester project in the KEP/VMZ subject on the Faculty of Electrical Engineering, University of West Bohemia. The subject took place in the winter semester of the 2023/24 academic year."
         textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[1], text_color, textRect, font_text, textAlignLeft, True, None)
         # development team
-        screen.blit(font_subtitle.render("Development team", True, title_color),
+        screen.blit(font_subtitle.render(game_text[2], True, title_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Jan Sebele", True, text_color),
+        screen.blit(font_text.render(game_text[3], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Pavel Franek", True, text_color),
+        screen.blit(font_text.render(game_text[4], True, text_color),
                     (8 * width / 20, lowest_value + spaceBetween * 2))
         lowest_value = lowest_value + spaceBetween * 2 + text_height
-        screen.blit(font_text.render("Michal Lopata", True, text_color),
+        screen.blit(font_text.render(game_text[5], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween))
-        screen.blit(font_text.render("Tomas Fikart", True, text_color), (8 * width / 20, lowest_value + spaceBetween))
+        screen.blit(font_text.render(game_text[6], True, text_color), (8 * width / 20, lowest_value + spaceBetween))
         lowest_value = lowest_value + spaceBetween + text_height
         # controls
-        screen.blit(font_subtitle.render("Controls", True, title_color),
+        screen.blit(font_subtitle.render(game_text[7], True, title_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render("Movement:         W–up, S–down, A–left, D–right", True, text_color),
+        screen.blit(font_text.render(game_text[8], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render("Aim:              mouse (crosshair)", True, text_color),
+        screen.blit(font_text.render(game_text[9], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
-        screen.blit(font_text.render("Shooting:         left mouse button", True, text_color),
+        screen.blit(font_text.render(game_text[10], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
-        screen.blit(font_text.render("Special skills:   Q and E", True, text_color),
+        screen.blit(font_text.render(game_text[11], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
-        screen.blit(font_text.render("Pause:            ESC", True, text_color),
+        screen.blit(font_text.render(game_text[12], True, text_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
         lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
         #   ships
-        screen.blit(font_subtitle.render("Ships", True, title_color),
+        screen.blit(font_subtitle.render(game_text[13], True, title_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
 
@@ -1176,39 +1263,39 @@ def aboutgame_menu(screen, clock, cursor_group):
         if over_vlod5L:
             text = font_name.render("LIGHT", True, name_color)
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color)
             textAcc_width = textAcc.get_width()  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         else:
 
             text = font_name.render("LIGHT", True, name_color)
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration'][0]}", True, text_color)
             textAcc_width = textAcc.get_width() + 100  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
-        text_skill_01 = font_text.render("Q skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[19], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.25), lowest_value + 4 * spaceBetween + text_height))
-        text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[21], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width),
@@ -1221,11 +1308,11 @@ def aboutgame_menu(screen, clock, cursor_group):
                       7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
             lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
-        text_skill_01 = font_text.render("E skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[20], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.25), lowest_value + 7 * spaceBetween + 4 * text_height))
-        text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[22], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.25 + text_skill_01_width),
@@ -1267,37 +1354,37 @@ def aboutgame_menu(screen, clock, cursor_group):
 
         if over_vlod5:
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color)
             textAcc_width = textAcc.get_width()  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         else:
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration'][0]}", True, text_color)
             textAcc_width = textAcc.get_width() + 100  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
-        text_skill_01 = font_text.render("Q skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[19], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 4 * spaceBetween + text_height))
-        text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[23], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
@@ -1311,11 +1398,11 @@ def aboutgame_menu(screen, clock, cursor_group):
                       7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
             lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
-        text_skill_01 = font_text.render("E skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[20], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 7 * spaceBetween + 4 * text_height))
-        text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[24], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
@@ -1357,38 +1444,38 @@ def aboutgame_menu(screen, clock, cursor_group):
         if over_vlod5T:
             text = font_name.render("TANK", True, name_color)
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color)
             textAcc_width = textAcc.get_width()  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         else:
             text = font_name.render("TANK", True, name_color)
             screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-            screen.blit(font_text.render(f"HP: {Ship_param['hp'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
-            screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-            screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate'][0]}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate'][0]}", True, text_color),
                         (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-            textAcc = font_text.render(f"Acceleration: {Ship_param['acceleration'][0]}", True, text_color)
+            textAcc = font_text.render(f"{game_text[17]}{Ship_param['acceleration'][0]}", True, text_color)
             textAcc_width = textAcc.get_width() + 100  # getting width of text
             screen.blit(textAcc, (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-            screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+            screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                         (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         #   skills
         # skill Q
-        text_skill_01 = font_text.render("Q skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[19], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 4 * spaceBetween + text_height))
-        text_skill_02 = font_text.render(Ship_param['q_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[25], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
@@ -1402,11 +1489,11 @@ def aboutgame_menu(screen, clock, cursor_group):
                       7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width + text_skill_02_width / 2) - image_width / 2),
             lowest_value + 4 * spaceBetween + text_height + text_skill_02_height * 1.5))
         # skill E
-        text_skill_01 = font_text.render("E skill: ", True, text_color)
+        text_skill_01 = font_text.render(game_text[20], True, text_color)
         text_skill_01_width = text_skill_01.get_width()  # getting width of text
         screen.blit(text_skill_01,
                     (((7.5 * width / 20) + textAcc_width * 1.1), lowest_value + 7 * spaceBetween + 4 * text_height))
-        text_skill_02 = font_text.render(Ship_param['e_skill'], True, text_color)
+        text_skill_02 = font_text.render(game_text[26], True, text_color)
         text_skill_02_width = text_skill_02.get_width()  # getting width of text
         text_skill_02_height = text_skill_02.get_height()  # getting height of text
         screen.blit(text_skill_02, (((7.5 * width / 20) + textAcc_width * 1.1 + text_skill_01_width),
@@ -1422,7 +1509,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         #   new lowest value
         lowest_value = lowest_value + 10 * spaceBetween + 7 * text_height + 4 * spaceBetween
         #   enemies
-        screen.blit(font_subtitle.render("Enemies", True, (230, 230, 230)),
+        screen.blit(font_subtitle.render(game_text[27], True, (230, 230, 230)),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
         # enemy number 1
@@ -1433,20 +1520,20 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("ZAROVKA", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[16]}{Ship_param['dmg']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
+
         # writen info by myself
-        msg = "He acts like a kamikaze pilot. He doesn't have a cannon to shoot, but he deals a lot of damage on contact with a ship."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[28], text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
         zarovka = pygame.image.load("assets/images/enemy/zarovka/zarovka.png")  # load image
         zarovka = pygame.transform.scale(zarovka, (int(width * 0.053), int(width * 0.08)))  # transforming image
@@ -1461,22 +1548,21 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("TANK", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
-        msg = "His name describes him correctly. He has a lot of HP, he's big, and he shoots fast, but his shots don't do much damage."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[29], text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
         tank = pygame.image.load("assets/images/enemy/tank/tank.png")  # load image
         tank = pygame.transform.scale(tank, (int(width * 0.13), int(width * 0.12)))  # transforming image
@@ -1491,22 +1577,21 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("SNIPER", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['proj_dmg']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[15]}{Ship_param['proj_dmg']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Fire rate: {Ship_param['fire_rate']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[16]}{Ship_param['fire_rate']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 8 * spaceBetween + 5 * text_height))
         # writen info by myself
-        msg = "He tries to keep his distance from the ship, making it hard to hit him. His missiles deal a lot of damage, but he has low HP."
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[30], text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
         sniper = pygame.image.load("assets/images/enemy/sniper/sniper.png")  # load image
         sniper = pygame.transform.scale(sniper, (int(width * 0.06), int(width * 0.08)))  # transforming image
@@ -1521,20 +1606,19 @@ def aboutgame_menu(screen, clock, cursor_group):
         # write info about ship
         text = font_name.render("STEALER", True, name_color)
         screen.blit(text, ((5 * width / 20) - text.get_width() / 2, lowest_value + 2 * spaceBetween))
-        screen.blit(font_text.render(f"HP: {Ship_param['hp']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[14]}{Ship_param['hp']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 4 * spaceBetween + text_height))
         lowest_value_firstText = lowest_value + 4 * spaceBetween + text_height  # variable for loading text in center
-        screen.blit(font_text.render(f"DMG: {Ship_param['dmg']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[16]}{Ship_param['dmg']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 5 * spaceBetween + 2 * text_height))
-        screen.blit(font_text.render(f"Acceleration: {Ship_param['acceleration']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[17]}{Ship_param['acceleration']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 6 * spaceBetween + 3 * text_height))
-        screen.blit(font_text.render(f"Speed: {Ship_param['max_velocity']}", True, text_color),
+        screen.blit(font_text.render(f"{game_text[18]}{Ship_param['max_velocity']}", True, text_color),
                     (7.5 * width / 20, lowest_value + 7 * spaceBetween + 4 * text_height))
         # writen info by myself
-        msg = "Once in a while a MedKit will appear on the screen, if the MedKit is not picked up within a few seconds the Stealer will appear and try to take the MedKit. If you pick it up in front of him, or if he picks it up, his design will change and he'll act like a Zarovka"
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, msg, text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[31], text_color, textRect, font_text, textAlignLeft, True, None)
         # load and write image
         stealer1 = pygame.image.load("assets/images/enemy/stealer/stealer1.png")  # load image
         stealer1 = pygame.transform.scale(stealer1, (int(width * 0.06), int(width * 0.08)))  # transforming image
@@ -1547,7 +1631,7 @@ def aboutgame_menu(screen, clock, cursor_group):
                 lowest_value - lowest_value_firstText) / 2 + lowest_value_firstText - stealer2.get_rect().centery))
         lowest_value += 3 * spaceBetween
         #   thank you for playing our game
-        screen.blit(font_name.render("Thank you for playing our game <3", True, (230, 230, 230)),
+        screen.blit(font_name.render(game_text[32], True, (230, 230, 230)),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
         lowest_value = lowest_value + spaceBetween * 4 + 6 * spaceBetween
         #   scroll bar
