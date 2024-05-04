@@ -180,10 +180,11 @@ def settingsMain_menu(screen, clock, cursor_group):
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
 
     #   sliders
-    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015), 0,
-                         100, percentageMusic)
+    sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
+                         min_value,
+                         max_value, percentageMusic)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                           0, 100, percentageEffects)
+                           min_value, max_value, percentageEffects)
     while True:
         mouse_pressed = False
         screen.blit(background, (0, 0))
@@ -215,10 +216,6 @@ def settingsMain_menu(screen, clock, cursor_group):
                 mouse_pressed = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pressed = False
-                ScreenSetup.music_volume = new_music_volume
-                ScreenSetup.effects_volume = new_effects_volume
-                settings["music_volume"] = new_music_volume
-                settings["effects_volume"] = new_effects_volume
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 ScreenSetup.update()
@@ -227,12 +224,10 @@ def settingsMain_menu(screen, clock, cursor_group):
 
         #   volume
         # music
-        new_music_volume = min_value + (sliderMusic.get_value_in_percent() / 100) * (max_value - min_value)
         sliderMusic.update(mouse_pressed, settings, "music_volume")
         sliderMusic.draw(screen)
 
         # effects
-        new_effects_volume = min_value + (sliderEffects.get_value_in_percent() / 100) * (max_value - min_value)
         sliderEffects.update(mouse_pressed, settings, "effects_volume")
         sliderEffects.draw(screen)
 
@@ -422,7 +417,7 @@ def main_menu(screen, clock, cursor_group):
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Play', screen,
-                                "assets/sounds/button_click.mp3", 0.3)
+                                "assets/sounds/button_click.mp3", 0.2)
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
                                       "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Scoreboard', screen,
                                       "assets/sounds/button_click.mp3", 0.2)
@@ -433,8 +428,8 @@ def main_menu(screen, clock, cursor_group):
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
-                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025,
-                                    0.025, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
+                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
+                                    0.04, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -516,8 +511,8 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Quit', screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
-                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.025,
-                                    0.025, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
+                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.4,
+                                    0.4, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
     while True:
         screen.blit(background_copy, (0, 0))
         screen.blit(surface, (0, 0))

@@ -29,6 +29,9 @@ class ScreenSetup:
     #   sound
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
+    #volume
+    button_sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")
+    button_music = pygame.mixer.Sound("assets/sounds/background_music_volume.mp3")
 
     # low health blinking
     danger_blinking = settings["danger_blinking"]
@@ -66,6 +69,7 @@ class ScreenSetup:
         cls.button_right = settings["button_right"]
         cls.button_function_1 = settings["button_function_1"]
         cls.button_function_2 = settings["button_function_2"]
+
 
     @classmethod
     def start_setup(cls):
