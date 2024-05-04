@@ -115,8 +115,8 @@
           "Rychlost střelby:",
           "Zrychlení:",
           "Rychlost: ",
-          "Dovednost Q:",
-          "Dovednost E:",
+          "Q: ",
+          "E: ",
 		  "Úhyb",
 		  "Štít",
 		  "Rychlopálka",
@@ -140,8 +140,8 @@
           "Rychlost střelby:",
           "Zrychlení:",
           "Rychlost: ",
-          "Dovednost Q:",
-          "Dovednost E:"
+          "Q: ",
+          "E: "
         ]
       },
       "pause": {
@@ -162,7 +162,7 @@
 	  "text":{
       "main_menu": {
         "title": "Menú Principal",
-        "content": ["Jugar", "Estadísticas", "Sobre el Juego", "Salir", "Banda sonora de: Karl Casey @ White Bat Audio"]
+        "content": ["Jugar", "Estadísticas", "Del Juego", "Salir", "Banda sonora de: Karl Casey @ White Bat Audio"]
       },
       "settings": {
         "title": "Ajustes",
@@ -183,15 +183,15 @@
           "Michal Lopata",
           "Tomáš Fikart",
           "Controles: ",
-          "Movimiento:         W–arriba, S–abajo, A–izquierda, D–derecha",
-          "Apuntar:              ratón (cruz de mira)",
-          "Disparar:            botón izquierdo del ratón",
-          "Habilidades Especiales:   Q y E",
-          "Pausa:            ESC",
+          "Movimiento:    W–arriba, S–abajo, A–izquierda, D–derecha",
+          "Apuntar:       ratón (cruz de mira)",
+          "Disparar:      botón izquierdo del ratón",
+          "Habilidades:   Q y E",
+          "Pausa:         ESC",
           "Naves: ",
           "Vida: ",
           "Daño:",
-          "Frecuencia de Disparo:",
+          "Velocidad de Disparo:",
           "Aceleración:",
           "Velocidad: ",
           "Habilidad Q:",
@@ -216,23 +216,23 @@
         "content": [
           "Vida: ",
           "Daño:",
-          "Frecuencia de Disparo:",
+          "Velocidad de Disparo:",
           "Aceleración:",
           "Velocidad: ",
-          "Habilidad Q:",
-          "Habilidad E:"
+          "Q: ",
+          "E: "
         ]
       },
       "pause": {
         "title": "Pausa",
-        "content": ["Continuar", "Menú Principal", "Salir"]
+        "content": ["Continuar", "Menú", "Salir"]
       },
       "game_over": {
         "title": "Fin del Juego",
-        "content": ["Puntuación:", "Guardar Nombre", "Nuevamente", "Menú Principal", "Salir"]
+        "content": ["Puntuación:", "Guardar Nombre", "Nuevamente", "Menú", "Salir"]
       },
 	  "upgrade": {
-		"content": ["Armas", "Refrigeración", "Escudo", "Regeneración", "Propulsor"]
+		"content": ["Armas", "Refrig", "Escudo", "Regeneración", "Propulsor"]
 }
     }
   },
@@ -241,7 +241,7 @@
   "text": {
     "main_menu": {
       "title": "Menu Principal",
-      "content": ["Jouer", "Statistiques", "À propos du jeu", "Quitter", "Bande son par: Karl Casey @ White Bat Audio"]
+      "content": ["Jouer", "Statistiques", "Sur le jeu", "Quitter", "Bande son par: Karl Casey @ White Bat Audio"]
     },
     "settings": {
       "title": "Paramètres",
@@ -262,11 +262,11 @@
         "Michal Lopata",
         "Tomas Fikart",
         "Contrôles",
-        "Mouvement :        W–haut, S–bas, A–gauche, D–droite",
-        "Visée :             souris (viseur)",
-        "Tir :                  bouton gauche de la souris",
-        "Compétences spéciales : Q et E",
-        "Pause :               ESC",
+        "Mouvement :     W–haut, S–bas, A–gauche, D–droite",
+        "Visée :         souris (viseur)",
+        "Tir :           bouton gauche de la souris",
+        "Compétences :   Q et E",
+        "Pause :         ESC",
         "Vaisseaux :",
         "HP : ",
         "DMG : ",
@@ -308,10 +308,10 @@
     },
     "game_over": {
       "title": "Partie Terminée",
-      "content": ["Score : ", "Nom de Sauvegarde", "Encore", "Menu Principal", "Quitter"]
+      "content": ["Score : ", "Nom Sauvegarde", "Encore", "Menu Principal", "Quitter"]
     },
     "upgrade": {
-      "content": ["Armes", "Refroidissement", "Bouclier", "Régénération", "Propulseur"]
+      "content": ["Armes", "Fraîcheur", "Bouclier", "Régénération", "Propulseur"]
     }
   }
 },
@@ -341,19 +341,19 @@
           "Michal Lopata",
           "Tomas Fikart",
           "Steuerung",
-          "Bewegung:         W–hoch, S–runter, A–links, D–rechts",
-          "Zielen:            Maus (Fadenkreuz)",
+          "Bewegung:        W–hoch, S–runter, A–links, D–rechts",
+          "Zielen:          Maus (Fadenkreuz)",
           "Schießen:        linker Mausklick",
-          "Spezialfähigkeiten:  Q und E",
-          "Pause:             ESC",
+          "Fähigkeiten:     Q und E",
+          "Pause:           ESC",
           "Schiffe: ",		  
           "HP: ",
           "Schaden: ",
           "Feuerrate: ",
           "Beschleunigung: ",
           "Geschwindigkeit: ",
-          "Q-Fähigkeit:",
-          "E-Fähigkeit:",
+          "Q: ",
+          "E: ",
 		  "Dash",
 		  "Schild",
 		  "Schnellfeuer",
@@ -377,8 +377,8 @@
           "Feuerrate: ",
           "Beschleunigung: ",
           "Geschwindigkeit: ",
-          "Q-Fähigkeit:",
-          "E-Fähigkeit:"
+          "Q: ",
+          "E: "
         ]
       },
       "pause": {

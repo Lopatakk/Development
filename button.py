@@ -170,7 +170,7 @@ class Button():
 
         return action
 
-    def draw_button_and_text(self, surface):
+    def draw_button_and_text(self, surface, center=False):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
 
@@ -226,8 +226,13 @@ class Button():
         text_rect = text.get_rect()
         image_height = rect.height  # height of image
         text_height = text.get_height() # height of text
-        text_rect.x = self.x_button + (text_height / 2)
-        text_rect.y = self.y_button - (text_height / 2) + (image_height / 2)
+
+        if center:
+            text_rect.center = rect_01.center
+        else:
+            text_rect.x = self.x_button + (text_height / 2)
+            text_rect.y = self.y_button - (text_height / 2) + (image_height / 2)
+
         # draw text on screen
         surface.blit(text, text_rect)
 

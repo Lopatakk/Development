@@ -83,7 +83,7 @@ def settings_menu(screen, clock, cursor_group, background, environment):
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
                                       "assets/sounds/button_click.mp3", 0.2)
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[3], screen,
+                                "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
 
     # percentage
@@ -127,7 +127,7 @@ def settings_menu(screen, clock, cursor_group, background, environment):
                     (3.6 * width / 20, 52 * height / 80))
 
         #   BUTTON
-        if back_button.draw_button_and_text(screen):
+        if back_button.draw_button_and_text(screen, True):
             pygame.mixer.Channel(3).stop()
             return
 
@@ -328,7 +328,7 @@ def leaderboard_menu(screen, clock, cursor_group):
         #   text "Leaderboard"
         screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
         #   BUTTON
-        if back_button.draw_button_and_text(screen):
+        if back_button.draw_button_and_text(screen, True):
             return True
         #   display the high-scores.
         screen.blit(font_scores_title.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
@@ -377,16 +377,16 @@ def main_menu(screen, clock, cursor_group):
 
     #   create button instances
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[0], screen,
+                                "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[0], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
-                                      "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[1], screen,
+                                      "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[1], screen,
                                       "assets/sounds/button_click.mp3", 0.2)
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[2], screen,
+                                     "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[2], screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[3], screen,
+                                "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[3], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
                                     "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
@@ -1093,31 +1093,36 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
 
     # text
     title, game_text = GameSetup.set_language("game_over")
+    title_surf = font_title.render(title, True, (230, 230, 230))
+    title_rect = title_surf.get_rect()
+    title_rect.centerx = GameSetup.width / 2
+    title_rect.y = 100
 
     #   create button instances
     save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[1], screen,
+                                     "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[1], screen,
                                      "assets/sounds/button_click.mp3", 0.3)
     restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
-                                   "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[2], screen,
+                                   "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[2], screen,
                                    "assets/sounds/button_click.mp3", 0.3)
     main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
-                                     "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[3], screen,
+                                     "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[3], screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.35, 0.05, 0.025, game_text[4], screen,
+                                "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[4], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound.set_volume(0.6 * GameSetup.effects_volume)
     pygame.mixer.find_channel(False).play(sound)
+
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
         #   text "Game over" and "score"
-        screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+        screen.blit(title_surf, title_rect)
         score_text = game_text[0] + str(score)
         screen.blit(font_score.render(score_text, True, (230, 230, 230)), (3.6 * width / 20, 5.7 * height / 20))
         #   button
@@ -1237,7 +1242,7 @@ def aboutgame_menu(screen, clock, cursor_group):
         mouse_pos = pygame.mouse.get_pos()
 
         #   BUTTON
-        if back_button.draw_button_and_text(screen):
+        if back_button.draw_button_and_text(screen, True):
             return True
         #   about game text
         # about game
