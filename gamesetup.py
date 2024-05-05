@@ -46,6 +46,9 @@ class GameSetup:
     button_function_1 = settings["button_function_1"]
     button_function_2 = settings["button_function_2"]
 
+    # joystick
+    joysticks = None
+
     # languages
     all_languages = ['english', 'czech', 'french', 'german', 'spanish']
     language = settings["language"]
@@ -106,3 +109,15 @@ class GameSetup:
         cls.scrap_metal_icon = pygame.transform.scale(cls.scrap_metal_icon, (64, 64))
         cls.scrap_metal_icon = pygame.Surface.convert_alpha(cls.scrap_metal_icon)
         return screen
+
+    @classmethod
+    def setup_controller(cls):
+        cls.joysticks = []
+        for event in pygame.event.get():
+            if event.type == pygame.JOYDEVICEADDED:
+                joy = pygame.joystick.Joystick(event.device_index)
+                cls.joysticks.append(joy)
+
+        for joystick in cls.joysticks:
+            joystick.init()
+

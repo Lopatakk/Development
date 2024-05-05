@@ -12,10 +12,12 @@ from enemy_spawn import EnemySpawner
 import menus
 from background import Background
 from itemspawn import ItemSpawner
+from joystick_control import Joystick
 
 # general setup
 # pygame
 pygame.init()
+pygame.joystick.init()
 
 # time
 clock = pygame.time.Clock()
@@ -61,6 +63,9 @@ cursor_group = pygame.sprite.Group()
 cursor_group.add(cursor)
 cursor_group.update()
 
+# controller
+joystick = Joystick()
+
 # sound
 pygame.mixer.set_num_channels(30)
 
@@ -73,9 +78,9 @@ while True:
     # main_menu
     while selected_number == 0:
         if game_main:
-            menus.main_menu(screen, clock, cursor_group)
+            menus.main_menu(screen, joystick, cursor, clock, cursor_group)
             # ship_menu
-            selected_number = menus.ship_menu(screen, clock, cursor_group)
+            selected_number = menus.ship_menu(screen, joystick, clock, cursor_group)
             if selected_number == 1:
                 selected_ship = PlayerLight
             elif selected_number == 2:
@@ -86,7 +91,7 @@ while True:
                 game_main = False
         else:
             # ship_menu
-            selected_number = menus.ship_menu(screen, clock, cursor_group)
+            selected_number = menus.ship_menu(screen, joystick, clock, cursor_group)
             if selected_number == 1:
                 selected_ship = PlayerLight
             elif selected_number == 2:
@@ -196,7 +201,7 @@ while True:
             overlay.fill((0, 0, 0, 170))
 
             # opening pause menu
-            if menus.pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items, installed_items):
+            if menus.pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
                 selected_number = 0
                 break
@@ -228,7 +233,7 @@ while True:
             overlay.fill((0, 0, 0, 170))
 
             # opening pause menu
-            if menus.upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
+            if menus.upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
                 selected_number = 0
                 break
@@ -269,7 +274,7 @@ while True:
             #   death_menu
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
-            if menus.death_menu(screen, clock, cursor_group, score, selected_number):
+            if menus.death_menu(screen, joystick, clock, cursor_group, score, selected_number):
                 game_main = True
             selected_number = 0
             scrap_metal_count = 0

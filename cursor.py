@@ -11,15 +11,18 @@ class Cursor(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
+        self.active = False
         # cursor
         self.cursor_image = pygame.image.load("assets/images/cursor.png")
         self.cursor_image = pygame.transform.scale_by(self.cursor_image, GameSetup.width / 960)
         self.cursor_image = pygame.Surface.convert_alpha(self.cursor_image)
+
         # crosshair
         self.crosshair_image = pygame.image.load("assets/images/crosshair.png")
         self.crosshair_image = pygame.transform.scale_by(self.crosshair_image, GameSetup.width / 960)
         self.crosshair_image = pygame.Surface.convert_alpha(self.crosshair_image)
         self.is_crosshair = False
+
         # setting up
         pygame.mouse.set_visible(False)
         self.image = self.cursor_image
@@ -30,16 +33,18 @@ class Cursor(pygame.sprite.Sprite):
         Updates the position of the cursor and crosshair
         :return: None
         """
-        if self.is_crosshair:
-            self.rect.center = pygame.mouse.get_pos()
-        else:
-            self.rect.topleft = pygame.mouse.get_pos()
+        if self.active:
+            if self.is_crosshair:
+                self.rect.center = pygame.mouse.get_pos()
+            else:
+                self.rect.topleft = pygame.mouse.get_pos()
 
     def set_cursor(self) -> None:
         """
         Sets the mouse image to the cursor
         :return: None
         """
+        self.active = True
         self.image = self.cursor_image
         self.rect = self.image.get_rect()
         self.is_crosshair = False
@@ -49,6 +54,7 @@ class Cursor(pygame.sprite.Sprite):
         Sets the mouse image to the crosshair
         :return: None
         """
+        self.active = True
         self.image = self.crosshair_image
         self.rect = self.image.get_rect()
         self.is_crosshair = True
@@ -60,6 +66,7 @@ class Cursor(pygame.sprite.Sprite):
         """
         pygame.mouse.set_visible(True)
         self.kill()
+
 
     @classmethod
     def is_cursor_in_rect(cls, rect):

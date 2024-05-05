@@ -15,7 +15,7 @@ from itemspawn import ItemSpawner
 from cursor import Cursor
 
 
-def settings_menu(screen, clock, cursor_group, background, environment):
+def settings_menu(screen, joystick, clock, cursor_group, background, environment):
     width, height = screen.get_size()
     #   fonts
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
@@ -204,7 +204,7 @@ def settings_menu(screen, clock, cursor_group, background, environment):
         clock.tick(GameSetup.fps)
         pygame.display.flip()
 
-def save_name_menu(screen, clock, cursor_group, score, ship_number):
+def save_name_menu(screen, joystick, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_info = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
@@ -296,7 +296,7 @@ def save_name_menu(screen, clock, cursor_group, score, ship_number):
         pygame.display.flip()
 
 
-def leaderboard_menu(screen, clock, cursor_group):
+def leaderboard_menu(screen, joystick, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_scores_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
@@ -356,7 +356,7 @@ def leaderboard_menu(screen, clock, cursor_group):
         pygame.display.flip()
 
 
-def main_menu(screen, clock, cursor_group):
+def main_menu(screen, joystick, cursor, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_music = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
@@ -409,31 +409,44 @@ def main_menu(screen, clock, cursor_group):
         aboutgame_button.update_text(game_text[2])
         quit_button.update_text(game_text[3])
 
-        if play_button.draw_button_and_text(screen):
+        if play_button.draw_button_and_text(screen, joystick, 0):
             return
-        if scoreboard_button.draw_button_and_text(screen):
-            leaderboard_menu(screen, clock, cursor_group)
-        if aboutgame_button.draw_button_and_text(screen):
-            aboutgame_menu(screen, clock, cursor_group)
-        if quit_button.draw_button_and_text(screen):
+        if scoreboard_button.draw_button_and_text(screen, joystick, 1):
+            leaderboard_menu(screen, joystick, clock, cursor_group)
+        if aboutgame_button.draw_button_and_text(screen, joystick, 2):
+            aboutgame_menu(screen, joystick, clock, cursor_group)
+        if quit_button.draw_button_and_text(screen, joystick, 3):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settings_menu(screen, clock, cursor_group, background, "main")
+            settings_menu(screen, joystick, clock, cursor_group, background, "main")
             title, game_text = GameSetup.set_language("main_menu")
+
         # Event handling
+        # keyboard
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
             if event.type == pygame.QUIT:
                 quit()
-        #   cursor
-        update_groups([cursor_group], screen)
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.switch_on(False)
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            joystick.switch_on(True)
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()
 
 
-def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items, installed_items):
+def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, storage_items, installed_items):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
 
@@ -525,7 +538,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
         if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settings_menu(screen, clock, cursor_group, background_copy, "pause")
+            settings_menu(screen, joystick, clock, cursor_group, background_copy, "pause")
             title, game_text = GameSetup.set_language("pause")
 
         #   closing pause  menu
@@ -538,7 +551,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
                 if over_ship:
-                    upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items)
+                    upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items)
         #   score and cursor
         render_score(screen, score, 230, 230, 230)
         update_groups([cursor_group], screen)
@@ -547,7 +560,7 @@ def pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items
         pygame.display.flip()
 
 
-def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
+def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items):
     player.update_animation()
     width, height = screen.get_size()
 
@@ -841,7 +854,7 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
                 if over_thrash_bin and picked_mark_active < len(storage_items):
                     storage_items.pop(picked_mark_active)
                 if over_ship:
-                    menu_cockpit(screen, clock, player, cursor, cursor_group)  # entering cockpit menu
+                    menu_cockpit(screen, joystick, clock, player, cursor, cursor_group)  # entering cockpit menu
 
                 # collision with storage rects
                 for i, (x, y) in enumerate(storage_buttons):
@@ -905,7 +918,7 @@ def upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, ins
         pygame.display.flip()
 
 
-def menu_cockpit(screen, clock, player, cursor, cursor_group):
+def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
     width, height = screen.get_size()
     in_minigame = False
 
@@ -1012,7 +1025,7 @@ def set_minigame():
             mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group)
 
 
-def ship_menu(screen, clock, cursor_group):
+def ship_menu(screen, joystick, clock, cursor_group):
     width, height = screen.get_size()
 
     #   surface and background
@@ -1075,7 +1088,7 @@ def ship_menu(screen, clock, cursor_group):
         pygame.display.flip()
 
 
-def death_menu(screen, clock, cursor_group, score, ship_number):
+def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_score = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
@@ -1128,7 +1141,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
         #   button
         if not save_name_clicked:
             if save_name_button.draw_button_and_text(screen):
-                save_name_clicked = save_name_menu(screen, clock, cursor_group, score, ship_number)
+                save_name_clicked = save_name_menu(screen, joystick, clock, cursor_group, score, ship_number)
                 # save_name_clicked = True
         if restart_button.draw_button_and_text(screen):
             return False
@@ -1149,7 +1162,7 @@ def death_menu(screen, clock, cursor_group, score, ship_number):
         pygame.display.flip()
 
 
-def aboutgame_menu(screen, clock, cursor_group):
+def aboutgame_menu(screen, joystick, clock, cursor_group):
     width, height = screen.get_size()
     #   variable for scroll
     record = True

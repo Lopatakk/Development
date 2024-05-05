@@ -170,7 +170,7 @@ class Button():
 
         return action
 
-    def draw_button_and_text(self, surface, center=False):
+    def draw_button_and_text(self, surface, joystick, joystick_index, center=False):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
 
@@ -187,40 +187,53 @@ class Button():
         rect_02.topleft = (self.x_button, self.y_button)  # placing topleft corner of image_02 to wanted position
         image_02_mask = pygame.mask.from_surface(image_02)  # mask from image_02
 
-        # selecting an image for interaction and display on the screen
         if not self.collision:  # image_01 is used for interaction and is displayed on screen
             surface.blit(image_01, rect_01)
             rect = rect_01
             mask = image_01_mask
             text_color = (40, 40, 40)
         else:
-            surface.blit(image_02, rect_02) # image_02 is used for interaction and is displayed on screen
+            surface.blit(image_02, rect_02)  # image_02 is used for interaction and is displayed on screen
             rect = rect_02
             mask = image_02_mask
             text_color = (0, 0, 0)
-        # collision check
-        if rect.collidepoint(mouse_x, mouse_y):
-            offset_x = mouse_x - rect.x
-            offset_y = mouse_y - rect.y
-            if mask.get_at((offset_x, offset_y)):
+        # selecting an image for interaction and display on the screen
+        if joystick.active:
+            # position check
+            if joystick.position == joystick_index:
                 self.collision = True
-                if pygame.mouse.get_pressed()[0] == 0:  # this makes it impossible to click outside the button and then hover over it and activate it without clicking
-                    self.press = True
-                if pygame.mouse.get_pressed()[0] == 1 and not self.clicked and self.press == 1:
-                    self.clicked = True
-                if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
+            else:
+                self.collision = False
+
+            # pressed check
+            if joystick.cross_button:
+                pygame.mixer.Channel(1).play(self.sound)
+                action = True
+
+        else:
+            # collision check
+            if rect.collidepoint(mouse_x, mouse_y):
+                offset_x = mouse_x - rect.x
+                offset_y = mouse_y - rect.y
+                if mask.get_at((offset_x, offset_y)):
+                    self.collision = True
+                    if pygame.mouse.get_pressed()[0] == 0:  # this makes it impossible to click outside the button and then hover over it and activate it without clicking
+                        self.press = True
+                    if pygame.mouse.get_pressed()[0] == 1 and not self.clicked and self.press == 1:
+                        self.clicked = True
+                    if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
+                        self.clicked = False
+                        self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
+                        pygame.mixer.Channel(1).play(self.sound)
+                        action = True
+                else:
+                    self.collision = False
                     self.clicked = False
-                    self.sound.set_volume(self.sound_volume * GameSetup.effects_volume)
-                    pygame.mixer.Channel(1).play(self.sound)
-                    action = True
+                    self.press = False
             else:
                 self.collision = False
                 self.clicked = False
                 self.press = False
-        else:
-            self.collision = False
-            self.clicked = False
-            self.press = False
         #   text
         text = self.font.render(self.text_to_write, True, text_color)
         text_rect = text.get_rect()
