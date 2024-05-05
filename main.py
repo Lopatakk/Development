@@ -27,7 +27,8 @@ screen = GameSetup.start_setup()
 background = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()
 background_group.add(background)
-
+overlay = None
+background_copy = None
 
 # collectable items
 scrap_metal_count = 0
@@ -94,25 +95,32 @@ while True:
                 selected_ship = PlayerTank
             if selected_number == 0:
                 game_main = True
+
     # variables for time in game + score
     time_in_game = 0
     score = 0
+
     # creating sprites/groups
     #   projectiles
     player_projectile_group = pygame.sprite.Group()
     enemy_projectile_group = pygame.sprite.Group()
+
     #   player
     player = selected_ship(player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
+
     #   enemy
     enemy_group = pygame.sprite.Group()
+
     #   items
     item_group = pygame.sprite.Group()
+
     #   item spawners
     spawner_group = pygame.sprite.Group()
     medkit_spawner = ItemSpawner(item_group, "medkit", 53, player)
     spawner_group.add(medkit_spawner)
+
     # #   enemy spawners
     zarovka_spawner = EnemySpawner(enemy_group, "zarovka", 7, player)
     tank_spawner = EnemySpawner(enemy_group, "tank", 25, player, projectile_group=enemy_projectile_group)
@@ -171,6 +179,8 @@ while True:
             # game_pause is False from start and can be changed to True by pressing "esc"
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
+
+            # update the last frame
             update_groups([background_group, player_projectile_group, enemy_projectile_group, enemy_group,
                            player_group, explosion_group], screen)
             render_hud(screen, score, scrap_metal_count, [128, 128, 128], (player.time_alive - player.last_q_use) / player.q_cooldown,
@@ -178,13 +188,19 @@ while True:
                        player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
                        player.hp / player.max_hp)
             render_enemy_health_bar(screen, enemy_group)
+
+            # pause surface
+            overlay = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+            overlay = overlay.convert_alpha()  # making surface transparent
+            background_copy = screen.copy()
+            overlay.fill((0, 0, 0, 170))
+
             # opening pause menu
             if menus.pause_menu(screen, clock, score, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
-                game_paused = False
                 selected_number = 0
                 break
-            game_paused = False
+
             # setting cursor to crosshair
             cursor.set_crosshair()
             pygame.mixer.Channel(0).unpause()
@@ -194,15 +210,59 @@ while True:
         if game_paused_upgrade:
             # game_paused_upgrade is False from start and can be changed to True by pressing "esc"
             cursor.set_cursor()
+
+            # update the last frame
+            update_groups([background_group, player_projectile_group, enemy_projectile_group, enemy_group,
+                           player_group, explosion_group], screen)
+            render_hud(screen, score, scrap_metal_count, [128, 128, 128],
+                       (player.time_alive - player.last_q_use) / player.q_cooldown,
+                       player.is_q_action_on, (player.time_alive - player.last_e_use) / player.e_cooldown,
+                       player.is_e_action_on, player.heat / player.overheat, player.is_overheated,
+                       player.hp / player.max_hp)
+            render_enemy_health_bar(screen, enemy_group)
+
+            # pause surface
+            overlay = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
+            overlay = overlay.convert_alpha()  # making surface transparent
+            background_copy = screen.copy()
+            overlay.fill((0, 0, 0, 170))
+
             # opening pause menu
             if menus.upgrade_menu(screen, clock, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
-                game_paused_upgrade = False
                 selected_number = 0
                 break
-            game_paused_upgrade = False
             # setting cursor to crosshair
             cursor.set_crosshair()
+
+        # after pause or upgrade wait for player to make a move
+        while game_paused or game_paused_upgrade:
+            # pressing any button resumes the game
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    game_paused = False
+                    game_paused_upgrade = False
+
+            # render background
+            screen.blit(background_copy, (0, 0))
+            screen.blit(overlay, (0, 0))
+
+            # render text
+            pause_font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
+            title, text = GameSetup.set_language('pause')
+            font_to_render = pause_font.render(text[3], True, (230, 230, 230))
+            font_rect = font_to_render.get_rect()
+            font_rect.centerx = GameSetup.width // 2
+            font_rect.centery = GameSetup.height // 2
+            screen.blit(font_to_render, font_rect)
+
+            # locking the mouse cursor on the last position and render
+            mouse_pos = pygame.mouse.get_pos()
+            pygame.mouse.set_pos(mouse_pos)
+            update_groups([cursor_group], screen)
+
+            clock.tick(GameSetup.fps)
+            pygame.display.flip()
 
         # player death
         if not player_group and not explosion_group:
@@ -214,6 +274,7 @@ while True:
             selected_number = 0
             scrap_metal_count = 0
             break
+
 
         # rendering/update
         #   groups
