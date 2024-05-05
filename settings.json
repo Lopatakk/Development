@@ -1,6 +1,6 @@
 {
-    "music_volume": 0.8463719007703994,
-    "effects_volume": 1.4094850073920355,
+    "music_volume": 0.4608189646402996,
+    "effects_volume": 0.8468487379286025,
     "danger_blinking": false,
     "button_up": 119,
     "button_down": 115,
@@ -8,5 +8,5 @@
     "button_right": 100,
     "button_function_1": 113,
     "button_function_2": 101,
-    "language": "french"
+    "language": "english"
 }

@@ -49,13 +49,13 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         flag_width = int(flag_surf.get_width() * 0.6)
         flag_height = int(flag_surf.get_height() * 0.6)
         flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
-        flag_rect = pygame.rect.Rect(1400, 30 + (flag_offset_y + flag_height) * i, flag_width, flag_height)
+        flag_rect = pygame.rect.Rect(1400, 30 + (flag_offset_y / 2 + flag_height) * i, flag_width, flag_height)
         flags_images.append(flag_surf)
         flag_rects.append(flag_rect)
 
     # flags background
     background_flag_width = flag_width + flag_offset_x
-    background_flag_height = len(flags_images) * (flag_height + flag_offset_y)
+    background_flag_height = len(flags_images) * (flag_offset_y / 2 + flag_height) + flag_offset_y / 2
     flag_background = pygame.Surface((int(background_flag_width), int(background_flag_height)))
     flag_background.set_alpha(50)
     flag_background.fill('gray')
@@ -127,8 +127,9 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 else:
                     screen.blit(flags_images[i], flag_rects[i])
         else:
+            language_index = GameSetup.all_languages.index(GameSetup.language)
             if flag_rects[0].collidepoint(mouse_pos):
-                flag_surf = flags_images[0]
+                flag_surf = flags_images[language_index]
                 flag_width = int(flag_surf.get_width() * 1.3)
                 flag_height = int(flag_surf.get_height() * 1.3)
                 flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
@@ -136,7 +137,6 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 flag_rect.center = flag_rects[0].center
                 screen.blit(flag_surf, flag_rect)
             else:
-                language_index = GameSetup.all_languages.index(GameSetup.language)
                 screen.blit(flags_images[language_index], flag_rects[0])
 
         # text "Settings"
@@ -232,7 +232,6 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
 
         if joystick.active:
             cursor.active = False
-
             action = joystick.menu_control(buttons_num)
             if on_language:
                 flag_surf = flags_images[joystick.position]
@@ -255,6 +254,15 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 elif action == 'exit':
                     on_language = False
             else:
+                if joystick.position == 0:
+                    language_index = GameSetup.all_languages.index(GameSetup.language)
+                    flag_surf = flags_images[language_index]
+                    flag_width = int(flag_surf.get_width() * 1.3)
+                    flag_height = int(flag_surf.get_height() * 1.3)
+                    flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
+                    flag_rect = flag_surf.get_rect()
+                    flag_rect.center = flag_rects[0].center
+                    screen.blit(flag_surf, flag_rect)
                 if action == 'enter':
                     if joystick.position == 0:
                         on_language = True
@@ -1237,7 +1245,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
         if joystick.active:
             cursor.active = False
 
-            action = joystick.menu_control(buttons_num, 'vertical')
+            action = joystick.menu_control(buttons_num, 'horizontal')
             if action == 'enter':
                 return joystick.position + 1
 

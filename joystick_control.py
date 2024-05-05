@@ -61,7 +61,7 @@ class Joystick:
                     abs(self.right_joystick[0]) >= 0.1 or abs(self.right_joystick[1]) >= 0.1 or self.L2 > -1 or self.R2 > -1):
                 self.active = True
 
-    def menu_control(self, buttons_num, axis='horizontal'):
+    def menu_control(self, buttons_num, axis='vertical'):
         if not self.sliding:
             if self.circle_button:
                 self.circle_button_pressed = True
@@ -79,7 +79,7 @@ class Joystick:
                 return 'settings'
 
             # button movement
-            if axis == 'horizontal':
+            if axis == 'vertical':
                 if self.left_joystick[1] > 0.2 or self.arrow_down:
                     self.direction = 1
                 if self.left_joystick[1] < -0.2 or self.arrow_up:
@@ -93,7 +93,7 @@ class Joystick:
 
                     self.direction = 0
 
-            if axis == 'vertical':
+            if axis == 'horizontal':
                 if self.left_joystick[0] > 0.5 or self.arrow_right:
                     self.direction = 1
                 if self.left_joystick[0] < -0.5 or self.arrow_left:
