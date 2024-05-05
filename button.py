@@ -188,7 +188,7 @@ class Button:
 
         return action
 
-    def draw_button_and_text(self, surface, center=False):
+    def draw_button_and_text(self, surface, center=False, on_language=False):
         action = False
         mouse_x, mouse_y = pygame.mouse.get_pos()  # get mouse position
 
@@ -219,7 +219,7 @@ class Button:
         # selecting an image for interaction and display on the screen
         if self.joystick.active:
             # position check
-            if self.joystick.position == self.joystick_index:
+            if self.joystick.position == self.joystick_index and not on_language:
                 self.collision = True
             else:
                 self.collision = False

@@ -42,12 +42,12 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     flag_width = 0
     flag_height = 0
     on_language = False
-    flag_offset_x = 20
-    flag_offset_y = 20
+    flag_offset_x = 35
+    flag_offset_y = 30
     for i, flag in enumerate(flags):
         flag_surf = pygame.image.load(f"assets/images/languages/{flag}.png").convert_alpha()
-        flag_width = int(flag_surf.get_width() * 0.8)
-        flag_height = int(flag_surf.get_height() * 0.8)
+        flag_width = int(flag_surf.get_width() * 0.6)
+        flag_height = int(flag_surf.get_height() * 0.6)
         flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
         flag_rect = pygame.rect.Rect(1400, 30 + (flag_offset_y + flag_height) * i, flag_width, flag_height)
         flags_images.append(flag_surf)
@@ -60,7 +60,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     flag_background.set_alpha(50)
     flag_background.fill('gray')
     flag_background_rect = flag_background.get_rect()
-    flag_background_rect.x = 1400 - flag_offset_y / 2
+    flag_background_rect.x = 1400 - flag_offset_x / 2
     flag_background_rect.y = 30 - flag_offset_y / 2
 
     #   volume
@@ -81,25 +81,25 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    buttons_num = 4
+    buttons_num = 5
     danger_button_on = button.Button(width / 6, height / 1.4, "assets/images/switch_on0.png",
                                      "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
-                                     sound, sound_volume, joystick, 2)
+                                     sound, sound_volume, joystick, 3)
     danger_button_off = button.Button(width / 6, height / 1.4, "assets/images/switch_off0.png",
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
-                                      sound, sound_volume, joystick, 2)
+                                      sound, sound_volume, joystick, 3)
     back_button = button.Button(0.8 * width, 7 / 8 * height, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
-                                sound, sound_volume, joystick, 3)
+                                sound, sound_volume, joystick, 4)
 
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
     #   sliders
     sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                         min_value, max_value, percentageMusic, joystick, 0)
+                         min_value, max_value, percentageMusic, joystick, 1)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                           min_value, max_value, percentageEffects, joystick, 1)
+                           min_value, max_value, percentageEffects, joystick, 2)
 
     while True:
         mouse_pressed = False
@@ -115,11 +115,29 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         # render languages
         if on_language:
             screen.blit(flag_background, flag_background_rect)
-            for i, flag in enumerate(flags_images):
-                screen.blit(flag, flag_rects[i])
+            for i, rect in enumerate(flag_rects):
+                if rect.collidepoint(mouse_pos):
+                    flag_surf = flags_images[i]
+                    flag_width = int(flag_surf.get_width() * 1.3)
+                    flag_height = int(flag_surf.get_height() * 1.3)
+                    flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
+                    flag_rect = flag_surf.get_rect()
+                    flag_rect.center = rect.center
+                    screen.blit(flag_surf, flag_rect)
+                else:
+                    screen.blit(flags_images[i], flag_rects[i])
         else:
-            language_index = GameSetup.all_languages.index(GameSetup.language)
-            screen.blit(flags_images[language_index], flag_rects[0])
+            if flag_rects[0].collidepoint(mouse_pos):
+                flag_surf = flags_images[0]
+                flag_width = int(flag_surf.get_width() * 1.3)
+                flag_height = int(flag_surf.get_height() * 1.3)
+                flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
+                flag_rect = flag_surf.get_rect()
+                flag_rect.center = flag_rects[0].center
+                screen.blit(flag_surf, flag_rect)
+            else:
+                language_index = GameSetup.all_languages.index(GameSetup.language)
+                screen.blit(flags_images[language_index], flag_rects[0])
 
         # text "Settings"
         screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
@@ -133,7 +151,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                     (3.6 * width / 20, 52 * height / 80))
 
         #   BUTTON
-        if back_button.draw_button_and_text(screen, True):
+        if back_button.draw_button_and_text(screen, True, on_language):
             pygame.mixer.Channel(3).stop()
             return
 
@@ -177,37 +195,37 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 cursor.active = True
 
         if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
+            if danger_button_on.draw_button_and_text(screen, False, on_language):
                 settings["danger_blinking"] = False
                 danger_blinking = False
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
         else:
-            if danger_button_off.draw_button_and_text(screen):
+            if danger_button_off.draw_button_and_text(screen, False, on_language):
                 settings["danger_blinking"] = True
                 danger_blinking = True
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
+
+        if danger_blinking:
+            if danger_button_on.draw_button_and_text(screen, False, on_language):
+                settings["danger_blinking"] = False
+                danger_blinking = False
+        else:
+            if danger_button_off.draw_button_and_text(screen, False, on_language):
+                settings["danger_blinking"] = True
+                danger_blinking = True
 
         #   volume
         # music
-        sliderMusic.update(mouse_pressed, settings, "music_volume")
-        sliderMusic.draw(screen)
+        sliderMusic.update(settings, "music_volume", on_language)
+        sliderMusic.draw(screen, on_language)
 
         # effects
-        sliderEffects.update(mouse_pressed, settings, "effects_volume")
-        sliderEffects.draw(screen)
-
-        if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
-                settings["danger_blinking"] = False
-                danger_blinking = False
-        else:
-            if danger_button_off.draw_button_and_text(screen):
-                settings["danger_blinking"] = True
-                danger_blinking = True
+        sliderEffects.update(settings, "effects_volume", on_language)
+        sliderEffects.draw(screen, on_language)
 
         # controller
         joystick.update()
@@ -216,20 +234,47 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
             cursor.active = False
 
             action = joystick.menu_control(buttons_num)
-            if action == 'enter':
-                if joystick.position == 3:
+            if on_language:
+                flag_surf = flags_images[joystick.position]
+                flag_width = int(flag_surf.get_width() * 1.3)
+                flag_height = int(flag_surf.get_height() * 1.3)
+                flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
+                flag_rect = flag_surf.get_rect()
+                flag_rect.center = flag_rects[joystick.position].center
+                screen.blit(flag_surf, flag_rect)
+
+                if action == 'enter':
+                    GameSetup.language = GameSetup.all_languages[joystick.position]
+                    on_language = False
+                    title, game_text = GameSetup.set_language("settings")
+                    settings["language"] = GameSetup.language
+                    with open("settings.json", "w") as settings_file:
+                        json.dump(settings, settings_file, indent=4)
+                    on_language = False
+
+                elif action == 'exit':
+                    on_language = False
+            else:
+                if action == 'enter':
+                    if joystick.position == 0:
+                        on_language = True
+
+                    if joystick.position == 4:
+                        pygame.mixer.Channel(3).stop()
+                        sound.set_volume(sound_volume * GameSetup.effects_volume)
+                        pygame.mixer.Channel(1).play(sound)
+                        return
+
+                elif action == 'exit':
                     pygame.mixer.Channel(3).stop()
+                    sound.set_volume(sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(sound)
                     return
-
-            elif action == 'exit':
-                pygame.mixer.Channel(3).stop()
-                pygame.mixer.Channel(1).play(sound)
-                return
         else:
             # cursor
             cursor.active = True
             update_groups([cursor_group], screen)
+
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()
@@ -407,6 +452,7 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
 
             action = joystick.menu_control(buttons_num)
             if action == 'exit' or action == 'enter':
+                sound.set_volume(sound_volume * GameSetup.effects_volume)
                 pygame.mixer.Channel(1).play(sound)
                 return
 
@@ -509,6 +555,7 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
 
             action = joystick.menu_control(buttons_num)
             if action == 'settings':
+                sound.set_volume(sound_volume * GameSetup.effects_volume)
                 pygame.mixer.Channel(1).play(sound)
                 settings_menu(screen, joystick, cursor, clock, cursor_group, background, "main")
                 title, game_text = GameSetup.set_language("main_menu")
@@ -1177,6 +1224,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    sound.set_volume(sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(sound)
                     return 0
             elif event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
@@ -1194,6 +1242,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
                 return joystick.position + 1
 
             elif action == 'exit':
+                sound.set_volume(sound_volume * GameSetup.effects_volume)
                 pygame.mixer.Channel(1).play(sound)
                 return 0
 
@@ -1855,6 +1904,7 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                sound.set_volume(sound_volume * GameSetup.effects_volume)
                 pygame.mixer.Channel(1).play(sound)
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
@@ -1871,6 +1921,7 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
 
             action = joystick.menu_control(buttons_num)
             if action == 'exit' or action == 'enter':
+                sound.set_volume(sound_volume * GameSetup.effects_volume)
                 pygame.mixer.Channel(1).play(sound)
                 return
 
