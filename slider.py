@@ -35,7 +35,7 @@ class Slider:
         self.button_rect.centery = self.y + self.height/2
 
         if self.joystick.active:
-            if self.joystick.position == self.joystick_index and not on_language:
+            if self.joystick.position[1] == self.joystick_index and not on_language:
                 screen.blit(self.button1, self.button_rect)
             else:
                 screen.blit(self.button0, self.button_rect)
@@ -49,7 +49,7 @@ class Slider:
         print(self.value)
         scroll = float(self.button_rect.centerx)
         if self.joystick.active and not on_language:
-            if self.joystick.position == self.joystick_index:
+            if self.joystick.position[1] == self.joystick_index:
                 if abs(self.joystick.left_joystick[0]) > 0.2:
                     # if sliding, cannot move buttons
                     increment = 10 * self.joystick.left_joystick[0]

@@ -7,10 +7,10 @@ class Joystick:
         GameSetup.setup_controller()
 
         self.active = False
-        self.position = 0
-        self.direction = 0
+        self.position = (0, 0)
+        self.vertical_direction = 0
+        self.horizontal_direction = 0
         self.sliding = False
-
         # joysticks
         self.left_joystick = (0, 0)
         self.right_joystick = (0, 0)
@@ -26,11 +26,15 @@ class Joystick:
         self.square_button_pressed = False
         self.triangle_button = False
         self.triangle_button_pressed = False
+        self.options_button = False
+        self.options_button_pressed = False
         self.arrow_up = False
         self.arrow_down = False
         self.arrow_left = False
         self.arrow_right = False
-        self.options_button = False
+
+    def set_position(self, horizontal, vertical):
+        self.position = (horizontal, vertical)
 
     def update(self):
         for joystick in GameSetup.joysticks:
@@ -61,50 +65,60 @@ class Joystick:
                     abs(self.right_joystick[0]) >= 0.1 or abs(self.right_joystick[1]) >= 0.1 or self.L2 > -1 or self.R2 > -1):
                 self.active = True
 
-    def menu_control(self, buttons_num, axis='vertical'):
+    def menu_control(self, max_horizontals, max_verticals):
         if not self.sliding:
-            if self.circle_button:
-                self.circle_button_pressed = True
-            if not self.circle_button and self.circle_button_pressed:
-                self.circle_button_pressed = False
-                return 'exit'
 
-            if self.cross_button:
-                self.cross_button_pressed = True
-            if not self.cross_button and self.cross_button_pressed:
-                self.cross_button_pressed = False
-                return 'enter'
+            horizontal_position = self.position[0]
+            vertical_position = self.position[1]
 
-            if self.options_button:
-                return 'settings'
+            #   button movement
+            # vertical
+            if self.left_joystick[1] > 0.5 or self.arrow_down:
+                self.vertical_direction = 1
+            if self.left_joystick[1] < -0.5 or self.arrow_up:
+                self.vertical_direction = -1
+            if -0.5 <= self.left_joystick[1] <= 0.5 and not self.arrow_up and not self.arrow_down:
+                vertical_position += self.vertical_direction
+                if vertical_position >= max_verticals:
+                    vertical_position = 0
+                if vertical_position <= -1:
+                    vertical_position = max_verticals - 1
 
-            # button movement
-            if axis == 'vertical':
-                if self.left_joystick[1] > 0.2 or self.arrow_down:
-                    self.direction = 1
-                if self.left_joystick[1] < -0.2 or self.arrow_up:
-                    self.direction = -1
-                if -0.2 <= self.left_joystick[1] <= 0.2 and not self.arrow_up and not self.arrow_down:
-                    self.position += self.direction
-                    if self.position >= buttons_num:
-                        self.position = 0
-                    if self.position <= -1:
-                        self.position = buttons_num - 1
+                self.vertical_direction = 0
 
-                    self.direction = 0
+            # horizontal
+            if self.left_joystick[0] > 0.5 or self.arrow_right:
+                self.horizontal_direction = 1
+            if self.left_joystick[0] < -0.5 or self.arrow_left:
+                self.horizontal_direction = -1
+            if -0.5 <= self.left_joystick[0] <= 0.5 and not self.arrow_left and not self.arrow_right:
+                horizontal_position += self.horizontal_direction
+                if horizontal_position >= max_horizontals:
+                    horizontal_position = 0
+                if horizontal_position <= -1:
+                    horizontal_position = max_horizontals - 1
 
-            if axis == 'horizontal':
-                if self.left_joystick[0] > 0.5 or self.arrow_right:
-                    self.direction = 1
-                if self.left_joystick[0] < -0.5 or self.arrow_left:
-                    self.direction = -1
-                if -0.5 <= self.left_joystick[0] <= 0.5 and not self.arrow_left and not self.arrow_right:
-                    self.position += self.direction
-                    if self.position >= buttons_num:
-                        self.position = 0
-                    if self.position <= -1:
-                        self.position = buttons_num - 1
+                self.horizontal_direction = 0
+            self.position = (horizontal_position, vertical_position)
 
-                    self.direction = 0
-
+            return self.control_buttons()
         return True
+
+    def control_buttons(self):
+        if self.circle_button:
+            self.circle_button_pressed = True
+        if not self.circle_button and self.circle_button_pressed:
+            self.circle_button_pressed = False
+            return 'exit'
+
+        if self.cross_button:
+            self.cross_button_pressed = True
+        if not self.cross_button and self.cross_button_pressed:
+            self.cross_button_pressed = False
+            return 'enter'
+
+        if self.options_button:
+            self.options_button_pressed = True
+        if not self.options_button and self.options_button_pressed:
+            self.options_button_pressed = False
+            return 'settings'

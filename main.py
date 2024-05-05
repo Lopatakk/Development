@@ -34,12 +34,12 @@ background_copy = None
 
 # collectable items
 scrap_metal_count = 0
-# upgrade = ShipUpgrade((0, 0), 'booster', True)
-# upgrade1 = ShipUpgrade((0, 0), 'repair_module', True)
-# upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
-# upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
-# storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
-storage_items = []
+upgrade = ShipUpgrade((0, 0), 'booster', True)
+upgrade1 = ShipUpgrade((0, 0), 'booster', True)
+upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
+upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
+storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
+# storage_items = []
 installed_items = {
     "weapons": None,
     "cooling": None,
@@ -54,6 +54,7 @@ font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
 # variables for menus
 selected_number = 0
 game_paused = False
+waiting_for_player = False
 game_paused_upgrade = False
 game_main = True
 
@@ -151,7 +152,7 @@ while True:
     pygame.mixer.Channel(0).play(background_music, 3)
 
     # setting
-    storage_items = []
+    # storage_items = []
     installed_items = {
         "weapons": None,
         "cooling": None,
@@ -178,6 +179,18 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.control_buttons()
+            if action == 'settings':
+                game_paused = True
+        # controller
+        joystick.update()
 
         # pause menu
         if game_paused:
@@ -204,7 +217,10 @@ while True:
             if menus.pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
                 selected_number = 0
+                game_paused = False
                 break
+            game_paused = False
+            waiting_for_player = True
 
             # setting cursor to crosshair
             cursor.set_crosshair()
@@ -233,21 +249,19 @@ while True:
             overlay.fill((0, 0, 0, 170))
 
             # opening pause menu
-            if menus.upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items):
-                game_main = True
-                selected_number = 0
-                break
+            menus.upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items)
+            game_paused_upgrade = False
+            waiting_for_player = True
+
             # setting cursor to crosshair
             cursor.set_crosshair()
 
         # after pause or upgrade wait for player to make a move
-        while game_paused or game_paused_upgrade:
+        while waiting_for_player:
             # pressing any button resumes the game
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                    game_paused = False
-                    game_paused_upgrade = False
-
+                    waiting_for_player = False
             # render background
             screen.blit(background_copy, (0, 0))
             screen.blit(overlay, (0, 0))
