@@ -15,7 +15,7 @@ from itemspawn import ItemSpawner
 from cursor import Cursor
 
 
-def settings_menu(screen, joystick, clock, cursor_group, background, environment):
+def settings_menu(screen, joystick, cursor, clock, cursor_group, background, environment):
     width, height = screen.get_size()
     #   fonts
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
@@ -76,13 +76,14 @@ def settings_menu(screen, joystick, clock, cursor_group, background, environment
     title, game_text = GameSetup.set_language("settings")
 
     #   create button instances
-    danger_button_on = button.Button(255, 620, "assets/images/switch_on0.png",
+    buttons_num = 4
+    danger_button_on = button.Button(width / 6, height/ 1.4, "assets/images/switch_on0.png",
                                      "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
                                      "assets/sounds/button_click.mp3", 0.2)
     danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
                                       "assets/sounds/button_click.mp3", 0.2)
-    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+    back_button = button.Button(0.8 * width, 7/8 * height, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
 
@@ -127,7 +128,7 @@ def settings_menu(screen, joystick, clock, cursor_group, background, environment
                     (3.6 * width / 20, 52 * height / 80))
 
         #   BUTTON
-        if back_button.draw_button_and_text(screen, True):
+        if back_button.draw_button_and_text(screen, joystick, 3, True):
             pygame.mixer.Channel(3).stop()
             return
 
@@ -163,17 +164,38 @@ def settings_menu(screen, joystick, clock, cursor_group, background, environment
                         on_language = True
 
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
+                pygame.mixer.Channel(3).stop()
+                return
+
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num)
+
+
+            if not action:
                 quit()
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
+            if danger_button_on.draw_button_and_text(screen, joystick, 2):
                 settings["danger_blinking"] = False
                 danger_blinking = False
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
         else:
-            if danger_button_off.draw_button_and_text(screen):
+            if danger_button_off.draw_button_and_text(screen, joystick, 2):
                 settings["danger_blinking"] = True
                 danger_blinking = True
                 with open("settings.json", "w") as settings_file:
@@ -190,19 +212,17 @@ def settings_menu(screen, joystick, clock, cursor_group, background, environment
         sliderEffects.draw(screen)
 
         if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen):
+            if danger_button_on.draw_button_and_text(screen, joystick, 2):
                 settings["danger_blinking"] = False
                 danger_blinking = False
         else:
-            if danger_button_off.draw_button_and_text(screen):
+            if danger_button_off.draw_button_and_text(screen, joystick, 2):
                 settings["danger_blinking"] = True
                 danger_blinking = True
 
-        # cursor
-        update_groups([cursor_group], screen)
-
         clock.tick(GameSetup.fps)
         pygame.display.flip()
+
 
 def save_name_menu(screen, joystick, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
@@ -376,6 +396,7 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
     title, game_text = GameSetup.set_language("main_menu")
 
     #   create button instances
+    buttons_num = 4
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[0], screen,
                                 "assets/sounds/button_click.mp3", 0.2)
@@ -418,7 +439,7 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
         if quit_button.draw_button_and_text(screen, joystick, 3):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settings_menu(screen, joystick, clock, cursor_group, background, "main")
+            settings_menu(screen, joystick, cursor, clock, cursor_group, background, "main")
             title, game_text = GameSetup.set_language("main_menu")
 
         # Event handling
@@ -429,14 +450,22 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
             if event.type == pygame.QUIT:
                 quit()
             if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
-                joystick.switch_on(False)
+                joystick.active = False
                 cursor.active = True
 
         # controller
         joystick.update()
 
         if joystick.active:
-            joystick.switch_on(True)
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num)
+            if action == 'settings':
+                settings_menu(screen, joystick, cursor, clock, cursor_group, background, "main")
+                title, game_text = GameSetup.set_language("main_menu")
+
+            elif not action:
+                quit()
         else:
             # cursor
             cursor.active = True
@@ -538,7 +567,7 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
         if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
-            settings_menu(screen, joystick, clock, cursor_group, background_copy, "pause")
+            settings_menu(screen, joystick, cursor, clock, cursor_group, background_copy, "pause")
             title, game_text = GameSetup.set_language("pause")
 
         #   closing pause  menu

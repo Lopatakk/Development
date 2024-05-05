@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 
 # screen
 screen = GameSetup.start_setup()
-# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
+screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 background = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()

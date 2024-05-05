@@ -187,16 +187,16 @@ class Button():
         rect_02.topleft = (self.x_button, self.y_button)  # placing topleft corner of image_02 to wanted position
         image_02_mask = pygame.mask.from_surface(image_02)  # mask from image_02
 
-        if not self.collision:  # image_01 is used for interaction and is displayed on screen
-            surface.blit(image_01, rect_01)
-            rect = rect_01
-            mask = image_01_mask
-            text_color = (40, 40, 40)
-        else:
-            surface.blit(image_02, rect_02)  # image_02 is used for interaction and is displayed on screen
+        if self.collision:
+            surface.blit(image_02, rect_02)   # image_02 is used for interaction and is displayed on screen
             rect = rect_02
             mask = image_02_mask
             text_color = (0, 0, 0)
+        else:
+            surface.blit(image_01, rect_01)   # image_01 is used for interaction and is displayed on screen
+            rect = rect_01
+            mask = image_01_mask
+            text_color = (40, 40, 40)
         # selecting an image for interaction and display on the screen
         if joystick.active:
             # position check
@@ -238,7 +238,7 @@ class Button():
         text = self.font.render(self.text_to_write, True, text_color)
         text_rect = text.get_rect()
         image_height = rect.height  # height of image
-        text_height = text.get_height() # height of text
+        text_height = text.get_height()  # height of text
 
         if center:
             text_rect.center = rect_01.center
