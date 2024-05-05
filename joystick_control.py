@@ -8,9 +8,11 @@ class Joystick:
 
         self.active = False
         self.position = (0, 0)
+        self.last_position = (0, 0)
         self.vertical_direction = 0
         self.horizontal_direction = 0
         self.sliding = False
+
         # joysticks
         self.left_joystick = (0, 0)
         self.right_joystick = (0, 0)
@@ -34,6 +36,7 @@ class Joystick:
         self.arrow_right = False
 
     def set_position(self, horizontal, vertical):
+        self.last_position = self.position
         self.position = (horizontal, vertical)
 
     def update(self):
@@ -50,6 +53,8 @@ class Joystick:
             # buttons
             self.cross_button = joystick.get_button(0)
             self.circle_button = joystick.get_button(1)
+            self.square_button = joystick.get_button(2)
+            self.triangle_button = joystick.get_button(3)
             self.options_button = joystick.get_button(6)
             self.arrow_up = joystick.get_button(11)
             self.arrow_down = joystick.get_button(12)
@@ -99,6 +104,8 @@ class Joystick:
                     horizontal_position = max_horizontals - 1
 
                 self.horizontal_direction = 0
+
+            self.last_position = self.position
             self.position = (horizontal_position, vertical_position)
 
             return self.control_buttons()
@@ -122,3 +129,16 @@ class Joystick:
         if not self.options_button and self.options_button_pressed:
             self.options_button_pressed = False
             return 'settings'
+
+        if self.triangle_button:
+            self.triangle_button_pressed = True
+        if not self.triangle_button and self.triangle_button_pressed:
+            self.triangle_button_pressed = False
+            return 'triangle'
+
+        if self.square_button:
+            self.square_button_pressed = True
+        if not self.square_button and self.square_button_pressed:
+            self.square_button_pressed = False
+            return 'square'
+

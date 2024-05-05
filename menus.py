@@ -745,7 +745,8 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
                     upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_items, installed_items)
 
             elif action == 'exit':
-                quit()
+                pygame.mixer.Channel(1).play(sound)
+                return False
 
             if action == 'settings':
                 pass
@@ -816,7 +817,7 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
 
     # picked mark
     picked_mark = pygame.image.load("assets/images/picked_mark.png").convert_alpha()
-    picked_mark_active = 0
+    picked_mark_active = 1
 
     # ship
     ship_surf = player.build_ship(player.type)
@@ -1066,55 +1067,56 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
                 return False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
                 quit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # collision with thrash bin
                 if over_thrash_bin and picked_mark_active <= len(storage_items):
                     storage_items.pop(picked_mark_active - 1)
                 if over_ship:
                     menu_cockpit(screen, joystick, clock, player, cursor, cursor_group)  # entering cockpit menu
 
-                    # collision with storage rects
-                    for i, (x, y) in enumerate(storage_buttons):
-                        rect = pygame.Rect(x, y, 260, 260)
-                        if rect.collidepoint(mouse_pos):
-                            picked_mark_active = i - 1
-                            break
+                # collision with storage rects
+                for i, (x, y) in enumerate(storage_buttons):
+                    rect = pygame.Rect(x, y, 260, 260)
+                    if rect.collidepoint(mouse_pos):
+                        picked_mark_active = i + 1
+                        break
 
-                    # collision with module rects
-                    for module, (x, y, active) in module_buttons.items():
-                        rect = pygame.Rect(x, y, 260, 260)
-                        if rect.collidepoint(mouse_pos):
-                            if picked_mark_active <= len(storage_items):
-                                if storage_items[picked_mark_active - 1].upgradable:
-                                    if installed_items[module]:
-                                        if player.ship_parts[module] + 1 <= max_level:
-                                            installed_items[module].level_up()
-                                            player.ship_parts[module] += 1
-                                            storage_items.pop(picked_mark_active - 1)
-                                        else:
-                                            storage_items.append(installed_items[module])
-                                            installed_items[module] = None
-                                            player.ship_parts[module] = 0
+                # collision with module rects
+                for module, (x, y, active) in module_buttons.items():
+                    rect = pygame.Rect(x, y, 260, 260)
+                    if rect.collidepoint(mouse_pos):
+                        if picked_mark_active <= len(storage_items):
+                            if storage_items[picked_mark_active - 1].upgradable:
+                                if installed_items[module]:
+                                    if player.ship_parts[module] + 1 <= max_level:
+                                        installed_items[module].level_up()
+                                        player.ship_parts[module] += 1
+                                        storage_items.pop(picked_mark_active - 1)
                                     else:
-                                        if module == storage_items[picked_mark_active - 1].upgrade_type:
-                                            player.ship_parts[module] += 1
-                                            installed_items[module] = ShipUpgrade((0, 0), module, False)
-                                            storage_items.pop(picked_mark_active - 1)
-                                else:
-                                    if installed_items[module]:
                                         storage_items.append(installed_items[module])
                                         installed_items[module] = None
                                         player.ship_parts[module] = 0
-                                    else:
-                                        if picked_mark_active - 1 <= len(storage_items):
-                                            if module == storage_items[picked_mark_active - 1].upgrade_type:
-                                                installed_items[module] = storage_items[picked_mark_active - 1]
-                                                player.ship_parts[module] = installed_items[module].level
-                                                storage_items.pop(picked_mark_active - 1)
+                                else:
+                                    if module == storage_items[picked_mark_active - 1].upgrade_type:
+                                        player.ship_parts[module] += 1
+                                        installed_items[module] = ShipUpgrade((0, 0), module, False)
+                                        storage_items.pop(picked_mark_active - 1)
                             else:
                                 if installed_items[module]:
                                     storage_items.append(installed_items[module])
                                     installed_items[module] = None
                                     player.ship_parts[module] = 0
+                                else:
+                                    if picked_mark_active - 1 <= len(storage_items):
+                                        if module == storage_items[picked_mark_active - 1].upgrade_type:
+                                            installed_items[module] = storage_items[picked_mark_active - 1]
+                                            player.ship_parts[module] = installed_items[module].level
+                                            storage_items.pop(picked_mark_active - 1)
+                        else:
+                            if installed_items[module]:
+                                storage_items.append(installed_items[module])
+                                installed_items[module] = None
+                                player.ship_parts[module] = 0
 
                 player.image_non_rot_orig = player.build_ship(player.type)
                 player.image_non_rot_orig = pygame.transform.scale_by(player.image_non_rot_orig, player.img_scale_ratio)
@@ -1128,16 +1130,63 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
             if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
                 joystick.active = False
                 cursor.active = True
-                over_ship = False
 
         # controller
         joystick.update()
 
         if joystick.active:
             cursor.active = False
-
             action = joystick.menu_control(5, 3)
+
+            # finding the correct mark
+            if joystick.position[0] >= 3:
+                if joystick.position == (3, 0):
+                    picked_mark_active = 1
+                elif joystick.position == (3, 1):
+                    picked_mark_active = 3
+                elif joystick.position == (4, 0):
+                    picked_mark_active = 2
+                elif joystick.position == (4, 1):
+                    picked_mark_active = 4
+                elif joystick.position == (3, 2):
+                    joystick.position = (3, 0)
+                elif joystick.position == (4, 2):
+                    joystick.position = (4, 0)
+            else:
+                if joystick.position == (0, 0):
+                    picked_mark_active = -1
+                elif joystick.position == (0, 1):
+                    picked_mark_active = -3
+                elif joystick.position == (0, 2):
+                    if joystick.last_position == (0, 1):
+                        joystick.position = (1, 2)
+                    else:
+                        joystick.position = (0, 1)
+                elif joystick.position == (2, 2):
+                    if joystick.last_position == (2, 1):
+                        joystick.position = (1, 2)
+                    else:
+                        joystick.position = (2, 1)
+                elif joystick.position[1] == 2:
+                    picked_mark_active = -5
+                    joystick.set_position(1, 2)
+                elif joystick.position[0] == 1:
+                    if joystick.position[1] == 1 and joystick.last_position[1] == 0:
+                        joystick.set_position(1, 2)
+                    else:
+                        over_ship = True
+                        picked_mark_active = 0
+                elif joystick.position == (2, 0):
+                    picked_mark_active = -2
+                elif joystick.position == (2, 1):
+                    picked_mark_active = -4
+
             if action == 'enter':
+                # entering cockpit
+                if over_ship:
+                    menu_cockpit(screen, joystick, clock, player, cursor, cursor_group)
+
+                # logic behind moving items
                 for module, (x, y, active) in module_buttons.items():
                     if joystick.position[0] >= 3:
                         if active:
@@ -1185,40 +1234,13 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
                 ship_surf = player.build_ship(player.type)
                 ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
 
+            elif action == 'square':
+                if storage_items:
+                    storage_items.pop(picked_mark_active - 1)
+
             elif action == 'exit':
                 return False
-            if joystick.position[0] >= 3:
-                if joystick.position == (3, 0):
-                    picked_mark_active = 1
-                elif joystick.position == (3, 1):
-                    picked_mark_active = 3
-                elif joystick.position == (4, 0):
-                    picked_mark_active = 2
-                elif joystick.position == (4, 1):
-                    picked_mark_active = 4
-                elif joystick.position == (3, 2):
-                    joystick.position = (3, 0)
-                elif joystick.position == (4, 2):
-                    joystick.position = (4, 0)
-            else:
-                if joystick.position == (0, 0):
-                    picked_mark_active = -1
-                elif joystick.position == (0, 1):
-                    picked_mark_active = -3
-                elif joystick.position == (0, 2):
-                    joystick.position = (0, 1)
-                elif joystick.position == (2, 2):
-                    joystick.position = (2, 1)
-                elif joystick.position[1] == 2:
-                    picked_mark_active = -5
-                    joystick.set_position(1, 2)
-                elif joystick.position[0] == 1:
-                    over_ship = True
-                    picked_mark_active = 0
-                elif joystick.position == (2, 0):
-                    picked_mark_active = -2
-                elif joystick.position == (2, 1):
-                    picked_mark_active = -4
+
         else:
             # cursor
             cursor.active = True
@@ -1245,16 +1267,22 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
     background_group = pygame.sprite.Group()
     background_group.add(background_image)
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     # button
+    joystick.set_position(0, 0)
     play_button = button.Button(650, 330, "assets/images/cockpit/button_01.png",
                                 "assets/images/cockpit/button_02.png", 0.15, 0.05,
-                                0.021, '', screen, "assets/sounds/button_click.mp3",
-                                0.3)
+                                0.021, '', screen, sound, sound_volume, joystick, (0, 0))
 
     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
      mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
 
-    cursor.set_cursor()
+    if not joystick.active:
+        cursor.set_cursor()
 
     while True:
 
@@ -1270,8 +1298,32 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                     return False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
                 quit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # mouse click
-                pass
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(1, 1)
+            if action == 'enter':
+                in_minigame = True
+            elif action == 'exit':
+                if in_minigame:
+                    in_minigame = False
+                    cursor.set_cursor()
+                    (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+                else:
+                    return False
+
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         if in_minigame:
             # updating groups
@@ -1308,7 +1360,8 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
             screen.blit(mini_player.image, mini_player.rect)
             update_groups([background_group], screen)
             screen.blit(hp[3], (520, 500))
-            update_groups([cursor_group], screen)
+            if not joystick.active:
+                update_groups([cursor_group], screen)
             if play_button.draw_button_and_text(screen):
                 in_minigame = True
 

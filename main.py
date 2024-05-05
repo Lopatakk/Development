@@ -34,12 +34,12 @@ background_copy = None
 
 # collectable items
 scrap_metal_count = 0
-upgrade = ShipUpgrade((0, 0), 'booster', True)
-upgrade1 = ShipUpgrade((0, 0), 'booster', True)
-upgrade2 = ShipUpgrade((0, 0), 'cooling', True)
-upgrade3 = ShipUpgrade((0, 0), 'weapons', True)
-storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
-# storage_items = []
+# upgrade = ShipUpgrade((0, 0), 'booster', True)
+# upgrade1 = ShipUpgrade((0, 0), 'booster', True)
+# upgrade2 = ShipUpgrade((0, 0), 'booster', True)
+# upgrade3 = ShipUpgrade((0, 0), 'booster', True)
+# storage_items = [upgrade, upgrade1, upgrade2, upgrade3]
+storage_items = []
 installed_items = {
     "weapons": None,
     "cooling": None,
@@ -152,7 +152,7 @@ while True:
     pygame.mixer.Channel(0).play(background_music, 3)
 
     # setting
-    # storage_items = []
+    storage_items = []
     installed_items = {
         "weapons": None,
         "cooling": None,
