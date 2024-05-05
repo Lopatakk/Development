@@ -1,7 +1,7 @@
 {
-    "music_volume": 0.4608189646402996,
-    "effects_volume": 0.8468487379286025,
-    "danger_blinking": false,
+    "music_volume": 0.7893864695231119,
+    "effects_volume": 0.7977607896592881,
+    "danger_blinking": true,
     "button_up": 119,
     "button_down": 115,
     "button_left": 97,

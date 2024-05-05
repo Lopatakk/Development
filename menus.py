@@ -17,6 +17,7 @@ from cursor import Cursor
 
 def settings_menu(screen, joystick, cursor, clock, cursor_group, background, environment):
     width, height = screen.get_size()
+    joystick.position = 1
     #   fonts
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_subTitle = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
@@ -100,7 +101,6 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                          min_value, max_value, percentageMusic, joystick, 1)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
                            min_value, max_value, percentageEffects, joystick, 2)
-
     while True:
         mouse_pressed = False
         mouse_pos = pygame.mouse.get_pos()
@@ -209,23 +209,14 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
 
-        if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen, False, on_language):
-                settings["danger_blinking"] = False
-                danger_blinking = False
-        else:
-            if danger_button_off.draw_button_and_text(screen, False, on_language):
-                settings["danger_blinking"] = True
-                danger_blinking = True
-
         #   volume
         # music
-        sliderMusic.update(settings, "music_volume", on_language)
         sliderMusic.draw(screen, on_language)
+        sliderMusic.update(settings, "music_volume", on_language)
 
         # effects
-        sliderEffects.update(settings, "effects_volume", on_language)
         sliderEffects.draw(screen, on_language)
+        sliderEffects.update(settings, "effects_volume", on_language)
 
         # controller
         joystick.update()
@@ -244,12 +235,12 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
 
                 if action == 'enter':
                     GameSetup.language = GameSetup.all_languages[joystick.position]
-                    on_language = False
                     title, game_text = GameSetup.set_language("settings")
                     settings["language"] = GameSetup.language
                     with open("settings.json", "w") as settings_file:
                         json.dump(settings, settings_file, indent=4)
                     on_language = False
+                    joystick.position = 0
 
                 elif action == 'exit':
                     on_language = False
@@ -266,8 +257,20 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 if action == 'enter':
                     if joystick.position == 0:
                         on_language = True
-
-                    if joystick.position == 4:
+                    elif joystick.position == 3:
+                        if danger_blinking:
+                            settings["danger_blinking"] = False
+                            danger_blinking = False
+                            with open("settings.json", "w") as settings_file:
+                                json.dump(settings, settings_file, indent=4)
+                            GameSetup.update()
+                        else:
+                            settings["danger_blinking"] = True
+                            danger_blinking = True
+                            with open("settings.json", "w") as settings_file:
+                                json.dump(settings, settings_file, indent=4)
+                            GameSetup.update()
+                    elif joystick.position == 4:
                         pygame.mixer.Channel(3).stop()
                         sound.set_volume(sound_volume * GameSetup.effects_volume)
                         pygame.mixer.Channel(1).play(sound)
@@ -277,6 +280,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                     pygame.mixer.Channel(3).stop()
                     sound.set_volume(sound_volume * GameSetup.effects_volume)
                     pygame.mixer.Channel(1).play(sound)
+
                     return
         else:
             # cursor

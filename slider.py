@@ -46,6 +46,7 @@ class Slider:
                 screen.blit(self.button0, self.button_rect)
 
     def update(self, settings, option, on_language):
+        print(self.value)
         scroll = float(self.button_rect.centerx)
         if self.joystick.active and not on_language:
             if self.joystick.position == self.joystick_index:
@@ -64,7 +65,6 @@ class Slider:
                 self.value = ((scroll - self.x) / self.width * (self.max_value - self.min_value) + self.min_value)
                 self.value = max(self.min_value, min(self.max_value, self.value))
                 self.value = self.value / 5
-
                 # If the slider is being dragged, update its value based on button position,
                 if self.joystick.sliding:
                     if option == "music_volume":
@@ -130,8 +130,6 @@ class Slider:
                     if not pygame.mixer.Channel(4).get_busy():
                         pygame.mixer.Channel(4).play(GameSetup.button_sound)
                     self.play_sound = False
-
-
 
     def get_value_in_percent(self):
         return ((self.value - self.min_value) / (self.max_value - self.min_value)) * 100
