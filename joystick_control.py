@@ -104,4 +104,5 @@ class Joystick:
                     self.position = buttons_num - 1
 
                 self.direction = 0
+
         return True

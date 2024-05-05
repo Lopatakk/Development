@@ -487,13 +487,15 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
                 title, game_text = GameSetup.set_language("main_menu")
             elif action == 'enter':
                 if joystick.position == 0:
+                    pygame.mixer.Channel(1).play(sound)
                     return
                 elif joystick.position == 1:
+                    pygame.mixer.Channel(1).play(sound)
                     statistics_menu(screen, joystick, cursor, clock, cursor_group)
                 elif joystick.position == 2:
+                    pygame.mixer.Channel(1).play(sound)
                     about_game_menu(screen, joystick, cursor, clock, cursor_group)
                 elif joystick.position == 3:
-                    pygame.mixer.Channel(3).stop()
                     pygame.mixer.Channel(1).play(sound)
                     quit()
             elif action == 'exit':
@@ -1148,6 +1150,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    pygame.mixer.Channel(1).play(sound)
                     return 0
             elif event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
                 joystick.active = False
@@ -1164,6 +1167,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
                 return joystick.position + 1
 
             elif action == 'exit':
+                pygame.mixer.Channel(1).play(sound)
                 return 0
 
         else:
@@ -1334,10 +1338,10 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    buttons_num = 20
+    buttons_num = 1
     back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[33], screen,
-                                sound, sound_volume, joystick, 20)
+                                sound, sound_volume, joystick, 0)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -1824,6 +1828,7 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
             if event.type == pg.QUIT:
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # to cancel
+                pygame.mixer.Channel(1).play(sound)
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
@@ -1838,7 +1843,8 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
             cursor.active = False
 
             action = joystick.menu_control(buttons_num)
-            if action == 'exit':
+            if action == 'exit' or action == 'enter':
+                pygame.mixer.Channel(1).play(sound)
                 return
 
             if y_scroll <= 0 < lowest_value - height:  # scroll up or down
@@ -1852,7 +1858,6 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
                 elif y_scroll < -lowest_value_first:
                     y_scroll = -lowest_value_first
 
-                # y_scroll = 0.06 * height * joystick.position
         else:
             # cursor
             cursor.active = True
