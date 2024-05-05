@@ -643,7 +643,6 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    buttons_num = 3
     resume_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                   "assets/images/button_02.png", 0.3, 0.05, 0.025, game_text[0], screen,
                                   sound, sound_volume, joystick, (0, 0))
@@ -843,7 +842,6 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    buttons_num = (5, 3)
     x = 932
     y = 78
     storage_buttons = [(x, y), (x + 260, y), (x, y + 260), (x + 260, y + 260)]
@@ -1483,7 +1481,7 @@ def ship_menu(screen, joystick, cursor, clock, cursor_group):
         pygame.display.flip()
 
 
-def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
+def death_menu(screen, joystick, cursor, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_score = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.025 * width))
@@ -1505,6 +1503,7 @@ def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
     title_rect = title_surf.get_rect()
     title_rect.centerx = GameSetup.width / 2
     title_rect.y = 100
+
     #   sound
     sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
     sound_volume = 0.2
@@ -1513,16 +1512,16 @@ def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
     #   create button instances
     save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                      "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[1], screen,
-                                     sound, sound_volume)
+                                     sound, sound_volume, joystick, (0, 0))
     restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
                                    "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[2], screen,
-                                   sound, sound_volume)
+                                   sound, sound_volume, joystick, (0, 1))
     main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
                                      "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[3], screen,
-                                     sound, sound_volume)
+                                     sound, sound_volume, joystick, (0, 2))
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[4], screen,
-                                sound, sound_volume)
+                                sound, sound_volume, joystick, (0, 3))
 
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False
@@ -1550,8 +1549,39 @@ def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
                 quit()
             if event.type == pygame.QUIT:
                 quit()
-        #   cursor
-        update_groups([cursor_group], screen)
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(0, 4)
+            if action == 'enter':
+                if joystick.position == (0, 0):
+                    if not save_name_clicked:
+                        pygame.mixer.Channel(1).play(sound)
+                        save_name_clicked = save_name_menu(screen, joystick, clock, cursor_group, score, ship_number)
+                elif joystick.position == (0, 1):
+                    pygame.mixer.Channel(1).play(sound)
+                    return False
+                elif joystick.position == (0, 2):
+                    pygame.mixer.Channel(1).play(sound)
+                    return True
+                elif joystick.position == (0, 3):
+                    pygame.mixer.Channel(1).play(sound)
+                    quit()
+
+            elif action == 'exit':
+                pygame.mixer.Channel(1).play(sound)
+                return False
+
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()

@@ -92,7 +92,7 @@ while True:
                 game_main = False
         else:
             # ship_menu
-            selected_number = menus.ship_menu(screen, joystick, clock, cursor_group)
+            selected_number = menus.ship_menu(screen, joystick, cursor, clock, cursor_group)
             if selected_number == 1:
                 selected_ship = PlayerLight
             elif selected_number == 2:
@@ -187,7 +187,7 @@ while True:
             cursor.active = False
 
             action = joystick.control_buttons()
-            if action == 'settings':
+            if action == 'settings' or action == 'exit':
                 game_paused = True
         # controller
         joystick.update()
@@ -262,6 +262,21 @@ while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     waiting_for_player = False
+                for i in range(GameSetup.joysticks[0].get_numbuttons()):
+                    if GameSetup.joysticks[0].get_button(i):
+                        waiting_for_player = False
+                        break
+                for i in range(GameSetup.joysticks[0].get_numaxes()):
+                    if i < 4:
+                        if abs(GameSetup.joysticks[0].get_axis(i)) > 0.5:
+                            waiting_for_player = False
+                            break
+                    else:
+                        if abs(GameSetup.joysticks[0].get_axis(i)) < 1:
+                            waiting_for_player = False
+                            break
+
+
             # render background
             screen.blit(background_copy, (0, 0))
             screen.blit(overlay, (0, 0))
@@ -288,7 +303,7 @@ while True:
             #   death_menu
             pygame.mixer.Channel(0).pause()
             cursor.set_cursor()
-            if menus.death_menu(screen, joystick, clock, cursor_group, score, selected_number):
+            if menus.death_menu(screen, joystick, cursor, clock, cursor_group, score, selected_number):
                 game_main = True
             selected_number = 0
             scrap_metal_count = 0
