@@ -350,19 +350,28 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
     # text
     title, game_text = GameSetup.set_language("statistics")
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     #   create button instances
+    buttons_num = 1
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
-                                "assets/sounds/button_click.mp3", 0.2)
+                                sound, sound_volume, joystick, 0)
     #   load the json file.
     highscores = load()
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
+
         #   text "Leaderboard"
         screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
+
         #   BUTTON
         if back_button.draw_button_and_text(screen, True):
+
             return True
         #   display the high-scores.
         screen.blit(font_scores_title.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
@@ -377,6 +386,7 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
             screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)),
                         (11.8 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (15 * width / 20, y * height / 80))
+
         #   event handling
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -385,8 +395,25 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-        #   cursor
-        update_groups([cursor_group], screen)
+            if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num)
+            if action == 'exit' or action == 'enter':
+                pygame.mixer.Channel(1).play(sound)
+                return
+
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()
