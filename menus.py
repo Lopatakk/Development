@@ -75,26 +75,31 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     # text
     title, game_text = GameSetup.set_language("settings")
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     #   create button instances
     buttons_num = 4
-    danger_button_on = button.Button(width / 6, height/ 1.4, "assets/images/switch_on0.png",
+    danger_button_on = button.Button(width / 6, height / 1.4, "assets/images/switch_on0.png",
                                      "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
-                                     "assets/sounds/button_click.mp3", 0.2)
-    danger_button_off = button.Button(255, 620, "assets/images/switch_off0.png",
+                                     sound, sound_volume, joystick, 2)
+    danger_button_off = button.Button(width / 6, height / 1.4, "assets/images/switch_off0.png",
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
-                                      "assets/sounds/button_click.mp3", 0.2)
-    back_button = button.Button(0.8 * width, 7/8 * height, "assets/images/button_01.png",
+                                      sound, sound_volume, joystick, 2)
+    back_button = button.Button(0.8 * width, 7 / 8 * height, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
-                                "assets/sounds/button_click.mp3", 0.2)
+                                sound, sound_volume, joystick, 3)
 
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
     percentageEffects = ((effects_volume - min_value) / (max_value - min_value)) * 100
     #   sliders
     sliderMusic = Slider((3.6 * width / 20), (27 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                         min_value, max_value, percentageMusic)
+                         min_value, max_value, percentageMusic, joystick, 0)
     sliderEffects = Slider((3.6 * width / 20), (37 * height / 80 + font_height * 2), (width * 0.375), (width * 0.015),
-                           min_value, max_value, percentageEffects)
+                           min_value, max_value, percentageEffects, joystick, 1)
 
     while True:
         mouse_pressed = False
@@ -116,10 +121,10 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
             language_index = GameSetup.all_languages.index(GameSetup.language)
             screen.blit(flags_images[language_index], flag_rects[0])
 
-        #   text "Settings"
+        # text "Settings"
         screen.blit(font_title.render(title, True, (230, 230, 230)), (3.6 * width / 20, 3.4 * height / 20))
 
-        #   changing volume
+        # changing volume
         screen.blit(font_subTitle.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
         screen.blit(font_subTitle.render(game_text[1], True, (230, 230, 230)), (3.6 * width / 20, 37 * height / 80))
 
@@ -128,7 +133,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                     (3.6 * width / 20, 52 * height / 80))
 
         #   BUTTON
-        if back_button.draw_button_and_text(screen, joystick, 3, True):
+        if back_button.draw_button_and_text(screen, True):
             pygame.mixer.Channel(3).stop()
             return
 
@@ -171,31 +176,15 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 joystick.active = False
                 cursor.active = True
 
-        # controller
-        joystick.update()
-
-        if joystick.active:
-            cursor.active = False
-
-            action = joystick.menu_control(buttons_num)
-
-
-            if not action:
-                quit()
-        else:
-            # cursor
-            cursor.active = True
-            update_groups([cursor_group], screen)
-
         if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen, joystick, 2):
+            if danger_button_on.draw_button_and_text(screen):
                 settings["danger_blinking"] = False
                 danger_blinking = False
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
         else:
-            if danger_button_off.draw_button_and_text(screen, joystick, 2):
+            if danger_button_off.draw_button_and_text(screen):
                 settings["danger_blinking"] = True
                 danger_blinking = True
                 with open("settings.json", "w") as settings_file:
@@ -212,13 +201,35 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         sliderEffects.draw(screen)
 
         if danger_blinking:
-            if danger_button_on.draw_button_and_text(screen, joystick, 2):
+            if danger_button_on.draw_button_and_text(screen):
                 settings["danger_blinking"] = False
                 danger_blinking = False
         else:
-            if danger_button_off.draw_button_and_text(screen, joystick, 2):
+            if danger_button_off.draw_button_and_text(screen):
                 settings["danger_blinking"] = True
                 danger_blinking = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num)
+            if action == 'enter':
+                if joystick.position == 3:
+                    pygame.mixer.Channel(3).stop()
+                    pygame.mixer.Channel(1).play(sound)
+                    return
+
+            elif action == 'exit':
+                pygame.mixer.Channel(3).stop()
+                pygame.mixer.Channel(1).play(sound)
+                return
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()
@@ -228,15 +239,18 @@ def save_name_menu(screen, joystick, clock, cursor_group, score, ship_number):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))
     font_info = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.01 * width))
+
     #   surface and background
     # surface
     surface = pygame.Surface(screen.get_size())  # creates a new surface of the same dimensions as screen
     surface = surface.convert_alpha()  # making surface transparent
     surface.fill((0, 0, 0, 230))  # fill the whole screen with black transparent color
+
     # background
     background = pygame.image.load("assets/images/Background.png")
     background = pygame.transform.scale(background, (width, height))
     background = pygame.Surface.convert(background)
+
     #   create button instances
     save_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.3, 0.05, 0.025, 'Save', screen,
@@ -316,7 +330,7 @@ def save_name_menu(screen, joystick, clock, cursor_group, score, ship_number):
         pygame.display.flip()
 
 
-def leaderboard_menu(screen, joystick, clock, cursor_group):
+def statistics_menu(screen, joystick, cursor, clock, cursor_group):
     width, height = screen.get_size()
     font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.05 * width))  # loading font
     font_scores_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.018 * width))  # loading font
@@ -353,13 +367,15 @@ def leaderboard_menu(screen, joystick, clock, cursor_group):
         #   display the high-scores.
         screen.blit(font_scores_title.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
         screen.blit(font_scores_title.render(game_text[1], True, (230, 230, 230)), (8 * width / 20, 27 * height / 80))
-        screen.blit(font_scores_title.render(game_text[2], True, (230, 230, 230)), (11.8 * width / 20, 27 * height / 80))
+        screen.blit(font_scores_title.render(game_text[2], True, (230, 230, 230)),
+                    (11.8 * width / 20, 27 * height / 80))
         screen.blit(font_scores_title.render(game_text[3], True, (230, 230, 230)), (15 * width / 20, 27 * height / 80))
         y_position = list(range(32, 62, 3))  # the number of numbers here makes the number of names in the scoreboard
         for (hi_name, hi_score, hi_selected_ship, hi_date), y in zip(highscores, y_position):
             screen.blit(font_scores.render(f'{hi_name}', True, (160, 160, 160)), (3.6 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_score}', True, (160, 160, 160)), (8 * width / 20, y * height / 80))
-            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)), (11.8 * width / 20, y * height / 80))
+            screen.blit(font_scores.render(f'{hi_selected_ship}', True, (160, 160, 160)),
+                        (11.8 * width / 20, y * height / 80))
             screen.blit(font_scores.render(f'{hi_date}', True, (160, 160, 160)), (15 * width / 20, y * height / 80))
         #   event handling
         for event in pg.event.get():
@@ -395,23 +411,28 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
     # text
     title, game_text = GameSetup.set_language("main_menu")
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     #   create button instances
     buttons_num = 4
     play_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[0], screen,
-                                "assets/sounds/button_click.mp3", 0.2)
+                                sound, sound_volume, joystick, 0)
     scoreboard_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
                                       "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[1], screen,
-                                      "assets/sounds/button_click.mp3", 0.2)
+                                      sound, sound_volume, joystick, 1)
     aboutgame_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
                                      "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[2], screen,
-                                     "assets/sounds/button_click.mp3", 0.2)
+                                     sound, sound_volume, joystick, 2)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[3], screen,
-                                "assets/sounds/button_click.mp3", 0.2)
-    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
-                                    "assets/images/settings_button1.png", "assets/images/settings_button2.png", 0.04,
-                                    0.04, 0.01, '', screen, "assets/sounds/button_click.mp3", 0.2)
+                                sound, sound_volume, joystick, 3)
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),"assets/images/settings_button1.png",
+                                    "assets/images/settings_button2.png", 0.04,0.04, 0.01, '', screen,
+                                    sound, sound_volume, joystick)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -430,13 +451,13 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
         aboutgame_button.update_text(game_text[2])
         quit_button.update_text(game_text[3])
 
-        if play_button.draw_button_and_text(screen, joystick, 0):
+        if play_button.draw_button_and_text(screen):
             return
-        if scoreboard_button.draw_button_and_text(screen, joystick, 1):
-            leaderboard_menu(screen, joystick, clock, cursor_group)
-        if aboutgame_button.draw_button_and_text(screen, joystick, 2):
-            aboutgame_menu(screen, joystick, clock, cursor_group)
-        if quit_button.draw_button_and_text(screen, joystick, 3):
+        if scoreboard_button.draw_button_and_text(screen):
+            statistics_menu(screen, joystick, cursor, clock, cursor_group)
+        if aboutgame_button.draw_button_and_text(screen):
+            about_game_menu(screen, joystick, cursor, clock, cursor_group)
+        if quit_button.draw_button_and_text(screen):
             quit()
         if settings_button.draw_image_topRight(screen):
             settings_menu(screen, joystick, cursor, clock, cursor_group, background, "main")
@@ -461,11 +482,23 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
 
             action = joystick.menu_control(buttons_num)
             if action == 'settings':
+                pygame.mixer.Channel(1).play(sound)
                 settings_menu(screen, joystick, cursor, clock, cursor_group, background, "main")
                 title, game_text = GameSetup.set_language("main_menu")
-
-            elif not action:
+            elif action == 'enter':
+                if joystick.position == 0:
+                    return
+                elif joystick.position == 1:
+                    statistics_menu(screen, joystick, cursor, clock, cursor_group)
+                elif joystick.position == 2:
+                    about_game_menu(screen, joystick, cursor, clock, cursor_group)
+                elif joystick.position == 3:
+                    pygame.mixer.Channel(3).stop()
+                    pygame.mixer.Channel(1).play(sound)
+                    quit()
+            elif action == 'exit':
                 quit()
+
         else:
             # cursor
             cursor.active = True
@@ -1054,7 +1087,7 @@ def set_minigame():
             mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group)
 
 
-def ship_menu(screen, joystick, clock, cursor_group):
+def ship_menu(screen, joystick, cursor, clock, cursor_group):
     width, height = screen.get_size()
 
     #   surface and background
@@ -1078,16 +1111,22 @@ def ship_menu(screen, joystick, clock, cursor_group):
     text_rect.centerx = width / 2
     text_rect.y = 3.4 * height / 20
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     #   create button instances
+    buttons_num = 3
     Light_button = button.Button(2 * width / 8, 8 * height / 16, "assets/images/player_light/vlod_player_light.png",
                                  "assets/images/player_light/vlod_player_light.png",
-                                 0.08, 0.1, 0.02, 'Light', screen, "assets/sounds/game_start.mp3", 0.3)
+                                 0.08, 0.1, 0.02, 'Light', screen, sound, sound_volume, joystick, 0)
     Mid_button = button.Button(4 * width / 8, 8 * height / 16, "assets/images/player_mid/vlod_player_mid.png",
                                "assets/images/player_mid/vlod_player_mid.png",
-                               0.09, 0.1, 0.02, 'Mid', screen, "assets/sounds/game_start.mp3", 0.2)
+                               0.09, 0.1, 0.02, 'Mid', screen, sound, sound_volume, joystick, 1)
     Tank_button = button.Button(6 * width / 8, 8 * height / 16, "assets/images/player_tank/vlod_player_tank.png",
                                 "assets/images/player_tank/vlod_player_tank.png",
-                                0.08, 0.1, 0.02, 'Tank', screen, "assets/sounds/game_start.mp3", 0.2)
+                                0.08, 0.1, 0.02, 'Tank', screen, sound, sound_volume, joystick, 2)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -1105,13 +1144,32 @@ def ship_menu(screen, joystick, clock, cursor_group):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-            if event.type == pygame.QUIT:
+            elif event.type == pygame.QUIT:
                 quit()
-            if event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return 0
-        #   cursor
-        update_groups([cursor_group], screen)
+            elif event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num, 'vertical')
+            if action == 'enter':
+                return joystick.position + 1
+
+            elif action == 'exit':
+                return 0
+
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()
@@ -1139,24 +1197,24 @@ def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
     title_rect = title_surf.get_rect()
     title_rect.centerx = GameSetup.width / 2
     title_rect.y = 100
+    #   sound
+    sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
     save_name_button = button.Button(3.6 * width / 20, 32 * height / 80, "assets/images/button_01.png",
                                      "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[1], screen,
-                                     "assets/sounds/button_click.mp3", 0.3)
+                                     sound, sound_volume)
     restart_button = button.Button(3.6 * width / 20, 41 * height / 80, "assets/images/button_01.png",
                                    "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[2], screen,
-                                   "assets/sounds/button_click.mp3", 0.3)
+                                   sound, sound_volume)
     main_menu_button = button.Button(3.6 * width / 20, 50 * height / 80, "assets/images/button_01.png",
                                      "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[3], screen,
-                                     "assets/sounds/button_click.mp3", 0.2)
+                                     sound, sound_volume)
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.37, 0.05, 0.025, game_text[4], screen,
-                                "assets/sounds/button_click.mp3", 0.2)
-    #   sound
-    sound = pygame.mixer.Sound("assets/sounds/game_over.mp3")  # Load sound file
-    sound.set_volume(0.6 * GameSetup.effects_volume)
-    pygame.mixer.find_channel(False).play(sound)
+                                sound, sound_volume)
 
     #   a variable that makes it possible to make the save name button disappear after saving a name
     save_name_clicked = False
@@ -1191,7 +1249,7 @@ def death_menu(screen, joystick, clock, cursor_group, score, ship_number):
         pygame.display.flip()
 
 
-def aboutgame_menu(screen, joystick, clock, cursor_group):
+def about_game_menu(screen, joystick, cursor, clock, cursor_group):
     width, height = screen.get_size()
     #   variable for scroll
     record = True
@@ -1270,10 +1328,16 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
     # text
     title, game_text = GameSetup.set_language("about_game")
 
+    # sound
+    sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
+    sound_volume = 0.2
+    sound.set_volume(sound_volume * GameSetup.effects_volume)
+
     #   create button instances
+    buttons_num = 20
     back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[33], screen,
-                                "assets/sounds/button_click.mp3", 0.2)
+                                sound, sound_volume, joystick, 20)
     while True:
         screen.blit(background, (0, 0))
         screen.blit(surface, (0, 0))
@@ -1291,11 +1355,13 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
 
         textRect = pygame.Rect(3.6 * width / 20, (27 * height / 80) + y_scroll, 12 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[0], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[0], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # why was created
         textRect = pygame.Rect(3.6 * width / 20, lowest_value + spaceBetween * 2, 12 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[1], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[1], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # development team
         screen.blit(font_subtitle.render(game_text[2], True, title_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
@@ -1624,7 +1690,8 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
         # writen info by myself
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[28], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[28], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # load and write image
         zarovka = pygame.image.load("assets/images/enemy/zarovka/zarovka.png")  # load image
         zarovka = pygame.transform.scale(zarovka, (int(width * 0.053), int(width * 0.08)))  # transforming image
@@ -1653,7 +1720,8 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
         # writen info by myself
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[29], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[29], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # load and write image
         tank = pygame.image.load("assets/images/enemy/tank/tank.png")  # load image
         tank = pygame.transform.scale(tank, (int(width * 0.13), int(width * 0.12)))  # transforming image
@@ -1682,7 +1750,8 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
         # writen info by myself
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 10 * spaceBetween + 6 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[30], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[30], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # load and write image
         sniper = pygame.image.load("assets/images/enemy/sniper/sniper.png")  # load image
         sniper = pygame.transform.scale(sniper, (int(width * 0.06), int(width * 0.08)))  # transforming image
@@ -1709,7 +1778,8 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
         # writen info by myself
         textRect = pygame.Rect(7.5 * width / 20, lowest_value + 9 * spaceBetween + 5 * text_height, 8 * width / 20,
                                50)  # x-axis, y-axis, size on x-axis, size on y-axis
-        lowest_value = drawText.drawText(screen, game_text[31], text_color, textRect, font_text, textAlignLeft, True, None)
+        lowest_value = drawText.drawText(screen, game_text[31], text_color, textRect, font_text, textAlignLeft, True,
+                                         None)
         # load and write image
         stealer1 = pygame.image.load("assets/images/enemy/stealer/stealer1.png")  # load image
         stealer1 = pygame.transform.scale(stealer1, (int(width * 0.06), int(width * 0.08)))  # transforming image
@@ -1757,8 +1827,36 @@ def aboutgame_menu(screen, joystick, clock, cursor_group):
                 return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q:  # to quit game
                 quit()
-        #   cursor
-        update_groups([cursor_group], screen)
+            elif event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
+                joystick.active = False
+                cursor.active = True
+
+        # controller
+        joystick.update()
+
+        if joystick.active:
+            cursor.active = False
+
+            action = joystick.menu_control(buttons_num)
+            if action == 'exit':
+                return
+
+            if y_scroll <= 0 < lowest_value - height:  # scroll up or down
+                if abs(joystick.left_joystick[1]) > 0.2:
+                    increment = 0.02 * height * joystick.left_joystick[1]
+                else:
+                    increment = 0
+                y_scroll -= increment
+                if y_scroll > 0:
+                    y_scroll = 0
+                elif y_scroll < -lowest_value_first:
+                    y_scroll = -lowest_value_first
+
+                # y_scroll = 0.06 * height * joystick.position
+        else:
+            # cursor
+            cursor.active = True
+            update_groups([cursor_group], screen)
 
         clock.tick(GameSetup.fps)
         pygame.display.flip()

@@ -80,7 +80,7 @@ while True:
         if game_main:
             menus.main_menu(screen, joystick, cursor, clock, cursor_group)
             # ship_menu
-            selected_number = menus.ship_menu(screen, joystick, clock, cursor_group)
+            selected_number = menus.ship_menu(screen, joystick, cursor, clock, cursor_group)
             if selected_number == 1:
                 selected_ship = PlayerLight
             elif selected_number == 2:

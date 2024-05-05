@@ -3,7 +3,7 @@ from gamesetup import *
 
 
 class Slider:
-    def __init__(self, x, y, width, height, min_value, max_value, initial_value_percent):
+    def __init__(self, x, y, width, height, min_value, max_value, initial_value_percent, joystick, joystick_index):
         self.x = x
         self.y = y
         self.width = width
