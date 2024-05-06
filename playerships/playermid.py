@@ -14,7 +14,7 @@ class PlayerMid(PlayerShip):
     Q action: rapid fire - increases fire rate and cooling
     E action: blast - fires a big projectile, which destroys everything in its path
     """
-    def __init__(self, projectile_group: Group, mini=False, image=None, img_scaling_coefficient=None,
+    def __init__(self, joystick, projectile_group: Group, mini=False, image=None, img_scaling_coefficient=None,
                  ani_amount_of_images=None, ship_type=None, hp=None, dmg=None, explosion_size=None,
                  regeneration=None, max_velocity=None, acceleration=None, velocity_coefficient=None,
                  proj_dmg=None, fire_rate=None, cooling=None, overheat=None,
@@ -28,13 +28,13 @@ class PlayerMid(PlayerShip):
             player_param = json.load(param_file)
         param = player_param[1]
         if mini:
-            super().__init__(image, img_scaling_coefficient, ani_amount_of_images, ship_type, hp,
+            super().__init__(joystick, image, img_scaling_coefficient, ani_amount_of_images, ship_type, hp,
                              dmg, explosion_size, regeneration, max_velocity, acceleration, velocity_coefficient,
                              proj_dmg, fire_rate, cooling, overheat, q_cooldown, q_ongoing_time, e_cooldown,
                              e_ongoing_time, mini, projectile_group)
         else:
             image = pygame.image.load("assets/images/player_mid/vlod_player_mid.png").convert_alpha()
-            super().__init__(image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+            super().__init__(joystick, image, param["img_scaling_coefficient"], param["shooting_ani_images"],
                              param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
                              param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                              param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],

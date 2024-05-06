@@ -12,14 +12,14 @@ class MiniPlayer(PlayerMid):
     Q action: rapid fire - increases fire rate and cooling
     E action: blast - fires a big projectile, which destroys everything in its path
     """
-    def __init__(self, projectile_group: Group):
+    def __init__(self, joystick, projectile_group: Group):
         self.mini = True
 
         with open("playerships/miniplayerparams.json", "r") as param_file:
             player_param = json.load(param_file)
         param = player_param
         image = pygame.image.load("assets/images/cockpit/vlod_player_mid.png").convert_alpha()
-        super().__init__(projectile_group, self.mini, image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+        super().__init__(joystick, projectile_group, self.mini, image, param["img_scaling_coefficient"], param["shooting_ani_images"],
                          param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],

@@ -15,7 +15,7 @@ class PlayerLight(PlayerShip):
     Q action: dash - quickly moves in the direction of pressed keys
     E action: shield - creates a shield around the ship, which protects it from enemy projectiles
     """
-    def __init__(self, projectile_group: Group):
+    def __init__(self, joystick, projectile_group: Group):
         """
         :param projectile_group: sprite group for fired projectiles
         """
@@ -25,7 +25,7 @@ class PlayerLight(PlayerShip):
         param = player_param[0]
         image = pygame.image.load("assets/images/player_light/vlod_player_light.png")
 
-        super().__init__(image, param["img_scaling_coefficient"], param["shooting_ani_images"],
+        super().__init__(joystick, image, param["img_scaling_coefficient"], param["shooting_ani_images"],
                          param["type"], param["hp"], param["dmg"], param["explosion_size"], param["regeneration"],
                          param["max_velocity"], param["acceleration"], param["velocity_coefficient"],
                          param["proj_dmg"], param["fire_rate"], param["cooling"], param["overheat"],

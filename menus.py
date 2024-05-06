@@ -1277,7 +1277,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                                 0.021, '', screen, sound, sound_volume, joystick, (0, 0))
 
     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
 
     if not joystick.active:
         cursor.set_cursor()
@@ -1291,7 +1291,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                     in_minigame = False
                     cursor.set_cursor()
                     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
                 else:
                     return False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
@@ -1314,7 +1314,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                     in_minigame = False
                     cursor.set_cursor()
                     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
                 else:
                     return False
 
@@ -1353,7 +1353,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                 in_minigame = False
                 cursor.set_cursor()
                 (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                 mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame()
+                 mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
         else:
             screen.blit(mini_player.image, mini_player.rect)
             update_groups([background_group], screen)
@@ -1367,7 +1367,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
         clock.tick(GameSetup.fps)
 
 
-def set_minigame():
+def set_minigame(joystick):
     # groups
     mini_enemy_group = pygame.sprite.Group()
     mini_spawner_group = pygame.sprite.Group()
@@ -1378,7 +1378,7 @@ def set_minigame():
     mini_player_group = pygame.sprite.Group()
 
     # player
-    mini_player = MiniPlayer(mini_player_projectile_group)
+    mini_player = MiniPlayer(joystick, mini_player_projectile_group)
     mini_player_group.add(mini_player)
 
     mini_zarovka_spawner = EnemySpawner(mini_enemy_group, "minizarovka", 3, mini_player)

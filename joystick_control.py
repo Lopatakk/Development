@@ -34,6 +34,10 @@ class Joystick:
         self.arrow_down = False
         self.arrow_left = False
         self.arrow_right = False
+        self.R1 = False
+        self.R1_pressed = False
+        self.L1 = False
+        self.L1_pressed = False
 
     def set_position(self, horizontal, vertical):
         self.last_position = self.position
@@ -56,6 +60,8 @@ class Joystick:
             self.square_button = joystick.get_button(2)
             self.triangle_button = joystick.get_button(3)
             self.options_button = joystick.get_button(6)
+            self.L1 = joystick.get_button(9)
+            self.R1 = joystick.get_button(10)
             self.arrow_up = joystick.get_button(11)
             self.arrow_down = joystick.get_button(12)
             self.arrow_left = joystick.get_button(13)
@@ -142,3 +148,14 @@ class Joystick:
             self.square_button_pressed = False
             return 'square'
 
+        if self.R1:
+            self.R1_pressed = True
+        if not self.R1 and self.R1_pressed:
+            self.R1_pressed = False
+            return 'R1'
+
+        if self.L1:
+            self.L1_pressed = True
+        if not self.L1 and self.L1_pressed:
+            self.L1_pressed = False
+            return 'L1'

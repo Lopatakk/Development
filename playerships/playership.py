@@ -15,7 +15,7 @@ class PlayerShip(Ship):
     pressed; turn-off starts when the function is on for x_ongoing_time. These actions have to be redefined in a child
     class based on this class.
     """
-    def __init__(self, image, img_scaling_coefficient, ani_amount_of_images,
+    def __init__(self, joystick, image, img_scaling_coefficient, ani_amount_of_images,
                  ship_type, hp, dmg, explosion_size, regeneration,
                  max_velocity, acceleration, velocity_coefficient,
                  proj_dmg, fire_rate, cooling, overheat,
@@ -72,6 +72,7 @@ class PlayerShip(Ship):
 
         # buttons_state - list with up, down, left, right, function_1, function_2 and mouse_left keys/button states
         self.buttons_state = [False, False, False, False, False, False, False]
+        self.joystick = joystick
 
         # q action variables
 
@@ -123,8 +124,12 @@ class PlayerShip(Ship):
         # angle calculation
 
         # calculating the angle between ship center and mouse positions
-        self.angle = self.rot_compute(self.rect.center[0] - pygame.mouse.get_pos()[0],
-                                      self.rect.center[1] - pygame.mouse.get_pos()[1])
+        if self.joystick.active:
+            if abs(self.joystick.right_joystick[0]) > 0.2 or abs(self.joystick.right_joystick[1] > 0.2):
+                self.angle = self.rot_compute(-self.joystick.right_joystick[0], -self.joystick.right_joystick[1])
+        else:
+            self.angle = self.rot_compute(self.rect.center[0] - pygame.mouse.get_pos()[0],
+                                          self.rect.center[1] - pygame.mouse.get_pos()[1])
 
         # key/mouse pressing
 
@@ -141,7 +146,7 @@ class PlayerShip(Ship):
         #   takes care of turning on the q function when q is pressed (and cooldown is exceeded) and off after defined
         #   amount of time
         #       turn on
-        if self.buttons_state[4]:
+        if self.buttons_state[4] or self.joystick.L1:
             elapsed_time = self.time_alive - self.last_q_use
             if elapsed_time >= self.q_cooldown:
                 self.q_action()
@@ -156,7 +161,7 @@ class PlayerShip(Ship):
         #   takes care of turning on the e function when e is pressed (and cooldown is exceeded) and off after defined
         #   amount of time
         #       turn on
-        if self.buttons_state[5]:
+        if self.buttons_state[5] or self.joystick.R1:
             elapsed_time = self.time_alive - self.last_e_use
             if elapsed_time >= self.e_cooldown:
                 self.e_action()
@@ -168,9 +173,9 @@ class PlayerShip(Ship):
             self.is_e_action_on = False
             self.last_e_use = self.time_alive
 
-        #   mouse
-        #   tries to shoot when the left mouse button is pressed
-        if self.buttons_state[6]:
+
+        #   tries to shoot when the left mouse button or R2 is pressed
+        if self.buttons_state[6] or self.joystick.R2 > 0:
             self.shoot()
 
         # super().update() - update declared in class Ship
@@ -221,28 +226,32 @@ class PlayerShip(Ship):
         :return: None
         """
         # X-axis
-        #   both keys pressed
-        if self.buttons_state[2] and self.buttons_state[3]:
-            self.velocity[0] += 0
-        #   a key pressed
-        elif self.buttons_state[2]:
-            self.velocity[0] -= self.acceleration
-        #   d key pressed
-        elif self.buttons_state[3]:
-            self.velocity[0] += self.acceleration
+        if self.joystick.active:
+            self.velocity[0] += self.acceleration * self.joystick.left_joystick[0]
+            self.velocity[1] += self.acceleration * self.joystick.left_joystick[1]
+        else:
+            #   both keys pressed
+            if self.buttons_state[2] and self.buttons_state[3]:
+                self.velocity[0] += 0
+            #   a key pressed
+            elif self.buttons_state[2]:
+                self.velocity[0] -= self.acceleration
+            #   d key pressed
+            elif self.buttons_state[3]:
+                self.velocity[0] += self.acceleration
 
-        # Y-axis
-        #   both keys pressed
-        if self.buttons_state[0] and self.buttons_state[1]:
-            self.velocity[0] += 0
-        #   w key pressed
-        elif self.buttons_state[0]:
-            self.velocity[1] -= self.acceleration
-        #   s key pressed
-        elif self.buttons_state[1]:
-            self.velocity[1] += self.acceleration
+            # Y-axis
+            #   both keys pressed
+            if self.buttons_state[0] and self.buttons_state[1]:
+                self.velocity[0] += 0
+            #   w key pressed
+            elif self.buttons_state[0]:
+                self.velocity[1] -= self.acceleration
+            #   s key pressed
+            elif self.buttons_state[1]:
+                self.velocity[1] += self.acceleration
 
-    # q nad e actions and turn-off actions
+    # q and e actions and turn-off actions
 
     # redefine these in child classes, so it can actually do something :)
     def q_action(self) -> None:

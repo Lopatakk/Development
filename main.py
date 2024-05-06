@@ -112,7 +112,7 @@ while True:
     enemy_projectile_group = pygame.sprite.Group()
 
     #   player
-    player = selected_ship(player_projectile_group)
+    player = selected_ship(joystick, player_projectile_group)
     player_group = pygame.sprite.Group()
     player_group.add(player)
 
@@ -308,7 +308,6 @@ while True:
             selected_number = 0
             scrap_metal_count = 0
             break
-
 
         # rendering/update
         #   groups
