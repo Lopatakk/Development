@@ -146,43 +146,75 @@ class PlayerShip(Ship):
         #   takes care of turning on the q function when q is pressed (and cooldown is exceeded) and off after defined
         #   amount of time
         #       turn on
-        if self.buttons_state[4] or self.joystick.L1:
-            elapsed_time = self.time_alive - self.last_q_use
-            if elapsed_time >= self.q_cooldown:
-                self.q_action()
-                self.is_q_action_on = True
+        if self.joystick.active:
+            if self.joystick.L1:
+                elapsed_time = self.time_alive - self.last_q_use
+                if elapsed_time >= self.q_cooldown:
+                    self.q_action()
+                    self.is_q_action_on = True
+                    self.last_q_use = self.time_alive
+            #       turn off
+            if self.is_q_action_on and self.time_alive >= self.last_q_use + self.q_ongoing_time:
+                self.q_turn_off()
+                self.is_q_action_on = False
                 self.last_q_use = self.time_alive
-        #       turn off
-        if self.is_q_action_on and self.time_alive >= self.last_q_use + self.q_ongoing_time:
-            self.q_turn_off()
-            self.is_q_action_on = False
-            self.last_q_use = self.time_alive
+        else:
+            if self.buttons_state[4]:
+                elapsed_time = self.time_alive - self.last_q_use
+                if elapsed_time >= self.q_cooldown:
+                    self.q_action()
+                    self.is_q_action_on = True
+                    self.last_q_use = self.time_alive
+            #       turn off
+            if self.is_q_action_on and self.time_alive >= self.last_q_use + self.q_ongoing_time:
+                self.q_turn_off()
+                self.is_q_action_on = False
+                self.last_q_use = self.time_alive
+
         #   e
         #   takes care of turning on the e function when e is pressed (and cooldown is exceeded) and off after defined
         #   amount of time
         #       turn on
-        if self.buttons_state[5] or self.joystick.R1:
-            elapsed_time = self.time_alive - self.last_e_use
-            if elapsed_time >= self.e_cooldown:
-                self.e_action()
-                self.is_e_action_on = True
-                self.last_e_use = self.time_alive
-        #       turn off
-        if self.is_e_action_on and self.time_alive >= self.last_e_use + self.e_ongoing_time:
-            self.e_turn_off()
-            self.is_e_action_on = False
-            self.last_e_use = self.time_alive
 
-        #   tries to shoot when the left mouse button or R2 is pressed
-        elapsed_time = self.time_alive - GameSetup.vibration_start
-        if self.buttons_state[6] or self.joystick.R2 > 0:
-            self.shoot()
-            if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time and not self.is_overheated:
-                GameSetup.joysticks[0].rumble(0, 0.1, 0)
+        if self.joystick.active:
+            if self.joystick.R1:
+                elapsed_time = self.time_alive - self.last_e_use
+                if elapsed_time >= self.e_cooldown:
+                    self.e_action()
+                    self.is_e_action_on = True
+                    self.last_e_use = self.time_alive
+            #       turn off
+            if self.is_e_action_on and self.time_alive >= self.last_e_use + self.e_ongoing_time:
+                self.e_turn_off()
+                self.is_e_action_on = False
+                self.last_e_use = self.time_alive
         else:
-            if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time:
-                GameSetup.joysticks[0].stop_rumble()
-                GameSetup.vibration_time = 0
+            if self.buttons_state[5]:
+                elapsed_time = self.time_alive - self.last_e_use
+                if elapsed_time >= self.e_cooldown:
+                    self.e_action()
+                    self.is_e_action_on = True
+                    self.last_e_use = self.time_alive
+            #       turn off
+            if self.is_e_action_on and self.time_alive >= self.last_e_use + self.e_ongoing_time:
+                self.e_turn_off()
+                self.is_e_action_on = False
+                self.last_e_use = self.time_alive
+
+        elapsed_time = self.time_alive - GameSetup.vibration_start
+        if self.joystick.active:
+            if self.joystick.R2 > 0:
+                if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time and not self.is_overheated:
+                    GameSetup.joysticks[0].rumble(0, 0.1, 0)
+                    self.shoot()
+            else:
+                if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time:
+                    GameSetup.joysticks[0].stop_rumble()
+                    GameSetup.vibration_time = 0
+        else:
+            #   tries to shoot when the left mouse button or R2 is pressed
+            if self.buttons_state[6]:
+                self.shoot()
 
         # super().update() - update declared in class Ship
         super().update()

@@ -8,7 +8,7 @@ from scrap_metal import ScrapMetal
 from gamesetup import *
 
 
-def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
+def handle_collisions(joystick, item_group: Group, attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
                       is_target_projectile: bool, explosion_group: Group) -> None | int:
     """
     Handles projectile-to-projectile, projectile-to-ship and ship-to-ship sprite collisions.
@@ -45,20 +45,20 @@ def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_proj
 
             # projectile to ship collision
             if is_attacker_projectile and not is_target_projectile:
+                # vibrations
+                if target.type == "player_light" or target.type == "player_mid" or target.type == "player_tank":
+                    if joystick.active:
+                        if GameSetup.vibrations:
+                            GameSetup.joysticks[0].stop_rumble()
+                            GameSetup.vibration_start = target.time_alive
+                            GameSetup.vibration_time = 200
+                            GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
                 # damaging target
                 target.hp -= attacker.dmg
                 if target.type == 'tank':
                     spawn_scrap_metal(item_group, target, {1: 0.05})
                 else:
                     spawn_scrap_metal(item_group, target, {1: 0.1})
-
-                if target.type == "player_light" or target.type == "player_mid" or target.type == "player_tank":
-                    if GameSetup.vibrations:
-                        GameSetup.joysticks[0].stop_rumble()
-                        GameSetup.vibration_start = target.time_alive
-                        GameSetup.vibration_time = 200
-                        GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
-
                 # killing the projectile
                 if attacker.type == "normal" or attacker.type == "blast":
                     proj_explosion = ProjectileExplosion(attacker.pos, 1, attacker.color)
@@ -81,6 +81,14 @@ def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_proj
 
             # ship to ship collision
             if not is_attacker_projectile and not is_target_projectile:
+                # vibrations
+                if attacker.type == "player_light" or attacker.type == "player_mid" or attacker.type == "player_tank":
+                    if joystick.active:
+                        if GameSetup.vibrations:
+                            GameSetup.joysticks[0].stop_rumble()
+                            GameSetup.vibration_start = attacker.time_alive
+                            GameSetup.vibration_time = 500
+                            GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
                 # damaging target
                 target.hp -= attacker.dmg
                 # turn off light shield
@@ -88,12 +96,6 @@ def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_proj
                     attacker.e_turn_off()
                     attacker.is_e_action_on = False
                     attacker.last_e_use = attacker.time_alive
-                if attacker.type == "player_light" or attacker.type == "player_mid" or attacker.type == "player_tank":
-                    if GameSetup.vibrations:
-                        GameSetup.joysticks[0].stop_rumble()
-                        GameSetup.vibration_start = attacker.time_alive
-                        GameSetup.vibration_time = 500
-                        GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
                 else:
                     # damaging attacker
                     attacker.hp -= target.dmg

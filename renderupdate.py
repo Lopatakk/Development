@@ -51,15 +51,15 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
     font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
     text = font.render(str(score), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
     x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
-    screen.blit(text, (x, 10 + GameSetup.height / 200))
+    screen.blit(text, (x, GameSetup.width / 1536 * 10 + GameSetup.height / 200))
 
     # scrap metal
-    x = GameSetup.width - 170  # score in the middle of the screen
+    x = GameSetup.width - GameSetup.width / 1536 * 170  # score in the middle of the screen
     screen.blit(GameSetup.scrap_metal_icon, (x, GameSetup.height / 200))
 
-    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(GameSetup.width / 1536 * 30))
     text = font.render(str(scrap_metal_count), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
-    screen.blit(text, (x + 70, 10 + GameSetup.height / 200))
+    screen.blit(text, (x + GameSetup.width / 1536 * 70, GameSetup.width / 1536 * 10 + GameSetup.height / 200))
 
     # overheat bar
     # bars proportions [x, y]
@@ -142,7 +142,7 @@ def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> Non
     :param b: The value of blue in the text color
     :return: None
     """
-    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(GameSetup.height / 1536 * 30))
     text = font.render(str(score), True, (r, g, b))
     x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, GameSetup.height / 200))
@@ -158,10 +158,11 @@ def render_scrapmetal(screen: SurfaceType, scrap_metal_count: int, r: int, g: in
     :param b: The value of blue in the text color
     :return: None
     """
-    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 30)
+    font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(GameSetup.height / 1536 * 30))
     text = font.render(str(scrap_metal_count), True, (r, g, b))
     x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, GameSetup.height / 200))
+
 
 def render_enemy_health_bar(screen: SurfaceType, enemy_group: Group) -> None:
     """

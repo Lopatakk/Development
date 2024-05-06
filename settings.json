@@ -1,6 +1,6 @@
 {
-    "music_volume": 0.7835995737711587,
-    "effects_volume": 0.866932907104492,
+    "music_volume": 0.9034936014811197,
+    "effects_volume": 0.3292152998182508,
     "danger_blinking": true,
     "vibrations": true,
     "button_up": 119,
@@ -9,5 +9,5 @@
     "button_right": 100,
     "button_function_1": 113,
     "button_function_2": 101,
-    "language": "czech"
+    "language": "english"
 }

@@ -329,7 +329,6 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
             cursor.active = True
             update_groups([cursor_group], screen)
 
-
         clock.tick(GameSetup.fps)
         pygame.display.flip()
 
@@ -655,8 +654,10 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
 
     # ship
     ship_surf = player.image_non_rot
-    new_width = int(ship_surf.get_width() * width / 809)
-    new_height = int(ship_surf.get_height() * height / 455)
+    # new_width = int(ship_surf.get_width() * width / 809)
+    # new_height = int(ship_surf.get_height() * height / 455)
+    new_width = int(ship_surf.get_width() * 1.8)
+    new_height = int(ship_surf.get_height() * 1.8)
     ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
     ship_rect = ship_surf.get_rect(center=(width / 1.3, height / 1.7))
     ship_mask = pygame.mask.from_surface(ship_surf)
@@ -699,8 +700,8 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
     while True:
         # actual ship
         ship_surf = player.image_non_rot
-        new_width = int(ship_surf.get_width() * width / 809)
-        new_height = int(ship_surf.get_height() * height / 455)
+        new_width = int(ship_surf.get_width() * 1.8)
+        new_height = int(ship_surf.get_height() * 1.8)
         ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
         ship_surf_transparent = ship_surf.copy()
         ship_surf_transparent.set_alpha(100)
@@ -817,8 +818,11 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
 
     # bin
     thrash_bin = pygame.image.load("assets/images/thrash_bin.png").convert_alpha()
+    new_width = int(thrash_bin.get_width() * width / 1536)
+    new_height = int(thrash_bin.get_height() * height / 864)
+    thrash_bin = pygame.transform.scale(thrash_bin, (new_width, new_height))
     thrash_bin_rect = thrash_bin.get_rect()
-    thrash_bin_rect.center = (1400, 740)
+    thrash_bin_rect.center = (width / 1536 * 1400, height / 864 * 740)
 
     enlarged_thrash_bin_size = pygame.Vector2(thrash_bin.get_size()) * 1.3
     enlarged_thrash_bin_surf = pygame.transform.scale(thrash_bin, enlarged_thrash_bin_size)
@@ -828,11 +832,18 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
     over_thrash_bin = False
 
     # description
-    font_description = pygame.font.Font('assets/fonts/PublicPixel.ttf', 28)
+    font_description = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(28 * width / 1536))
 
     # modules
     module_white = pygame.image.load("assets/images/module_white.png").convert_alpha()
+    new_width = int(module_white.get_width() * width / 1536)
+    new_height = int(module_white.get_height() * height / 864)
+    module_white = pygame.transform.scale(module_white, (new_width, new_height))
+
     module_black = pygame.image.load("assets/images/module_black.png").convert_alpha()
+    new_width = int(module_black.get_width() * width / 1536)
+    new_height = int(module_black.get_height() * height / 864)
+    module_black = pygame.transform.scale(module_black, (new_width, new_height))
 
     # text
     game_text = None
@@ -840,7 +851,7 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
         if language['language'] == GameSetup.language:
             game_text = language['text']['upgrade']['content']
 
-    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', 32)
+    font_title = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(32 * width / 1536))
 
     # ship parts
     ship_parts_images = {
@@ -856,13 +867,16 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
 
     # picked mark
     picked_mark = pygame.image.load("assets/images/picked_mark.png").convert_alpha()
+    new_width = int(picked_mark.get_width() * width / 1536)
+    new_height = int(picked_mark.get_height() * height / 864)
+    picked_mark = pygame.transform.scale(picked_mark, (new_width, new_height))
     picked_mark_active = 1
 
     # ship
     ship_surf = player.build_ship(player.type)
-    pos = (450, 320)
-    new_width = int(ship_surf.get_width() * 2.3)
-    new_height = int(ship_surf.get_height() * 2.3)
+    pos = (width / 1536 * 450, height / 864 * 320)
+    new_width = int(ship_surf.get_width() * 2.3 * width / 1536)
+    new_height = int(ship_surf.get_height() * 2.3 * height / 864)
     ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
     ship_rect = ship_surf.get_rect(center=pos)
     ship_mask = pygame.mask.from_surface(ship_surf)
@@ -872,9 +886,12 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
 
     # settings
     controller_icon = pygame.image.load("assets/images/controller.png").convert_alpha()
+    controller_new_width = int(controller_icon.get_width() * width / 1536)
+    controller_new_height = int(controller_icon.get_height() * height / 864)
+    controller_icon = pygame.transform.scale(controller_icon, (controller_new_width, controller_new_height))
     controller_rect = controller_icon.get_rect()
     controller_rect.centerx = ship_rect.centerx
-    controller_rect.centery = ship_rect.centery + 50
+    controller_rect.centery = ship_rect.centery + height / 864 * 50
 
     # sound
     sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
@@ -882,15 +899,15 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    x = 932
-    y = 78
-    storage_buttons = [(x, y), (x + 260, y), (x, y + 260), (x + 260, y + 260)]
+    x = width / 1536 * 932
+    y = height / 864 * 78
+    storage_buttons = [(x, y), (x + width / 1536 * 260, y), (x, y + height / 864 * 260), (x + width / 1536 * 260, y + height / 864 * 260)]
     module_buttons = {
-        "weapons": (90, 118, True),
-        "cooling": (635, 118, True),
-        "shield": (85, 392, True),
-        "repair_module": (640, 392, True),
-        "booster": (365, 590, True)
+        "weapons": (width / 1536 * 90, height / 864 * 118, True),
+        "cooling": (width / 1536 * 635, height / 864 * 118, True),
+        "shield": (width / 1536 * 85, height / 864 * 392, True),
+        "repair_module": (width / 1536 * 640, height / 864 * 392, True),
+        "booster": (width / 1536 * 365, height / 864 * 590, True)
     }
     max_level = 3
 
@@ -1000,24 +1017,24 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
                         description = {'Acceleration:': (current_acceleration, item_acceleration)}
         if description:
             for i, (stat_name, (current_stat, item_stat)) in enumerate(description.items()):
-                screen.blit(font_description.render(stat_name, True, 'white'), (660, 650 + i * 60))
+                screen.blit(font_description.render(stat_name, True, 'white'), (width / 1536 * 660, height / 864 * 650 + i * 60))
                 if max_level_reached:
-                    screen.blit(font_description.render(str(current_stat), True, 'white'), (1050, 650 + i * 60))
+                    screen.blit(font_description.render(str(current_stat), True, 'white'), (width / 1536 * 1050, height / 864 * 650 + i * 60))
                 else:
-                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (1050, 650 + i * 60))
-                    width = font_description.render(str(current_stat) + ' → ', True, 'white').get_width()
+                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (width / 1536 * 1050, height / 864 * 650 + i * 60))
+                    font_width = font_description.render(str(current_stat) + ' → ', True, 'white').get_width()
                     if current_stat > item_stat:
                         item_stat_color = 'red'
                     elif current_stat < item_stat:
                         item_stat_color = 'green'
                     screen.blit(font_description.render(str(item_stat), True, item_stat_color),
-                                (1050 + width, 650 + i * 60))
+                                (width / 1536 * 1050 + font_width, height / 864 * 650 + i * 60))
 
         # rendering storage items
         for i, item in enumerate(storage_items):
             # calculating centers of rects
-            storage_button_x = storage_buttons[i][0] + 132
-            storage_button_y = storage_buttons[i][1] + 130
+            storage_button_x = storage_buttons[i][0] + width / 1536 * 132
+            storage_button_y = storage_buttons[i][1] + height / 864 * 130
 
             item_rect = item.unscaled_image.get_rect()
             item_x = storage_button_x - item_rect.width // 2
@@ -1037,7 +1054,7 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
             text = font_title.render(game_text[i], True, (255, 255, 255))
             text_rect = text.get_rect()
             text_rect.centerx = module_rect.centerx
-            text_rect.y = module_rect.y + 190
+            text_rect.y = module_rect.y + height / 864 * 190
             screen.blit(text, text_rect)
 
         # rendering installed items
@@ -1045,8 +1062,8 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
             # calculating centers of module rects
             if i > 0:
                 module_button_x, module_button_y, active = module_buttons[module]
-                module_button_x_center = module_button_x + 93
-                module_button_y_center = module_button_y + 90
+                module_button_x_center = module_button_x + width / 1536 * 93
+                module_button_y_center = module_button_y + height / 864 * 90
 
                 item_rect = ship_parts_images[module][player.ship_parts[module] - 1].get_rect()
                 item_x = module_button_x_center - item_rect.width // 2
@@ -1056,8 +1073,8 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
         # rendering picked mark
         if picked_mark_active > 0:
             # calculating centers of storage button rects
-            storage_button_x = storage_buttons[picked_mark_active - 1][0] + 132
-            storage_button_y = storage_buttons[picked_mark_active - 1][1] + 130
+            storage_button_x = storage_buttons[picked_mark_active - 1][0] + width / 1536 * 132
+            storage_button_y = storage_buttons[picked_mark_active - 1][1] + height / 864 * 130
 
             picked_mark_rect = picked_mark.get_rect()
             picked_mark_x = storage_button_x - picked_mark_rect.width // 2
@@ -1114,14 +1131,14 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
 
                 # collision with storage rects
                 for i, (x, y) in enumerate(storage_buttons):
-                    rect = pygame.Rect(x, y, 260, 260)
+                    rect = pygame.Rect(x, y, width / 1536 * 260, height / 864 * 260)
                     if rect.collidepoint(mouse_pos):
                         picked_mark_active = i + 1
                         break
 
                 # collision with module rects
                 for module, (x, y, active) in module_buttons.items():
-                    rect = pygame.Rect(x, y, 260, 260)
+                    rect = pygame.Rect(x, y, width / 1536 * 260, height / 864 * 260)
                     if rect.collidepoint(mouse_pos):
                         if picked_mark_active <= len(storage_items):
                             if storage_items[picked_mark_active - 1].upgradable:
@@ -1298,6 +1315,9 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
     hp = []
     for i in range(4):
         img = pygame.image.load(f"assets/images/cockpit/hp{i}.png").convert_alpha()
+        new_width = int(img.get_width() * width / 1536)
+        new_height = int(img.get_height() * height / 864)
+        img = pygame.transform.scale(img, (new_width, new_height))
         hp.append(img)
 
     # background
@@ -1312,7 +1332,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
 
     # button
     joystick.set_position(0, 0)
-    play_button = button.Button(650, 330, "assets/images/cockpit/button_01.png",
+    play_button = button.Button(width / 1536 * 650, height / 864 * 330, "assets/images/cockpit/button_01.png",
                                 "assets/images/cockpit/button_02.png", 0.15, 0.05,
                                 0.021, '', screen, sound, sound_volume, joystick, (0, 0))
 
@@ -1369,7 +1389,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                 [background_group, mini_player_projectile_group, mini_enemy_projectile_group, mini_enemy_group,
                  mini_player_group, mini_spawner_group, mini_explosion_group], screen)
 
-            screen.blit(hp[int(mini_player.hp)], (520, 500))
+            screen.blit(hp[int(mini_player.hp)], (width / 1536 * 520, height / 864 * 500))
 
             # updating cursor
             update_groups([cursor_group], screen)
@@ -1397,7 +1417,7 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
         else:
             screen.blit(mini_player.image, mini_player.rect)
             update_groups([background_group], screen)
-            screen.blit(hp[3], (520, 500))
+            screen.blit(hp[3], (width / 1536 * 520, height / 864 * 500))
             if not joystick.active:
                 update_groups([cursor_group], screen)
             if play_button.draw_button_and_text(screen):

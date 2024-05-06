@@ -48,16 +48,19 @@ class EnemySpawner(pygame.sprite.Sprite):
         elif side == "right":
             return np.array([self.screen_width + 50, random.randint(0, self.screen_height)])
 
+
     def spawn_outside_mini_screen(self):
+        screen = pygame.display.get_surface()
+        width, height = screen.get_size()
         side = random.choice(["top", "bottom", "left", "right"])
         if side == "top":
-            return np.array([random.randint(515, GameSetup.width - 515), 285])
+            return np.array([random.randint(int(width / 1536 * 515), GameSetup.width - int(width / 1536 * 515)), int(height / 864 * 285)])
         elif side == "bottom":
-            return np.array([random.randint(515, GameSetup.width - 515), GameSetup.height - 305])
+            return np.array([random.randint(int(width / 1536 * 515), GameSetup.width - int(width / 1536 * 515)), GameSetup.height - int(height / 864 * 305)])
         elif side == "left":
-            return np.array([515, random.randint(285, GameSetup.height - 305)])
+            return np.array([int(width / 1536 * 515), random.randint(int(height / 864 * 285), GameSetup.height - int(height / 864 * 305))])
         elif side == "right":
-            return np.array([GameSetup.width - 515, random.randint(285, GameSetup.height - 305)])
+            return np.array([GameSetup.width - int(width / 1536 * 515), random.randint(int(height / 864 * 285), GameSetup.height - int(height / 864 * 305))])
 
     def update(self):
         self.scaling = 1 + self.time_alive / 500

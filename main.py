@@ -24,6 +24,7 @@ clock = pygame.time.Clock()
 
 # screen
 screen = GameSetup.start_setup()
+# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 background = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()
@@ -261,19 +262,20 @@ while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     waiting_for_player = False
-                for i in range(GameSetup.joysticks[0].get_numbuttons()):
-                    if GameSetup.joysticks[0].get_button(i):
-                        waiting_for_player = False
-                        break
-                for i in range(GameSetup.joysticks[0].get_numaxes()):
-                    if i < 4:
-                        if abs(GameSetup.joysticks[0].get_axis(i)) > 0.5:
+                if joystick.active:
+                    for i in range(GameSetup.joysticks[0].get_numbuttons()):
+                        if GameSetup.joysticks[0].get_button(i):
                             waiting_for_player = False
                             break
-                    else:
-                        if abs(GameSetup.joysticks[0].get_axis(i)) < 1:
-                            waiting_for_player = False
-                            break
+                    for i in range(GameSetup.joysticks[0].get_numaxes()):
+                        if i < 4:
+                            if abs(GameSetup.joysticks[0].get_axis(i)) > 0.5:
+                                waiting_for_player = False
+                                break
+                        else:
+                            if abs(GameSetup.joysticks[0].get_axis(i)) < 1:
+                                waiting_for_player = False
+                                break
 
 
             # render background
@@ -314,11 +316,11 @@ while True:
                        player_group, explosion_group, cursor_group, spawner_group], screen)
         #   score and collisions
         score_diff = 0
-        score_diff += handle_collisions(item_group, player_group, False, enemy_group, False, explosion_group)
-        score_diff += handle_collisions(item_group, player_projectile_group, True, enemy_group, False, explosion_group)
+        score_diff += handle_collisions(joystick, item_group, player_group, False, enemy_group, False, explosion_group)
+        score_diff += handle_collisions(joystick, item_group, player_projectile_group, True, enemy_group, False, explosion_group)
         score += score_diff
-        handle_collisions(item_group, enemy_projectile_group, True, player_group, False, explosion_group)
-        handle_collisions(item_group, player_projectile_group, True, enemy_projectile_group, True, explosion_group)
+        handle_collisions(joystick, item_group, enemy_projectile_group, True, player_group, False, explosion_group)
+        handle_collisions(joystick, item_group, player_projectile_group, True, enemy_projectile_group, True, explosion_group)
 
         handle_item_collisions(item_group, enemy_group, storage_items, scrap_metal_count)
 
