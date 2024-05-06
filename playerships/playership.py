@@ -173,10 +173,11 @@ class PlayerShip(Ship):
             self.is_e_action_on = False
             self.last_e_use = self.time_alive
 
-
         #   tries to shoot when the left mouse button or R2 is pressed
         if self.buttons_state[6] or self.joystick.R2 > 0:
             self.shoot()
+            if GameSetup.vibrations:
+                GameSetup.joysticks[0].rumble(1, 1, 100)
 
         # super().update() - update declared in class Ship
         super().update()

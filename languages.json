@@ -8,7 +8,7 @@
       },
       "settings": {
         "title": "Settings",
-        "content": ["Music Volume", "Effects Volume", "Low Health Blinking", "Back"]
+        "content": ["Music Volume", "Effects Volume", "Low Health Blinking", "Vibrations", "Back"]
       },
       "statistics": {
         "title": "Statistics",
@@ -87,7 +87,7 @@
       },
       "settings": {
         "title": "Nastavení",
-        "content": ["Hlasitost hudby", "Hlasitost efektů", "Blikání při nízkém zdraví", "Zpět"]
+        "content": ["Hlasitost hudby", "Hlasitost efektů", "Blikání při nízkém zdraví", "Vibrace", "Zpět"]
       },
       "statistics": {
         "title": "Statistiky",
@@ -166,7 +166,7 @@
       },
       "settings": {
         "title": "Ajustes",
-        "content": ["Volumen de la Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Atrás"]
+        "content": ["Volumen de la Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Vibración", "Atrás"]
       },
       "statistics": {
         "title": "Estadísticas",
@@ -245,7 +245,7 @@
     },
     "settings": {
       "title": "Paramètres",
-      "content": ["Volume de la musique", "Volume des effets", "Clignotement de santé faible", "Retour"]
+      "content": ["Volume de la musique", "Volume des effets", "Clignotement de santé faible", "Vibration", "Retour"]
     },
     "statistics": {
       "title": "Statistiques",
@@ -324,7 +324,7 @@
       },
       "settings": {
         "title": "Einstellungen",
-        "content": ["Musik Lautstärke", "Effekte Lautstärke", "Blinken bei niedriger Gesundheit", "Zurück"]
+        "content": ["Musik Lautstärke", "Effekte Lautstärke", "Blinken bei niedriger Gesundheit", "Vibration", "Zurück"]
       },
       "statistics": {
         "title": "Statistiken",

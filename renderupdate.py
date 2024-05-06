@@ -61,7 +61,6 @@ def render_hud(screen: SurfaceType, score: int, scrap_metal_count: int, score_rg
     text = font.render(str(scrap_metal_count), True, (score_rgb[0], score_rgb[1], score_rgb[2]))
     screen.blit(text, (x + 70, 10 + GameSetup.height / 200))
 
-
     # overheat bar
     # bars proportions [x, y]
     bar_pos = [35 / 1920 * GameSetup.width, 990 / 1080 * GameSetup.height]

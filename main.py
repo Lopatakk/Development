@@ -24,7 +24,6 @@ clock = pygame.time.Clock()
 
 # screen
 screen = GameSetup.start_setup()
-# screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
 
 background = Background("Background", 3, (200, 350))
 background_group = pygame.sprite.Group()
@@ -282,7 +281,7 @@ while True:
             screen.blit(overlay, (0, 0))
 
             # render text
-            pause_font = pygame.font.Font('assets/fonts/PublicPixel.ttf', 40)
+            pause_font = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(GameSetup.width / 38.4))
             title, text = GameSetup.set_language('pause')
             font_to_render = pause_font.render(text[3], True, (230, 230, 230))
             font_rect = font_to_render.get_rect()

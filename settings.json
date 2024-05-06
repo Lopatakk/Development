@@ -1,12 +1,13 @@
 {
-    "music_volume": 0.8161433919270833,
-    "effects_volume": 0.7942885674370659,
-    "danger_blinking": false,
+    "music_volume": 0.7494220055474174,
+    "effects_volume": 0.866932907104492,
+    "danger_blinking": true,
+    "vibrations": true,
     "button_up": 119,
     "button_down": 115,
     "button_left": 97,
     "button_right": 100,
     "button_function_1": 113,
     "button_function_2": 101,
-    "language": "english"
+    "language": "czech"
 }

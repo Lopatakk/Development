@@ -46,7 +46,6 @@ class Slider:
                 screen.blit(self.button0, self.button_rect)
 
     def update(self, settings, option, on_language):
-        print(self.value)
         scroll = float(self.button_rect.centerx)
         if self.joystick.active and not on_language:
             if self.joystick.position[1] == self.joystick_index:

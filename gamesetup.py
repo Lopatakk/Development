@@ -9,7 +9,8 @@ class GameSetup:
     pygame.init()
 
     # Screen parameters:
-    width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    width = 0
+    height = 0
     fps = 60
     screen = None
 
@@ -37,6 +38,9 @@ class GameSetup:
     # low health blinking
     danger_blinking = settings["danger_blinking"]
     button_up = settings["button_up"]
+
+    # vibrations
+    vibrations = settings["vibrations"]
 
     #   buttons
     button_up = settings["button_up"]
@@ -77,6 +81,7 @@ class GameSetup:
 
         # low health blinking
         cls.danger_blinking = settings["danger_blinking"]
+        cls.vibrations = settings["vibrations"]
         cls.button_up = settings["button_up"]
 
         #   buttons
@@ -97,6 +102,7 @@ class GameSetup:
         """
         pygame.display.set_caption('Space shooter')
         screen = pygame.display.set_mode((cls.width, cls.height), pygame.FULLSCREEN)
+        # screen = pygame.display.set_mode((800, 600))  # Pavel_odkomentovávám pouze proto, abych viděl řádek
         cls.width, cls.height = pygame.display.Info().current_w, pygame.display.Info().current_h
         cls.screen = screen
         cls.hp_icon = pygame.image.load("assets/icons/bars/health_bar.png")

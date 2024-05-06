@@ -43,14 +43,14 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     flag_width = 0
     flag_height = 0
     on_language = False
-    flag_offset_x = 35
-    flag_offset_y = 30
+    flag_offset_x = width / 44
+    flag_offset_y = height / 29
     for i, flag in enumerate(flags):
         flag_surf = pygame.image.load(f"assets/images/languages/{flag}.png").convert_alpha()
-        flag_width = int(flag_surf.get_width() * 0.6)
-        flag_height = int(flag_surf.get_height() * 0.6)
+        flag_width = int(flag_surf.get_width() * 0.0004 * width)
+        flag_height = int(flag_surf.get_height() * 0.0004 * width)
         flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
-        flag_rect = pygame.rect.Rect(1400, 30 + (flag_offset_y / 2 + flag_height) * i, flag_width, flag_height)
+        flag_rect = pygame.rect.Rect(0.93 * width, 0.03 * height + (flag_offset_y / 2 + flag_height) * i, flag_width, flag_height)
         flags_images.append(flag_surf)
         flag_rects.append(flag_rect)
 
@@ -61,8 +61,8 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     flag_background.set_alpha(50)
     flag_background.fill('gray')
     flag_background_rect = flag_background.get_rect()
-    flag_background_rect.x = 1400 - flag_offset_x / 2
-    flag_background_rect.y = 30 - flag_offset_y / 2
+    flag_background_rect.x = 0.93 * width - flag_offset_x / 2
+    flag_background_rect.y = 0.03 * height - flag_offset_y / 2
 
     #   volume
     min_value = 0
@@ -72,6 +72,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
     danger_blinking = settings["danger_blinking"]
+    vibrations = settings["vibrations"]
 
     # text
     title, game_text = GameSetup.set_language("settings")
@@ -82,16 +83,22 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
     sound.set_volume(sound_volume * GameSetup.effects_volume)
 
     #   create button instances
-    buttons_num = 5
-    danger_button_on = button.Button(width / 6, height / 1.4, "assets/images/switch_on0.png",
+    buttons_num = 6
+    danger_button_on = button.Button(width / 6, height / 1.53, "assets/images/switch_on0.png",
                                      "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
                                      sound, sound_volume, joystick, (0, 3))
-    danger_button_off = button.Button(width / 6, height / 1.4, "assets/images/switch_off0.png",
+    danger_button_off = button.Button(width / 6, height / 1.53, "assets/images/switch_off0.png",
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
                                       sound, sound_volume, joystick, (0, 3))
+    vibrations_button_on = button.Button(width / 6, height / 1.23, "assets/images/switch_on0.png",
+                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
+                                     sound, sound_volume, joystick, (0, 4))
+    vibrations_button_off = button.Button(width / 6, height / 1.23, "assets/images/switch_off0.png",
+                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
+                                      sound, sound_volume, joystick, (0, 4))
     back_button = button.Button(0.8 * width, 7 / 8 * height, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
-                                sound, sound_volume, joystick, (0, 4))
+                                sound, sound_volume, joystick, (0, 5))
 
     # percentage
     percentageMusic = ((music_volume - min_value) / (max_value - min_value)) * 100
@@ -110,7 +117,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         screen.blit(surface, (0, 0))
 
         # button update
-        back_button.update_text(game_text[3])
+        back_button.update_text(game_text[4])
 
         # render languages
         if on_language:
@@ -148,7 +155,11 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
 
         # danger blinking
         screen.blit(font_subTitle.render(game_text[2], True, (230, 230, 230)),
-                    (3.6 * width / 20, 52 * height / 80))
+                    (3.6 * width / 20, 52 * height / 87))
+
+        # vibrations
+        screen.blit(font_subTitle.render(game_text[3], True, (230, 230, 230)),
+                    (3.6 * width / 20, 52 * height / 68))
 
         #   BUTTON
         if back_button.draw_button_and_text(screen, True, on_language):
@@ -205,6 +216,21 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
             if danger_button_off.draw_button_and_text(screen, False, on_language):
                 settings["danger_blinking"] = True
                 danger_blinking = True
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
+                GameSetup.update()
+
+        if vibrations:
+            if vibrations_button_on.draw_button_and_text(screen, False, on_language):
+                settings["vibrations"] = False
+                vibrations = False
+                with open("settings.json", "w") as settings_file:
+                    json.dump(settings, settings_file, indent=4)
+                GameSetup.update()
+        else:
+            if vibrations_button_off.draw_button_and_text(screen, False, on_language):
+                settings["vibrations"] = True
+                vibrations = True
                 with open("settings.json", "w") as settings_file:
                     json.dump(settings, settings_file, indent=4)
                 GameSetup.update()
@@ -271,7 +297,21 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                             with open("settings.json", "w") as settings_file:
                                 json.dump(settings, settings_file, indent=4)
                             GameSetup.update()
+
                     elif joystick.position[1] == 4:
+                        if vibrations:
+                            settings["vibrations"] = False
+                            vibrations = False
+                            with open("settings.json", "w") as settings_file:
+                                json.dump(settings, settings_file, indent=4)
+                            GameSetup.update()
+                        else:
+                            settings["vibrations"] = True
+                            vibrations = True
+                            with open("settings.json", "w") as settings_file:
+                                json.dump(settings, settings_file, indent=4)
+                            GameSetup.update()
+                    elif joystick.position[1] == 5:
                         pygame.mixer.Channel(3).stop()
                         sound.set_volume(sound_volume * GameSetup.effects_volume)
                         pygame.mixer.Channel(1).play(sound)
@@ -614,25 +654,25 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
 
     # ship
     ship_surf = player.image_non_rot
-    new_width = int(ship_surf.get_width() * 1.9)
-    new_height = int(ship_surf.get_height() * 1.9)
+    new_width = int(ship_surf.get_width() * width / 809)
+    new_height = int(ship_surf.get_height() * height / 455)
     ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
-    ship_rect = ship_surf.get_rect(center=(1150, 500))
+    ship_rect = ship_surf.get_rect(center=(width / 1.3, height / 1.7))
     ship_mask = pygame.mask.from_surface(ship_surf)
     ship_surf_transparent = ship_surf.copy()
     ship_surf_transparent.set_alpha(100)
 
     # settings
     settings_icon = pygame.image.load("assets/images/settings_icon_big.png").convert_alpha()
-    new_width = int(settings_icon.get_width() * 0.7)
-    new_height = int(settings_icon.get_height() * 0.7)
+    new_width = int(settings_icon.get_width() * width / 1234)
+    new_height = int(settings_icon.get_height() * height / 806)
     settings_icon = pygame.transform.scale(settings_icon, (new_width, new_height))
     settings_rect = settings_icon.get_rect()
     settings_rect.centerx = ship_rect.centerx
-    settings_rect.centery = ship_rect.centery + 50
+    settings_rect.centery = ship_rect.centery + height / 17
 
     # mouse mask
-    mouse_mask = pygame.mask.from_surface(pygame.Surface((10, 10)))
+    mouse_mask = pygame.mask.from_surface(pygame.Surface((width / 86.4, height / 153.6)))
 
     # text
     title, game_text = GameSetup.set_language("pause")
@@ -658,8 +698,8 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
     while True:
         # actual ship
         ship_surf = player.image_non_rot
-        new_width = int(ship_surf.get_width() * 1.9)
-        new_height = int(ship_surf.get_height() * 1.9)
+        new_width = int(ship_surf.get_width() * width / 809)
+        new_height = int(ship_surf.get_height() * height / 455)
         ship_surf = pygame.transform.scale(ship_surf, (new_width, new_height))
         ship_surf_transparent = ship_surf.copy()
         ship_surf_transparent.set_alpha(100)
@@ -680,7 +720,7 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
             over_ship = True
         else:
             over_ship = False
-        if over_ship or joystick.position[0] == 1 and joystick.active:
+        if over_ship and not joystick.active or joystick.position[0] == 1 and joystick.active:
             screen.blit(ship_surf_transparent, ship_rect)
             screen.blit(settings_icon, settings_rect)
         else:
@@ -713,7 +753,6 @@ def pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, sto
             if event.type == pygame.MOUSEMOTION or event.type == pygame.KEYDOWN:
                 joystick.active = False
                 cursor.active = True
-                over_ship = False
 
         # render score
         render_score(screen, score, 230, 230, 230)
@@ -858,7 +897,7 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
         # render background
         screen.blit(background, (0, 0))
         screen.blit(storage, (0, 0))
-        if over_ship:
+        if over_ship and not joystick.active or joystick.position[0] == 1 and joystick.active:
             screen.blit(ship_surf_transparent, ship_rect)
             screen.blit(controller_icon, controller_rect)
         else:
@@ -1558,7 +1597,7 @@ def death_menu(screen, joystick, cursor, clock, cursor_group, score, ship_number
         if joystick.active:
             cursor.active = False
 
-            action = joystick.menu_control(0, 4)
+            action = joystick.menu_control(1, 4)
             if action == 'enter':
                 if joystick.position == (0, 0):
                     if not save_name_clicked:
