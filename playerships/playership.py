@@ -174,10 +174,15 @@ class PlayerShip(Ship):
             self.last_e_use = self.time_alive
 
         #   tries to shoot when the left mouse button or R2 is pressed
+        elapsed_time = self.time_alive - GameSetup.vibration_start
         if self.buttons_state[6] or self.joystick.R2 > 0:
             self.shoot()
-            if GameSetup.vibrations:
-                GameSetup.joysticks[0].rumble(1, 1, 100)
+            if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time and not self.is_overheated:
+                GameSetup.joysticks[0].rumble(0, 0.1, 0)
+        else:
+            if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time:
+                GameSetup.joysticks[0].stop_rumble()
+                GameSetup.vibration_time = 0
 
         # super().update() - update declared in class Ship
         super().update()

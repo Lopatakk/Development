@@ -31,7 +31,16 @@ while running:
     # Vykreslení obrazce
     screen.fill((0, 0, 0))  # Vyčištění obrazovky
     if joystick.cross_button:
-        pygame.draw.rect(screen, (255, 0, 0), (x, y, size, size))  # Červený čtverec
+        GameSetup.joysticks[0].rumble(0.1, 1, 100)
+
+    if joystick.square_button:
+        GameSetup.joysticks[0].rumble(1, 0.1, 100)
+
+    if joystick.triangle_button:
+        GameSetup.joysticks[0].rumble(0, 0.1, 100)
+
+    if joystick.circle_button:
+        GameSetup.joysticks[0].rumble(1, 1, 100)
 
     # Obnovování obrazovky
     pygame.display.flip()

@@ -306,6 +306,7 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                                 json.dump(settings, settings_file, indent=4)
                             GameSetup.update()
                         else:
+                            GameSetup.joysticks[0].rumble(1, 1, 300)
                             settings["vibrations"] = True
                             vibrations = True
                             with open("settings.json", "w") as settings_file:

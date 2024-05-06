@@ -147,6 +147,7 @@ def render_score(screen: SurfaceType, score: int, r: int, g: int, b: int) -> Non
     x = (GameSetup.width - text.get_width()) / 2  # score in the middle of the screen
     screen.blit(text, (x, GameSetup.height / 200))
 
+
 def render_scrapmetal(screen: SurfaceType, scrap_metal_count: int, r: int, g: int, b: int) -> None:
     """
     Renders score on the screen

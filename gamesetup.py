@@ -41,6 +41,8 @@ class GameSetup:
 
     # vibrations
     vibrations = settings["vibrations"]
+    vibration_time = 0
+    vibration_start = 0
 
     #   buttons
     button_up = settings["button_up"]

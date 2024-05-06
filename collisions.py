@@ -1,10 +1,11 @@
 import pygame
+import random
 from explosion import Explosion
 from projectileexplosion import ProjectileExplosion
 from pygame.sprite import Group
 from ship_upgrade import ShipUpgrade
 from scrap_metal import ScrapMetal
-import random
+from gamesetup import *
 
 
 def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_projectile: bool, target_group: Group,
@@ -51,6 +52,13 @@ def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_proj
                 else:
                     spawn_scrap_metal(item_group, target, {1: 0.1})
 
+                if target.type == "player_light" or target.type == "player_mid" or target.type == "player_tank":
+                    if GameSetup.vibrations:
+                        GameSetup.joysticks[0].stop_rumble()
+                        GameSetup.vibration_start = target.time_alive
+                        GameSetup.vibration_time = 200
+                        GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
+
                 # killing the projectile
                 if attacker.type == "normal" or attacker.type == "blast":
                     proj_explosion = ProjectileExplosion(attacker.pos, 1, attacker.color)
@@ -80,6 +88,12 @@ def handle_collisions(item_group: Group, attacker_group: Group, is_attacker_proj
                     attacker.e_turn_off()
                     attacker.is_e_action_on = False
                     attacker.last_e_use = attacker.time_alive
+                if attacker.type == "player_light" or attacker.type == "player_mid" or attacker.type == "player_tank":
+                    if GameSetup.vibrations:
+                        GameSetup.joysticks[0].stop_rumble()
+                        GameSetup.vibration_start = attacker.time_alive
+                        GameSetup.vibration_time = 500
+                        GameSetup.joysticks[0].rumble(1, 1, GameSetup.vibration_time)
                 else:
                     # damaging attacker
                     attacker.hp -= target.dmg
