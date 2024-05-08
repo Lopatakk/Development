@@ -69,8 +69,9 @@ class Projectile(pygame.sprite.Sprite):
 
         # sound of firing
 
-        GameSetup.shooting_sound.set_volume(0.2 * GameSetup.effects_volume)
-        pygame.mixer.Channel(5).play(GameSetup.shooting_sound)
+        self.sound = GameSetup.shooting_sound
+        self.sound.set_volume(0.2 * GameSetup.effects_volume)
+        pygame.mixer.Channel(5).play(self.sound)
 
         # other
 

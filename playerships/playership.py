@@ -147,7 +147,7 @@ class PlayerShip(Ship):
         #   amount of time
         #       turn on
         if self.joystick.active:
-            if self.joystick.L1:
+            if self.joystick.L2 > 0:
                 elapsed_time = self.time_alive - self.last_q_use
                 if elapsed_time >= self.q_cooldown:
                     self.q_action()
@@ -177,7 +177,7 @@ class PlayerShip(Ship):
         #       turn on
 
         if self.joystick.active:
-            if self.joystick.R1:
+            if self.joystick.L1:
                 elapsed_time = self.time_alive - self.last_e_use
                 if elapsed_time >= self.e_cooldown:
                     self.e_action()
