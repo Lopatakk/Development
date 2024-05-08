@@ -31,9 +31,10 @@ class GameSetup:
     music_volume = settings["music_volume"]
     effects_volume = settings["effects_volume"]
 
-    #volume
+    # sounds
     button_sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")
     button_music = pygame.mixer.Sound("assets/sounds/background_music_volume.mp3")
+    shooting_sound = pygame.mixer.Sound("assets/sounds/beam_shoot.mp3")  # Load sound file
 
     # low health blinking
     danger_blinking = settings["danger_blinking"]

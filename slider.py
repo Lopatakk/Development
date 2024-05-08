@@ -80,7 +80,7 @@ class Slider:
                     if option == "music_volume":
                         pygame.mixer.Channel(3).set_volume(0.04 * GameSetup.music_volume)
                         if not pygame.mixer.Channel(3).get_busy():
-                            pygame.mixer.Channel(3).play(GameSetup.button_music, 1)
+                            pygame.mixer.Channel(3).play(GameSetup.button_music)
                     else:
                         self.play_sound = True
                 else:
