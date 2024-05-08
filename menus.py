@@ -50,7 +50,8 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         flag_width = int(flag_surf.get_width() * 0.0004 * width)
         flag_height = int(flag_surf.get_height() * 0.0004 * width)
         flag_surf = pygame.transform.scale(flag_surf, (flag_width, flag_height))
-        flag_rect = pygame.rect.Rect(0.93 * width, 0.03 * height + (flag_offset_y / 2 + flag_height) * i, flag_width, flag_height)
+        flag_rect = pygame.rect.Rect(0.93 * width, 0.03 * height + (flag_offset_y / 2 + flag_height) * i, flag_width,
+                                     flag_height)
         flags_images.append(flag_surf)
         flag_rects.append(flag_rect)
 
@@ -91,11 +92,11 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                                       "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
                                       sound, sound_volume, joystick, (0, 3))
     vibrations_button_on = button.Button(width / 6, height / 1.23, "assets/images/switch_on0.png",
-                                     "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
-                                     sound, sound_volume, joystick, (0, 4))
+                                         "assets/images/switch_on1.png", 0.1, 0.05, 0.025, '', screen,
+                                         sound, sound_volume, joystick, (0, 4))
     vibrations_button_off = button.Button(width / 6, height / 1.23, "assets/images/switch_off0.png",
-                                      "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
-                                      sound, sound_volume, joystick, (0, 4))
+                                          "assets/images/switch_off1.png", 0.1, 0.05, 0.025, '', screen,
+                                          sound, sound_volume, joystick, (0, 4))
     back_button = button.Button(0.8 * width, 7 / 8 * height, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[3], screen,
                                 sound, sound_volume, joystick, (0, 5))
@@ -456,7 +457,7 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
     #   create button instances
     buttons_num = 1
     back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, 'Back', screen,
+                                "assets/images/button_02.png", 0.18, 0.05, 0.025, 'Back', screen,
                                 sound, sound_volume, joystick, (0, 0))
     #   load the json file.
     highscores = load()
@@ -469,7 +470,6 @@ def statistics_menu(screen, joystick, cursor, clock, cursor_group):
 
         #   BUTTON
         if back_button.draw_button_and_text(screen, True):
-
             return True
         #   display the high-scores.
         screen.blit(font_scores_title.render(game_text[0], True, (230, 230, 230)), (3.6 * width / 20, 27 * height / 80))
@@ -556,8 +556,9 @@ def main_menu(screen, joystick, cursor, clock, cursor_group):
     quit_button = button.Button(3.6 * width / 20, 59 * height / 80, "assets/images/button_01.png",
                                 "assets/images/button_02.png", 0.32, 0.05, 0.025, game_text[3], screen,
                                 sound, sound_volume, joystick, (0, 3))
-    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),"assets/images/settings_button1.png",
-                                    "assets/images/settings_button2.png", 0.04,0.04, 0.01, '', screen,
+    settings_button = button.Button(149 * (width / 150), width - (149 * (width / 150)),
+                                    "assets/images/settings_button1.png",
+                                    "assets/images/settings_button2.png", 0.04, 0.04, 0.01, '', screen,
                                     sound, sound_volume, joystick)
     while True:
         screen.blit(background, (0, 0))
@@ -901,7 +902,8 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
     #   create button instances
     x = width / 1536 * 932
     y = height / 864 * 78
-    storage_buttons = [(x, y), (x + width / 1536 * 260, y), (x, y + height / 864 * 260), (x + width / 1536 * 260, y + height / 864 * 260)]
+    storage_buttons = [(x, y), (x + width / 1536 * 260, y), (x, y + height / 864 * 260),
+                       (x + width / 1536 * 260, y + height / 864 * 260)]
     module_buttons = {
         "weapons": (width / 1536 * 90, height / 864 * 118, True),
         "cooling": (width / 1536 * 635, height / 864 * 118, True),
@@ -1017,11 +1019,14 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
                         description = {'Acceleration:': (current_acceleration, item_acceleration)}
         if description:
             for i, (stat_name, (current_stat, item_stat)) in enumerate(description.items()):
-                screen.blit(font_description.render(stat_name, True, 'white'), (width / 1536 * 660, height / 864 * 650 + i * 60))
+                screen.blit(font_description.render(stat_name, True, 'white'),
+                            (width / 1536 * 660, height / 864 * 650 + i * 60))
                 if max_level_reached:
-                    screen.blit(font_description.render(str(current_stat), True, 'white'), (width / 1536 * 1050, height / 864 * 650 + i * 60))
+                    screen.blit(font_description.render(str(current_stat), True, 'white'),
+                                (width / 1536 * 1050, height / 864 * 650 + i * 60))
                 else:
-                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'), (width / 1536 * 1050, height / 864 * 650 + i * 60))
+                    screen.blit(font_description.render(str(current_stat) + ' → ', True, 'white'),
+                                (width / 1536 * 1050, height / 864 * 650 + i * 60))
                     font_width = font_description.render(str(current_stat) + ' → ', True, 'white').get_width()
                     if current_stat > item_stat:
                         item_stat_color = 'red'
@@ -1352,7 +1357,8 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                     in_minigame = False
                     cursor.set_cursor()
                     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(
+                        joystick)
                 else:
                     return False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q or event.type == pygame.QUIT:  # to quit game
@@ -1375,7 +1381,8 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                     in_minigame = False
                     cursor.set_cursor()
                     (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
+                     mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(
+                        joystick)
                 else:
                     return False
 
@@ -1395,12 +1402,14 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
             # updating cursor
             update_groups([cursor_group], screen)
 
-            handle_collisions(joystick, mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
+            handle_collisions(joystick, mini_item_group, mini_player_group, False, mini_enemy_group, False,
+                              mini_explosion_group)
             handle_collisions(joystick, mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False,
                               mini_explosion_group)
             handle_collisions(joystick, mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False,
                               mini_explosion_group)
-            handle_collisions(joystick, mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True,
+            handle_collisions(joystick, mini_item_group, mini_player_projectile_group, True,
+                              mini_enemy_projectile_group, True,
                               mini_explosion_group)
 
             cursor.check_cursor()
@@ -1414,7 +1423,8 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
                 in_minigame = False
                 cursor.set_cursor()
                 (mini_enemy_group, mini_spawner_group, mini_item_group, mini_player_projectile_group,
-                 mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(joystick)
+                 mini_enemy_projectile_group, mini_explosion_group, mini_player, mini_player_group) = set_minigame(
+                    joystick)
         else:
             screen.blit(mini_player.image, mini_player.rect)
             update_groups([background_group], screen)
@@ -1727,6 +1737,33 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
     # text
     title, game_text = GameSetup.set_language("about_game")
 
+    #   controls
+    # keyboard
+    font_control = pygame.font.Font('assets/fonts/PublicPixel.ttf', int(0.015 * width))  # loading font
+
+    keyboard = pygame.image.load("assets/images/skills_aboutGame/keyboard.png").convert_alpha()
+    keyboard_size = keyboard.get_size()
+    keyboard = pygame.transform.scale(keyboard, (int(0.4 * width / 1536 * keyboard_size[0]),
+                                                 int(0.4 * height / 864 * keyboard_size[1])))
+    keys = pygame.image.load("assets/images/skills_aboutGame/keys.png").convert_alpha()
+    keys_size = keys.get_size()
+    keys = pygame.transform.scale(keys, (int(0.8 * width / 1536 * keys_size[0]),
+                                         int(0.8 * height / 864 * keys_size[1])))
+
+    mouse = pygame.image.load("assets/images/skills_aboutGame/mouse.png").convert_alpha()
+    mouse_size = mouse.get_size()
+    mouse = pygame.transform.scale(mouse, (int(0.55 * width / 1536 * mouse_size[0]),
+                                           int(0.6 * height / 864 * mouse_size[1])))
+
+    # controller
+    controller = pygame.image.load("assets/images/skills_aboutGame/controller.png").convert_alpha()
+    controller_size = controller.get_size()
+    controller = pygame.transform.scale(controller, (int(0.8 * width / 1536 * controller_size[0]),
+                                                     int(0.8 * height / 864 * controller_size[1])))
+    controller_close = pygame.image.load("assets/images/skills_aboutGame/controller_close_up.png").convert_alpha()
+    controller_close_size = controller_close.get_size()
+    controller_close = pygame.transform.scale(controller_close, (int(3 * width / 1536 * controller_close_size[0]),
+                                                     int(3 * height / 864 * controller_close_size[1])))
     # sound
     sound = pygame.mixer.Sound("assets/sounds/button_click.mp3")  # Load sound file
     sound_volume = 0.2
@@ -1734,8 +1771,8 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
 
     #   create button instances
     buttons_num = 1
-    back_button = button.Button(16.5 * width / 20, 70 * height / 80, "assets/images/button_01.png",
-                                "assets/images/button_02.png", 0.15, 0.05, 0.025, game_text[33], screen,
+    back_button = button.Button(16 * width / 20, 70 * height / 80, "assets/images/button_01.png",
+                                "assets/images/button_02.png", 0.18, 0.05, 0.025, game_text[33], screen,
                                 sound, sound_volume, joystick, (0, 0))
     while True:
         screen.blit(background, (0, 0))
@@ -1774,21 +1811,101 @@ def about_game_menu(screen, joystick, cursor, clock, cursor_group):
                     (3.6 * width / 20, lowest_value + spaceBetween))
         screen.blit(font_text.render(game_text[6], True, text_color), (8 * width / 20, lowest_value + spaceBetween))
         lowest_value = lowest_value + spaceBetween + text_height
+
         # controls
-        screen.blit(font_subtitle.render(game_text[7], True, title_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 4))
-        lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
-        screen.blit(font_text.render(game_text[8], True, text_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 2))
-        screen.blit(font_text.render(game_text[9], True, text_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 3 + text_height))
-        screen.blit(font_text.render(game_text[10], True, text_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 4 + text_height * 2))
-        screen.blit(font_text.render(game_text[11], True, text_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 5 + text_height * 3))
-        screen.blit(font_text.render(game_text[12], True, text_color),
-                    (3.6 * width / 20, lowest_value + spaceBetween * 6 + text_height * 4))
-        lowest_value = lowest_value + spaceBetween * 6 + text_height * 5
+        if joystick.active:
+            screen.blit(font_subtitle.render(game_text[7], True, title_color),
+                        (3.6 * width / 20, lowest_value + spaceBetween * 4))
+            screen.blit(controller, (width / 2.5, lowest_value + spaceBetween * 1.8))
+            lowest_value = lowest_value + spaceBetween * 4 + subtitle_height
+            rect = controller_close.get_rect()
+            rect.center = (width / 2, lowest_value + spaceBetween * 25)
+            screen.blit(controller_close, rect)
+
+            font = font_control.render(game_text[12], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (width / 2, lowest_value + spaceBetween * 7.5)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[12], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.midleft = (1.5 * width / 2, lowest_value + spaceBetween * 23)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[8], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (7.73 * width / 20, lowest_value + spaceBetween * 43)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[11] + ' #1', True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.midright = (6.4 * width / 20, lowest_value + spaceBetween * 9)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[11] + ' #2', True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.midright = (6 * width / 20, lowest_value + spaceBetween * 16)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[9], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (11.6 * width / 20, lowest_value + spaceBetween * 43)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[10], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (14.8 * width / 20, lowest_value + spaceBetween * 9)
+            screen.blit(font, rect)
+
+            lowest_value = lowest_value + spaceBetween * 11 + text_height * 30
+
+        else:
+            screen.blit(font_subtitle.render(game_text[7], True, title_color),
+                        (3.6 * width / 20, lowest_value + spaceBetween * 4))
+            screen.blit(keyboard, (width / 2.7, lowest_value + spaceBetween * 2.5))
+            lowest_value = lowest_value + spaceBetween * 6 + subtitle_height
+            screen.blit(keys, (8 * width / 40, lowest_value + spaceBetween * 3))
+            screen.blit(mouse, (8 * width / 11.5, lowest_value + spaceBetween * 3.5))
+
+            font = font_control.render(game_text[12], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (4.5 * width / 20, lowest_value + spaceBetween * 17)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[8], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (7.73 * width / 20, lowest_value + spaceBetween * 17)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[11], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (11.5 * width / 20, lowest_value + spaceBetween * 17)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[10], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (14.6 * width / 20, lowest_value + spaceBetween)
+            screen.blit(font, rect)
+
+            font = font_control.render(game_text[9], True, text_color)
+            size = font.get_size()
+            rect = pygame.rect.Rect(0, 0, size[0], size[1])
+            rect.center = (14.6 * width / 20, lowest_value + spaceBetween * 17)
+            screen.blit(font, rect)
+
+            lowest_value = lowest_value + spaceBetween * 14 + text_height * 5
+
         #   ships
         screen.blit(font_subtitle.render(game_text[13], True, title_color),
                     (3.6 * width / 20, lowest_value + spaceBetween * 4))
