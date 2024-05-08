@@ -104,6 +104,7 @@ while True:
 
     # variables for time in game + score
     time_in_game = 0
+    GameSetup.vibration_start = 0
     score = 0
 
     # creating sprites/groups
@@ -216,8 +217,9 @@ while True:
             # opening pause menu
             if menus.pause_menu(screen, joystick, clock, score, player, cursor, cursor_group, storage_items, installed_items):
                 game_main = True
-                selected_number = 0
                 game_paused = False
+                selected_number = 0
+                joystick.set_position(0, 0)
                 break
             game_paused = False
             waiting_for_player = True
@@ -276,7 +278,6 @@ while True:
                             if abs(GameSetup.joysticks[0].get_axis(i)) < 1:
                                 waiting_for_player = False
                                 break
-
 
             # render background
             screen.blit(background_copy, (0, 0))

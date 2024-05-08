@@ -206,7 +206,8 @@ class PlayerShip(Ship):
             if self.joystick.R2 > 0:
                 if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time and not self.is_overheated:
                     GameSetup.joysticks[0].rumble(0, 0.1, 0)
-                    self.shoot()
+                self.shoot()
+
             else:
                 if GameSetup.vibrations and elapsed_time * 1000 >= GameSetup.vibration_time:
                     GameSetup.joysticks[0].stop_rumble()

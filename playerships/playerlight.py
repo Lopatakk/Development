@@ -55,7 +55,7 @@ class PlayerLight(PlayerShip):
 
         # 2-cannon shooting setup
         self.proj_spawn_offset_1 = np.array([- 1/3 * self.width, - 1/5.5 * self.height])
-        self.proj_spawn_offset_2 = np.array([+ 1/3 * self.width, - 1/5.5 * self.height])
+        self.proj_spawn_offset_2 = np.array([1/3 * self.width, - 1/5.5 * self.height])
         self.proj_spawn_offset = self.proj_spawn_offset_1
 
     def update(self):

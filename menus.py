@@ -1228,6 +1228,7 @@ def upgrade_menu(screen, joystick, clock, player, cursor, cursor_group, storage_
                 elif joystick.position[0] == 1:
                     if joystick.position[1] == 1 and joystick.last_position[1] == 0:
                         joystick.set_position(1, 2)
+                        over_ship = False
                     else:
                         over_ship = True
                         picked_mark_active = 0
@@ -1394,12 +1395,12 @@ def menu_cockpit(screen, joystick, clock, player, cursor, cursor_group):
             # updating cursor
             update_groups([cursor_group], screen)
 
-            handle_collisions(mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
-            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False,
+            handle_collisions(joystick, mini_item_group, mini_player_group, False, mini_enemy_group, False, mini_explosion_group)
+            handle_collisions(joystick, mini_item_group, mini_player_projectile_group, True, mini_enemy_group, False,
                               mini_explosion_group)
-            handle_collisions(mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False,
+            handle_collisions(joystick, mini_item_group, mini_enemy_projectile_group, True, mini_player_group, False,
                               mini_explosion_group)
-            handle_collisions(mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True,
+            handle_collisions(joystick, mini_item_group, mini_player_projectile_group, True, mini_enemy_projectile_group, True,
                               mini_explosion_group)
 
             cursor.check_cursor()
