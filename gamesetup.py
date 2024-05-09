@@ -57,7 +57,7 @@ class GameSetup:
     joysticks = None
 
     # languages
-    all_languages = ['english', 'czech', 'french', 'german', 'spanish']
+    all_languages = ['english', 'czech', 'french', 'german', 'spanish', 'cat']
     language = settings["language"]
     with open("languages.json", "r", encoding='utf-8') as languages_file:
         languages = json.load(languages_file)

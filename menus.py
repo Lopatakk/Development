@@ -30,6 +30,10 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
 
     # background
     # fill the whole screen with black transparent color
+
+    background_cat = pygame.image.load(f"assets/images/background_cat.png").convert_alpha()
+    background_cat = pygame.transform.scale(background_cat, (width, height))
+    cat_rect = pygame.rect.Rect(0.955 * width, 0.75 * height, 20, 20)
     if environment == "main":
         surface.fill((0, 0, 0, 80))
     else:
@@ -114,7 +118,12 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         mouse_pos = pygame.mouse.get_pos()
 
         # background
-        screen.blit(background, (0, 0))
+        # easter cat
+        if GameSetup.language == 'czech' or GameSetup.language == 'cat':
+            screen.blit(background_cat, (0, 0))
+        else:
+            screen.blit(background, (0, 0))
+
         screen.blit(surface, (0, 0))
 
         # button update
@@ -135,7 +144,10 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
                 else:
                     screen.blit(flags_images[i], flag_rects[i])
         else:
-            language_index = GameSetup.all_languages.index(GameSetup.language)
+            if GameSetup.language == 'cat':
+                language_index = GameSetup.all_languages.index('czech')
+            else:
+                language_index = GameSetup.all_languages.index(GameSetup.language)
             if flag_rects[0].collidepoint(mouse_pos):
                 flag_surf = flags_images[language_index]
                 flag_width = int(flag_surf.get_width() * 1.3)
@@ -162,6 +174,8 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
         screen.blit(font_subTitle.render(game_text[3], True, (230, 230, 230)),
                     (3.6 * width / 20, 52 * height / 68))
 
+
+
         #   BUTTON
         if back_button.draw_button_and_text(screen, True, on_language):
             pygame.mixer.Channel(3).stop()
@@ -176,6 +190,14 @@ def settings_menu(screen, joystick, cursor, clock, cursor_group, background, env
             elif event.type == pygame.MOUSEBUTTONUP and not mouse_pressed:
                 mouse_pressed = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                # easter cat
+                if cat_rect.collidepoint(mouse_pos):
+                    GameSetup.language = 'cat'
+                    on_language = False
+                    title, game_text = GameSetup.set_language("settings")
+                    settings["language"] = GameSetup.language
+                    with open("settings.json", "w") as settings_file:
+                        json.dump(settings, settings_file, indent=4)
                 # switching danger blinking
                 mouse_pressed = False
                 with open("settings.json", "w") as settings_file:

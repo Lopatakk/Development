@@ -174,11 +174,11 @@
 	  "text":{
       "main_menu": {
         "title": "Menú Principal",
-        "content": ["Jugar", "Estadísticas", "Del Juego", "Salir", "Banda sonora de: Karl Casey @ White Bat Audio"]
+        "content": ["Jugar", "Estadísticas", "El Juego", "Salir", "Banda sonora de: Karl Casey @ White Bat Audio"]
       },
       "settings": {
         "title": "Ajustes",
-        "content": ["Volumen de la Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Vibración", "Atrás"]
+        "content": ["Volumen de Música", "Volumen de Efectos", "Parpadeo de Baja Salud", "Vibración", "Atrás"]
       },
       "statistics": {
         "title": "Estadísticas",
@@ -243,7 +243,7 @@
       },
       "pause": {
         "title": "Pausa",
-        "content": ["Continuar", "Menú", "Salir", "Pulsa una tecla para continuar"]
+        "content": ["Continuar", "Menú", "Salir", "Pulsar una tecla para continuar"]
       },
       "game_over": {
         "title": "Fin del Juego",
@@ -421,7 +421,93 @@
       },
 	  "upgrade": {
 		"content": ["Waffen", "Kühlung", "Schild", "Regeneration", "Schubdüse"]
+	}
+  }
+},
+{
+    "language": "cat",
+	"text":{
+      "main_menu": {
+        "title": "Mňanu",
+        "content": ["Mňanu", "Mňaustiky", "O mňoukání", "Domňoukat", "Mňautrack od: Karl MňauCasey @ White Bat Mňaudio"]
+      },
+      "settings": {
+        "title": "Mňaustavení",
+        "content": ["Mňaudba", "Mňaufekty", "Mňoukání při nízkém zdraví", "Mňaubrace", "Mňau"]
+      },
+      "statistics": {
+        "title": "Mňaustiky",
+        "content": ["Mňano", "Mňau Skóre", "MňauLoď", "Mňautum"]
+      },
+      "about_game": {
+        "title": "Mňau Hra",
+        "content": [
+          "Mňau je 2D mňoukací střílečka. Mňau hráč ovládá vesmírnou loď a musí ji bránit před útoky nepřátel. Mňau cílem je získat co nejvíce mňoukacích bodů.",
+          "Mňau vytvořeno jako semestrální projekt ve studijním předmětu KEP/VMZ na Fakultě Mňoukací Západočeské univerzity v Kočkově. Mňau předmět probíhal v zimním semestru mňoukacího roku 2023/24.",
+          "Mňoukací tým:",
+          "Jan Myšebele",
+          "Kocour Franěk",
+          "Mňauchal Lopata",
+          "Tomňaus Fikart",
+          "Vrnění",
+          "Zběsilost",
+          "Číhání",
+          "Mňouknutí",
+          "Kočičárny",
+          "Mňauza",
+          "Mňau Lodě: ",		  
+          "Devět životů: ",
+          "Mňauškození: ",
+          "Frekvence mňoukání:",
+          "Mňauchlení: ",
+          "Mňauchlost: ",
+          "Mňau Q:",
+          "Mňau E:",
+		  "Mňaútok",
+		  "Mňauu",
+		  "Rychlá mňaulba",
+		  "Mňau střelba",
+		  "Mňau Zrychlení",
+		  "Gravitační kočka",
+		  "Myši: ",
+          "Mňau jako kočičí pilot. Mňau Nemá dělo na střelbu, ale při kontaktu s lodí způsobí hodně poškození.",
+          "Mňau jeho jméno ho správně popisuje. Mňau Má hodně zdraví, je velký a střílí rychle, ale jeho střely nezpůsobují mnoho poškození.",
+          "Mňau se snaží udržovat odstup od lodi, což ho dělá obtížným k zasažení. Jeho mňoukání způsobují hodně poškození, ale nemá 9 životů.",
+          "Občas se na obrazovce objeví pastička se sýrem. Pokud sýr není během několika sekund sebrán, objeví se myška a pokusí se sýr ukrást. Pokud ho sníte před ním, nebo pokud ho vyzvedne, její vzhled se změní a bude se chovat jako kočka.",
+		  "Děkujeme, že si s námi mňouknete <3",
+		  "Mňau"
+        ]
+      },
+      "ship_select": {
+        "title": "Mňauběr lodi",
+        "content": [
+          "Devět životů: ",
+          "Mňauškození: ",
+          "Frekvence mňoukání:",
+          "Mňauchlení: ",
+          "Mňauchlost: ",
+          "Mňau Q:",
+          "Mňau E:",
+		  "Mňautok",
+		  "Mňauu",
+		  "Rychlá mňaulba",
+		  "Mňau střelba",
+		  "Mňau Zrychlení",
+		  "Gravitační kočka"
+        ]
+      },
+      "pause": {
+        "title": "Mňauza",
+        "content": ["Mňoukat", "Kočičí menu", "Domňoukat", "Mňoukněte pro pokračování"]
+      },
+      "game_over": {
+        "title": "Domňoukali jste",
+        "content": ["Mňau Skóre: ", "Myška?", "Zamňoukat", "Kocouří menu", "Domňoukat"]
+      },
+	  "upgrade": {
+		"content": ["Drápy", "Uši", "Chlupy", "Syčení", "Ocas"]
 }
     }
-}
+  }
+
 ]
