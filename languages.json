@@ -62,7 +62,13 @@
           "Acceleration: ",
           "Speed: ",
           "Q skill:",
-          "E skill:"
+          "E skill:",
+		  "Dash",
+		  "Shield",
+		  "Rapid fire",
+		  "Blast shoot",
+		  "Speed boost",
+		  "Gravity pulse"
         ]
       },
       "pause": {
@@ -141,7 +147,13 @@
           "Zrychlení:",
           "Rychlost: ",
           "Q: ",
-          "E: "
+          "E: ",
+		  "Úhyb",
+		  "Štít",
+		  "Rychlopálka",
+		  "Výstřel exploze",
+		  "Zrychlení",
+		  "Gravitační puls"
         ]
       },
       "pause": {
@@ -220,7 +232,13 @@
           "Aceleración:",
           "Velocidad: ",
           "Q: ",
-          "E: "
+          "E: ",
+		  "Embestida",
+		  "Escudo",
+		  "Disparo rápido",
+		  "Disparo explosivo",
+		  "Impulso de velocidad",
+		  "Pulso de gravedad"
         ]
       },
       "pause": {
@@ -275,7 +293,7 @@
         "Vitesse : ",
         "Q :",
         "E :",
-        "Dash",
+        "Évasion",
         "Bouclier",
         "Tir rapide",
         "Tir explosif",
@@ -299,7 +317,13 @@
         "Accélération : ",
         "Vitesse : ",
         "Q :",
-        "E :"
+        "E :",
+		"Évasion",
+        "Bouclier",
+        "Tir rapide",
+        "Tir explosif",
+        "Boost de vitesse",
+        "Pulsation de gravité"
       ]
     },
     "pause": {
@@ -324,17 +348,17 @@
       },
       "settings": {
         "title": "Einstellungen",
-        "content": ["Musik Lautstärke", "Effekte Lautstärke", "Blinken bei niedriger Gesundheit", "Vibration", "Zurück"]
+        "content": ["Musik Lautstärke", "Effekte Lautstärke", "Farbwechsel bei niedriger Gesundheit", "Vibration", "Zurück"]
       },
       "statistics": {
         "title": "Statistiken",
         "content": ["Name", "Punktzahl", "Schiff", "Datum"]
       },
       "about_game": {
-        "title": "Über das Spiel",
+        "title": "Das Spiel",
         "content": [
           "Das Spiel ist ein 2D-Arcade-Shooter. Der Spieler steuert ein Raumschiff und muss es gegen feindliche Angriffe verteidigen. Das Ziel ist es, so viele Punkte wie möglich zu erzielen.",
-          "Wurde als Semesterprojekt im Fach KEP/VMZ an der Fakultät für Elektrotechnik der Westböhmischen Universität erstellt. Das Fach fand im Wintersemester des akademischen Jahres 2023/24 statt.",
+          "Das Spiel wurde als Semesterprojekt im Fach KEP/VMZ an der Fakultät für Elektrotechnik der Westböhmischen Universität erstellt. Das Fach fand im Wintersemester des akademischen Jahres 2023/24 statt.",
           "Entwicklungsteam: ",
           "Jan Sebele",
           "Pavel Franek",
@@ -354,17 +378,17 @@
           "Geschwindigkeit: ",
           "Q: ",
           "E: ",
-		  "Dash",
+		  "Ausweichung",
 		  "Schild",
 		  "Schnellfeuer",
 		  "Explosionsschuss",
 		  "Geschwindigkeits-Boost",
 		  "Gravitationspuls",
 		  "Feinde: ",
-          "Er agiert wie ein Kamikaze-Pilot. Er hat keine Kanone zum Schießen, aber er verursacht viel Schaden bei Kontakt mit einem Schiff.",
-          "Sein Name beschreibt ihn richtig. Er hat viele HP, er ist groß und er schießt schnell, aber seine Schüsse richten nicht viel Schaden an.",
-          "Er versucht, Abstand zum Schiff zu halten, was es schwer macht, ihn zu treffen. Seine Raketen verursachen viel Schaden, aber er hat wenig HP.",
-          "Gelegentlich erscheint ein MedKit auf dem Bildschirm, wenn das MedKit nicht innerhalb weniger Sekunden aufgenommen wird, wird der Stealer erscheinen und versuchen, das MedKit zu nehmen. Wenn Sie es vor ihm aufheben oder wenn er es aufhebt, ändert sich sein Design und er wird sich wie ein Zarovka verhalten.",
+          "Die Zarovka ist ein Kamikaze-Pilot. Es hat keine Kanone zum Schießen, aber es verursacht viel Schaden bei Kontakt mit einem Schiff.",
+          "Sein Name beschreibt ihn richtig gut. Der Tank hat viele HP, es ist groß und es schießt schnell, aber seine Schüsse richten nicht viel Schaden an.",
+          "Der Sniper versucht, Abstand zum Schiff zu halten, was es schwer macht, ihn zu treffen. Die Raketen verursachen viel Schaden, aber der Sniper hat wenig HP.",
+          "Gelegentlich erscheint ein MedKit auf dem Bildschirm, wenn das MedKit nicht innerhalb weniger Sekunden aufgenommen wird, wird der Stealer erscheinen und versuchen, das MedKit zu nehmen. Wenn Sie es vor ihm aufheben oder wenn er es aufhebt, ändert sich sein Design und er wird sich wie eine Zarovka verhalten.",
 		  "Vielen Dank, dass Sie unser Spiel gespielt haben <3",
 		  "Zurück"
         ]
@@ -378,7 +402,13 @@
           "Beschleunigung: ",
           "Geschwindigkeit: ",
           "Q: ",
-          "E: "
+          "E: ",
+		  "Ausweichung",
+		  "Schild",
+		  "Schnellfeuer",
+		  "Explosionsschuss",
+		  "Geschwindigkeits-Boost",
+		  "Gravitationspuls"
         ]
       },
       "pause": {
@@ -387,7 +417,7 @@
       },
       "game_over": {
         "title": "Spiel vorbei",
-        "content": ["Punktzahl: ", "Speichern", "Erneut", "Hauptmenü", "Beenden"]
+        "content": ["Punktzahl: ", "Speichern", "Erneut Spielen", "Hauptmenü", "Beenden"]
       },
 	  "upgrade": {
 		"content": ["Waffen", "Kühlung", "Schild", "Regeneration", "Schubdüse"]

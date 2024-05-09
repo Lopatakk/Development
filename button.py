@@ -176,7 +176,18 @@ class Button:
         # draw text on screen
         surface.blit(text, text_rect)
         #   Printing ship parameters
-        ship_text = [f"{game_text[0]}{self.Ship_param['hp'][0]}", f"{game_text[1]}{self.Ship_param['proj_dmg'][0]}", f"{game_text[2]}{self.Ship_param['fire_rate'][0]}", f"{game_text[3]}{self.Ship_param['acceleration'][0]}", f"{game_text[4]}{self.Ship_param['max_velocity']}", game_text[5] + self.Ship_param['q_skill'], game_text[6] + self.Ship_param['e_skill']]
+        if self.Ship_param['type'] == 'player_light':
+            q_skill = game_text[7]
+            e_skill = game_text[8]
+
+        if self.Ship_param['type'] == 'player_mid':
+            q_skill = game_text[9]
+            e_skill = game_text[10]
+
+        if self.Ship_param['type'] == 'player_tank':
+            q_skill = game_text[11]
+            e_skill = game_text[12]
+        ship_text = [f"{game_text[0]}{self.Ship_param['hp'][0]}", f"{game_text[1]}{self.Ship_param['proj_dmg'][0]}", f"{game_text[2]}{self.Ship_param['fire_rate'][0]}", f"{game_text[3]}{self.Ship_param['acceleration'][0]}", f"{game_text[4]}{self.Ship_param['max_velocity']}", game_text[5] + q_skill, game_text[6] + e_skill]
         y_position = [self.y_button + (rect_02.height/2) * 1.3, self.y_button + (rect_02.height/2) * 1.6, self.y_button + (rect_02.height/2) * 1.9, self.y_button + (rect_02.height/2) * 2.2, self.y_button + (rect_02.height/2) * 2.5, self.y_button + (rect_02.height/2) * 3, self.y_button + (rect_02.height/2) * 3.3]
         for parameters, position in zip(ship_text, y_position):
             text = self.font_parameters.render(str(parameters), True, text_color)
